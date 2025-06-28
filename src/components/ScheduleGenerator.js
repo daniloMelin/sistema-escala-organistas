@@ -3,47 +3,49 @@ import { getOrganists, saveSchedule, getRecentSchedules } from '../services/fire
 import { generateSchedule as generateScheduleLogic } from '../utils/scheduleLogic';
 import { exportScheduleToPDF } from '../utils/pdfGenerator';
 
-const ScheduleGenerator = () => {
+// O componente agora recebe '{ user }' como uma propriedade (prop).
+const ScheduleGenerator = ({ user }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [generatedSchedule, setGeneratedSchedule] = useState([]);
   const [organists, setOrganists] = useState([]);
   const [isLoadingOrganists, setIsLoadingOrganists] = useState(false);
-  const [isGenerating, setIsGenerating] = useState(false); // Controla o estado do botão "Gerar e Salvar Escala"
+  const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-
   const [savedSchedules, setSavedSchedules] = useState([]);
   const [isLoadingSavedSchedules, setIsLoadingSavedSchedules] = useState(false);
 
-  const clearMessages = useCallback(() => {
-    setError('');
-    setSuccessMessage('');
-  }, []);
+  const clearMessages = useCallback(() => { setError(''); setSuccessMessage(''); }, []);
 
   const fetchOrganistsData = useCallback(async () => {
+    if (!user) return; // Não faz nada se não houver usuário.
     setIsLoadingOrganists(true);
     try {
-      const orgs = await getOrganists();
+      // Passa o ID do usuário para buscar as organistas dele.
+      const orgs = await getOrganists(user.uid);
       setOrganists(orgs);
     } catch (err) {
-      setError("Falha ao carregar organistas.");
+      setError("Falha ao carregar organistas para geração da escala.");
       console.error("Erro em fetchOrganistsData:", err);
     }
     setIsLoadingOrganists(false);
-  }, []);
+  }, [user]); // Adiciona 'user' como dependência.
 
   const loadSavedSchedules = useCallback(async () => {
+    if (!user) return;
     setIsLoadingSavedSchedules(true);
     try {
-      const schedulesData = await getRecentSchedules(3);
+      // Passa o ID do usuário para buscar as escalas dele.
+      const schedulesData = await getRecentSchedules(user.uid, 3);
       setSavedSchedules(schedulesData);
     } catch (err) {
       setError("Falha ao carregar escalas salvas.");
       console.error("Erro em loadSavedSchedules:", err);
     }
     setIsLoadingSavedSchedules(false);
-  }, []);
+  }, [user]); // Adiciona 'user' como dependência.
+
 
   useEffect(() => {
     fetchOrganistsData();
@@ -52,35 +54,31 @@ const ScheduleGenerator = () => {
 
   useEffect(() => {
     if (successMessage) {
-      const timer = setTimeout(() => setSuccessMessage(''), 4000); // Aumentei um pouco o tempo
+      const timer = setTimeout(() => setSuccessMessage(''), 4000);
       return () => clearTimeout(timer);
     }
   }, [successMessage]);
 
   const handleGenerateSchedule = async () => {
-    console.log("handleGenerateSchedule: INÍCIO, isGenerating =", isGenerating);
     clearMessages();
     setGeneratedSchedule([]);
-
+    if (!user) {
+        setError("Você precisa estar logado para gerar uma escala.");
+        return;
+    }
     if (!startDate || !endDate) {
       setError("Por favor, selecione o período completo.");
       return;
     }
-    // ... (outras validações) ...
-
+    if (organists.length === 0) {
+      setError("Nenhum organista cadastrado para este usuário. Cadastre primeiro.");
+      return;
+    }
+    
     setIsGenerating(true);
-    console.log("handleGenerateSchedule: MEIO, isGenerating SET TO TRUE");
     try {
-      const currentOrganists = await getOrganists(); // Busca organistas mais recentes
-      setOrganists(currentOrganists);
-
-      if (currentOrganists.length === 0) {
-        setError("Nenhum organista encontrado para gerar a escala. Cadastre organistas.");
-        // setIsGenerating(false); // Já está no finally
-        return;
-      }
-
-      const schedule = generateScheduleLogic(currentOrganists, startDate, endDate);
+      // A lógica usa a lista de organistas que já foi buscada para o usuário correto.
+      const schedule = generateScheduleLogic(organists, startDate, endDate);
       setGeneratedSchedule(schedule);
 
       if (schedule.length > 0) {
@@ -89,51 +87,28 @@ const ScheduleGenerator = () => {
           period: { start: startDate, end: endDate },
           generatedAt: new Date().toISOString(),
           data: schedule,
-          organistCountOnGeneration: currentOrganists.length
+          organistCountOnGeneration: organists.length
         };
-        await saveSchedule(scheduleId, scheduleToSave);
+        // Passa o ID do usuário para salvar a escala no local correto.
+        await saveSchedule(user.uid, scheduleId, scheduleToSave);
         setSuccessMessage("Escala gerada e salva com sucesso!");
         await loadSavedSchedules();
       } else {
         setError("Nenhuma escala pôde ser gerada. Verifique as disponibilidades.");
       }
-      console.log("handleGenerateSchedule: TRY CONCLUÍDO");
     } catch (err) {
       setError(`Erro ao gerar ou salvar a escala: ${err.message || "Erro desconhecido"}`);
       console.error("Erro em handleGenerateSchedule:", err);
-    } finally {
-      setIsGenerating(false);
-      console.log("handleGenerateSchedule: FINALLY, isGenerating SET TO FALSE");
     }
+    setIsGenerating(false);
   };
 
   const handleExportPDF = () => {
-    clearMessages(); // Limpa mensagens de erro/sucesso anteriores
     if (generatedSchedule.length === 0) {
       setError("Gere uma escala primeiro para exportar.");
       return;
     }
-    try {
-      exportScheduleToPDF(generatedSchedule, startDate, endDate);
-      setSuccessMessage("PDF exportado com sucesso! A visualização foi limpa.");
-
-      // "Atualiza" a tela limpando a escala gerada da visualização.
-      setGeneratedSchedule([]);
-
-      // Opcional: Limpar as datas de início e fim se quiser um reset completo do formulário de geração.
-      // setStartDate('');
-      // setEndDate('');
-      // Se você limpar startDate e endDate, a parte do título "Escala Atual (xx a yy)" também ficará vazia.
-
-      console.log("handleExportPDF: PDF exportado, visualização limpa. isGenerating =", isGenerating);
-      // Nota: 'isGenerating' não é alterado aqui, pois se refere à geração da escala, não à exportação.
-      // Se o botão "Gerar e Salvar Escala" estiver como "Gerando..." neste ponto,
-      // o problema está no fluxo de 'handleGenerateSchedule'.
-
-    } catch (pdfError) {
-      setError(`Erro ao gerar PDF: ${pdfError.message}`);
-      console.error("Erro em handleExportPDF:", pdfError);
-    }
+    exportScheduleToPDF(generatedSchedule, startDate, endDate);
   };
 
   const handleViewSavedSchedule = (scheduleData) => {
@@ -143,21 +118,21 @@ const ScheduleGenerator = () => {
         setStartDate(scheduleData.period.start);
         setEndDate(scheduleData.period.end);
     }
-    setSuccessMessage(`Visualizando escala salva de ${scheduleData.period?.start ? new Date(scheduleData.period.start + "T00:00:00").toLocaleDateString() : 'N/A'} a ${scheduleData.period?.end ? new Date(scheduleData.period.end + "T00:00:00").toLocaleDateString() : 'N/A'}`);
+    setSuccessMessage(`Visualizando escala salva.`);
   };
 
 
   if (isLoadingOrganists) {
-    return <div style={{ padding: '20px', textAlign: 'center' }}>Carregando dados dos organistas...</div>;
+    return <div style={{ padding: '20px', textAlign: 'center' }}>Carregando dados...</div>;
   }
 
   return (
     <div style={{ padding: '20px', maxWidth: '900px', margin: 'auto' }}>
       <section>
         <h2>Gerar Nova Escala</h2>
-        {organists.length === 0 && !isLoadingOrganists && ( // Adicionado !isLoadingOrganists para não mostrar enquanto carrega
+        {organists.length === 0 && !isLoadingOrganists && (
           <p style={{ color: 'orange', border: '1px solid orange', padding: '10px', borderRadius: '4px' }}>
-            Atenção: Nenhum organista cadastrado. Vá para "Cadastro de Organistas" para adicionar.
+            Atenção: Nenhum organista cadastrado para sua conta. Vá para "Cadastro de Organistas" para adicionar.
           </p>
         )}
         <div style={{ marginBottom: '20px', display: 'flex', flexWrap: 'wrap', gap: '15px', alignItems: 'flex-end', padding: '15px', border: '1px solid #ddd', borderRadius: '4px' }}>
@@ -181,11 +156,7 @@ const ScheduleGenerator = () => {
         <section style={{ marginTop: '30px' }}>
           <h3 style={{ borderBottom: '1px solid #ccc', paddingBottom: '10px', marginBottom: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             Escala Atual ({startDate ? new Date(startDate + "T00:00:00").toLocaleDateString() : ''} a {endDate ? new Date(endDate + "T00:00:00").toLocaleDateString() : ''})
-            <button 
-              onClick={handleExportPDF} 
-              style={{ padding: '8px 12px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }} 
-              disabled={isGenerating} // Desabilita se a GERAÇÃO da escala estiver em andamento
-            >
+            <button onClick={handleExportPDF} style={{ padding: '8px 12px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }} disabled={isGenerating}>
               Exportar para PDF
             </button>
           </h3>
@@ -196,8 +167,6 @@ const ScheduleGenerator = () => {
                 {item.assignments.RJM && <li>RJM – {item.assignments.RJM}</li>}
                 {item.assignments.MeiaHoraCulto && <li>(Meia Hora) – {item.assignments.MeiaHoraCulto}</li>}
                 {item.assignments.Culto && <li>(Culto) – {item.assignments.Culto}</li>}
-                {Object.keys(item.assignments).length === 0 && <li>Nenhum culto definido para este dia ou sem organistas.</li>}
-                {Object.values(item.assignments).includes('VAGO') && <li style={{color: 'orange'}}>Atenção: Algum horário ficou vago.</li>}
               </ul>
             </div>
           ))}
@@ -207,22 +176,18 @@ const ScheduleGenerator = () => {
       <section style={{ marginTop: '40px', borderTop: '2px solid #007bff', paddingTop: '20px' }}>
         <h2>Últimas 3 Escalas Salvas</h2>
         {isLoadingSavedSchedules && <p>Carregando escalas salvas...</p>}
-        {!isLoadingSavedSchedules && savedSchedules.length === 0 && <p>Nenhuma escala salva encontrada.</p>}
-        {!isLoadingSavedSchedules && savedSchedules.length > 0 && (
-          <ul style={{ listStyleType: 'none', padding: 0 }}>
-            {savedSchedules.map(sch => (
-              <li key={sch.id} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px', borderRadius: '4px' }}>
-                <strong>Período:</strong> {sch.period?.start ? new Date(sch.period.start + "T00:00:00").toLocaleDateString() : 'N/A'} - {sch.period?.end ? new Date(sch.period.end + "T00:00:00").toLocaleDateString() : 'N/A'}
-                <br />
-                <small>Gerada em: {sch.generatedAt ? new Date(sch.generatedAt).toLocaleString() : 'N/A'}</small>
-                <br />
-                <button onClick={() => handleViewSavedSchedule(sch)} style={{marginTop: '5px', padding: '5px 10px', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '3px'}}>
-                  Visualizar esta Escala
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+        {!isLoadingSavedSchedules && savedSchedules.length === 0 && <p>Nenhuma escala salva encontrada para sua conta.</p>}
+        {savedSchedules.map(sch => (
+          <li key={sch.id} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px', borderRadius: '4px' }}>
+            <strong>Período:</strong> {sch.period?.start ? new Date(sch.period.start + "T00:00:00").toLocaleDateString() : 'N/A'} - {sch.period?.end ? new Date(sch.period.end + "T00:00:00").toLocaleDateString() : 'N/A'}
+            <br />
+            <small>Gerada em: {sch.generatedAt ? new Date(sch.generatedAt).toLocaleString() : 'N/A'}</small>
+            <br />
+            <button onClick={() => handleViewSavedSchedule(sch)} style={{marginTop: '5px', padding: '5px 10px', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '3px'}}>
+              Visualizar esta Escala
+            </button>
+          </li>
+        ))}
       </section>
     </div>
   );

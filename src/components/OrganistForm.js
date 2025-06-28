@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-// Importa a nova função 'updateOrganist'
 import { addOrganist, getOrganists, deleteOrganist, updateOrganist } from '../services/firebaseService';
 
-const OrganistForm = () => {
+// O componente agora recebe '{ user }' como uma propriedade (prop).
+const OrganistForm = ({ user }) => { 
   const initialAvailability = {
     sunday: false, monday: false, tuesday: false, wednesday: false,
     thursday: false, friday: false, saturday: false,
@@ -15,8 +15,6 @@ const OrganistForm = () => {
   const [isListLoading, setIsListLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  
-  // NOVO ESTADO: para controlar o modo de edição
   const [editingOrganist, setEditingOrganist] = useState(null);
 
   const allWeekDays = [
@@ -26,24 +24,27 @@ const OrganistForm = () => {
     { key: 'saturday', label: 'Sábado' },
   ];
 
-  const clearMessages = useCallback(() => {
-    setError('');
-    setSuccessMessage('');
-  }, []);
+  const clearMessages = useCallback(() => { setError(''); setSuccessMessage(''); }, []);
 
   const fetchOrganists = useCallback(async () => {
+    if (!user) return; // Não faz nada se não houver usuário logado.
+    
     setIsListLoading(true);
     try {
-      const data = await getOrganists();
+      // Passa o ID do usuário (user.uid) para a função getOrganists.
+      const data = await getOrganists(user.uid);
       setOrganists(data);
     } catch (err) {
-      setError('Falha ao carregar organistas da lista.');
+      setError('Falha ao carregar a lista de organistas.');
       console.error("Erro em fetchOrganists:", err);
     }
     setIsListLoading(false);
-  }, []);
+  // Adiciona 'user' como dependência.
+  }, [user]);
 
-  useEffect(() => { fetchOrganists(); }, [fetchOrganists]);
+  useEffect(() => {
+    fetchOrganists();
+  }, [fetchOrganists]);
 
   useEffect(() => {
     if (successMessage) {
@@ -57,7 +58,6 @@ const OrganistForm = () => {
     setAvailability(prev => ({ ...prev, [name]: checked }));
   };
 
-  // NOVA FUNÇÃO: para limpar o formulário e sair do modo de edição
   const handleCancelEdit = () => {
     setEditingOrganist(null);
     setName('');
@@ -65,18 +65,15 @@ const OrganistForm = () => {
     clearMessages();
   };
   
-  // NOVA FUNÇÃO: para preencher o formulário com dados para edição
   const handleStartEdit = (organist) => {
     clearMessages();
     setEditingOrganist(organist);
     setName(organist.name);
-    // Garante que o objeto de disponibilidade tenha todos os dias da semana
     const fullAvailability = { ...initialAvailability, ...organist.availability };
     setAvailability(fullAvailability);
-    window.scrollTo(0, 0); // Rola a página para o topo para ver o formulário
+    window.scrollTo(0, 0);
   };
 
-  // FUNÇÃO handleSubmit ATUALIZADA para lidar com Adicionar e Editar
   const handleSubmit = async (e) => {
     e.preventDefault();
     clearMessages();
@@ -84,23 +81,20 @@ const OrganistForm = () => {
       setError('O nome é obrigatório.');
       return;
     }
-
     setIsLoading(true);
-
     const data = { name, availability };
-
     try {
       if (editingOrganist) {
-        // Modo de Edição
-        await updateOrganist(editingOrganist.id, data);
+        // Passa 'user.uid' para a função de ATUALIZAR.
+        await updateOrganist(user.uid, editingOrganist.id, data);
         setSuccessMessage('Organista atualizado com sucesso!');
       } else {
-        // Modo de Cadastro
-        await addOrganist(data);
+        // Passa 'user.uid' para a função de ADICIONAR.
+        await addOrganist(user.uid, data);
         setSuccessMessage('Organista adicionado com sucesso!');
       }
-      handleCancelEdit(); // Limpa formulário e sai do modo de edição
-      await fetchOrganists(); // Atualiza a lista
+      handleCancelEdit();
+      await fetchOrganists();
     } catch (err) {
       const action = editingOrganist ? 'atualizar' : 'adicionar';
       setError(`Falha ao ${action} organista.`);
@@ -111,12 +105,11 @@ const OrganistForm = () => {
   };
 
   const handleDelete = async (organistId, organistName) => {
-    // ... (código de exclusão permanece o mesmo)
-    clearMessages();
     if (window.confirm(`Tem certeza que deseja excluir ${organistName}?`)) {
       setIsLoading(true);
       try {
-        await deleteOrganist(organistId);
+        // Passa 'user.uid' para a função de DELETAR.
+        await deleteOrganist(user.uid, organistId);
         setSuccessMessage(`Organista ${organistName} excluído com sucesso!`);
         await fetchOrganists();
       } catch (err) {
@@ -130,19 +123,14 @@ const OrganistForm = () => {
 
   return (
     <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
-      {/* TÍTULO DINÂMICO */}
       <h2>{editingOrganist ? 'Editar Organista' : 'Cadastro de Organistas'}</h2>
       <form onSubmit={handleSubmit}>
-        {/* ... (input de nome e fieldset de disponibilidade permanecem os mesmos) ... */}
         <div>
           <label htmlFor="organistName">Nome Completo:</label>
           <input
-            type="text"
-            id="organistName"
-            value={name}
+            type="text" id="organistName" value={name}
             onChange={(e) => setName(e.target.value)}
-            disabled={isLoading}
-            required
+            disabled={isLoading} required
             style={{ width: '100%', padding: '8px', margin: '8px 0', boxSizing: 'border-box' }}
           />
         </div>
@@ -151,9 +139,7 @@ const OrganistForm = () => {
           {allWeekDays.map(day => (
             <div key={day.key}>
               <input
-                type="checkbox"
-                id={`availability-${day.key}`}
-                name={day.key}
+                type="checkbox" id={`availability-${day.key}`} name={day.key}
                 checked={availability[day.key]}
                 onChange={handleAvailabilityChange}
               />
@@ -165,7 +151,6 @@ const OrganistForm = () => {
         {error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
         {successMessage && <p style={{ color: 'green', marginTop: '10px' }}>{successMessage}</p>}
 
-        {/* BOTÕES DINÂMICOS */}
         <div style={{display: 'flex', gap: '10px', marginTop: '10px'}}>
           <button type="submit" disabled={isLoading} style={{ flex: 1, padding: '10px 15px', cursor: isLoading ? 'not-allowed' : 'pointer', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px', opacity: isLoading ? 0.6 : 1 }}>
             {isLoading ? 'Salvando...' : (editingOrganist ? 'Atualizar Organista' : 'Cadastrar Organista')}
@@ -190,7 +175,6 @@ const OrganistForm = () => {
                 Disponível: {allWeekDays.filter(day => org.availability?.[day.key]).map(day => day.label.substring(0,3)).join('; ') || "Nenhum dia"}
               </p>
             </div>
-            {/* BOTÕES DE AÇÃO NA LISTA */}
             <div style={{display: 'flex', gap: '10px', marginTop: '10px'}}>
               <button
                 onClick={() => handleStartEdit(org)}

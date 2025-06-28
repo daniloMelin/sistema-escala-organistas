@@ -4,11 +4,11 @@ import OrganistForm from './components/OrganistForm';
 import ScheduleGenerator from './components/ScheduleGenerator';
 
 // Importações de Autenticação
-import { auth } from './services/firebaseService';
+import { auth } from './firebaseConfig'; // Importa auth direto do firebaseConfig agora
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import Auth from './components/Auth'; // Importa nosso novo componente
+import Auth from './components/Auth';
 
-// Componente de Layout modificado para incluir botão de Sair
+// Layout modificado para incluir botão de Sair e receber 'user'
 const Layout = ({ children, user }) => {
   const navigate = useNavigate();
   const activeStyle = {
@@ -54,7 +54,6 @@ const Layout = ({ children, user }) => {
 };
 
 const HomePage = () => (
-  // ... (código da HomePage permanece o mesmo)
   <div style={{ padding: '20px', textAlign: 'center' }}>
     <h1 style={{color: '#333'}}>Bem-vindo ao Gerenciador de Escalas de Organistas</h1>
     <p style={{fontSize: '1.1em', color: '#555'}}>Utilize o menu de navegação acima para gerenciar organistas e gerar as escalas para os cultos.</p>
@@ -62,25 +61,20 @@ const HomePage = () => (
 );
 
 const NotFoundPage = () => (
-  // ... (código da NotFoundPage permanece o mesmo)
    <div style={{ padding: '20px', textAlign: 'center' }}>
     <h2>Página Não Encontrada (404)</h2>
   </div>
 );
-
 
 function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // onAuthStateChanged é um "ouvinte" que detecta logins e logouts
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser); // Define o usuário (pode ser null se deslogado)
-      setIsLoading(false);  // Marca que o carregamento inicial terminou
+      setUser(currentUser);
+      setIsLoading(false);
     });
-
-    // Função de limpeza para remover o "ouvinte" quando o componente for desmontado
     return () => unsubscribe();
   }, []);
 
@@ -91,17 +85,16 @@ function App() {
   return (
     <Router>
       {user ? (
-        // Se o usuário estiver logado, mostra o Layout e o app principal
         <Layout user={user}>
           <Routes>
+            {/* MUDANÇA PRINCIPAL: Passando o objeto 'user' como propriedade (prop) para os componentes */}
+            <Route path="/cadastro-organistas" element={<OrganistForm user={user} />} />
+            <Route path="/gerar-escala" element={<ScheduleGenerator user={user} />} />
             <Route path="/" element={<HomePage />} />
-            <Route path="/cadastro-organistas" element={<OrganistForm />} />
-            <Route path="/gerar-escala" element={<ScheduleGenerator />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Layout>
       ) : (
-        // Se não houver usuário, mostra apenas a tela de autenticação
         <Auth />
       )}
     </Router>

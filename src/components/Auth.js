@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { auth } from '../services/firebaseService';
+import { auth } from '../firebaseConfig';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 const Auth = () => {
