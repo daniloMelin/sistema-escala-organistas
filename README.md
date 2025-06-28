@@ -1,70 +1,146 @@
-# Getting Started with Create React App
+# Sistema de Escala de Organistas 🎶
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este é um aplicativo web desenvolvido para automatizar a criação e o gerenciamento de escalas de organistas para cultos religiosos de uma igreja. O sistema visa substituir o processo manual, garantindo uma distribuição mais equitativa das tarefas, considerando a disponibilidade de cada participante e facilitando o compartilhamento da escala final.
 
-## Available Scripts
+Este projeto foi desenvolvido como parte do Projeto de Extensão (PEX) do curso de Tecnologia em Análise e Desenvolvimento de Sistemas.
 
-In the project directory, you can run:
+## ✨ Funcionalidades Principais
+
+* **Cadastro de Organistas:** Permite cadastrar os músicos e suas disponibilidades para cada dia da semana.
+* **Geração Automática de Escala:** Cria uma escala para um período determinado, aplicando um algoritmo para distribuição justa das designações.
+* **Visualização Clara:** Exibe a escala gerada em um formato de lista textual, agrupada por data.
+* **Exportação para PDF:** Gera um arquivo PDF da escala para fácil compartilhamento e impressão.
+* **Armazenamento de Dados:** Utiliza o Firebase (Firestore) para persistir as informações.
+* **Histórico de Escalas:** Exibe as 3 últimas escalas geradas para consulta rápida.
+
+## 🛠️ Tecnologias Utilizadas
+
+* **Frontend:** [React](https://reactjs.org/)
+* **Backend e Banco de Dados:** [Firebase](https://firebase.google.com/) (Firestore e Hosting)
+* **Geração de PDF:** [jsPDF](https://github.com/parallax/jsPDF)
+* **Roteamento:** [React Router](https://reactrouter.com/)
+
+## ✅ Pré-requisitos
+
+Antes de começar, certifique-se de que você tem o seguinte instalado em sua máquina:
+
+* [Node.js](https://nodejs.org/) (versão 16.x ou superior)
+* [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
+* Uma conta no [Firebase](https://firebase.google.com/)
+
+## ⚙️ Configuração do Projeto
+
+Siga os passos abaixo para configurar e rodar o projeto em seu ambiente local.
+
+### 1\. Clone o Repositório
+
+```bash
+git clone https://github.com/seu-usuario/seu-repositorio.git
+cd seu-repositorio
+```
+
+### 2\. Instale as Dependências
+
+Na pasta raiz do projeto, instale todas as dependências necessárias:
+
+```bash
+npm install
+```
+
+ou
+
+```bash
+yarn install
+```
+
+### 3\. Configure o Firebase
+
+Para que o aplicativo se conecte ao seu banco de dados, você precisa configurar suas credenciais do Firebase.
+
+1. Crie um projeto no [Console do Firebase](https://console.firebase.google.com/).
+
+2. Adicione um aplicativo Web ao seu projeto.
+
+3. O Firebase fornecerá um objeto de configuração. Copie este objeto.
+
+4. Na pasta `src/`, crie um arquivo chamado `firebaseConfig.js`.
+
+5. Cole o objeto de configuração neste arquivo, como no exemplo abaixo, substituindo pelos seus dados reais:
+
+    ```javascript
+    // src/firebaseConfig.js
+    import { initializeApp } from "firebase/app";
+    import { getFirestore } from "firebase/firestore";
+
+    const firebaseConfig = {
+      apiKey: "SUA_API_KEY",
+      authDomain: "SEU_AUTH_DOMAIN",
+      projectId: "SEU_PROJECT_ID",
+      storageBucket: "SEU_STORAGE_BUCKET",
+      messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+      appId: "SEU_APP_ID"
+    };
+
+    // Inicializa o Firebase
+    const app = initializeApp(firebaseConfig);
+
+    // Inicializa o Firestore e exporta
+    export const db = getFirestore(app);
+    ```
+
+**⚠️ IMPORTANTE:** Adicione `src/firebaseConfig.js` ao seu arquivo `.gitignore` para evitar expor suas credenciais em repositórios públicos.
+
+## 📜 Scripts Disponíveis
+
+Na pasta do projeto, você pode executar os seguintes comandos:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Executa o aplicativo em modo de desenvolvimento.  
+Abra [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000) para visualizá-lo em seu navegador.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+A página recarregará automaticamente quando você fizer alterações no código.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Compila o aplicativo para produção na pasta `build`.  
+Este comando otimiza os arquivos para o melhor desempenho e os prepara para o deploy.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🚀 Deploy (Publicação Online)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Este projeto está configurado para ser facilmente implantado usando o **Firebase Hosting**.
 
-### `npm run eject`
+### 1\. Instale as Ferramentas do Firebase
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm install -g firebase-tools
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 2\. Faça o Login e Inicialize o Hosting
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+No terminal, na raiz do projeto:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+# Faça o login com sua conta do Google associada ao Firebase
+firebase login
 
-## Learn More
+# Inicie a configuração do hosting
+firebase init hosting
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Siga as instruções:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+* **Selecione:** `Use an existing project` e escolha seu projeto.
+* **Diretório público:** Digite `build`.
+* **Configurar como single-page app:** Digite `Y` (Sim).
+* **Configurar builds automáticos com GitHub:** Digite `N` (Não) por enquanto.
 
-### Code Splitting
+### 3\. Faça o Deploy
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Após configurar o hosting e ter feito o build do seu projeto (`npm run build`), execute:
 
-### Analyzing the Bundle Size
+```bash
+firebase deploy --only hosting
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Após a conclusão, o terminal fornecerá a URL onde seu aplicativo está hospedado online (ex: `https://seu-projeto.web.app`).
