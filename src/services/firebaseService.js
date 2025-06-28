@@ -9,7 +9,8 @@ import {
   orderBy,
   deleteDoc,
   Timestamp,
-  limit
+  limit,
+  updateDoc
 } from 'firebase/firestore';
 
 // Importa o Firebase Auth para autenticação
@@ -21,6 +22,7 @@ export const auth = getAuth(app);
 const ORGANISTS_COLLECTION = 'organists';
 const SCHEDULES_COLLECTION = 'schedules';
 
+// --- Organistas ---
 /**
  * Adiciona um nova organista ao Firestore.
  * @param {object} organistData - Dados do organista (nome, disponibilidade).
@@ -74,6 +76,25 @@ export const deleteOrganist = async (organistId) => {
     console.log("Organista deletado com ID: ", organistId);
   } catch (e) {
     console.error("Erro ao deletar organista: ", e);
+    throw e;
+  }
+};
+
+/**
+ * Atualiza os dados de um organista existente no Firestore.
+ * @param {string} organistId - O ID do organista a ser atualizado.
+ * @param {object} dataToUpdate - Um objeto com os campos a serem atualizados (ex: { name, availability }).
+ * @returns {Promise<void>}
+ * @throws Lança um erro se a atualização falhar.
+ */
+// 2. Adicionar a nova função updateOrganist
+export const updateOrganist = async (organistId, dataToUpdate) => {
+  try {
+    const organistDocRef = doc(db, ORGANISTS_COLLECTION, organistId);
+    await updateDoc(organistDocRef, dataToUpdate);
+    console.log("Organista atualizado com ID: ", organistId);
+  } catch (e) {
+    console.error("Erro ao atualizar organista: ", e);
     throw e;
   }
 };
