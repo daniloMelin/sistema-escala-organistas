@@ -12,6 +12,12 @@ import {
   limit
 } from 'firebase/firestore';
 
+// Importa o Firebase Auth para autenticação
+import { getAuth } from "firebase/auth";
+import { app } from "../firebaseConfig";
+
+export const auth = getAuth(app);
+
 const ORGANISTS_COLLECTION = 'organists';
 const SCHEDULES_COLLECTION = 'schedules';
 
