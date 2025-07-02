@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
-import { auth } from '../firebaseConfig';
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+
+import { auth, db } from '../firebaseConfig'; 
+import { doc, setDoc, Timestamp } from 'firebase/firestore'; 
+
+import {
+  signInWithPopup,
+  GoogleAuthProvider
+} from 'firebase/auth';
 
 const Auth = () => {
   const [error, setError] = useState('');
@@ -8,20 +14,34 @@ const Auth = () => {
 
   const handleGoogleSignIn = async () => {
     setError('');
-    setIsLoading(true); // Desabilita o botão para evitar múltiplos cliques
+    setIsLoading(true);
     const provider = new GoogleAuthProvider();
     
     try {
-      await signInWithPopup(auth, provider);
-      // O sucesso do login será detectado pelo 'onAuthStateChanged' no App.js,
-      // que irá redirecionar o usuário para a página principal.
+      // 1. O usuário faz o login via pop-up do Google
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user; // Pegamos os dados do usuário do resultado
+
+      // 2. Cria o documento do usuário no Firestore
+      if (user) {
+        // Criamos uma referência para o documento do usuário na coleção 'users'
+        const userDocRef = doc(db, 'users', user.uid);
+
+        // Usamos setDoc para criar ou atualizar o documento.
+        // A opção { merge: true } é importante: ela cria o documento se ele não existir,
+        // e se já existir, apenas atualiza os campos, sem apagar outros dados (como as subcoleções).
+        await setDoc(userDocRef, {
+          email: user.email,
+          lastLogin: Timestamp.now(), // Armazena a data do último login
+        }, { merge: true });
+      }
+      // Após isso, o onAuthStateChanged no App.js vai assumir e renderizar o app.
+
     } catch (err) {
       setError('Falha ao autenticar com o Google. Tente novamente.');
       console.error("Erro com Google Sign-In:", err);
-      setIsLoading(false); // Reabilita o botão em caso de erro
+      setIsLoading(false);
     }
-    // Não é necessário setar isLoading(false) em caso de sucesso,
-    // pois o componente será desmontado e trocado pela aplicação.
   };
 
   return (
@@ -47,7 +67,7 @@ const Auth = () => {
           disabled={isLoading}
           style={{ 
             padding: '12px 24px', 
-            backgroundColor: '#4285F4', // Cor do Google
+            backgroundColor: '#4285F4',
             color: 'white', 
             border: 'none', 
             borderRadius: '4px', 

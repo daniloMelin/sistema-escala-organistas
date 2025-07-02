@@ -105,3 +105,39 @@ export const getRecentSchedules = async (userId, count = 3) => {
     throw e;
   }
 };
+
+// --- Igrejas ---
+
+/**
+ * Adiciona uma nova igreja para um usuário.
+ * @param {string} userId - O ID do usuário logado.
+ * @param {object} churchData - Os dados da igreja ({ name, code }).
+ */
+export const addChurch = async (userId, churchData) => {
+  if (!userId) throw new Error("ID do usuário é necessário.");
+  try { // <-- Adicionado
+    const churchesCollectionRef = collection(db, 'users', userId, 'churches');
+    await addDoc(churchesCollectionRef, { ...churchData, createdAt: Timestamp.now() });
+  } catch (e) { // <-- Adicionado
+    console.error("Erro ao adicionar igreja:", e);
+    throw e;
+  }
+};
+
+/**
+ * Busca todas as igrejas de um usuário.
+ * @param {string} userId - O ID do usuário logado.
+ * @returns {Promise<Array>} Uma lista de igrejas.
+ */
+export const getChurches = async (userId) => {
+  if (!userId) return [];
+  try { // <-- Adicionado
+    const churchesCollectionRef = collection(db, 'users', userId, 'churches');
+    const q = query(churchesCollectionRef, orderBy("name"));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  } catch (e) { // <-- Adicionado
+    console.error("Erro ao buscar igrejas:", e);
+    throw e;
+  }
+};

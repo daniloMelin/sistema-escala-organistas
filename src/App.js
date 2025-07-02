@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, useNavigate } from 'react-router-dom';
 import OrganistForm from './components/OrganistForm';
 import ScheduleGenerator from './components/ScheduleGenerator';
+import ChurchManager from './components/ChurchManager';
 
 // Importações de Autenticação
 import { auth } from './firebaseConfig'; // Importa auth direto do firebaseConfig agora
@@ -82,15 +83,18 @@ function App() {
     return <div style={{textAlign: 'center', marginTop: '50px'}}>Carregando...</div>;
   }
 
-  return (
+return (
     <Router>
       {user ? (
         <Layout user={user}>
           <Routes>
-            {/* MUDANÇA PRINCIPAL: Passando o objeto 'user' como propriedade (prop) para os componentes */}
+            {/* 2. A rota principal '/' agora renderiza o ChurchManager */}
+            <Route path="/" element={<ChurchManager user={user} />} />
+            
+            {/* As rotas antigas ainda existem, mas vamos ajustá-las nas próximas fases */}
             <Route path="/cadastro-organistas" element={<OrganistForm user={user} />} />
             <Route path="/gerar-escala" element={<ScheduleGenerator user={user} />} />
-            <Route path="/" element={<HomePage />} />
+
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Layout>
