@@ -51,6 +51,27 @@ const getDayName = (dateObj) => {
  * @param {string} endDateStr - Data de término (YYYY-MM-DD).
  * @returns {Array<object>} A escala gerada.
  */
+
+// Função "ajudante" criada fora da lógica principal para maior clareza e para resolver o aviso do linter.
+const getAvailableOrganistsForSlot = (allOrganists, dayKey, culto, assignedForHalfHour) => {
+  return allOrganists.filter(org => {
+    // 1. Verifica se a organista está disponível naquele dia da semana.
+    const isAvailableOnDay = org.availability[dayKey];
+    if (!isAvailableOnDay) {
+      return false;
+    }
+
+    // 2. Regra: Se o culto for o principal ('Culto') e alguém já foi escalado para a meia hora,
+    //    não pode ser a mesma pessoa.
+    if (culto.id === 'Culto' && assignedForHalfHour) {
+      return org.id !== assignedForHalfHour.id;
+    }
+
+    // Se passou nas verificações, a organista está disponível para este slot.
+    return true;
+  });
+};
+
 export const generateSchedule = (organists, startDateStr, endDateStr) => {
   if (!organists || organists.length === 0) {
     // throw new Error("Nenhum organista cadastrado ou disponível para gerar a escala.");
@@ -77,7 +98,7 @@ export const generateSchedule = (organists, startDateStr, endDateStr) => {
 
   while (currentDate <= endDate) {
     const dayOfWeekJs = currentDate.getDay();
-    const dayKey = CULTOS_DIAS_MAP[dayOfWeekJs]; // Ex: 'sunday'
+    const dayKey = CULTOS_DIAS_MAP[dayOfWeekJs];
 
     if (dayKey) {
       const dailyScheduleEntry = {
@@ -91,15 +112,11 @@ export const generateSchedule = (organists, startDateStr, endDateStr) => {
 
       if (cultosDoDia) {
         for (const culto of cultosDoDia) {
-          // Filtrar organistas disponíveis para ESTE dia da semana
-          let availableOrganistsForSlot = organists.filter(org =>
-            org.availability[dayKey] &&
-            // Regra: Não escalar o mesmo organista para Meia Hora e Culto no mesmo bloco de serviço
-            (culto.id !== 'Culto' || !organistaEscaladoParaMeiaHora || org.id !== organistaEscaladoParaMeiaHora.id)
-          );
+          
+          let availableOrganistsForSlot = getAvailableOrganistsForSlot(organists, dayKey, culto, organistaEscaladoParaMeiaHora);
 
           if (availableOrganistsForSlot.length > 0) {
-            // Ordenar para priorizar: 1. Menor contagem, 2. Mais tempo desde a última escala
+            // Ordenar para priorizar...
             availableOrganistsForSlot.sort((a, b) => {
               const usageA = organistUsage[a.id].count;
               const usageB = organistUsage[b.id].count;
@@ -107,20 +124,20 @@ export const generateSchedule = (organists, startDateStr, endDateStr) => {
 
               const lastAssignedA = organistUsage[a.id].lastAssignedDate?.getTime() || 0;
               const lastAssignedB = organistUsage[b.id].lastAssignedDate?.getTime() || 0;
-              return lastAssignedA - lastAssignedB; // Quem tocou há mais tempo (menor timestamp) tem prioridade
+              return lastAssignedA - lastAssignedB;
             });
             
-            const assignedOrganist = availableOrganistsForSlot[0]; // Pega o mais prioritário
+            const assignedOrganist = availableOrganistsForSlot[0];
             
             dailyScheduleEntry.assignments[culto.id] = assignedOrganist.name;
             organistUsage[assignedOrganist.id].count++;
-            organistUsage[assignedOrganist.id].lastAssignedDate = new Date(currentDate.getTime()); // Copia a data
+            organistUsage[assignedOrganist.id].lastAssignedDate = new Date(currentDate.getTime());
 
             if (culto.id === 'MeiaHoraCulto') {
               organistaEscaladoParaMeiaHora = assignedOrganist;
             }
           } else {
-            dailyScheduleEntry.assignments[culto.id] = 'VAGO'; // Simplificado
+            dailyScheduleEntry.assignments[culto.id] = 'VAGO';
           }
         }
       }

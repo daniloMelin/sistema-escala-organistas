@@ -1,4 +1,4 @@
-import { db, auth } from '../firebaseConfig'; // Importa auth direto daqui agora
+import { db } from '../firebaseConfig'; // Importa auth direto daqui agora
 import {
   collection,
   addDoc,
