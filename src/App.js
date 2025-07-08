@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route, NavLink, useNavigate } from 're
 import OrganistForm from './components/OrganistForm';
 import ScheduleGenerator from './components/ScheduleGenerator';
 import ChurchManager from './components/ChurchManager';
+import ChurchDashboard from './components/ChurchDashboard';
 import Auth from './components/Auth';
 
 // Contexto e Autenticação
@@ -85,13 +86,19 @@ function App() {
   return (
     <Router>
       {user ? (
-        // O ChurchProvider DEVE estar aqui, envolvendo todo o conteúdo que precisa do contexto
         <ChurchProvider>
           <Layout user={user}>
             <Routes>
+              {/* Rota principal para listar as igrejas */}
               <Route path="/" element={<ChurchManager user={user} />} />
+
+              {/* 2. NOVA ROTA: para o painel de uma igreja específica */}
+              <Route path="/igreja/:churchId" element={<ChurchDashboard />} />
+
+              {/* As rotas antigas ainda existem, mas serão refatoradas ou removidas */}
               <Route path="/cadastro-organistas" element={<OrganistForm user={user} />} />
               <Route path="/gerar-escala" element={<ScheduleGenerator user={user} />} />
+              
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Layout>
