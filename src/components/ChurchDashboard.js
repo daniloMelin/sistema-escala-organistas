@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getOrganistsByChurch, addOrganistToChurch } from '../services/firebaseService';
+import { getOrganistsByChurch, addOrganistToChurch, deleteOrganistFromChurch } from '../services/firebaseService'; // Importei o delete
 import { useChurch } from '../contexts/ChurchContext'; 
 
 const WEEK_DAYS = [
@@ -26,12 +26,10 @@ const ChurchDashboard = ({ user }) => {
   const [organists, setOrganists] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  // Estados do Formulário
   const [newOrganistName, setNewOrganistName] = useState('');
   const [availability, setAvailability] = useState(INITIAL_AVAILABILITY);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Busca as organistas ao carregar
   const fetchOrganists = useCallback(async () => {
     if (!user || !id) return;
     setLoading(true);
@@ -49,13 +47,11 @@ const ChurchDashboard = ({ user }) => {
     fetchOrganists();
   }, [fetchOrganists]);
 
-  // Lógica para marcar/desmarcar os dias
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
     setAvailability(prev => ({ ...prev, [name]: checked }));
   };
 
-  // Salvar organista com disponibilidade
   const handleAddOrganist = async (e) => {
     e.preventDefault();
     if (!newOrganistName.trim()) return;
@@ -67,17 +63,13 @@ const ChurchDashboard = ({ user }) => {
 
     setIsSubmitting(true);
     try {
-      // Agora passamos o objeto availability completo
       await addOrganistToChurch(user.uid, id, {
         name: newOrganistName,
         availability: availability 
       });
-      
-      // Limpa o formulário
       setNewOrganistName(''); 
       setAvailability(INITIAL_AVAILABILITY);
-      
-      await fetchOrganists(); // Recarrega lista
+      await fetchOrganists(); 
     } catch (error) {
       console.error("Erro ao salvar:", error);
       alert("Erro ao salvar organista.");
@@ -86,7 +78,19 @@ const ChurchDashboard = ({ user }) => {
     }
   };
 
-  // Função auxiliar para mostrar os dias na lista de forma bonita
+  // --- NOVA FUNÇÃO: Deletar organista ---
+  const handleDeleteOrganist = async (organistId, organistName) => {
+    if (window.confirm(`Tem certeza que deseja excluir a organista ${organistName}?`)) {
+      try {
+        await deleteOrganistFromChurch(user.uid, id, organistId);
+        await fetchOrganists(); // Recarrega a lista após excluir
+      } catch (error) {
+        console.error(error);
+        alert("Erro ao excluir organista.");
+      }
+    }
+  };
+
   const formatAvailability = (avail) => {
     if (!avail) return "Sem disponibilidade";
     const activeDays = WEEK_DAYS.filter(day => avail[day.key]);
@@ -112,12 +116,11 @@ const ChurchDashboard = ({ user }) => {
         </h3>
       </div>
 
-      {/* --- FORMULÁRIO DE CADASTRO --- */}
+      {/* --- FORMULÁRIO --- */}
       <div style={{ background: '#f8f9fa', padding: '20px', borderRadius: '8px', marginBottom: '30px', border: '1px solid #ddd', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
         <h4 style={{ marginTop: 0, borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>Cadastrar Nova Organista</h4>
         
         <form onSubmit={handleAddOrganist}>
-          {/* Campo Nome */}
           <div style={{ marginBottom: '15px' }}>
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Nome Completo:</label>
             <input 
@@ -130,7 +133,6 @@ const ChurchDashboard = ({ user }) => {
             />
           </div>
 
-          {/* Campo Disponibilidade */}
           <div style={{ marginBottom: '20px' }}>
             <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Disponibilidade Semanal:</label>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px' }}>
@@ -169,7 +171,7 @@ const ChurchDashboard = ({ user }) => {
         </form>
       </div>
 
-      {/* --- LISTA DE ORGANISTAS --- */}
+      {/* --- LISTA --- */}
       <h3>Equipe Cadastrada</h3>
       {loading ? (
         <p>Carregando dados...</p>
@@ -188,13 +190,32 @@ const ChurchDashboard = ({ user }) => {
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
                 <strong style={{ fontSize: '1.1em', color: '#333' }}>{org.name}</strong>
-                <button 
-                  disabled 
-                  title="Edição em breve"
-                  style={{ fontSize: '0.8em', padding: '4px 8px', background: '#eee', border: 'none', color: '#999', borderRadius: '4px' }}
-                >
-                  Editar
-                </button>
+                
+                {/* Botões de Ação */}
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    <button 
+                      disabled 
+                      title="Edição em breve"
+                      style={{ fontSize: '0.8em', padding: '6px 10px', background: '#eee', border: 'none', color: '#999', borderRadius: '4px' }}
+                    >
+                      Editar
+                    </button>
+                    <button 
+                      onClick={() => handleDeleteOrganist(org.id, org.name)}
+                      style={{ 
+                        fontSize: '0.8em', 
+                        padding: '6px 10px', 
+                        background: '#dc3545', 
+                        border: 'none', 
+                        color: 'white', 
+                        borderRadius: '4px', 
+                        cursor: 'pointer' 
+                      }}
+                      title="Excluir organista"
+                    >
+                      Excluir
+                    </button>
+                </div>
               </div>
               <div style={{ color: '#666', fontSize: '0.9em' }}>
                 <strong>Disponível: </strong> 

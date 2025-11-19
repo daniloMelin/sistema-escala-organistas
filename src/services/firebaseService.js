@@ -1,4 +1,4 @@
-import { db } from '../firebaseConfig'; // Importa auth direto daqui agora
+import { db } from '../firebaseConfig';
 import {
   collection,
   addDoc,
@@ -16,7 +16,7 @@ import {
 const ORGANISTS_SUBCOLLECTION = 'organists';
 const SCHEDULES_SUBCOLLECTION = 'schedules';
 
-// --- Organistas ---
+// --- LEGADO (Fase 1 e 2) - Funções Globais ---
 export const addOrganist = async (userId, organistData) => {
   if (!userId) throw new Error("ID do usuário é necessário.");
   try {
@@ -30,7 +30,7 @@ export const addOrganist = async (userId, organistData) => {
 };
 
 export const getOrganists = async (userId) => {
-  if (!userId) return []; // Se não há usuário, não retorna organistas
+  if (!userId) return [];
   try {
     const organistsCollectionRef = collection(db, 'users', userId, ORGANISTS_SUBCOLLECTION);
     const q = query(organistsCollectionRef, orderBy("name"));
@@ -68,7 +68,7 @@ export const updateOrganist = async (userId, organistId, dataToUpdate) => {
   }
 };
 
-// --- Escalas ---
+// --- ESCALAS (Globais por enquanto) ---
 export const saveSchedule = async (userId, scheduleId, scheduleData) => {
   if (!userId) throw new Error("ID do usuário é necessário.");
   try {
@@ -106,51 +106,45 @@ export const getRecentSchedules = async (userId, count = 3) => {
   }
 };
 
-// --- Igrejas ---
+// --- FASE 3 e 4: Multi-Igreja ---
 
 /**
- * Adiciona uma nova igreja para um usuário.
- * @param {string} userId - O ID do usuário logado.
- * @param {object} churchData - Os dados da igreja ({ name, code }).
+ * Adiciona uma nova igreja.
  */
 export const addChurch = async (userId, churchData) => {
   if (!userId) throw new Error("ID do usuário é necessário.");
-  try { // <-- Adicionado
+  try {
     const churchesCollectionRef = collection(db, 'users', userId, 'churches');
     await addDoc(churchesCollectionRef, { ...churchData, createdAt: Timestamp.now() });
-  } catch (e) { // <-- Adicionado
+  } catch (e) {
     console.error("Erro ao adicionar igreja:", e);
     throw e;
   }
 };
 
 /**
- * Busca todas as igrejas de um usuário.
- * @param {string} userId - O ID do usuário logado.
- * @returns {Promise<Array>} Uma lista de igrejas.
+ * Busca todas as igrejas.
  */
 export const getChurches = async (userId) => {
   if (!userId) return [];
-  try { // <-- Adicionado
+  try {
     const churchesCollectionRef = collection(db, 'users', userId, 'churches');
     const q = query(churchesCollectionRef, orderBy("name"));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-  } catch (e) { // <-- Adicionado
+  } catch (e) {
     console.error("Erro ao buscar igrejas:", e);
     throw e;
   }
 };
 
-// Função para buscar organistas de uma igreja específica
+/**
+ * Busca organistas de uma igreja específica.
+ */
 export const getOrganistsByChurch = async (userId, churchId) => {
   try {
-    // O segredo está aqui: O caminho agora inclui o ID da igreja
     const organistsRef = collection(db, "users", userId, "churches", churchId, "organists");
-    
     const snapshot = await getDocs(organistsRef);
-    
-    // Mapeia os documentos retornando o ID e os dados
     return snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -161,21 +155,44 @@ export const getOrganistsByChurch = async (userId, churchId) => {
   }
 };
 
-// Adiciona organista em uma igreja específica
+/**
+ * Adiciona organista em uma igreja específica.
+ */
 export const addOrganistToChurch = async (userId, churchId, organistData) => {
   if (!userId || !churchId) throw new Error("ID do usuário e da Igreja são necessários.");
   try {
-    // Caminho: users -> UID -> churches -> ChurchID -> organists
     const organistsRef = collection(db, "users", userId, "churches", churchId, "organists");
-    
     const docRef = await addDoc(organistsRef, {
       ...organistData,
-      createdAt: Timestamp.now() // Data de criação
+      createdAt: Timestamp.now()
     });
-    
     return { id: docRef.id, ...organistData };
   } catch (error) {
     console.error("Erro ao adicionar organista na igreja:", error);
+    throw error;
+  }
+};
+
+// Excluir uma Igreja
+export const deleteChurch = async (userId, churchId) => {
+  if (!userId || !churchId) throw new Error("ID inválido.");
+  try {
+    const churchDocRef = doc(db, 'users', userId, 'churches', churchId);
+    await deleteDoc(churchDocRef);
+  } catch (e) {
+    console.error("Erro ao deletar igreja:", e);
+    throw e;
+  }
+};
+
+// Excluir uma Organista de uma Igreja específica
+export const deleteOrganistFromChurch = async (userId, churchId, organistId) => {
+  if (!userId || !churchId || !organistId) throw new Error("Dados insuficientes.");
+  try {
+    const organistDocRef = doc(db, "users", userId, "churches", churchId, "organists", organistId);
+    await deleteDoc(organistDocRef);
+  } catch (error) {
+    console.error("Erro ao deletar organista:", error);
     throw error;
   }
 };
