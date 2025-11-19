@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getOrganistsByChurch, addOrganistToChurch, deleteOrganistFromChurch } from '../services/firebaseService';
+// Importamos o updateOrganistInChurch agora
+import { getOrganistsByChurch, addOrganistToChurch, deleteOrganistFromChurch, updateOrganistInChurch } from '../services/firebaseService';
 import { useChurch } from '../contexts/ChurchContext'; 
 
 const WEEK_DAYS = [
@@ -26,9 +27,13 @@ const ChurchDashboard = ({ user }) => {
   const [organists, setOrganists] = useState([]);
   const [loading, setLoading] = useState(true);
   
+  // Estados do Formulário
   const [newOrganistName, setNewOrganistName] = useState('');
   const [availability, setAvailability] = useState(INITIAL_AVAILABILITY);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Estado para controlar a EDIÇÃO (se tiver ID aqui, estamos editando)
+  const [editingId, setEditingId] = useState(null);
 
   const fetchOrganists = useCallback(async () => {
     if (!user || !id) return;
@@ -52,24 +57,52 @@ const ChurchDashboard = ({ user }) => {
     setAvailability(prev => ({ ...prev, [name]: checked }));
   };
 
-  const handleAddOrganist = async (e) => {
+  // Prepara o formulário para edição
+  const handleStartEdit = (organist) => {
+    setNewOrganistName(organist.name);
+    // Garante que carregamos a disponibilidade existente ou o padrão se faltar algo
+    setAvailability({ ...INITIAL_AVAILABILITY, ...organist.availability });
+    setEditingId(organist.id);
+    // Rola a tela para o formulário
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Cancela a edição e limpa o formulário
+  const handleCancelEdit = () => {
+    setNewOrganistName('');
+    setAvailability(INITIAL_AVAILABILITY);
+    setEditingId(null);
+  };
+
+  const handleSaveOrganist = async (e) => {
     e.preventDefault();
     if (!newOrganistName.trim()) return;
 
     if (!user || !id) {
-        alert("Erro de identificação. Tente recarregar a página.");
+        alert("Erro de identificação.");
         return;
     }
 
     setIsSubmitting(true);
     try {
-      await addOrganistToChurch(user.uid, id, {
-        name: newOrganistName,
-        availability: availability 
-      });
-      setNewOrganistName(''); 
-      setAvailability(INITIAL_AVAILABILITY);
+      if (editingId) {
+        // --- MODO ATUALIZAÇÃO ---
+        await updateOrganistInChurch(user.uid, id, editingId, {
+            name: newOrganistName,
+            availability: availability
+        });
+      } else {
+        // --- MODO CRIAÇÃO ---
+        await addOrganistToChurch(user.uid, id, {
+            name: newOrganistName,
+            availability: availability 
+        });
+      }
+      
+      // Limpa tudo após salvar
+      handleCancelEdit(); 
       await fetchOrganists(); 
+      
     } catch (error) {
       console.error("Erro ao salvar:", error);
       alert("Erro ao salvar organista.");
@@ -101,7 +134,7 @@ const ChurchDashboard = ({ user }) => {
 
   return (
     <div style={{ padding: '20px', maxWidth: '900px', margin: 'auto' }}>
-      {/* CABEÇALHO COM BOTÕES DE NAVEGAÇÃO */}
+      {/* CABEÇALHO */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <button 
           onClick={() => navigate('/')} 
@@ -110,18 +143,12 @@ const ChurchDashboard = ({ user }) => {
           &larr; Voltar para Igrejas
         </button>
         
-        {/* --- NOVO BOTÃO: GERAR ESCALA --- */}
         <button 
             onClick={() => navigate(`/igreja/${id}/escala`)}
             style={{ 
-                backgroundColor: '#007bff', 
-                color: 'white', 
-                border: 'none', 
-                borderRadius: '4px', 
-                padding: '10px 20px', 
-                cursor: 'pointer',
-                fontWeight: 'bold',
-                boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+                backgroundColor: '#007bff', color: 'white', border: 'none', 
+                borderRadius: '4px', padding: '10px 20px', cursor: 'pointer',
+                fontWeight: 'bold', boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
             }}
         >
             📅 Gerar Escala
@@ -135,10 +162,18 @@ const ChurchDashboard = ({ user }) => {
         </h3>
       </div>
 
-      {/* --- FORMULÁRIO --- */}
-      <div style={{ background: '#f8f9fa', padding: '20px', borderRadius: '8px', marginBottom: '30px', border: '1px solid #ddd', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-        <h4 style={{ marginTop: 0, borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>Cadastrar Nova Organista</h4>
-        <form onSubmit={handleAddOrganist}>
+      {/* --- FORMULÁRIO (INTELIGENTE: CRIA OU EDITA) --- */}
+      <div style={{ 
+          background: editingId ? '#fff3cd' : '#f8f9fa', // Muda a cor se estiver editando
+          padding: '20px', borderRadius: '8px', marginBottom: '30px', 
+          border: editingId ? '1px solid #ffeeba' : '1px solid #ddd', 
+          boxShadow: '0 2px 4px rgba(0,0,0,0.05)' 
+      }}>
+        <h4 style={{ marginTop: 0, borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
+            {editingId ? `Editando: ${newOrganistName}` : 'Cadastrar Nova Organista'}
+        </h4>
+        
+        <form onSubmit={handleSaveOrganist}>
           <div style={{ marginBottom: '15px' }}>
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Nome Completo:</label>
             <input 
@@ -170,13 +205,36 @@ const ChurchDashboard = ({ user }) => {
             </div>
           </div>
 
-          <button 
-            type="submit" 
-            disabled={isSubmitting} 
-            style={{ padding: '10px 25px', cursor: isSubmitting ? 'wait' : 'pointer', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '4px', fontWeight: 'bold', fontSize: '16px' }}
-          >
-            {isSubmitting ? 'Salvando...' : 'Cadastrar Organista'}
-          </button>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button 
+                type="submit" 
+                disabled={isSubmitting} 
+                style={{ 
+                    padding: '10px 25px', 
+                    cursor: isSubmitting ? 'wait' : 'pointer',
+                    backgroundColor: editingId ? '#ffc107' : '#28a745', // Amarelo se editar, Verde se salvar
+                    color: editingId ? '#000' : 'white', 
+                    border: 'none', borderRadius: '4px', fontWeight: 'bold', fontSize: '16px', flex: 1
+                }}
+            >
+                {isSubmitting ? 'Salvando...' : (editingId ? 'Atualizar Organista' : 'Cadastrar Organista')}
+            </button>
+            
+            {editingId && (
+                <button 
+                    type="button"
+                    onClick={handleCancelEdit}
+                    disabled={isSubmitting}
+                    style={{ 
+                        padding: '10px 15px', cursor: 'pointer',
+                        backgroundColor: '#6c757d', color: 'white', 
+                        border: 'none', borderRadius: '4px', fontWeight: 'bold'
+                    }}
+                >
+                    Cancelar
+                </button>
+            )}
+          </div>
         </form>
       </div>
 
@@ -192,9 +250,30 @@ const ChurchDashboard = ({ user }) => {
             <li key={org.id} style={{ padding: '15px', marginBottom: '10px', border: '1px solid #eee', borderRadius: '6px', background: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
                 <strong style={{ fontSize: '1.1em', color: '#333' }}>{org.name}</strong>
+                
                 <div style={{ display: 'flex', gap: '10px' }}>
-                    <button disabled title="Edição em breve" style={{ fontSize: '0.8em', padding: '6px 10px', background: '#eee', border: 'none', color: '#999', borderRadius: '4px' }}>Editar</button>
-                    <button onClick={() => handleDeleteOrganist(org.id, org.name)} style={{ fontSize: '0.8em', padding: '6px 10px', background: '#dc3545', border: 'none', color: 'white', borderRadius: '4px', cursor: 'pointer' }} title="Excluir organista">Excluir</button>
+                    {/* Botão Editar ATIVO */}
+                    <button 
+                      onClick={() => handleStartEdit(org)}
+                      style={{ 
+                          fontSize: '0.8em', padding: '6px 10px', 
+                          background: '#ffc107', border: 'none', 
+                          color: '#333', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold'
+                      }}
+                    >
+                      Editar
+                    </button>
+                    
+                    <button 
+                      onClick={() => handleDeleteOrganist(org.id, org.name)}
+                      style={{ 
+                        fontSize: '0.8em', padding: '6px 10px', 
+                        background: '#dc3545', border: 'none', 
+                        color: 'white', borderRadius: '4px', cursor: 'pointer' 
+                      }}
+                    >
+                      Excluir
+                    </button>
                 </div>
               </div>
               <div style={{ color: '#666', fontSize: '0.9em' }}>

@@ -242,3 +242,15 @@ export const getChurchSchedules = async (userId, churchId, count = 3) => {
     throw e;
   }
 };
+
+// Atualizar uma Organista em uma Igreja específica
+export const updateOrganistInChurch = async (userId, churchId, organistId, dataToUpdate) => {
+  if (!userId || !churchId || !organistId) throw new Error("Dados insuficientes.");
+  try {
+    const organistDocRef = doc(db, "users", userId, "churches", churchId, "organists", organistId);
+    await updateDoc(organistDocRef, dataToUpdate);
+  } catch (error) {
+    console.error("Erro ao atualizar organista:", error);
+    throw error;
+  }
+};
