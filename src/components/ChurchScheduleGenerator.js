@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getOrganistsByChurch, saveScheduleToChurch, getChurchSchedules } from '../services/firebaseService';
 import { generateSchedule as generateScheduleLogic } from '../utils/scheduleLogic';
-import { exportScheduleToPDF } from '../utils/pdfGenerator';
+import { exportScheduleToPDF } from '../utils/pdfGenerator'; // Importação da função atualizada
 import { useChurch } from '../contexts/ChurchContext';
 
 const ChurchScheduleGenerator = ({ user }) => {
@@ -19,8 +19,8 @@ const ChurchScheduleGenerator = ({ user }) => {
   const [savedSchedules, setSavedSchedules] = useState([]);
   
   // Estados de Controle
-  const [currentScheduleId, setCurrentScheduleId] = useState(null); // ID da escala atual (para saber qual atualizar)
-  const [isEditing, setIsEditing] = useState(false); // Controla se estamos editando
+  const [currentScheduleId, setCurrentScheduleId] = useState(null); 
+  const [isEditing, setIsEditing] = useState(false); 
   
   // Estados de Feedback
   const [isLoading, setIsLoading] = useState(false);
@@ -48,6 +48,13 @@ const ChurchScheduleGenerator = ({ user }) => {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  // --- FUNÇÃO AUXILIAR PARA EXPORTAR ---
+  const handleExportClick = () => {
+    // Passamos: Escala, Data Inicio, Data Fim, NOME DA IGREJA
+    const churchName = selectedChurch?.name || "Igreja";
+    exportScheduleToPDF(generatedSchedule, startDate, endDate, churchName);
+  };
 
   // --- GERAR NOVA ESCALA ---
   const handleGenerate = async () => {
@@ -87,7 +94,7 @@ const ChurchScheduleGenerator = ({ user }) => {
 
       await saveScheduleToChurch(user.uid, id, scheduleId, scheduleData);
       
-      setCurrentScheduleId(scheduleId); // Guarda o ID da nova escala
+      setCurrentScheduleId(scheduleId);
       setSuccessMessage("Escala gerada e salva com sucesso!");
       
       const updatedSchedules = await getChurchSchedules(user.uid, id);
@@ -101,44 +108,39 @@ const ChurchScheduleGenerator = ({ user }) => {
     }
   };
 
-  // --- VISUALIZAR HISTÓRICO ---
   const handleViewSaved = (scheduleData) => {
     setError('');
     setSuccessMessage('');
-    setIsEditing(false); // Garante que começa sem editar
+    setIsEditing(false);
 
     setGeneratedSchedule(scheduleData.data);
     if (scheduleData.period) {
         setStartDate(scheduleData.period.start);
         setEndDate(scheduleData.period.end);
     }
-    setCurrentScheduleId(scheduleData.id); // Guarda o ID da escala carregada
+    setCurrentScheduleId(scheduleData.id);
     
     setSuccessMessage("Visualizando escala do histórico.");
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // --- LÓGICA DE EDIÇÃO MANUAL ---
-  
-  // Altera uma organista específica na escala
   const handleAssignmentChange = (dayIndex, cultoKey, newName) => {
     const updatedSchedule = [...generatedSchedule];
     updatedSchedule[dayIndex].assignments[cultoKey] = newName;
     setGeneratedSchedule(updatedSchedule);
   };
 
-  // Salva as edições no banco
   const handleSaveChanges = async () => {
     if (!currentScheduleId) {
         setError("Erro: Nenhuma escala identificada para salvar.");
         return;
     }
     
-    setIsGenerating(true); // Reusa o estado de loading
+    setIsGenerating(true); 
     try {
         const scheduleData = {
             period: { start: startDate, end: endDate },
-            generatedAt: new Date().toISOString(), // Atualiza a data de modificação
+            generatedAt: new Date().toISOString(),
             data: generatedSchedule,
             organistCount: organists.length
         };
@@ -146,9 +148,8 @@ const ChurchScheduleGenerator = ({ user }) => {
         await saveScheduleToChurch(user.uid, id, currentScheduleId, scheduleData);
         
         setSuccessMessage("Alterações salvas com sucesso!");
-        setIsEditing(false); // Sai do modo de edição
+        setIsEditing(false); 
         
-        // Atualiza a lista do histórico para refletir a nova data/hora
         const updatedSchedules = await getChurchSchedules(user.uid, id);
         setSavedSchedules(updatedSchedules);
 
@@ -170,7 +171,6 @@ const ChurchScheduleGenerator = ({ user }) => {
         Gerador de Escala: <span style={{ color: '#0056b3' }}>{selectedChurch?.name || 'Igreja'}</span>
       </h2>
 
-      {/* --- CONTROLES (Esconde se estiver editando para focar na edição) --- */}
       {!isEditing && (
         <div style={{ background: '#f8f9fa', padding: '20px', borderRadius: '8px', marginBottom: '30px', border: '1px solid #ddd' }}>
             <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
@@ -186,13 +186,8 @@ const ChurchScheduleGenerator = ({ user }) => {
                 onClick={handleGenerate} 
                 disabled={isGenerating}
                 style={{ 
-                padding: '10px 20px', 
-                background: '#007bff', 
-                color: 'white', 
-                border: 'none', 
-                borderRadius: '4px', 
-                cursor: isGenerating ? 'wait' : 'pointer',
-                fontWeight: 'bold'
+                padding: '10px 20px', background: '#007bff', color: 'white', border: 'none', borderRadius: '4px', 
+                cursor: isGenerating ? 'wait' : 'pointer', fontWeight: 'bold'
                 }}
             >
                 {isGenerating ? 'Gerando...' : 'Gerar Nova Escala'}
@@ -204,11 +199,9 @@ const ChurchScheduleGenerator = ({ user }) => {
         </div>
       )}
 
-      {/* --- VISUALIZAÇÃO / EDIÇÃO DA ESCALA --- */}
       {generatedSchedule.length > 0 && (
         <div style={{ marginBottom: '40px' }}>
           
-          {/* BARRA DE FERRAMENTAS DA ESCALA */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px', background: '#eee', padding: '10px', borderRadius: '4px' }}>
             <h3 style={{ margin: 0 }}>
                 {isEditing ? '✏️ Editando Escala' : 'Visualização da Escala'}
@@ -239,8 +232,9 @@ const ChurchScheduleGenerator = ({ user }) => {
                         >
                             ✏️ Editar Manualmente
                         </button>
+                        {/* BOTÃO DE PDF USANDO A NOVA FUNÇÃO */}
                         <button 
-                            onClick={() => exportScheduleToPDF(generatedSchedule, startDate, endDate)}
+                            onClick={handleExportClick}
                             style={{ background: '#17a2b8', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
                         >
                             📥 Baixar PDF
@@ -250,19 +244,15 @@ const ChurchScheduleGenerator = ({ user }) => {
             </div>
           </div>
 
-          {/* LISTA DE DIAS */}
           <div style={{ border: '1px solid #eee', borderRadius: '4px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
             {generatedSchedule.map((day, dayIdx) => (
                <div key={dayIdx} style={{ padding: '15px', borderBottom: '1px solid #eee', background: dayIdx % 2 === 0 ? '#fff' : '#fcfcfc' }}>
                  <strong style={{ fontSize: '1.1em', color: '#333' }}>{day.dayName}, {day.date}</strong>
-                 
                  <ul style={{ margin: '10px 0 0 20px', color: '#555' }}>
                     {Object.entries(day.assignments).map(([culto, nome]) => (
                         <li key={culto} style={{ marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                             <span style={{ fontWeight: '500', minWidth: '120px' }}>{culto}:</span> 
-                            
                             {isEditing ? (
-                                // --- DROPDOWN PARA EDIÇÃO ---
                                 <select 
                                     value={nome} 
                                     onChange={(e) => handleAssignmentChange(dayIdx, culto, e.target.value)}
@@ -274,10 +264,7 @@ const ChurchScheduleGenerator = ({ user }) => {
                                     ))}
                                 </select>
                             ) : (
-                                // --- TEXTO NORMAL ---
-                                <>
-                                    {nome === 'VAGO' ? <span style={{color: 'red', fontWeight: 'bold'}}>VAGO</span> : <b>{nome}</b>}
-                                </>
+                                <>{nome === 'VAGO' ? <span style={{color: 'red', fontWeight: 'bold'}}>VAGO</span> : <b>{nome}</b>}</>
                             )}
                         </li>
                     ))}
@@ -288,13 +275,9 @@ const ChurchScheduleGenerator = ({ user }) => {
         </div>
       )}
 
-      {/* --- HISTÓRICO --- */}
       {!isEditing && (
           <>
             <h3 style={{ marginTop: '40px', borderTop: '2px solid #eee', paddingTop: '20px' }}>Histórico de Escalas</h3>
-            {isLoading && <p>Carregando histórico...</p>}
-            {!isLoading && savedSchedules.length === 0 && <p style={{ color: '#777' }}>Nenhuma escala salva para esta igreja ainda.</p>}
-            
             <ul style={{ listStyle: 'none', padding: 0 }}>
                 {savedSchedules.map(sch => (
                     <li key={sch.id} style={{ border: '1px solid #eee', padding: '15px', marginBottom: '10px', borderRadius: '4px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'white' }}>

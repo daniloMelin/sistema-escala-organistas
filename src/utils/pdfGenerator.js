@@ -1,10 +1,5 @@
 import jsPDF from 'jspdf';
 
-/**
- * Verifica se um dia tem alguma designação válida (não VAGO).
- * @param {object} assignments - O objeto de designações para um dia.
- * @returns {boolean} True se houver ao menos uma designação válida, false caso contrário.
- */
 const hasValidAssignments = (assignments) => {
   if (!assignments || Object.keys(assignments).length === 0) {
     return false;
@@ -12,91 +7,96 @@ const hasValidAssignments = (assignments) => {
   return Object.values(assignments).some(value => value && value.toUpperCase() !== 'VAGO');
 };
 
-/**
- * Exporta a escala fornecida para um arquivo PDF.
- * @param {Array<object>} scheduleData - Array de objetos da escala.
- * @param {string} startDate - Data de início da escala.
- * @param {string} endDate - Data de término da escala.
- */
-export const exportScheduleToPDF = (scheduleData, startDate, endDate) => {
-  if (!scheduleData || scheduleData.length === 0) {
-    console.warn("Nenhum dado de escala para exportar para PDF.");
-    return;
-  }
-
-  const doc = new jsPDF({
-    orientation: 'portrait',
-    unit: 'mm',
-    format: 'a4'
-  });
-  
-  let yPos = 20;
-  const lineHeight = 7;
-  const sectionSpacing = 4;
-  const leftMargin = 15;
-  const contentWidth = doc.internal.pageSize.getWidth() - leftMargin * 2;
-
-  doc.setFontSize(18);
-  doc.text('Escala de Organistas', doc.internal.pageSize.getWidth() / 2, yPos, { align: 'center' });
-  yPos += lineHeight;
-
-  doc.setFontSize(12);
-  const startDateFormatted = startDate ? new Date(startDate + "T00:00:00").toLocaleDateString() : 'N/A';
-  const endDateFormatted = endDate ? new Date(endDate + "T00:00:00").toLocaleDateString() : 'N/A';
-  doc.text(`Período: ${startDateFormatted} a ${endDateFormatted}`, doc.internal.pageSize.getWidth() / 2, yPos, { align: 'center' });
-  yPos += lineHeight * 2;
-
-  scheduleData.forEach(item => {
-    // MODIFICAÇÃO: Pular o dia se não houver designações válidas
-    if (!hasValidAssignments(item.assignments)) {
-      return; // Pula para o próximo dia no loop
+export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName) => {
+  try {
+    // 1. Validação inicial
+    if (!scheduleData || scheduleData.length === 0) {
+      alert("Não há dados na escala para gerar o PDF.");
+      return;
     }
 
-    let estimatedLinesForItem = 1;
-    if (item.assignments.RJM && item.assignments.RJM.toUpperCase() !== 'VAGO') estimatedLinesForItem++;
-    if (item.assignments.MeiaHoraCulto && item.assignments.MeiaHoraCulto.toUpperCase() !== 'VAGO') estimatedLinesForItem++;
-    if (item.assignments.Culto && item.assignments.Culto.toUpperCase() !== 'VAGO') estimatedLinesForItem++;
-    
-    if (yPos + (estimatedLinesForItem * lineHeight) > doc.internal.pageSize.getHeight() - 20) {
-      doc.addPage();
-      yPos = 20;
-    }
-
-    doc.setFontSize(14);
-    doc.setFont(undefined, 'bold');
-    doc.text(`${item.dayName}, ${item.date}`, leftMargin, yPos);
-    yPos += lineHeight;
-
-    doc.setFontSize(12);
-    doc.setFont(undefined, 'normal');
-
-    const assignmentsText = [];
-    if (item.assignments.RJM && item.assignments.RJM.toUpperCase() !== 'VAGO') {
-      assignmentsText.push(`RJM – ${item.assignments.RJM}`);
-    }
-    if (item.assignments.MeiaHoraCulto && item.assignments.MeiaHoraCulto.toUpperCase() !== 'VAGO') {
-      assignmentsText.push(`(Meia Hora) – ${item.assignments.MeiaHoraCulto}`);
-    }
-    if (item.assignments.Culto && item.assignments.Culto.toUpperCase() !== 'VAGO') {
-      assignmentsText.push(`(Culto) – ${item.assignments.Culto}`);
-    }
-    
-    // Se, após filtrar os VAGOs, não sobrar nada, não precisa imprimir "Sem designações"
-    // porque a checagem hasValidAssignments já deve ter pego isso.
-    // Mas, para segurança, se hasValidAssignments for mais permissivo:
-    // if (assignmentsText.length === 0) {
-    //    assignmentsText.push("Sem designações válidas para este dia.");
-    // }
-
-    assignmentsText.forEach(textLine => {
-        const splitText = doc.splitTextToSize(textLine, contentWidth - 5);
-        doc.text(splitText, leftMargin + 5, yPos);
-        yPos += (splitText.length * lineHeight) - (lineHeight * (splitText.length > 1 ? 0.3 : 0));
+    // 2. Criação do documento
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4'
     });
     
-    yPos += sectionSpacing;
-  });
+    let yPos = 20;
+    const lineHeight = 7;
+    const leftMargin = 15;
+    // Largura útil da página
+    const pageWidth = doc.internal.pageSize.getWidth ? doc.internal.pageSize.getWidth() : doc.internal.pageSize.width;
+    const contentWidth = pageWidth - (leftMargin * 2);
 
-  const filename = `escala_organistas_${startDate || 'inicio'}_a_${endDate || 'fim'}.pdf`;
-  doc.save(filename.replace(/-/g, '_'));
+    // 3. Cabeçalho
+    doc.setFontSize(18);
+    doc.setFont(undefined, 'bold');
+    
+    const title = churchName ? `Escala - ${churchName}` : 'Escala de Organistas';
+    
+    // Tentativa simplificada de centralizar
+    doc.text(title, pageWidth / 2, yPos, { align: 'center' });
+    yPos += lineHeight + 5;
+
+    // 4. Subtítulo (Período)
+    doc.setFontSize(12);
+    doc.setFont(undefined, 'normal');
+    
+    // Formata datas com segurança
+    const startFmt = startDate ? startDate.split('-').reverse().join('/') : 'N/A';
+    const endFmt = endDate ? endDate.split('-').reverse().join('/') : 'N/A';
+    
+    doc.text(`Período: ${startFmt} a ${endFmt}`, pageWidth / 2, yPos, { align: 'center' });
+    yPos += lineHeight * 2;
+
+    // 5. Loop dos dias
+    scheduleData.forEach(item => {
+      // Pula dias vazios
+      if (!hasValidAssignments(item.assignments)) return;
+
+      // Verificação de quebra de página
+      if (yPos > 270) { // 270mm é perto do fim da A4
+        doc.addPage();
+        yPos = 20;
+      }
+
+      // Data
+      doc.setFontSize(14);
+      doc.setFont(undefined, 'bold');
+      doc.text(`${item.dayName}, ${item.date}`, leftMargin, yPos);
+      yPos += lineHeight;
+
+      // Designações
+      doc.setFontSize(12);
+      doc.setFont(undefined, 'normal');
+
+      const assignmentsText = [];
+      if (item.assignments.RJM && item.assignments.RJM !== 'VAGO') {
+        assignmentsText.push(`RJM: ${item.assignments.RJM}`);
+      }
+      if (item.assignments.MeiaHoraCulto && item.assignments.MeiaHoraCulto !== 'VAGO') {
+        assignmentsText.push(`Meia Hora: ${item.assignments.MeiaHoraCulto}`);
+      }
+      if (item.assignments.Culto && item.assignments.Culto !== 'VAGO') {
+        assignmentsText.push(`Culto: ${item.assignments.Culto}`);
+      }
+      
+      assignmentsText.forEach(textLine => {
+          const splitText = doc.splitTextToSize(textLine, contentWidth);
+          doc.text(splitText, leftMargin + 5, yPos);
+          yPos += (splitText.length * lineHeight);
+      });
+      
+      yPos += 4; // Espaço entre dias
+    });
+
+    // 6. Salvar
+    const safeName = (churchName || 'escala').replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    doc.save(`${safeName}_${startDate}.pdf`);
+
+  } catch (error) {
+    console.error("Erro ao gerar PDF:", error);
+    alert(`Erro ao gerar PDF: ${error.message}. Verifique o console (F12) para detalhes.`);
+  }
 };
