@@ -106,7 +106,7 @@ export const getRecentSchedules = async (userId, count = 3) => {
   }
 };
 
-// --- FASE 3 e 4: Multi-Igreja ---
+// --- FASE 3: Multi-Igreja ---
 
 /**
  * Adiciona uma nova igreja.
@@ -194,5 +194,51 @@ export const deleteOrganistFromChurch = async (userId, churchId, organistId) => 
   } catch (error) {
     console.error("Erro ao deletar organista:", error);
     throw error;
+  }
+};
+
+// --- ESCALAS POR IGREJA (Fase 4) ---
+
+// Salvar uma escala na igreja específica
+export const saveScheduleToChurch = async (userId, churchId, scheduleId, scheduleData) => {
+  if (!userId || !churchId) throw new Error("ID do usuário e da Igreja são necessários.");
+  try {
+    // Caminho: users/{uid}/churches/{churchId}/schedules/{scheduleId}
+    const scheduleDocRef = doc(db, 'users', userId, 'churches', churchId, 'schedules', scheduleId);
+    
+    const dataToSave = {
+      ...scheduleData,
+      generatedAt: scheduleData.generatedAt ? Timestamp.fromDate(new Date(scheduleData.generatedAt)) : Timestamp.now(),
+    };
+    
+    await setDoc(scheduleDocRef, dataToSave);
+  } catch (e) {
+    console.error("Erro ao salvar escala da igreja:", e);
+    throw e;
+  }
+};
+
+// Buscar as últimas escalas da igreja
+export const getChurchSchedules = async (userId, churchId, count = 3) => {
+  if (!userId || !churchId) return [];
+  try {
+    const schedulesRef = collection(db, 'users', userId, 'churches', churchId, 'schedules');
+    const q = query(schedulesRef, orderBy("generatedAt", "desc"), limit(count));
+    
+    const querySnapshot = await getDocs(q);
+    const schedules = [];
+    
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      schedules.push({
+        id: doc.id,
+        ...data,
+        generatedAt: data.generatedAt?.toDate?.().toISOString() || data.generatedAt,
+      });
+    });
+    return schedules;
+  } catch (e) {
+    console.error("Erro ao buscar escalas da igreja:", e);
+    throw e;
   }
 };

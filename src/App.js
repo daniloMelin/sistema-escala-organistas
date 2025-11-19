@@ -6,6 +6,7 @@ import OrganistForm from './components/OrganistForm';
 import ScheduleGenerator from './components/ScheduleGenerator';
 import ChurchManager from './components/ChurchManager';
 import ChurchDashboard from './components/ChurchDashboard';
+import ChurchScheduleGenerator from './components/ChurchScheduleGenerator'; // <--- NOVO IMPORT
 import Auth from './components/Auth';
 
 // Contexto e Autenticação
@@ -37,9 +38,8 @@ const Layout = ({ children, user }) => {
         <nav style={{ background: '#f8f9fa', padding: '15px 20px', marginBottom: '25px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <ul style={{ listStyle: 'none', display: 'flex', gap: '25px', margin: 0, padding: 0, alignItems: 'center' }}>
             <li><NavLink to="/" style={({ isActive }) => isActive ? activeStyle : { textDecoration: 'none', color: '#333' }} end>Igrejas</NavLink></li>
-            {/* Estes links antigos ficam aqui por enquanto, mas o foco agora é o fluxo por Igreja */}
-            <li><NavLink to="/cadastro-organistas" style={({ isActive }) => isActive ? activeStyle : { textDecoration: 'none', color: '#333' }}>Cadastro (Legado)</NavLink></li>
-            <li><NavLink to="/gerar-escala" style={({ isActive }) => isActive ? activeStyle : { textDecoration: 'none', color: '#333' }}>Gerar Escala (Legado)</NavLink></li>
+            {/* Links Legados - Poderão ser removidos no futuro */}
+            <li><NavLink to="/cadastro-organistas" style={({ isActive }) => isActive ? activeStyle : { textDecoration: 'none', color: '#333' }}>Cadastro (Antigo)</NavLink></li>
           </ul>
           {user && (
             <div>
@@ -59,7 +59,6 @@ const Layout = ({ children, user }) => {
   );
 };
 
-// Componente de Página não encontrada
 const NotFoundPage = () => (
    <div style={{ padding: '20px', textAlign: 'center' }}>
     <h2>Página Não Encontrada (404)</h2>
@@ -88,13 +87,16 @@ function App() {
         <ChurchProvider>
           <Layout user={user}>
             <Routes>
-              {/* Rota principal para listar as igrejas */}
+              {/* Rota principal: Lista de Igrejas */}
               <Route path="/" element={<ChurchManager user={user} />} />
 
-              {/* 2. ROTA CORRIGIDA: Usa :id e passa a prop user */}
+              {/* Rota do Painel da Igreja */}
               <Route path="/igreja/:id" element={<ChurchDashboard user={user} />} />
+              
+              {/* NOVA ROTA: Gerador de Escala da Igreja Específica */}
+              <Route path="/igreja/:id/escala" element={<ChurchScheduleGenerator user={user} />} />
 
-              {/* As rotas antigas ainda existem como legado */}
+              {/* Rotas Legadas (para referência) */}
               <Route path="/cadastro-organistas" element={<OrganistForm user={user} />} />
               <Route path="/gerar-escala" element={<ScheduleGenerator user={user} />} />
               

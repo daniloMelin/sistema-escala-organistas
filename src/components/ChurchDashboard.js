@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getOrganistsByChurch, addOrganistToChurch, deleteOrganistFromChurch } from '../services/firebaseService'; // Importei o delete
+import { getOrganistsByChurch, addOrganistToChurch, deleteOrganistFromChurch } from '../services/firebaseService';
 import { useChurch } from '../contexts/ChurchContext'; 
 
 const WEEK_DAYS = [
@@ -78,12 +78,11 @@ const ChurchDashboard = ({ user }) => {
     }
   };
 
-  // --- NOVA FUNÇÃO: Deletar organista ---
   const handleDeleteOrganist = async (organistId, organistName) => {
     if (window.confirm(`Tem certeza que deseja excluir a organista ${organistName}?`)) {
       try {
         await deleteOrganistFromChurch(user.uid, id, organistId);
-        await fetchOrganists(); // Recarrega a lista após excluir
+        await fetchOrganists(); 
       } catch (error) {
         console.error(error);
         alert("Erro ao excluir organista.");
@@ -102,12 +101,32 @@ const ChurchDashboard = ({ user }) => {
 
   return (
     <div style={{ padding: '20px', maxWidth: '900px', margin: 'auto' }}>
-      <button 
-        onClick={() => navigate('/')} 
-        style={{ marginBottom: '20px', padding: '8px 12px', cursor: 'pointer' }}
-      >
-        &larr; Voltar para Igrejas
-      </button>
+      {/* CABEÇALHO COM BOTÕES DE NAVEGAÇÃO */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <button 
+          onClick={() => navigate('/')} 
+          style={{ padding: '8px 12px', cursor: 'pointer' }}
+        >
+          &larr; Voltar para Igrejas
+        </button>
+        
+        {/* --- NOVO BOTÃO: GERAR ESCALA --- */}
+        <button 
+            onClick={() => navigate(`/igreja/${id}/escala`)}
+            style={{ 
+                backgroundColor: '#007bff', 
+                color: 'white', 
+                border: 'none', 
+                borderRadius: '4px', 
+                padding: '10px 20px', 
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+            }}
+        >
+            📅 Gerar Escala
+        </button>
+      </div>
 
       <div style={{ borderBottom: '2px solid #eee', paddingBottom: '10px', marginBottom: '20px' }}>
         <h2>Painel de Gerenciamento</h2>
@@ -119,7 +138,6 @@ const ChurchDashboard = ({ user }) => {
       {/* --- FORMULÁRIO --- */}
       <div style={{ background: '#f8f9fa', padding: '20px', borderRadius: '8px', marginBottom: '30px', border: '1px solid #ddd', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
         <h4 style={{ marginTop: 0, borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>Cadastrar Nova Organista</h4>
-        
         <form onSubmit={handleAddOrganist}>
           <div style={{ marginBottom: '15px' }}>
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Nome Completo:</label>
@@ -155,16 +173,7 @@ const ChurchDashboard = ({ user }) => {
           <button 
             type="submit" 
             disabled={isSubmitting} 
-            style={{ 
-                padding: '10px 25px', 
-                cursor: isSubmitting ? 'wait' : 'pointer',
-                backgroundColor: '#28a745', 
-                color: 'white', 
-                border: 'none', 
-                borderRadius: '4px',
-                fontWeight: 'bold',
-                fontSize: '16px'
-            }}
+            style={{ padding: '10px 25px', cursor: isSubmitting ? 'wait' : 'pointer', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '4px', fontWeight: 'bold', fontSize: '16px' }}
           >
             {isSubmitting ? 'Salvando...' : 'Cadastrar Organista'}
           </button>
@@ -180,41 +189,12 @@ const ChurchDashboard = ({ user }) => {
       ) : (
         <ul style={{ listStyle: 'none', padding: 0 }}>
           {organists.map((org) => (
-            <li key={org.id} style={{ 
-              padding: '15px', 
-              marginBottom: '10px',
-              border: '1px solid #eee', 
-              borderRadius: '6px',
-              background: 'white',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
-            }}>
+            <li key={org.id} style={{ padding: '15px', marginBottom: '10px', border: '1px solid #eee', borderRadius: '6px', background: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
                 <strong style={{ fontSize: '1.1em', color: '#333' }}>{org.name}</strong>
-                
-                {/* Botões de Ação */}
                 <div style={{ display: 'flex', gap: '10px' }}>
-                    <button 
-                      disabled 
-                      title="Edição em breve"
-                      style={{ fontSize: '0.8em', padding: '6px 10px', background: '#eee', border: 'none', color: '#999', borderRadius: '4px' }}
-                    >
-                      Editar
-                    </button>
-                    <button 
-                      onClick={() => handleDeleteOrganist(org.id, org.name)}
-                      style={{ 
-                        fontSize: '0.8em', 
-                        padding: '6px 10px', 
-                        background: '#dc3545', 
-                        border: 'none', 
-                        color: 'white', 
-                        borderRadius: '4px', 
-                        cursor: 'pointer' 
-                      }}
-                      title="Excluir organista"
-                    >
-                      Excluir
-                    </button>
+                    <button disabled title="Edição em breve" style={{ fontSize: '0.8em', padding: '6px 10px', background: '#eee', border: 'none', color: '#999', borderRadius: '4px' }}>Editar</button>
+                    <button onClick={() => handleDeleteOrganist(org.id, org.name)} style={{ fontSize: '0.8em', padding: '6px 10px', background: '#dc3545', border: 'none', color: 'white', borderRadius: '4px', cursor: 'pointer' }} title="Excluir organista">Excluir</button>
                 </div>
               </div>
               <div style={{ color: '#666', fontSize: '0.9em' }}>
