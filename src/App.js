@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, useNavigate } from 'react-router-dom';
 
-// Componentes
-import OrganistForm from './components/OrganistForm';
-import ScheduleGenerator from './components/ScheduleGenerator';
+// Componentes Atuais
 import ChurchManager from './components/ChurchManager';
 import ChurchDashboard from './components/ChurchDashboard';
-import ChurchScheduleGenerator from './components/ChurchScheduleGenerator'; // <--- NOVO IMPORT
+import ChurchScheduleGenerator from './components/ChurchScheduleGenerator';
 import Auth from './components/Auth';
 
 // Contexto e Autenticação
@@ -37,14 +35,16 @@ const Layout = ({ children, user }) => {
       <header>
         <nav style={{ background: '#f8f9fa', padding: '15px 20px', marginBottom: '25px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <ul style={{ listStyle: 'none', display: 'flex', gap: '25px', margin: 0, padding: 0, alignItems: 'center' }}>
-            <li><NavLink to="/" style={({ isActive }) => isActive ? activeStyle : { textDecoration: 'none', color: '#333' }} end>Igrejas</NavLink></li>
-            {/* Links Legados - Poderão ser removidos no futuro */}
-            <li><NavLink to="/cadastro-organistas" style={({ isActive }) => isActive ? activeStyle : { textDecoration: 'none', color: '#333' }}>Cadastro (Antigo)</NavLink></li>
+            <li>
+                <NavLink to="/" style={({ isActive }) => isActive ? activeStyle : { textDecoration: 'none', color: '#333' }} end>
+                    🏠 Minhas Igrejas
+                </NavLink>
+            </li>
           </ul>
           {user && (
             <div>
               <span style={{ marginRight: '15px', color: '#555' }}>Olá, {user.email}</span>
-              <button onClick={handleLogout} style={{ padding: '8px 12px', cursor: 'pointer' }}>Sair</button>
+              <button onClick={handleLogout} style={{ padding: '8px 12px', cursor: 'pointer', border: '1px solid #ccc', borderRadius: '4px', background: 'white' }}>Sair</button>
             </div>
           )}
         </nav>
@@ -62,6 +62,7 @@ const Layout = ({ children, user }) => {
 const NotFoundPage = () => (
    <div style={{ padding: '20px', textAlign: 'center' }}>
     <h2>Página Não Encontrada (404)</h2>
+    <p>A página que você procura não existe ou foi removida.</p>
   </div>
 );
 
@@ -93,13 +94,9 @@ function App() {
               {/* Rota do Painel da Igreja */}
               <Route path="/igreja/:id" element={<ChurchDashboard user={user} />} />
               
-              {/* NOVA ROTA: Gerador de Escala da Igreja Específica */}
+              {/* Rota do Gerador de Escala */}
               <Route path="/igreja/:id/escala" element={<ChurchScheduleGenerator user={user} />} />
 
-              {/* Rotas Legadas (para referência) */}
-              <Route path="/cadastro-organistas" element={<OrganistForm user={user} />} />
-              <Route path="/gerar-escala" element={<ScheduleGenerator user={user} />} />
-              
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Layout>
