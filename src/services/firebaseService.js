@@ -141,3 +141,41 @@ export const getChurches = async (userId) => {
     throw e;
   }
 };
+
+// Função para buscar organistas de uma igreja específica
+export const getOrganistsByChurch = async (userId, churchId) => {
+  try {
+    // O segredo está aqui: O caminho agora inclui o ID da igreja
+    const organistsRef = collection(db, "users", userId, "churches", churchId, "organists");
+    
+    const snapshot = await getDocs(organistsRef);
+    
+    // Mapeia os documentos retornando o ID e os dados
+    return snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    console.error("Erro ao buscar organistas:", error);
+    throw error;
+  }
+};
+
+// Adiciona organista em uma igreja específica
+export const addOrganistToChurch = async (userId, churchId, organistData) => {
+  if (!userId || !churchId) throw new Error("ID do usuário e da Igreja são necessários.");
+  try {
+    // Caminho: users -> UID -> churches -> ChurchID -> organists
+    const organistsRef = collection(db, "users", userId, "churches", churchId, "organists");
+    
+    const docRef = await addDoc(organistsRef, {
+      ...organistData,
+      createdAt: Timestamp.now() // Data de criação
+    });
+    
+    return { id: docRef.id, ...organistData };
+  } catch (error) {
+    console.error("Erro ao adicionar organista na igreja:", error);
+    throw error;
+  }
+};

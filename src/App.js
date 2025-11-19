@@ -9,7 +9,7 @@ import ChurchDashboard from './components/ChurchDashboard';
 import Auth from './components/Auth';
 
 // Contexto e Autenticação
-import { ChurchProvider } from './contexts/ChurchContext'; // Importa o Provedor
+import { ChurchProvider } from './contexts/ChurchContext';
 import { auth } from './firebaseConfig';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
@@ -37,9 +37,9 @@ const Layout = ({ children, user }) => {
         <nav style={{ background: '#f8f9fa', padding: '15px 20px', marginBottom: '25px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <ul style={{ listStyle: 'none', display: 'flex', gap: '25px', margin: 0, padding: 0, alignItems: 'center' }}>
             <li><NavLink to="/" style={({ isActive }) => isActive ? activeStyle : { textDecoration: 'none', color: '#333' }} end>Igrejas</NavLink></li>
-            {/* Estes links serão movidos/removidos no futuro, mas os deixamos por enquanto */}
-            <li><NavLink to="/cadastro-organistas" style={({ isActive }) => isActive ? activeStyle : { textDecoration: 'none', color: '#333' }}>Cadastro de Organistas</NavLink></li>
-            <li><NavLink to="/gerar-escala" style={({ isActive }) => isActive ? activeStyle : { textDecoration: 'none', color: '#333' }}>Gerar Escala</NavLink></li>
+            {/* Estes links antigos ficam aqui por enquanto, mas o foco agora é o fluxo por Igreja */}
+            <li><NavLink to="/cadastro-organistas" style={({ isActive }) => isActive ? activeStyle : { textDecoration: 'none', color: '#333' }}>Cadastro (Legado)</NavLink></li>
+            <li><NavLink to="/gerar-escala" style={({ isActive }) => isActive ? activeStyle : { textDecoration: 'none', color: '#333' }}>Gerar Escala (Legado)</NavLink></li>
           </ul>
           {user && (
             <div>
@@ -66,7 +66,6 @@ const NotFoundPage = () => (
   </div>
 );
 
-
 function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -92,10 +91,10 @@ function App() {
               {/* Rota principal para listar as igrejas */}
               <Route path="/" element={<ChurchManager user={user} />} />
 
-              {/* 2. NOVA ROTA: para o painel de uma igreja específica */}
-              <Route path="/igreja/:churchId" element={<ChurchDashboard />} />
+              {/* 2. ROTA CORRIGIDA: Usa :id e passa a prop user */}
+              <Route path="/igreja/:id" element={<ChurchDashboard user={user} />} />
 
-              {/* As rotas antigas ainda existem, mas serão refatoradas ou removidas */}
+              {/* As rotas antigas ainda existem como legado */}
               <Route path="/cadastro-organistas" element={<OrganistForm user={user} />} />
               <Route path="/gerar-escala" element={<ScheduleGenerator user={user} />} />
               
