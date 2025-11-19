@@ -9,13 +9,11 @@ const hasValidAssignments = (assignments) => {
 
 export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName) => {
   try {
-    // 1. Validação inicial
     if (!scheduleData || scheduleData.length === 0) {
       alert("Não há dados na escala para gerar o PDF.");
       return;
     }
 
-    // 2. Criação do documento
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
@@ -25,49 +23,40 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
     let yPos = 20;
     const lineHeight = 7;
     const leftMargin = 15;
-    // Largura útil da página
     const pageWidth = doc.internal.pageSize.getWidth ? doc.internal.pageSize.getWidth() : doc.internal.pageSize.width;
     const contentWidth = pageWidth - (leftMargin * 2);
 
-    // 3. Cabeçalho
+    // --- CABEÇALHO ---
     doc.setFontSize(18);
     doc.setFont(undefined, 'bold');
     
     const title = churchName ? `Escala - ${churchName}` : 'Escala de Organistas';
-    
-    // Tentativa simplificada de centralizar
     doc.text(title, pageWidth / 2, yPos, { align: 'center' });
     yPos += lineHeight + 5;
 
-    // 4. Subtítulo (Período)
     doc.setFontSize(12);
     doc.setFont(undefined, 'normal');
     
-    // Formata datas com segurança
     const startFmt = startDate ? startDate.split('-').reverse().join('/') : 'N/A';
     const endFmt = endDate ? endDate.split('-').reverse().join('/') : 'N/A';
     
     doc.text(`Período: ${startFmt} a ${endFmt}`, pageWidth / 2, yPos, { align: 'center' });
     yPos += lineHeight * 2;
 
-    // 5. Loop dos dias
+    // --- CONTEÚDO ---
     scheduleData.forEach(item => {
-      // Pula dias vazios
       if (!hasValidAssignments(item.assignments)) return;
 
-      // Verificação de quebra de página
-      if (yPos > 270) { // 270mm é perto do fim da A4
+      if (yPos > 270) { 
         doc.addPage();
         yPos = 20;
       }
 
-      // Data
       doc.setFontSize(14);
       doc.setFont(undefined, 'bold');
       doc.text(`${item.dayName}, ${item.date}`, leftMargin, yPos);
       yPos += lineHeight;
 
-      // Designações
       doc.setFontSize(12);
       doc.setFont(undefined, 'normal');
 
@@ -88,15 +77,26 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
           yPos += (splitText.length * lineHeight);
       });
       
-      yPos += 4; // Espaço entre dias
+      yPos += 4; 
     });
 
-    // 6. Salvar
-    const safeName = (churchName || 'escala').replace(/[^a-z0-9]/gi, '_').toLowerCase();
-    doc.save(`${safeName}_${startDate}.pdf`);
+    // --- CORREÇÃO DO NOME DO ARQUIVO ---
+    // 1. Normaliza (separa 'á' em 'a' + '´')
+    // 2. Remove os acentos
+    // 3. Remove caracteres especiais
+    // 4. Troca espaços por _
+    const safeChurchName = (churchName || 'escala')
+      .normalize("NFD") 
+      .replace(/[\u0300-\u036f]/g, "") 
+      .replace(/[^a-zA-Z0-9 ]/g, "") 
+      .trim()
+      .replace(/\s+/g, '_') 
+      .toLowerCase();
+
+    doc.save(`${safeChurchName}_${startDate}.pdf`);
 
   } catch (error) {
     console.error("Erro ao gerar PDF:", error);
-    alert(`Erro ao gerar PDF: ${error.message}. Verifique o console (F12) para detalhes.`);
+    alert(`Erro ao gerar PDF: ${error.message}`);
   }
 };
