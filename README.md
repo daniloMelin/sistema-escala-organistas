@@ -167,6 +167,8 @@ Para detalhes completos, leia nosso **[Guia de Contribuição](CONTRIBUTING.md)*
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
+Projeto licenciado sob MIT — ver o arquivo `LICENSE` para o texto completo.
+
 ---
 
 *Desenvolvido por **Danilo Gianini Melin** como requisito parcial para obtenção de grau no curso de Análise e Desenvolvimento de Sistemas.*
