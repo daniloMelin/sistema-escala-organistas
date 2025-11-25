@@ -137,7 +137,7 @@ const ChurchManager = ({ user }) => {
         
         <form onSubmit={handleSubmit}>
             <div style={{marginBottom: '10px'}}>
-                <label htmlFor="churchName">Nome da Igreja/Congregação:</label>
+                <label htmlFor="churchName">Nome da Congregação:</label>
                 <input
                     type="text" id="churchName" value={churchName}
                     onChange={(e) => setChurchName(e.target.value)}
