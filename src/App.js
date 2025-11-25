@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, useNavigate } from 'react-router-dom';
-import OrganistForm from './components/OrganistForm';
-import ScheduleGenerator from './components/ScheduleGenerator';
 
-// Importações de Autenticação
-import { auth } from './firebaseConfig'; // Importa auth direto do firebaseConfig agora
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+// Componentes Atuais
+import ChurchManager from './components/ChurchManager';
+import ChurchDashboard from './components/ChurchDashboard';
+import ChurchScheduleGenerator from './components/ChurchScheduleGenerator';
 import Auth from './components/Auth';
 
-// Layout modificado para incluir botão de Sair e receber 'user'
+// Contexto e Autenticação
+import { ChurchProvider } from './contexts/ChurchContext';
+import { auth } from './firebaseConfig';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+
+// Componente de Layout
 const Layout = ({ children, user }) => {
   const navigate = useNavigate();
   const activeStyle = {
@@ -20,7 +24,7 @@ const Layout = ({ children, user }) => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      navigate('/'); // Redireciona para a página de login após sair
+      navigate('/');
     } catch (error) {
       console.error("Erro ao fazer logout:", error);
     }
@@ -31,14 +35,16 @@ const Layout = ({ children, user }) => {
       <header>
         <nav style={{ background: '#f8f9fa', padding: '15px 20px', marginBottom: '25px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <ul style={{ listStyle: 'none', display: 'flex', gap: '25px', margin: 0, padding: 0, alignItems: 'center' }}>
-            <li><NavLink to="/" style={({ isActive }) => isActive ? activeStyle : { textDecoration: 'none', color: '#333' }} end>Início</NavLink></li>
-            <li><NavLink to="/cadastro-organistas" style={({ isActive }) => isActive ? activeStyle : { textDecoration: 'none', color: '#333' }}>Cadastro de Organistas</NavLink></li>
-            <li><NavLink to="/gerar-escala" style={({ isActive }) => isActive ? activeStyle : { textDecoration: 'none', color: '#333' }}>Gerar/Visualizar Escala</NavLink></li>
+            <li>
+                <NavLink to="/" style={({ isActive }) => isActive ? activeStyle : { textDecoration: 'none', color: '#333' }} end>
+                    🏠 Minhas Igrejas
+                </NavLink>
+            </li>
           </ul>
           {user && (
             <div>
               <span style={{ marginRight: '15px', color: '#555' }}>Olá, {user.email}</span>
-              <button onClick={handleLogout} style={{ padding: '8px 12px', cursor: 'pointer' }}>Sair</button>
+              <button onClick={handleLogout} style={{ padding: '8px 12px', cursor: 'pointer', border: '1px solid #ccc', borderRadius: '4px', background: 'white' }}>Sair</button>
             </div>
           )}
         </nav>
@@ -53,16 +59,10 @@ const Layout = ({ children, user }) => {
   );
 };
 
-const HomePage = () => (
-  <div style={{ padding: '20px', textAlign: 'center' }}>
-    <h1 style={{color: '#333'}}>Bem-vindo ao Gerenciador de Escalas de Organistas</h1>
-    <p style={{fontSize: '1.1em', color: '#555'}}>Utilize o menu de navegação acima para gerenciar organistas e gerar as escalas para os cultos.</p>
-  </div>
-);
-
 const NotFoundPage = () => (
    <div style={{ padding: '20px', textAlign: 'center' }}>
     <h2>Página Não Encontrada (404)</h2>
+    <p>A página que você procura não existe ou foi removida.</p>
   </div>
 );
 
@@ -85,15 +85,22 @@ function App() {
   return (
     <Router>
       {user ? (
-        <Layout user={user}>
-          <Routes>
-            {/* MUDANÇA PRINCIPAL: Passando o objeto 'user' como propriedade (prop) para os componentes */}
-            <Route path="/cadastro-organistas" element={<OrganistForm user={user} />} />
-            <Route path="/gerar-escala" element={<ScheduleGenerator user={user} />} />
-            <Route path="/" element={<HomePage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Layout>
+        <ChurchProvider>
+          <Layout user={user}>
+            <Routes>
+              {/* Rota principal: Lista de Igrejas */}
+              <Route path="/" element={<ChurchManager user={user} />} />
+
+              {/* Rota do Painel da Igreja */}
+              <Route path="/igreja/:id" element={<ChurchDashboard user={user} />} />
+              
+              {/* Rota do Gerador de Escala */}
+              <Route path="/igreja/:id/escala" element={<ChurchScheduleGenerator user={user} />} />
+
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </Layout>
+        </ChurchProvider>
       ) : (
         <Auth />
       )}
