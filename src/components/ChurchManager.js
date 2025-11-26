@@ -199,12 +199,12 @@ const ChurchManager = ({ user }) => {
         
         <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: '10px' }}>
-                <label>Nome da Congregação:</label>
-                <input type="text" value={churchName} onChange={(e) => setChurchName(e.target.value)} style={{ width: '100%', padding: '8px' }} required />
+                <label style={{ display: 'block', marginBottom: '5px' }}>Nome da Congregação:</label>
+                <input type="text" value={churchName} onChange={(e) => setChurchName(e.target.value)} style={{ width: '100%', padding: '8px', boxSizing: 'border-box', borderRadius: '4px', border: '1px solid #ccc' }} required />
             </div>
             <div style={{ marginBottom: '15px' }}>
-                <label>Código (opcional):</label>
-                <input type="text" value={churchCode} onChange={(e) => setChurchCode(e.target.value)} style={{ width: '100%', padding: '8px' }} />
+                <label style={{ display: 'block', marginBottom: '5px' }}>Código (opcional):</label>
+                <input type="text" value={churchCode} onChange={(e) => setChurchCode(e.target.value)} style={{ width: '100%', padding: '8px', boxSizing: 'border-box', borderRadius: '4px', border: '1px solid #ccc' }} />
             </div>
 
             {/* SELEÇÃO DE DIAS */}
