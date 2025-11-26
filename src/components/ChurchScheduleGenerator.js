@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getOrganistsByChurch, saveScheduleToChurch, getChurchSchedules } from '../services/firebaseService';
+
+import { getOrganistsByChurch, saveScheduleToChurch, getChurchSchedules, getChurch } from '../services/firebaseService';
 import { generateSchedule as generateScheduleLogic } from '../utils/scheduleLogic';
-import { exportScheduleToPDF } from '../utils/pdfGenerator'; // Importação da função atualizada
+import { exportScheduleToPDF } from '../utils/pdfGenerator';
 import { useChurch } from '../contexts/ChurchContext';
 
 const ChurchScheduleGenerator = ({ user }) => {
@@ -14,6 +15,9 @@ const ChurchScheduleGenerator = ({ user }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [organists, setOrganists] = useState([]);
+  
+  // --- Estado para guardar a configuração dos dias da igreja ---
+  const [churchConfig, setChurchConfig] = useState(null); 
   
   const [generatedSchedule, setGeneratedSchedule] = useState([]);
   const [savedSchedules, setSavedSchedules] = useState([]);
@@ -32,11 +36,25 @@ const ChurchScheduleGenerator = ({ user }) => {
     if (!user || !id) return;
     setIsLoading(true);
     try {
+      // 1. Busca Organistas
       const orgsData = await getOrganistsByChurch(user.uid, id);
       setOrganists(orgsData);
 
+      // 2. Busca Histórico
       const schedulesData = await getChurchSchedules(user.uid, id);
       setSavedSchedules(schedulesData);
+
+      // --- Busca a configuração da igreja (Dias de Culto) ---
+      const churchData = await getChurch(user.uid, id);
+      
+      if (churchData && churchData.config) {
+          setChurchConfig(churchData.config); // Salva a configuração no estado
+      } else {
+          // Se a igreja não tiver config (ex: foi criada antes dessa atualização)
+          setChurchConfig(null); 
+          setError("Atenção: Os dias de culto não foram configurados. Vá em 'Minhas Igrejas', clique em 'Editar' nesta igreja e salve os dias.");
+      }
+
     } catch (err) {
       console.error(err);
       setError("Erro ao carregar dados da igreja.");
@@ -49,19 +67,22 @@ const ChurchScheduleGenerator = ({ user }) => {
     loadData();
   }, [loadData]);
 
-  // --- FUNÇÃO AUXILIAR PARA EXPORTAR ---
   const handleExportClick = () => {
-    // Passamos: Escala, Data Inicio, Data Fim, NOME DA IGREJA
     const churchName = selectedChurch?.name || "Igreja";
     exportScheduleToPDF(generatedSchedule, startDate, endDate, churchName);
   };
 
-  // --- GERAR NOVA ESCALA ---
   const handleGenerate = async () => {
     setError('');
     setSuccessMessage('');
     setIsEditing(false);
     
+    // --- Verificação antes de gerar ---
+    if (!churchConfig) {
+      setError("Configure os dias de culto desta igreja na tela inicial (Botão Editar na lista de igrejas) antes de gerar.");
+      return;
+    }
+
     if (!startDate || !endDate) {
       setError("Defina as datas de início e fim.");
       return;
@@ -73,17 +94,17 @@ const ChurchScheduleGenerator = ({ user }) => {
 
     setIsGenerating(true);
     try {
-      const schedule = generateScheduleLogic(organists, startDate, endDate);
+      // --- Passando a configuração para a lógica ---
+      const schedule = generateScheduleLogic(organists, startDate, endDate, churchConfig);
       
       if (schedule.length === 0) {
-        setError("Não foi possível gerar escala (verifique as datas e disponibilidades).");
+        setError("Não foi possível gerar escala (verifique as datas, dias de culto e disponibilidades).");
         setIsGenerating(false);
         return;
       }
 
       setGeneratedSchedule(schedule);
 
-      // Salva no Firestore
       const scheduleId = `escala_${startDate}_${endDate}_${Date.now()}`;
       const scheduleData = {
         period: { start: startDate, end: endDate },
@@ -232,7 +253,6 @@ const ChurchScheduleGenerator = ({ user }) => {
                         >
                             ✏️ Editar Manualmente
                         </button>
-                        {/* BOTÃO DE PDF USANDO A NOVA FUNÇÃO */}
                         <button 
                             onClick={handleExportClick}
                             style={{ background: '#17a2b8', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}

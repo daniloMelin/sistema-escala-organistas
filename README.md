@@ -84,28 +84,28 @@ O projeto utiliza uma stack moderna e serverless:
 
 ## 🚀 Instalação e Configuração
 
-1. **Clone o Repositório:**
+**Clone o Repositório:**
 
 ```bash
     git clone https://github.com/daniloMelin/sistema-escala-organistas.git
     cd sistema-escala-organistas
 ```
 
-2. **Instale as Dependências:**
+**Instale as Dependências:**
 
 ```bash
     npm install
 ```
 
-3. **Configuração do Firebase:**
+**Configuração do Firebase:**
 
-   - Crie um arquivo `src/firebaseConfig.js` a partir do exemplo `src/firebaseConfig.example.js` (já incluído neste repositório).
-   - Cole suas credenciais do Firebase (API Key, Auth Domain, Project ID, etc.).
-   - *Nota: Este arquivo deve permanecer em `.gitignore` por segurança — não o comite.*
+- Crie um arquivo `src/firebaseConfig.js` a partir do exemplo `src/firebaseConfig.example.js` (já incluído neste repositório).
+- Cole suas credenciais do Firebase (API Key, Auth Domain, Project ID, etc.).
+- *Nota: Este arquivo deve permanecer em `.gitignore` por segurança — não o comite.*
 
    > Alternativa com variáveis de ambiente (opcional): exporte as chaves como `REACT_APP_FIREBASE_API_KEY`, etc., e importe no `src/firebaseConfig.js`. Lembre-se que em aplicações frontend as chaves aparecem no bundle; trate regras de segurança no Firebase (restrição de domínios, regras do Firestore).
 
-4. **Instalação e uso do Firebase CLI (opcional, para deploy):**
+**Instalação e uso do Firebase CLI (opcional, para deploy):**
 
 ```bash
     npm install -g firebase-tools
@@ -114,7 +114,7 @@ O projeto utiliza uma stack moderna e serverless:
     # siga as instruções e escolha o diretório `build` como public
 ```
 
-5. **Rodar o Projeto:**
+**Rodar o Projeto:**
 
 ```bash
     npm start
@@ -128,7 +128,7 @@ O projeto utiliza uma stack moderna e serverless:
 
 O projeto está configurado para o **Firebase Hosting**.
 
-1. **Gerar Build de Produção:**
+**Gerar Build de Produção:**
 
 ```bash
 npm run build
@@ -136,7 +136,7 @@ npm run build
 
 Isso cria uma pasta `build` otimizada.
 
-2. **Fazer o Deploy (com Firebase CLI):**
+**Fazer o Deploy (com Firebase CLI):**
 
 ```bash
 firebase deploy --only hosting
