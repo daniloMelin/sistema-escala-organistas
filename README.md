@@ -2,7 +2,7 @@
 
 ![Status do Projeto](https://img.shields.io/badge/Status-Em_Produção-brightgreen) ![License](https://img.shields.io/badge/License-MIT-blue)
 
-Uma plataforma web completa (SaaS) para automatizar, gerenciar e distribuir escalas de organistas para múltiplas congregações. O sistema substitui planilhas manuais por uma solução inteligente que considera disponibilidade, equidade e permite ajustes manuais.
+Uma plataforma web completa (SaaS) para automatizar, gerenciar e distribuir escalas de organistas para múltiplas congregações. O sistema substitui planilhas manuais por uma solução inteligente que considera disponibilidade granular, equidade na distribuição e permite ajustes manuais finos.
 
 Este projeto foi desenvolvido como parte do **Projeto de Extensão (PEX)** do curso de Tecnologia em Análise e Desenvolvimento de Sistemas.
 
@@ -16,8 +16,9 @@ Este projeto foi desenvolvido como parte do **Projeto de Extensão (PEX)** do cu
   - [Sumário](#sumário)
   - [✨ **Evolução e Funcionalidades**](#-evolução-e-funcionalidades)
     - [🏢 Arquitetura Multi-Igreja (Multi-Tenant)](#-arquitetura-multi-igreja-multi-tenant)
-    - [👥 Gestão de Pessoas](#-gestão-de-pessoas)
-    - [⚙️ Automação Inteligente](#️-automação-inteligente)
+    - [⚙️ Configuração Dinâmica de Cultos](#️-configuração-dinâmica-de-cultos)
+    - [👥 Gestão de Pessoas e Disponibilidade Granular](#-gestão-de-pessoas-e-disponibilidade-granular)
+    - [🤖 Automação Inteligente](#-automação-inteligente)
     - [✏️ Flexibilidade Total (Human-in-the-loop)](#️-flexibilidade-total-human-in-the-loop)
     - [📄 Relatórios e Exportação](#-relatórios-e-exportação)
   - [🛠️ Tecnologias Utilizadas](#️-tecnologias-utilizadas)
@@ -38,14 +39,19 @@ O projeto evoluiu de um script de automação simples para uma plataforma robust
 - **Gestão Centralizada:** Um único usuário pode cadastrar e gerenciar múltiplas igrejas ou congregações.
 - **Isolamento de Dados:** Os dados de organistas e escalas de uma igreja são estritamente isolados das outras, garantindo privacidade e organização.
 
-### 👥 Gestão de Pessoas
+### ⚙️ Configuração Dinâmica de Cultos
 
-- **Cadastro Completo:** Registro de organistas com nome e disponibilidade semanal flexível.
+- **Dias Personalizáveis:** Cada igreja pode configurar seus próprios dias de culto. O sistema não é fixo: se a igreja tem culto apenas Terça e Sábado, o sistema se adapta.
+- **Suporte a RJM:** Configuração específica para incluir ou não a Reunião de Jovens e Menores (RJM) aos domingos.
+
+### 👥 Gestão de Pessoas e Disponibilidade Granular
+
+- **Disponibilidade Específica:** O cadastro permite definir disponibilidade separada para **Domingo (RJM)** e **Domingo (Culto Oficial)**, atendendo à regra de que nem todas as organistas tocam na reunião de jovens.
 - **CRUD Intuitivo:** Adicione, edite e exclua organistas facilmente através do painel de controle.
 
-### ⚙️ Automação Inteligente
+### 🤖 Automação Inteligente
 
-- **Algoritmo de Distribuição:** Gera escalas automaticamente respeitando regras de não-duplicidade (não tocar "meia hora" e "culto" no mesmo dia) e priorizando quem tocou menos.
+- **Algoritmo de Distribuição:** Gera escalas automaticamente respeitando as configurações da igreja e regras de não-duplicidade (ex: não escalar a mesma pessoa para "meia hora" e "culto" no mesmo dia).
 - **Histórico:** Salva automaticamente todas as escalas geradas para consulta futura.
 
 ### ✏️ Flexibilidade Total (Human-in-the-loop)
@@ -55,7 +61,7 @@ O projeto evoluiu de um script de automação simples para uma plataforma robust
 
 ### 📄 Relatórios e Exportação
 
-- **PDF Profissional:** Geração de PDF formatado com o nome da congregação no cabeçalho e nome de arquivo normalizado (ex: `escala_jardim_uira.pdf`).
+- **PDF Profissional:** Geração de PDF formatado com o nome da congregação no cabeçalho e nome de arquivo normalizado e seguro (ex: `escala_jardim_uira.pdf`).
 - **Visualização Mobile:** Interface responsiva para acesso via celular.
 
 ---
@@ -87,9 +93,9 @@ O projeto utiliza uma stack moderna e serverless:
 **Clone o Repositório:**
 
 ```bash
-    git clone https://github.com/daniloMelin/sistema-escala-organistas.git
+    git clone [https://github.com/daniloMelin/sistema-escala-organistas.git](https://github.com/daniloMelin/sistema-escala-organistas.git)
     cd sistema-escala-organistas
-```
+````
 
 **Instale as Dependências:**
 
@@ -99,20 +105,9 @@ O projeto utiliza uma stack moderna e serverless:
 
 **Configuração do Firebase:**
 
-- Crie um arquivo `src/firebaseConfig.js` a partir do exemplo `src/firebaseConfig.example.js` (já incluído neste repositório).
+- Crie um arquivo `src/firebaseConfig.js` na raiz da pasta `src`. Exemplo: `src/firebaseConfig.example.js`
 - Cole suas credenciais do Firebase (API Key, Auth Domain, Project ID, etc.).
 - *Nota: Este arquivo deve permanecer em `.gitignore` por segurança — não o comite.*
-
-   > Alternativa com variáveis de ambiente (opcional): exporte as chaves como `REACT_APP_FIREBASE_API_KEY`, etc., e importe no `src/firebaseConfig.js`. Lembre-se que em aplicações frontend as chaves aparecem no bundle; trate regras de segurança no Firebase (restrição de domínios, regras do Firestore).
-
-**Instalação e uso do Firebase CLI (opcional, para deploy):**
-
-```bash
-    npm install -g firebase-tools
-    firebase login
-    firebase init hosting
-    # siga as instruções e escolha o diretório `build` como public
-```
 
 **Rodar o Projeto:**
 
@@ -120,7 +115,7 @@ O projeto utiliza uma stack moderna e serverless:
     npm start
 ```
 
-- O app abrirá em [http://localhost:3000](http://localhost:3000).
+- O app abrirá em [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000).
 
 ---
 
@@ -134,7 +129,7 @@ O projeto está configurado para o **Firebase Hosting**.
 npm run build
 ```
 
-Isso cria uma pasta `build` otimizada.
+Isso cria uma pasta `build` otimizada na raiz do projeto.
 
 **Fazer o Deploy (com Firebase CLI):**
 
@@ -142,7 +137,7 @@ Isso cria uma pasta `build` otimizada.
 firebase deploy --only hosting
 ```
 
-Se você não inicializou o Firebase no projeto, use `firebase init hosting` antes.
+*Certifique-se de ter o `firebase-tools` instalado e estar logado (`firebase login`).*
 
 ---
 
@@ -152,22 +147,19 @@ Este projeto segue padrões rigorosos de desenvolvimento:
 
 1. **Conventional Commits:** Utilizamos commits semânticos (`feat:`, `fix:`, `docs:`, `style:`) com emojis para facilitar a leitura do histórico.
 2. **Feature Branches:** Não commite diretamente na `main`. Crie branches como `feat/nova-funcionalidade`.
-
 Checklist rápido para PRs:
 
 - Atualize a documentação quando necessário.
 - Execute `npm install` e verifique que a aplicação inicia (`npm start`).
 - Crie uma branch com nome claro e faça um PR direcionado à branch `main` ou à branch de feature correspondente.
 
-Para detalhes completos, leia nosso **[Guia de Contribuição](CONTRIBUTING.md)**.
+Para detalhes completos, leia nosso **[Guia de Contribuição](https://www.google.com/search?q=CONTRIBUTING.md)**.
 
 ---
 
 ## 📄 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-Projeto licenciado sob MIT — ver o arquivo `LICENSE` para o texto completo.
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](https://www.google.com/search?q=LICENSE) para mais detalhes.
 
 ---
 
