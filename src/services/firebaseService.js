@@ -2,7 +2,7 @@ import { db } from '../firebaseConfig';
 import {
   collection,
   addDoc,
-  getDocs,
+  getDocs, getDoc,
   doc,
   setDoc,
   query,
@@ -152,6 +152,20 @@ export const updateChurch = async (userId, churchId, dataToUpdate) => {
     await updateDoc(churchDocRef, dataToUpdate);
   } catch (e) {
     console.error("Erro ao atualizar igreja:", e);
+    throw e;
+  }
+};
+
+export const getChurch = async (userId, churchId) => {
+  try {
+    const docRef = doc(db, 'users', userId, 'churches', churchId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return { id: docSnap.id, ...docSnap.data() };
+    }
+    return null;
+  } catch (e) {
+    console.error("Erro ao buscar igreja:", e);
     throw e;
   }
 };

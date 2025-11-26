@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-// Importamos o updateOrganistInChurch agora
-import { getOrganistsByChurch, addOrganistToChurch, deleteOrganistFromChurch, updateOrganistInChurch } from '../services/firebaseService';
+// Adicionamos o getChurch na importação
+import { getOrganistsByChurch, addOrganistToChurch, deleteOrganistFromChurch, updateOrganistInChurch, getChurch } from '../services/firebaseService';
 import { useChurch } from '../contexts/ChurchContext'; 
 
-const WEEK_DAYS = [
-  { key: 'sunday', label: 'Domingo' },
+const ALL_WEEK_DAYS = [
+  { key: 'sunday_rjm', label: 'Domingo (RJM)' }, 
+  { key: 'sunday_culto', label: 'Domingo (Culto)' },
   { key: 'monday', label: 'Segunda' },
   { key: 'tuesday', label: 'Terça' },
   { key: 'wednesday', label: 'Quarta' },
@@ -15,8 +16,14 @@ const WEEK_DAYS = [
 ];
 
 const INITIAL_AVAILABILITY = {
-  sunday: false, monday: false, tuesday: false, wednesday: false,
-  thursday: false, friday: false, saturday: false,
+  sunday_rjm: false, 
+  sunday_culto: false, 
+  monday: false, 
+  tuesday: false, 
+  wednesday: false,
+  thursday: false, 
+  friday: false, 
+  saturday: false,
 };
 
 const ChurchDashboard = ({ user }) => {
@@ -27,47 +34,82 @@ const ChurchDashboard = ({ user }) => {
   const [organists, setOrganists] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  // Estados do Formulário
+  // Estado para controlar quais dias aparecem no formulário
+  const [visibleDays, setVisibleDays] = useState([]);
+
   const [newOrganistName, setNewOrganistName] = useState('');
   const [availability, setAvailability] = useState(INITIAL_AVAILABILITY);
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Estado para controlar a EDIÇÃO (se tiver ID aqui, estamos editando)
   const [editingId, setEditingId] = useState(null);
 
-  const fetchOrganists = useCallback(async () => {
+  // Carrega Dados (Organistas + Configuração da Igreja)
+  const fetchData = useCallback(async () => {
     if (!user || !id) return;
     setLoading(true);
     try {
-      const data = await getOrganistsByChurch(user.uid, id);
-      setOrganists(data);
+      // 1. Busca Organistas
+      const orgsData = await getOrganistsByChurch(user.uid, id);
+      setOrganists(orgsData);
+
+      // 2. Busca a Igreja para saber os dias de culto
+      const churchData = await getChurch(user.uid, id);
+      
+      if (churchData && churchData.config) {
+          // Filtra os dias baseado na configuração
+          const config = churchData.config;
+          const filteredDays = ALL_WEEK_DAYS.filter(dayObj => {
+              
+              // Lógica especial para Domingo
+              if (dayObj.key === 'sunday_rjm') {
+                  return config.sunday && config.sunday.some(s => s.id === 'RJM');
+              }
+              if (dayObj.key === 'sunday_culto') {
+                  return config.sunday && config.sunday.some(s => s.id === 'Culto');
+              }
+
+              // Lógica para dias normais (segunda a sábado)
+              // Se a chave (ex: 'tuesday') existe no config, mostra o dia
+              return config.hasOwnProperty(dayObj.key);
+          });
+          
+          setVisibleDays(filteredDays);
+      } else {
+          // Fallback: Se não tiver config (igreja antiga), mostra tudo
+          setVisibleDays(ALL_WEEK_DAYS);
+      }
+
     } catch (error) {
-      console.error("Erro fatal ao carregar organistas:", error);
+      console.error("Erro ao carregar dados:", error);
     } finally {
       setLoading(false);
     }
   }, [user, id]);
 
   useEffect(() => {
-    fetchOrganists();
-  }, [fetchOrganists]);
+    fetchData();
+  }, [fetchData]);
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
     setAvailability(prev => ({ ...prev, [name]: checked }));
   };
 
-  // Prepara o formulário para edição
   const handleStartEdit = (organist) => {
     setNewOrganistName(organist.name);
-    // Garante que carregamos a disponibilidade existente ou o padrão se faltar algo
-    setAvailability({ ...INITIAL_AVAILABILITY, ...organist.availability });
+    
+    // Mapeia disponibilidade antiga (se houver 'sunday', converte para 'sunday_culto' para compatibilidade)
+    let loadedAvailability = { ...INITIAL_AVAILABILITY, ...organist.availability };
+    if (organist.availability && organist.availability.sunday !== undefined) {
+        // Migração visual rápida para dados antigos
+        loadedAvailability.sunday_culto = organist.availability.sunday;
+    }
+
+    setAvailability(loadedAvailability);
     setEditingId(organist.id);
-    // Rola a tela para o formulário
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Cancela a edição e limpa o formulário
   const handleCancelEdit = () => {
     setNewOrganistName('');
     setAvailability(INITIAL_AVAILABILITY);
@@ -85,23 +127,19 @@ const ChurchDashboard = ({ user }) => {
 
     setIsSubmitting(true);
     try {
+      const organistData = {
+        name: newOrganistName,
+        availability: availability,
+      };
+
       if (editingId) {
-        // --- MODO ATUALIZAÇÃO ---
-        await updateOrganistInChurch(user.uid, id, editingId, {
-            name: newOrganistName,
-            availability: availability
-        });
+        await updateOrganistInChurch(user.uid, id, editingId, organistData);
       } else {
-        // --- MODO CRIAÇÃO ---
-        await addOrganistToChurch(user.uid, id, {
-            name: newOrganistName,
-            availability: availability 
-        });
+        await addOrganistToChurch(user.uid, id, organistData);
       }
       
-      // Limpa tudo após salvar
       handleCancelEdit(); 
-      await fetchOrganists(); 
+      await fetchData(); // Recarrega tudo
       
     } catch (error) {
       console.error("Erro ao salvar:", error);
@@ -115,7 +153,7 @@ const ChurchDashboard = ({ user }) => {
     if (window.confirm(`Tem certeza que deseja excluir a organista ${organistName}?`)) {
       try {
         await deleteOrganistFromChurch(user.uid, id, organistId);
-        await fetchOrganists(); 
+        await fetchData(); 
       } catch (error) {
         console.error(error);
         alert("Erro ao excluir organista.");
@@ -125,24 +163,29 @@ const ChurchDashboard = ({ user }) => {
 
   const formatAvailability = (avail) => {
     if (!avail) return "Sem disponibilidade";
-    const activeDays = WEEK_DAYS.filter(day => avail[day.key]);
+    // Filtra apenas os dias marcados como true
+    const activeDays = ALL_WEEK_DAYS.filter(day => {
+        // Checa chaves novas e antigas
+        return avail[day.key] || (day.key === 'sunday_culto' && avail['sunday']); 
+    });
+    
     if (activeDays.length === 0) return "Nenhum dia";
-    return activeDays.map(d => d.label.substring(0, 3)).join(', ');
+    
+    return activeDays.map(d => {
+        if (d.key === 'sunday_rjm') return 'Dom(RJM)';
+        if (d.key === 'sunday_culto') return 'Dom(Culto)';
+        return d.label.substring(0, 3);
+    }).join(', ');
   };
 
   if (!user) return <div style={{ padding: 20 }}>Carregando...</div>;
 
   return (
     <div style={{ padding: '20px', maxWidth: '900px', margin: 'auto' }}>
-      {/* CABEÇALHO */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <button 
-          onClick={() => navigate('/')} 
-          style={{ padding: '8px 12px', cursor: 'pointer' }}
-        >
+        <button onClick={() => navigate('/')} style={{ padding: '8px 12px', cursor: 'pointer' }}>
           &larr; Voltar para Igrejas
         </button>
-        
         <button 
             onClick={() => navigate(`/igreja/${id}/escala`)}
             style={{ 
@@ -162,12 +205,11 @@ const ChurchDashboard = ({ user }) => {
         </h3>
       </div>
 
-      {/* --- FORMULÁRIO (INTELIGENTE: CRIA OU EDITA) --- */}
+      {/* --- FORMULÁRIO --- */}
       <div style={{ 
-          background: editingId ? '#fff3cd' : '#f8f9fa', // Muda a cor se estiver editando
+          background: editingId ? '#fff3cd' : '#f8f9fa', 
           padding: '20px', borderRadius: '8px', marginBottom: '30px', 
           border: editingId ? '1px solid #ffeeba' : '1px solid #ddd', 
-          boxShadow: '0 2px 4px rgba(0,0,0,0.05)' 
       }}>
         <h4 style={{ marginTop: 0, borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
             {editingId ? `Editando: ${newOrganistName}` : 'Cadastrar Nova Organista'}
@@ -177,42 +219,49 @@ const ChurchDashboard = ({ user }) => {
           <div style={{ marginBottom: '15px' }}>
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Nome Completo:</label>
             <input 
-              type="text" 
-              value={newOrganistName}
-              onChange={(e) => setNewOrganistName(e.target.value)}
-              required
-              disabled={isSubmitting}
+              type="text" value={newOrganistName} onChange={(e) => setNewOrganistName(e.target.value)}
+              required disabled={isSubmitting}
               style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc', boxSizing: 'border-box' }}
             />
           </div>
 
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Disponibilidade Semanal:</label>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px' }}>
-              {WEEK_DAYS.map(day => (
-                <div key={day.key} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: 'white', padding: '5px 10px', borderRadius: '4px', border: '1px solid #eee' }}>
-                  <input
-                    type="checkbox"
-                    id={day.key}
-                    name={day.key}
-                    checked={availability[day.key]}
-                    onChange={handleCheckboxChange}
-                    disabled={isSubmitting}
-                  />
-                  <label htmlFor={day.key} style={{ cursor: 'pointer' }}>{day.label}</label>
+          <div style={{ marginBottom: '15px' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+                Disponibilidade (Baseado nos dias de culto desta igreja):
+            </label>
+            
+            {visibleDays.length === 0 ? (
+                <p style={{ color: 'orange', fontStyle: 'italic' }}>
+                    Nenhum dia de culto configurado para esta igreja. Vá em "Minhas Igrejas" e edite as configurações.
+                </p>
+            ) : (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                {visibleDays.map(day => (
+                    <div key={day.key} style={{ 
+                        display: 'flex', alignItems: 'center', gap: '5px', 
+                        background: 'white', padding: '8px 12px', borderRadius: '4px', border: '1px solid #ccc' 
+                    }}>
+                    <input 
+                        type="checkbox" 
+                        id={day.key} 
+                        name={day.key} 
+                        checked={availability[day.key]} 
+                        onChange={handleCheckboxChange} 
+                        disabled={isSubmitting} 
+                    />
+                    <label htmlFor={day.key} style={{ cursor: 'pointer', fontSize: '0.9em' }}>{day.label}</label>
+                    </div>
+                ))}
                 </div>
-              ))}
-            </div>
+            )}
           </div>
 
           <div style={{ display: 'flex', gap: '10px' }}>
             <button 
-                type="submit" 
-                disabled={isSubmitting} 
+                type="submit" disabled={isSubmitting} 
                 style={{ 
-                    padding: '10px 25px', 
-                    cursor: isSubmitting ? 'wait' : 'pointer',
-                    backgroundColor: editingId ? '#ffc107' : '#28a745', // Amarelo se editar, Verde se salvar
+                    padding: '10px 25px', cursor: isSubmitting ? 'wait' : 'pointer',
+                    backgroundColor: editingId ? '#ffc107' : '#28a745', 
                     color: editingId ? '#000' : 'white', 
                     border: 'none', borderRadius: '4px', fontWeight: 'bold', fontSize: '16px', flex: 1
                 }}
@@ -221,16 +270,7 @@ const ChurchDashboard = ({ user }) => {
             </button>
             
             {editingId && (
-                <button 
-                    type="button"
-                    onClick={handleCancelEdit}
-                    disabled={isSubmitting}
-                    style={{ 
-                        padding: '10px 15px', cursor: 'pointer',
-                        backgroundColor: '#6c757d', color: 'white', 
-                        border: 'none', borderRadius: '4px', fontWeight: 'bold'
-                    }}
-                >
+                <button type="button" onClick={handleCancelEdit} disabled={isSubmitting} style={{ padding: '10px 15px', cursor: 'pointer', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '4px', fontWeight: 'bold' }}>
                     Cancelar
                 </button>
             )}
@@ -240,45 +280,22 @@ const ChurchDashboard = ({ user }) => {
 
       {/* --- LISTA --- */}
       <h3>Equipe Cadastrada</h3>
-      {loading ? (
-        <p>Carregando dados...</p>
-      ) : organists.length === 0 ? (
-        <p>Nenhuma organista cadastrada nesta igreja ainda.</p>
-      ) : (
+      {loading ? <p>Carregando dados...</p> : organists.length === 0 ? <p>Nenhuma organista cadastrada.</p> : (
         <ul style={{ listStyle: 'none', padding: 0 }}>
           {organists.map((org) => (
             <li key={org.id} style={{ padding: '15px', marginBottom: '10px', border: '1px solid #eee', borderRadius: '6px', background: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
-                <strong style={{ fontSize: '1.1em', color: '#333' }}>{org.name}</strong>
+                <div>
+                    <strong style={{ fontSize: '1.1em', color: '#333' }}>{org.name}</strong>
+                </div>
                 
                 <div style={{ display: 'flex', gap: '10px' }}>
-                    {/* Botão Editar ATIVO */}
-                    <button 
-                      onClick={() => handleStartEdit(org)}
-                      style={{ 
-                          fontSize: '0.8em', padding: '6px 10px', 
-                          background: '#ffc107', border: 'none', 
-                          color: '#333', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold'
-                      }}
-                    >
-                      Editar
-                    </button>
-                    
-                    <button 
-                      onClick={() => handleDeleteOrganist(org.id, org.name)}
-                      style={{ 
-                        fontSize: '0.8em', padding: '6px 10px', 
-                        background: '#dc3545', border: 'none', 
-                        color: 'white', borderRadius: '4px', cursor: 'pointer' 
-                      }}
-                    >
-                      Excluir
-                    </button>
+                    <button onClick={() => handleStartEdit(org)} style={{ fontSize: '0.8em', padding: '6px 10px', background: '#ffc107', border: 'none', color: '#333', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Editar</button>
+                    <button onClick={() => handleDeleteOrganist(org.id, org.name)} style={{ fontSize: '0.8em', padding: '6px 10px', background: '#dc3545', border: 'none', color: 'white', borderRadius: '4px', cursor: 'pointer' }}>Excluir</button>
                 </div>
               </div>
               <div style={{ color: '#666', fontSize: '0.9em' }}>
-                <strong>Disponível: </strong> 
-                {formatAvailability(org.availability)}
+                <strong>Disponível: </strong> {formatAvailability(org.availability)}
               </div>
             </li>
           ))}
