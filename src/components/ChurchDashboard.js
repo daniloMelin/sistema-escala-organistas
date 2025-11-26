@@ -217,7 +217,7 @@ const ChurchDashboard = ({ user }) => {
         
         <form onSubmit={handleSaveOrganist}>
           <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Nome Completo:</label>
+            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'normal' }}>Nome da Organista:</label>
             <input 
               type="text" value={newOrganistName} onChange={(e) => setNewOrganistName(e.target.value)}
               required disabled={isSubmitting}
@@ -226,7 +226,7 @@ const ChurchDashboard = ({ user }) => {
           </div>
 
           <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'normal' }}>
                 Disponibilidade (Baseado nos dias de culto desta igreja):
             </label>
             
@@ -279,7 +279,7 @@ const ChurchDashboard = ({ user }) => {
       </div>
 
       {/* --- LISTA --- */}
-      <h3>Equipe Cadastrada</h3>
+      <h3>Organistas Cadastradas</h3>
       {loading ? <p>Carregando dados...</p> : organists.length === 0 ? <p>Nenhuma organista cadastrada.</p> : (
         <ul style={{ listStyle: 'none', padding: 0 }}>
           {organists.map((org) => (

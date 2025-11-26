@@ -56,7 +56,7 @@ O projeto evoluiu de um script de automação simples para uma plataforma robust
 
 ### ✏️ Flexibilidade Total (Human-in-the-loop)
 
-- **Edição Manual:** Após a geração automática, o administrador pode editar manualmente qualquer dia da escala (trocando a organista ou definindo como "VAGO") antes de finalizar.
+- **Edição Manual:** Após a geração automática, o administrador pode editar manualmente qualquer dia da escala (trocando a organista) antes de finalizar.
 - **Atualização em Tempo Real:** As alterações são salvas instantaneamente no banco de dados.
 
 ### 📄 Relatórios e Exportação

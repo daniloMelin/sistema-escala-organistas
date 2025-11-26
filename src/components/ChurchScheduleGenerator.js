@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-
 import { getOrganistsByChurch, saveScheduleToChurch, getChurchSchedules, getChurch } from '../services/firebaseService';
 import { generateSchedule as generateScheduleLogic } from '../utils/scheduleLogic';
 import { exportScheduleToPDF } from '../utils/pdfGenerator';
@@ -11,22 +10,17 @@ const ChurchScheduleGenerator = ({ user }) => {
   const navigate = useNavigate();
   const { selectedChurch } = useChurch();
 
-  // Estados de Dados
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [organists, setOrganists] = useState([]);
-  
-  // --- Estado para guardar a configuração dos dias da igreja ---
   const [churchConfig, setChurchConfig] = useState(null); 
   
   const [generatedSchedule, setGeneratedSchedule] = useState([]);
   const [savedSchedules, setSavedSchedules] = useState([]);
   
-  // Estados de Controle
   const [currentScheduleId, setCurrentScheduleId] = useState(null); 
   const [isEditing, setIsEditing] = useState(false); 
   
-  // Estados de Feedback
   const [isLoading, setIsLoading] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState('');
@@ -36,21 +30,16 @@ const ChurchScheduleGenerator = ({ user }) => {
     if (!user || !id) return;
     setIsLoading(true);
     try {
-      // 1. Busca Organistas
       const orgsData = await getOrganistsByChurch(user.uid, id);
       setOrganists(orgsData);
 
-      // 2. Busca Histórico
       const schedulesData = await getChurchSchedules(user.uid, id);
       setSavedSchedules(schedulesData);
 
-      // --- Busca a configuração da igreja (Dias de Culto) ---
       const churchData = await getChurch(user.uid, id);
-      
       if (churchData && churchData.config) {
-          setChurchConfig(churchData.config); // Salva a configuração no estado
+          setChurchConfig(churchData.config);
       } else {
-          // Se a igreja não tiver config (ex: foi criada antes dessa atualização)
           setChurchConfig(null); 
           setError("Atenção: Os dias de culto não foram configurados. Vá em 'Minhas Igrejas', clique em 'Editar' nesta igreja e salve os dias.");
       }
@@ -77,9 +66,8 @@ const ChurchScheduleGenerator = ({ user }) => {
     setSuccessMessage('');
     setIsEditing(false);
     
-    // --- Verificação antes de gerar ---
     if (!churchConfig) {
-      setError("Configure os dias de culto desta igreja na tela inicial (Botão Editar na lista de igrejas) antes de gerar.");
+      setError("Configure os dias de culto desta igreja na tela inicial antes de gerar.");
       return;
     }
 
@@ -88,17 +76,16 @@ const ChurchScheduleGenerator = ({ user }) => {
       return;
     }
     if (organists.length === 0) {
-      setError("Não há organistas cadastradas nesta igreja. Volte e cadastre.");
+      setError("Não há organistas cadastradas nesta igreja.");
       return;
     }
 
     setIsGenerating(true);
     try {
-      // --- Passando a configuração para a lógica ---
       const schedule = generateScheduleLogic(organists, startDate, endDate, churchConfig);
       
       if (schedule.length === 0) {
-        setError("Não foi possível gerar escala (verifique as datas, dias de culto e disponibilidades).");
+        setError("Não foi possível gerar escala.");
         setIsGenerating(false);
         return;
       }
@@ -114,7 +101,6 @@ const ChurchScheduleGenerator = ({ user }) => {
       };
 
       await saveScheduleToChurch(user.uid, id, scheduleId, scheduleData);
-      
       setCurrentScheduleId(scheduleId);
       setSuccessMessage("Escala gerada e salva com sucesso!");
       
@@ -140,7 +126,6 @@ const ChurchScheduleGenerator = ({ user }) => {
         setEndDate(scheduleData.period.end);
     }
     setCurrentScheduleId(scheduleData.id);
-    
     setSuccessMessage("Visualizando escala do histórico.");
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -167,7 +152,6 @@ const ChurchScheduleGenerator = ({ user }) => {
         };
 
         await saveScheduleToChurch(user.uid, id, currentScheduleId, scheduleData);
-        
         setSuccessMessage("Alterações salvas com sucesso!");
         setIsEditing(false); 
         
@@ -206,15 +190,11 @@ const ChurchScheduleGenerator = ({ user }) => {
             <button 
                 onClick={handleGenerate} 
                 disabled={isGenerating}
-                style={{ 
-                padding: '10px 20px', background: '#007bff', color: 'white', border: 'none', borderRadius: '4px', 
-                cursor: isGenerating ? 'wait' : 'pointer', fontWeight: 'bold'
-                }}
+                style={{ padding: '10px 20px', background: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: isGenerating ? 'wait' : 'pointer', fontWeight: 'bold' }}
             >
                 {isGenerating ? 'Gerando...' : 'Gerar Nova Escala'}
             </button>
             </div>
-            
             {error && <p style={{ color: 'red', marginTop: '10px', background: '#ffd2d2', padding: '10px', borderRadius: '4px' }}>{error}</p>}
             {successMessage && <p style={{ color: 'green', marginTop: '10px', background: '#d4edda', padding: '10px', borderRadius: '4px' }}>{successMessage}</p>}
         </div>
@@ -222,43 +202,18 @@ const ChurchScheduleGenerator = ({ user }) => {
 
       {generatedSchedule.length > 0 && (
         <div style={{ marginBottom: '40px' }}>
-          
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px', background: '#eee', padding: '10px', borderRadius: '4px' }}>
-            <h3 style={{ margin: 0 }}>
-                {isEditing ? '✏️ Editando Escala' : 'Visualização da Escala'}
-            </h3>
-            
+            <h3 style={{ margin: 0 }}>{isEditing ? '✏️ Editando Escala' : 'Visualização da Escala'}</h3>
             <div style={{ display: 'flex', gap: '10px' }}>
                 {isEditing ? (
                     <>
-                        <button 
-                            onClick={() => setIsEditing(false)}
-                            style={{ background: '#6c757d', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer' }}
-                        >
-                            Cancelar
-                        </button>
-                        <button 
-                            onClick={handleSaveChanges}
-                            disabled={isGenerating}
-                            style={{ background: '#28a745', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
-                        >
-                            {isGenerating ? 'Salvando...' : 'Salvar Alterações'}
-                        </button>
+                        <button onClick={() => setIsEditing(false)} style={{ background: '#6c757d', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer' }}>Cancelar</button>
+                        <button onClick={handleSaveChanges} disabled={isGenerating} style={{ background: '#28a745', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>{isGenerating ? 'Salvando...' : 'Salvar Alterações'}</button>
                     </>
                 ) : (
                     <>
-                        <button 
-                            onClick={() => setIsEditing(true)}
-                            style={{ background: '#ffc107', color: '#333', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
-                        >
-                            ✏️ Editar Manualmente
-                        </button>
-                        <button 
-                            onClick={handleExportClick}
-                            style={{ background: '#17a2b8', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
-                        >
-                            📥 Baixar PDF
-                        </button>
+                        <button onClick={() => setIsEditing(true)} style={{ background: '#ffc107', color: '#333', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>✏️ Editar Manualmente</button>
+                        <button onClick={handleExportClick} style={{ background: '#17a2b8', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>📥 Baixar PDF</button>
                     </>
                 )}
             </div>
@@ -276,9 +231,11 @@ const ChurchScheduleGenerator = ({ user }) => {
                                 <select 
                                     value={nome} 
                                     onChange={(e) => handleAssignmentChange(dayIdx, culto, e.target.value)}
-                                    style={{ padding: '5px', borderRadius: '4px', borderColor: '#ccc' }}
+                                    style={{ padding: '5px', borderRadius: '4px', borderColor: '#ccc', minWidth: '200px' }}
                                 >
-                                    <option value="VAGO">VAGO</option>
+                                    {/* LÓGICA NOVA: Se for VAGO, mostra opção desabilitada para forçar escolha */}
+                                    {nome === 'VAGO' && <option value="VAGO" disabled>Selecione uma organista...</option>}
+                                    
                                     {organists.map(org => (
                                         <option key={org.id} value={org.name}>{org.name}</option>
                                     ))}
@@ -306,12 +263,7 @@ const ChurchScheduleGenerator = ({ user }) => {
                             <br/>
                             <small style={{ color: '#999' }}>Atualizada em: {new Date(sch.generatedAt).toLocaleString()}</small>
                         </div>
-                        <button 
-                            onClick={() => handleViewSaved(sch)} 
-                            style={{ cursor: 'pointer', padding: '8px 15px', background: '#6c757d', color: 'white', border: 'none', borderRadius: '4px' }}
-                        >
-                            Visualizar / Editar
-                        </button>
+                        <button onClick={() => handleViewSaved(sch)} style={{ cursor: 'pointer', padding: '8px 15px', background: '#6c757d', color: 'white', border: 'none', borderRadius: '4px' }}>Visualizar / Editar</button>
                     </li>
                 ))}
             </ul>
