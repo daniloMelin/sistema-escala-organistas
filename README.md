@@ -1,4 +1,4 @@
-# **Sistema de Gestão de Escalas Multi-Igreja** 🎹
+# **Sistema de Gestão de Escalas para Organistas** 🎹
 
 ![Status do Projeto](https://img.shields.io/badge/Status-Em_Produção-brightgreen) ![License](https://img.shields.io/badge/License-MIT-blue)
 
@@ -12,7 +12,7 @@ Este projeto foi desenvolvido como parte do **Projeto de Extensão (PEX)** do cu
 
 ## Sumário
 
-- [**Sistema de Gestão de Escalas Multi-Igreja** 🎹](#sistema-de-gestão-de-escalas-multi-igreja-)
+- [**Sistema de Gestão de Escalas para Organistas** 🎹](#sistema-de-gestão-de-escalas-para-organistas-)
   - [Sumário](#sumário)
   - [✨ **Evolução e Funcionalidades**](#-evolução-e-funcionalidades)
     - [🏢 Arquitetura Multi-Igreja (Multi-Tenant)](#-arquitetura-multi-igreja-multi-tenant)
