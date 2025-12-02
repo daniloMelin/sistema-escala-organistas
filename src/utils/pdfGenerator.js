@@ -1,12 +1,16 @@
-
 import jsPDF from 'jspdf';
 
 // Cores padrão (RGB)
 const COLORS = {
-  headerBg: [41, 128, 185],   // Azul forte
+  headerBg: [41, 128, 185],   // Azul forte (Cabeçalho Página)
   headerText: [255, 255, 255],// Branco
+  
+  monthBg: [230, 230, 230],   // Cinza (Barra do Mês)
+  monthText: [60, 60, 60],    // Cinza escuro
+  
   cardBorder: [200, 200, 200],// Cinza borda
-  cardHeader: [240, 240, 240],// Cinza bem claro
+  cardHeader: [245, 245, 245],// Cinza bem claro (Topo do Card)
+  
   textDate: [0, 0, 0],        // Preto
   textLabel: [100, 100, 100], // Cinza
   textValue: [40, 40, 40]     // Cinza escuro
@@ -17,6 +21,21 @@ const hasValidAssignments = (assignments) => {
     return false;
   }
   return Object.values(assignments).some(value => value && value.toUpperCase() !== 'VAGO');
+};
+
+const getMonthYearLabel = (dateStr) => {
+  if (!dateStr) return '';
+  const parts = dateStr.split('/');
+  if (parts.length < 3) return dateStr;
+  
+  const monthIndex = parseInt(parts[1], 10) - 1;
+  const year = parts[2];
+  const months = [
+    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+  ];
+  
+  return `${months[monthIndex]} de ${year}`;
 };
 
 export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName) => {
@@ -32,27 +51,25 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
       format: 'a4'
     });
 
-    // --- CONFIGURAÇÕES DE LAYOUT (GRID 3 COLUNAS) ---
+    // --- CONFIGURAÇÕES DE LAYOUT ---
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
-    const margin = 10; // Margem da página
-    const gap = 4;     // Espaço entre os cartões (reduzido para caber melhor)
-    const columns = 3; // Agora são 3 colunas
-
-    // Cálculo da largura: (Pagina - MargensLaterais - EspaçosEntreCartoes) / 3
-    const cardWidth = (pageWidth - (margin * 2) - (gap * (columns - 1))) / columns;
+    const margin = 10; 
+    const gap = 4;
+    const columns = 3;
     
-    // Altura fixa do cartão
-    const cardHeight = 30; 
+    const contentWidth = pageWidth - (margin * 2);
+    const cardWidth = (contentWidth - (gap * (columns - 1))) / columns;
+    const cardHeight = 28; 
 
-    let yPos = 50; 
+    let yPos = 50; // Começa em 50 na primeira página (por causa do cabeçalho)
 
-    // --- 1. DESENHAR CABEÇALHO ---
+    // --- 1. FUNÇÃO DE CABEÇALHO (Só desenha quando chamado) ---
     const drawHeader = () => {
         doc.setFillColor(...COLORS.headerBg);
         doc.rect(0, 0, pageWidth, 40, 'F');
 
-        doc.setFontSize(20); // Levemente menor para garantir que nomes longos de igreja caibam
+        doc.setFontSize(20);
         doc.setTextColor(...COLORS.headerText);
         doc.setFont(undefined, 'bold');
         const title = churchName || 'Escala de Organistas';
@@ -65,92 +82,110 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
         doc.text(`Período: ${startFmt} a ${endFmt}`, pageWidth / 2, 30, { align: 'center' });
     };
 
+    // Desenha o cabeçalho APENAS na primeira página
     drawHeader();
 
     const validItems = scheduleData.filter(item => hasValidAssignments(item.assignments));
+    const itemsByMonth = {};
 
-    // --- 2. LOOP DOS ITENS ---
-    validItems.forEach((item, index) => {
-        
-        // 0, 1 ou 2 (Coluna Esquerda, Meio, Direita)
-        const columnIndex = index % columns; 
-        
-        // Se voltamos para a coluna 0 (e não é o primeiro item), pula linha
-        if (index > 0 && columnIndex === 0) {
-            yPos += cardHeight + gap;
+    validItems.forEach(item => {
+        const monthKey = getMonthYearLabel(item.date);
+        if (!itemsByMonth[monthKey]) {
+            itemsByMonth[monthKey] = [];
         }
+        itemsByMonth[monthKey].push(item);
+    });
 
-        // Verifica quebra de página
-        if (yPos + cardHeight > pageHeight - margin) {
+    // --- 2. LOOP PELOS MESES ---
+    Object.keys(itemsByMonth).forEach((monthLabel) => {
+        const items = itemsByMonth[monthLabel];
+
+        // Verificar espaço para a barra do mês
+        if (yPos + 15 + cardHeight > pageHeight - margin) {
             doc.addPage();
-            drawHeader();
-            yPos = 50; 
+            // NÃO chamamos drawHeader() aqui
+            yPos = 20; // Reinicia no topo (margem simples)
         }
 
-        const xPos = margin + (columnIndex * (cardWidth + gap));
+        // --- BARRA DO MÊS ---
+        doc.setFillColor(...COLORS.monthBg);
+        doc.rect(margin, yPos, contentWidth, 8, 'F');
 
-        // --- DESENHAR O CARTÃO ---
-        
-        // Fundo e Borda
-        doc.setDrawColor(...COLORS.cardBorder);
-        doc.setLineWidth(0.1);
-        doc.setFillColor(255, 255, 255);
-        doc.roundedRect(xPos, yPos, cardWidth, cardHeight, 2, 2, 'FD');
-
-        // Cabeçalho do Cartão (Data)
-        doc.setFillColor(...COLORS.cardHeader);
-        doc.rect(xPos + 0.1, yPos + 0.1, cardWidth - 0.2, 7, 'F'); // Topo cinza
-
-        // Texto da Data (Fonte ajustada para 9 ou 10 para caber "Domingo, 30/11/2025")
-        doc.setFontSize(9); 
+        doc.setFontSize(11);
         doc.setFont(undefined, 'bold');
-        doc.setTextColor(...COLORS.textDate);
-        // Abreviação do dia para economizar espaço se necessário, ou usa normal
-        // item.dayName ex: "Domingo" -> "Dom" (opcional, mantendo normal por enquanto)
-        doc.text(`${item.dayName}, ${item.date}`, xPos + (cardWidth / 2), yPos + 5, { align: 'center' });
+        doc.setTextColor(...COLORS.monthText);
+        doc.text(monthLabel.toUpperCase(), pageWidth / 2, yPos + 5.5, { align: 'center' });
 
-        // Conteúdo
-        let lineY = yPos + 13;
-        doc.setFontSize(9); // Fonte menor para o conteúdo caber na coluna estreita
+        yPos += 12;
 
-        const drawRow = (label, name) => {
-            // Rótulo
-            doc.setFont(undefined, 'bold');
-            doc.setTextColor(...COLORS.textLabel);
-            doc.text(label, xPos + 2, lineY);
-            
-            // Valor (Nome)
-            doc.setFont(undefined, 'normal');
-            doc.setTextColor(...COLORS.textValue);
-            
-            // Cálculo para alinhar o nome sempre na mesma posição horizontal dentro do card
-            // Como "Meia Hora:" é longo, jogamos o nome um pouco mais para a direita
-            // Se o nome for muito longo, ele pode sobrepor. O splitText resolve isso.
-            const nameX = xPos + 20; 
-            const maxWidth = cardWidth - 22; // Espaço disponível para o nome
-            
-            // Se o nome for muito grande, corta ou quebra (aqui estamos simplificando para 1 linha)
-            if (doc.getTextWidth(name) > maxWidth) {
-                 // Opção: diminuir fonte se nome for gigante
-                 doc.setFontSize(8);
-                 doc.text(name, nameX, lineY);
-                 doc.setFontSize(9); // volta ao normal
-            } else {
-                 doc.text(name, nameX, lineY);
+        // --- LOOP PELOS ITENS ---
+        items.forEach((item, index) => {
+            const columnIndex = index % columns;
+
+            if (index > 0 && columnIndex === 0) {
+                yPos += cardHeight + gap;
             }
-            
-            lineY += 6; // Espaço menor entre linhas
-        };
 
-        if (item.assignments.RJM && item.assignments.RJM !== 'VAGO') {
-            drawRow("RJM:", item.assignments.RJM);
-        }
-        if (item.assignments.MeiaHoraCulto && item.assignments.MeiaHoraCulto !== 'VAGO') {
-            drawRow("M. Hora:", item.assignments.MeiaHoraCulto); // Abreviei para caber melhor
-        }
-        if (item.assignments.Culto && item.assignments.Culto !== 'VAGO') {
-            drawRow("Culto:", item.assignments.Culto);
-        }
+            // Verifica Quebra de Página (dentro do mês)
+            if (columnIndex === 0 && yPos + cardHeight > pageHeight - margin) {
+                doc.addPage();
+                // NÃO chamamos drawHeader() aqui
+                yPos = 20; // Reinicia no topo (margem simples)
+            }
+
+            const xPos = margin + (columnIndex * (cardWidth + gap));
+
+            // --- DESENHAR O CARTÃO ---
+            doc.setDrawColor(...COLORS.cardBorder);
+            doc.setLineWidth(0.1);
+            doc.setFillColor(255, 255, 255);
+            doc.roundedRect(xPos, yPos, cardWidth, cardHeight, 2, 2, 'FD');
+
+            doc.setFillColor(...COLORS.cardHeader);
+            doc.rect(xPos + 0.1, yPos + 0.1, cardWidth - 0.2, 7, 'F');
+
+            doc.setFontSize(9); 
+            doc.setFont(undefined, 'bold');
+            doc.setTextColor(...COLORS.textDate);
+            doc.text(`${item.dayName}, ${item.date}`, xPos + (cardWidth / 2), yPos + 5, { align: 'center' });
+
+            let lineY = yPos + 13;
+            doc.setFontSize(9);
+
+            const drawRow = (label, name) => {
+                doc.setFont(undefined, 'bold');
+                doc.setTextColor(...COLORS.textLabel);
+                doc.text(label, xPos + 2, lineY);
+                
+                doc.setFont(undefined, 'normal');
+                doc.setTextColor(...COLORS.textValue);
+                
+                const nameX = xPos + 20; 
+                const maxWidth = cardWidth - 22;
+                
+                if (doc.getTextWidth(name) > maxWidth) {
+                     doc.setFontSize(8);
+                     doc.text(name, nameX, lineY);
+                     doc.setFontSize(9);
+                } else {
+                     doc.text(name, nameX, lineY);
+                }
+                
+                lineY += 6;
+            };
+
+            if (item.assignments.RJM && item.assignments.RJM !== 'VAGO') {
+                drawRow("RJM:", item.assignments.RJM);
+            }
+            if (item.assignments.MeiaHoraCulto && item.assignments.MeiaHoraCulto !== 'VAGO') {
+                drawRow("M. Hora:", item.assignments.MeiaHoraCulto);
+            }
+            if (item.assignments.Culto && item.assignments.Culto !== 'VAGO') {
+                drawRow("Culto:", item.assignments.Culto);
+            }
+        });
+
+        yPos += cardHeight + gap + 5;
     });
 
     // --- RODAPÉ ---
