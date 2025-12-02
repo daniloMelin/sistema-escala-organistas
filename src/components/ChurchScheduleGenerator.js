@@ -1,19 +1,32 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getOrganistsByChurch, saveScheduleToChurch, getChurchSchedules, getChurch } from '../services/firebaseService';
+import { getOrganistsByChurch, saveScheduleToChurch, getChurchSchedules } from '../services/firebaseService';
 import { generateSchedule as generateScheduleLogic } from '../utils/scheduleLogic';
 import { exportScheduleToPDF } from '../utils/pdfGenerator';
 import { useChurch } from '../contexts/ChurchContext';
+
+// Função auxiliar para agrupar dias por mês (Mesma lógica do PDF)
+const getMonthYearLabel = (dateStr) => {
+  if (!dateStr) return '';
+  const parts = dateStr.split('/');
+  const monthIndex = parseInt(parts[1], 10) - 1;
+  const year = parts[2];
+  const months = [
+    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+  ];
+  return `${months[monthIndex]} de ${year}`;
+};
 
 const ChurchScheduleGenerator = ({ user }) => {
   const { id } = useParams(); 
   const navigate = useNavigate();
   const { selectedChurch } = useChurch();
 
+  // Estados
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [organists, setOrganists] = useState([]);
-  const [churchConfig, setChurchConfig] = useState(null); 
   
   const [generatedSchedule, setGeneratedSchedule] = useState([]);
   const [savedSchedules, setSavedSchedules] = useState([]);
@@ -35,15 +48,6 @@ const ChurchScheduleGenerator = ({ user }) => {
 
       const schedulesData = await getChurchSchedules(user.uid, id);
       setSavedSchedules(schedulesData);
-
-      const churchData = await getChurch(user.uid, id);
-      if (churchData && churchData.config) {
-          setChurchConfig(churchData.config);
-      } else {
-          setChurchConfig(null); 
-          setError("Atenção: Os dias de culto não foram configurados. Vá em 'Minhas Igrejas', clique em 'Editar' nesta igreja e salve os dias.");
-      }
-
     } catch (err) {
       console.error(err);
       setError("Erro ao carregar dados da igreja.");
@@ -56,33 +60,30 @@ const ChurchScheduleGenerator = ({ user }) => {
     loadData();
   }, [loadData]);
 
+  // --- EXPORTAR PDF ---
   const handleExportClick = () => {
     const churchName = selectedChurch?.name || "Igreja";
     exportScheduleToPDF(generatedSchedule, startDate, endDate, churchName);
   };
 
+  // --- GERAR NOVA ESCALA ---
   const handleGenerate = async () => {
     setError('');
     setSuccessMessage('');
     setIsEditing(false);
     
-    if (!churchConfig) {
-      setError("Configure os dias de culto desta igreja na tela inicial antes de gerar.");
-      return;
-    }
-
     if (!startDate || !endDate) {
       setError("Defina as datas de início e fim.");
       return;
     }
     if (organists.length === 0) {
-      setError("Não há organistas cadastradas nesta igreja.");
+      setError("Não há organistas cadastradas nesta igreja. Volte e cadastre.");
       return;
     }
 
     setIsGenerating(true);
     try {
-      const schedule = generateScheduleLogic(organists, startDate, endDate, churchConfig);
+      const schedule = generateScheduleLogic(organists, startDate, endDate);
       
       if (schedule.length === 0) {
         setError("Não foi possível gerar escala.");
@@ -101,6 +102,7 @@ const ChurchScheduleGenerator = ({ user }) => {
       };
 
       await saveScheduleToChurch(user.uid, id, scheduleId, scheduleData);
+      
       setCurrentScheduleId(scheduleId);
       setSuccessMessage("Escala gerada e salva com sucesso!");
       
@@ -130,17 +132,14 @@ const ChurchScheduleGenerator = ({ user }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleAssignmentChange = (dayIndex, cultoKey, newName) => {
+  const handleAssignmentChange = (originalIndex, cultoKey, newName) => {
     const updatedSchedule = [...generatedSchedule];
-    updatedSchedule[dayIndex].assignments[cultoKey] = newName;
+    updatedSchedule[originalIndex].assignments[cultoKey] = newName;
     setGeneratedSchedule(updatedSchedule);
   };
 
   const handleSaveChanges = async () => {
-    if (!currentScheduleId) {
-        setError("Erro: Nenhuma escala identificada para salvar.");
-        return;
-    }
+    if (!currentScheduleId) return;
     
     setIsGenerating(true); 
     try {
@@ -157,7 +156,6 @@ const ChurchScheduleGenerator = ({ user }) => {
         
         const updatedSchedules = await getChurchSchedules(user.uid, id);
         setSavedSchedules(updatedSchedules);
-
     } catch (err) {
         console.error(err);
         setError("Erro ao salvar as alterações.");
@@ -166,8 +164,21 @@ const ChurchScheduleGenerator = ({ user }) => {
     }
   };
 
+  // --- AGRUPAMENTO PARA EXIBIÇÃO ---
+  // Precisamos manter o índice original para a edição funcionar
+  const groupedSchedule = generatedSchedule.reduce((acc, day, index) => {
+      // Adicionamos o índice original ao objeto do dia
+      const dayWithIndex = { ...day, originalIndex: index };
+      const monthKey = getMonthYearLabel(day.date);
+      
+      if (!acc[monthKey]) acc[monthKey] = [];
+      acc[monthKey].push(dayWithIndex);
+      return acc;
+  }, {});
+
+
   return (
-    <div style={{ padding: '20px', maxWidth: '900px', margin: 'auto' }}>
+    <div style={{ padding: '20px', maxWidth: '1100px', margin: 'auto' }}>
       <button onClick={() => navigate(`/igreja/${id}`)} style={{ marginBottom: '20px', cursor: 'pointer' }}>
         &larr; Voltar para Painel
       </button>
@@ -190,71 +201,125 @@ const ChurchScheduleGenerator = ({ user }) => {
             <button 
                 onClick={handleGenerate} 
                 disabled={isGenerating}
-                style={{ padding: '10px 20px', background: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: isGenerating ? 'wait' : 'pointer', fontWeight: 'bold' }}
+                style={{ 
+                padding: '10px 20px', background: '#007bff', color: 'white', border: 'none', borderRadius: '4px', 
+                cursor: isGenerating ? 'wait' : 'pointer', fontWeight: 'bold'
+                }}
             >
                 {isGenerating ? 'Gerando...' : 'Gerar Nova Escala'}
             </button>
             </div>
+            
             {error && <p style={{ color: 'red', marginTop: '10px', background: '#ffd2d2', padding: '10px', borderRadius: '4px' }}>{error}</p>}
             {successMessage && <p style={{ color: 'green', marginTop: '10px', background: '#d4edda', padding: '10px', borderRadius: '4px' }}>{successMessage}</p>}
         </div>
       )}
 
+      {/* --- VISUALIZAÇÃO EM GRADE --- */}
       {generatedSchedule.length > 0 && (
         <div style={{ marginBottom: '40px' }}>
+          
+          {/* BARRA DE FERRAMENTAS */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px', background: '#eee', padding: '10px', borderRadius: '4px' }}>
-            <h3 style={{ margin: 0 }}>{isEditing ? '✏️ Editando Escala' : 'Visualização da Escala'}</h3>
+            <h3 style={{ margin: 0 }}>
+                {isEditing ? '✏️ Editando Escala' : 'Visualização da Escala'}
+            </h3>
+            
             <div style={{ display: 'flex', gap: '10px' }}>
                 {isEditing ? (
                     <>
                         <button onClick={() => setIsEditing(false)} style={{ background: '#6c757d', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer' }}>Cancelar</button>
-                        <button onClick={handleSaveChanges} disabled={isGenerating} style={{ background: '#28a745', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>{isGenerating ? 'Salvando...' : 'Salvar Alterações'}</button>
+                        <button onClick={handleSaveChanges} disabled={isGenerating} style={{ background: '#28a745', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
+                            {isGenerating ? 'Salvando...' : 'Salvar Alterações'}
+                        </button>
                     </>
                 ) : (
                     <>
-                        <button onClick={() => setIsEditing(true)} style={{ background: '#ffc107', color: '#333', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>✏️ Editar Manualmente</button>
-                        <button onClick={handleExportClick} style={{ background: '#17a2b8', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>📥 Baixar PDF</button>
+                        <button onClick={() => setIsEditing(true)} style={{ background: '#ffc107', color: '#333', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
+                            ✏️ Editar Manualmente
+                        </button>
+                        <button onClick={handleExportClick} style={{ background: '#17a2b8', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
+                            📥 Baixar PDF
+                        </button>
                     </>
                 )}
             </div>
           </div>
 
-          <div style={{ border: '1px solid #eee', borderRadius: '4px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
-            {generatedSchedule.map((day, dayIdx) => (
-               <div key={dayIdx} style={{ padding: '15px', borderBottom: '1px solid #eee', background: dayIdx % 2 === 0 ? '#fff' : '#fcfcfc' }}>
-                 <strong style={{ fontSize: '1.1em', color: '#333' }}>{day.dayName}, {day.date}</strong>
-                 <ul style={{ margin: '10px 0 0 20px', color: '#555' }}>
-                    {Object.entries(day.assignments).map(([culto, nome]) => (
-                        <li key={culto} style={{ marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <span style={{ fontWeight: '500', minWidth: '120px' }}>{culto}:</span> 
-                            {isEditing ? (
-                                <select 
-                                    value={nome} 
-                                    onChange={(e) => handleAssignmentChange(dayIdx, culto, e.target.value)}
-                                    style={{ padding: '5px', borderRadius: '4px', borderColor: '#ccc', minWidth: '200px' }}
-                                >
-                                    {/* LÓGICA NOVA: Se for VAGO, mostra opção desabilitada para forçar escolha */}
-                                    {nome === 'VAGO' && <option value="VAGO" disabled>Selecione uma organista...</option>}
-                                    
-                                    {organists.map(org => (
-                                        <option key={org.id} value={org.name}>{org.name}</option>
-                                    ))}
-                                </select>
-                            ) : (
-                                <>{nome === 'VAGO' ? <span style={{color: 'red', fontWeight: 'bold'}}>VAGO</span> : <b>{nome}</b>}</>
-                            )}
-                        </li>
-                    ))}
-                 </ul>
-               </div>
-            ))}
-          </div>
+          {/* ÁREA DA GRADE (LOOP POR MÊS) */}
+          {Object.entries(groupedSchedule).map(([monthLabel, days]) => (
+            <div key={monthLabel} style={{ marginBottom: '30px' }}>
+                {/* Cabeçalho do Mês */}
+                <div style={{ background: '#e0e0e0', padding: '8px', textAlign: 'center', fontWeight: 'bold', borderRadius: '4px', marginBottom: '10px', color: '#555' }}>
+                    {monthLabel.toUpperCase()}
+                </div>
+
+                {/* Grid CSS - 3 Colunas (responsivo) */}
+                <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', // Tenta fazer 3 colunas, mas ajusta se tela for pequena
+                    gap: '15px' 
+                }}>
+                    {days.map((day) => {
+                        // Verifica se tem algo válido para mostrar (opcional, igual no PDF)
+                        const hasAssignments = Object.values(day.assignments).some(v => v && v !== 'VAGO');
+                        if (!hasAssignments && !isEditing) return null; // Esconde dias vazios se não estiver editando
+
+                        return (
+                            <div key={day.date} style={{ 
+                                border: '1px solid #ccc', 
+                                borderRadius: '6px', 
+                                overflow: 'hidden',
+                                boxShadow: '0 2px 5px rgba(0,0,0,0.05)',
+                                background: 'white'
+                            }}>
+                                {/* Cabeçalho do Cartão (Data) */}
+                                <div style={{ background: '#f0f0f0', padding: '8px', textAlign: 'center', fontWeight: 'bold', borderBottom: '1px solid #eee' }}>
+                                    {day.dayName}, {day.date}
+                                </div>
+
+                                {/* Conteúdo do Cartão */}
+                                <div style={{ padding: '15px' }}>
+                                    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                        {Object.entries(day.assignments).map(([culto, nome]) => (
+                                            <li key={culto} style={{ marginBottom: '8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.95em' }}>
+                                                <span style={{ color: '#666', fontWeight: 'bold' }}>{culto}:</span>
+                                                
+                                                {isEditing ? (
+                                                    <select 
+                                                        value={nome} 
+                                                        onChange={(e) => handleAssignmentChange(day.originalIndex, culto, e.target.value)}
+                                                        style={{ padding: '4px', borderRadius: '4px', borderColor: '#ccc', maxWidth: '150px' }}
+                                                    >
+                                                        <option value="VAGO">VAGO</option>
+                                                        {organists.map(org => (
+                                                            <option key={org.id} value={org.name}>{org.name}</option>
+                                                        ))}
+                                                    </select>
+                                                ) : (
+                                                    <span style={{ color: nome === 'VAGO' ? 'red' : '#333', fontWeight: nome === 'VAGO' ? 'bold' : 'normal' }}>
+                                                        {nome}
+                                                    </span>
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+          ))}
+
         </div>
       )}
 
+      {/* --- HISTÓRICO --- */}
       {!isEditing && (
           <>
             <h3 style={{ marginTop: '40px', borderTop: '2px solid #eee', paddingTop: '20px' }}>Histórico de Escalas</h3>
+            {savedSchedules.length === 0 && <p style={{ color: '#777' }}>Nenhuma escala salva ainda.</p>}
             <ul style={{ listStyle: 'none', padding: 0 }}>
                 {savedSchedules.map(sch => (
                     <li key={sch.id} style={{ border: '1px solid #eee', padding: '15px', marginBottom: '10px', borderRadius: '4px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'white' }}>
@@ -263,7 +328,12 @@ const ChurchScheduleGenerator = ({ user }) => {
                             <br/>
                             <small style={{ color: '#999' }}>Atualizada em: {new Date(sch.generatedAt).toLocaleString()}</small>
                         </div>
-                        <button onClick={() => handleViewSaved(sch)} style={{ cursor: 'pointer', padding: '8px 15px', background: '#6c757d', color: 'white', border: 'none', borderRadius: '4px' }}>Visualizar / Editar</button>
+                        <button 
+                            onClick={() => handleViewSaved(sch)} 
+                            style={{ cursor: 'pointer', padding: '8px 15px', background: '#6c757d', color: 'white', border: 'none', borderRadius: '4px' }}
+                        >
+                            Visualizar
+                        </button>
                     </li>
                 ))}
             </ul>
