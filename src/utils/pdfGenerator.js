@@ -4,13 +4,13 @@ import jsPDF from 'jspdf';
 const COLORS = {
   headerBg: [41, 128, 185],   // Azul forte (Cabeçalho Página)
   headerText: [255, 255, 255],// Branco
-  
+
   monthBg: [230, 230, 230],   // Cinza (Barra do Mês)
   monthText: [60, 60, 60],    // Cinza escuro
-  
+
   cardBorder: [200, 200, 200],// Cinza borda
   cardHeader: [245, 245, 245],// Cinza bem claro (Topo do Card)
-  
+
   textDate: [0, 0, 0],        // Preto
   textLabel: [100, 100, 100], // Cinza
   textValue: [40, 40, 40]     // Cinza escuro
