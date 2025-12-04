@@ -16,7 +16,7 @@ const Auth = () => {
     setError('');
     setIsLoading(true);
     const provider = new GoogleAuthProvider();
-    
+
     try {
       // 1. O usuário faz o login via pop-up do Google
       const result = await signInWithPopup(auth, provider);
@@ -59,19 +59,19 @@ const Auth = () => {
         <p style={{ color: '#555', marginBottom: '25px' }}>
           Utilize sua conta Google para entrar ou criar seu acesso ao sistema.
         </p>
-        
+
         {error && <p style={{ color: 'red', marginBottom: '15px' }}>{error}</p>}
-        
-        <button 
-          onClick={handleGoogleSignIn} 
+
+        <button
+          onClick={handleGoogleSignIn}
           disabled={isLoading}
-          style={{ 
-            padding: '12px 24px', 
+          style={{
+            padding: '12px 24px',
             backgroundColor: '#4285F4',
-            color: 'white', 
-            border: 'none', 
-            borderRadius: '4px', 
-            cursor: isLoading ? 'not-allowed' : 'pointer', 
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: isLoading ? 'not-allowed' : 'pointer',
             fontSize: '16px',
             opacity: isLoading ? 0.7 : 1,
             width: '100%'
