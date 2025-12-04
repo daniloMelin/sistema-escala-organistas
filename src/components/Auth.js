@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { auth, db } from '../firebaseConfig'; 
-import { doc, setDoc, Timestamp } from 'firebase/firestore'; 
+import { auth, db } from '../firebaseConfig';
+import { doc, setDoc, Timestamp } from 'firebase/firestore';
 
 import {
   signInWithPopup,
