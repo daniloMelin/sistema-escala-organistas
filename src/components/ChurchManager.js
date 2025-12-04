@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { getChurches, addChurch, deleteChurch, updateChurch } from '../services/firebaseService';
+import { getChurches, addChurch, deleteChurchWithSubcollections, updateChurch } from '../services/firebaseService';
 import { useNavigate } from 'react-router-dom';
 import { useChurch } from '../contexts/ChurchContext';
 import { SERVICE_TEMPLATES } from '../utils/scheduleLogic';
