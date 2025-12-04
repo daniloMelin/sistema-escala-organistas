@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getOrganistsByChurch, saveScheduleToChurch, getChurchSchedules } from '../services/firebaseService';
+import { getOrganistsByChurch, saveScheduleToChurch, getChurchSchedules, getChurch } from '../services/firebaseService';
 import { generateSchedule as generateScheduleLogic } from '../utils/scheduleLogic';
 import { exportScheduleToPDF } from '../utils/pdfGenerator';
 import { useChurch } from '../contexts/ChurchContext';
