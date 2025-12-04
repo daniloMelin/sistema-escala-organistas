@@ -1,71 +1,104 @@
-const DAY_KEY_MAP = { 
-  0: 'sunday',    1: 'monday',    2: 'tuesday',   3: 'wednesday', 
-  4: 'thursday',  5: 'friday',    6: 'saturday'
-};
+import {
+  parseISO,
+  startOfDay,
+  endOfDay,
+  addDays,
+  format,
+  isValid,
+  getDay as getDayFn,
+} from "date-fns";
 
 export const SERVICE_TEMPLATES = {
-  RJM: { id: 'RJM', label: 'RJM', needs: 1 },
-  MeiaHora: { id: 'MeiaHoraCulto', label: 'Meia Hora', needs: 1 },
-  Culto: { id: 'Culto', label: 'Culto', needs: 1 },
+  RJM: { id: "RJM", label: "RJM", needs: 1 },
+  MeiaHora: { id: "MeiaHoraCulto", label: "Meia Hora", needs: 1 },
+  Culto: { id: "Culto", label: "Culto", needs: 1 },
+};
+
+// Mapa do dia da semana (getDay) para a chave de configuração da igreja
+// getDay: 0 = Domingo, 1 = Segunda, 2 = Terça, ... 6 = Sábado
+const DAY_INDEX_TO_CONFIG_KEY = {
+  0: "sunday", // Domingo
+  1: "monday", // Segunda
+  2: "tuesday", // Terça
+  3: "wednesday", // Quarta
+  4: "thursday", // Quinta
+  5: "friday", // Sexta
+  6: "saturday", // Sábado
 };
 
 const formatDate = (dateObj) => {
-  if (!(dateObj instanceof Date) || isNaN(dateObj)) return "Data inválida";
-  const day = String(dateObj.getDate()).padStart(2, '0');
-  const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-  const year = dateObj.getFullYear();
-  return `${day}/${month}/${year}`;
+  if (!dateObj || !isValid(dateObj)) return "Data inválida";
+  return format(dateObj, "dd/MM/yyyy");
 };
 
 const getDayName = (dateObj) => {
-  if (!(dateObj instanceof Date) || isNaN(dateObj)) return "Dia inválido";
-  const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-  return days[dateObj.getDay()];
+  if (!dateObj || !isValid(dateObj)) return "Dia inválido";
+  const days = [
+    "Domingo",
+    "Segunda",
+    "Terça",
+    "Quarta",
+    "Quinta",
+    "Sexta",
+    "Sábado",
+  ];
+  return days[getDayFn(dateObj)];
 };
 
-const getAvailableOrganistsForSlot = (allOrganists, dayKey, culto, assignedForHalfHour) => {
-  return allOrganists.filter(org => {
-    
-    // --- CORREÇÃO AQUI ---
-    let availabilityKey = dayKey;
+// Mapeia qual chave de disponibilidade verificar para cada culto em cada dia
+const getAvailabilityKey = (dayKey, cultoId) => {
+  if (dayKey === "sunday") {
+    return cultoId === "RJM" ? "sunday_rjm" : "sunday_culto";
+  }
+  // Para os outros dias, a chave é o nome do dia em inglês
+  return dayKey;
+};
 
-    // Se for Domingo, precisamos decidir qual chave usar
-    if (dayKey === 'sunday') {
-        if (culto.id === 'RJM') {
-            availabilityKey = 'sunday_rjm'; // Manhã
-        } else {
-            availabilityKey = 'sunday_culto'; // Noite (Meia Hora ou Culto)
-        }
+const getAvailableOrganistsForSlot = (
+  allOrganists,
+  dayKey,
+  culto,
+  assignedForHalfHour
+) => {
+  const availabilityKey = getAvailabilityKey(dayKey, culto.id);
+
+  return allOrganists.filter((org) => {
+    const isAvailableOnDay =
+      org.availability && org.availability[availabilityKey];
+    if (!isAvailableOnDay) return false;
+    if (culto.id === "Culto" && assignedForHalfHour) {
+      return org.id !== assignedForHalfHour.id;
     }
-
-    // Verifica se a organista tem esse horário marcado
-    const isAvailable = org.availability && org.availability[availabilityKey];
-    if (!isAvailable) return false;
-
-    // Regra de não duplicidade: Se é Culto Oficial e ela já tocou na Meia Hora, não pode repetir
-    if (culto.id === 'Culto' && assignedForHalfHour && assignedForHalfHour.id === org.id) {
-      return false;
-    }
-
     return true;
   });
 };
 
-export const generateSchedule = (organists, startDateStr, endDateStr, churchConfig) => {
+export const generateSchedule = (
+  organists,
+  startDateStr,
+  endDateStr,
+  churchConfig = null
+) => {
   if (!organists || organists.length === 0) {
-    console.warn("Nenhum organista cadastrado.");
+    console.warn("Nenhum organista cadastrado para gerar escala.");
     return [];
   }
-  
-  if (!churchConfig || Object.keys(churchConfig).length === 0) {
-      console.warn("Configuração de cultos da igreja não encontrada.");
-      return [];
+
+  if (!startDateStr || !endDateStr) {
+    console.error("Datas de início ou término inválidas.");
+    return [];
   }
 
-  const startDate = new Date(startDateStr + "T00:00:00");
-  const endDate = new Date(endDateStr + "T23:59:59");
-  
-  let currentDate = new Date(startDate);
+  const parsedStart = parseISO(startDateStr);
+  const parsedEnd = parseISO(endDateStr);
+  if (!isValid(parsedStart) || !isValid(parsedEnd) || parsedStart > parsedEnd) {
+    console.error("Datas de início ou término inválidas.");
+    return [];
+  }
+
+  let currentDate = startOfDay(parsedStart);
+  const endDate = endOfDay(parsedEnd);
+
   const schedule = [];
 
   const organistUsage = organists.reduce((acc, org) => {
@@ -74,12 +107,14 @@ export const generateSchedule = (organists, startDateStr, endDateStr, churchConf
   }, {});
 
   while (currentDate <= endDate) {
-    const dayOfWeekJs = currentDate.getDay();
-    const dayKey = DAY_KEY_MAP[dayOfWeekJs]; 
+    const dayOfWeekJs = getDayFn(currentDate);
+    const dayKey = DAY_INDEX_TO_CONFIG_KEY[dayOfWeekJs];
 
-    const cultosDoDia = churchConfig[dayKey];
+    // Verifica se a igreja tem cultos configurados para este dia
+    const cultosForThisDay =
+      churchConfig && churchConfig[dayKey] ? churchConfig[dayKey] : [];
 
-    if (cultosDoDia && cultosDoDia.length > 0) {
+    if (cultosForThisDay.length > 0) {
       const dailyScheduleEntry = {
         date: formatDate(currentDate),
         dayName: getDayName(currentDate),
@@ -88,37 +123,47 @@ export const generateSchedule = (organists, startDateStr, endDateStr, churchConf
 
       let organistaEscaladoParaMeiaHora = null;
 
-      for (const culto of cultosDoDia) {
-        let availableOrganists = getAvailableOrganistsForSlot(organists, dayKey, culto, organistaEscaladoParaMeiaHora);
+      for (const culto of cultosForThisDay) {
+        let availableOrganistsForSlot = getAvailableOrganistsForSlot(
+          organists,
+          dayKey,
+          culto,
+          organistaEscaladoParaMeiaHora
+        );
 
-        if (availableOrganists.length > 0) {
-          availableOrganists.sort((a, b) => {
+        if (availableOrganistsForSlot.length > 0) {
+          availableOrganistsForSlot.sort((a, b) => {
             const usageA = organistUsage[a.id].count;
             const usageB = organistUsage[b.id].count;
             if (usageA !== usageB) return usageA - usageB;
 
-            const lastAssignedA = organistUsage[a.id].lastAssignedDate?.getTime() || 0;
-            const lastAssignedB = organistUsage[b.id].lastAssignedDate?.getTime() || 0;
+            const lastAssignedA = organistUsage[a.id].lastAssignedDate
+              ? organistUsage[a.id].lastAssignedDate.getTime()
+              : 0;
+            const lastAssignedB = organistUsage[b.id].lastAssignedDate
+              ? organistUsage[b.id].lastAssignedDate.getTime()
+              : 0;
             return lastAssignedA - lastAssignedB;
           });
-          
-          const assigned = availableOrganists[0];
-          
-          dailyScheduleEntry.assignments[culto.id] = assigned.name;
-          organistUsage[assigned.id].count++;
-          organistUsage[assigned.id].lastAssignedDate = new Date(currentDate.getTime());
 
-          if (culto.id === 'MeiaHoraCulto') {
-            organistaEscaladoParaMeiaHora = assigned;
+          const assignedOrganist = availableOrganistsForSlot[0];
+          dailyScheduleEntry.assignments[culto.id] = assignedOrganist.name;
+          organistUsage[assignedOrganist.id].count++;
+          organistUsage[assignedOrganist.id].lastAssignedDate = new Date(
+            currentDate.getTime()
+          );
+
+          if (culto.id === "MeiaHoraCulto") {
+            organistaEscaladoParaMeiaHora = assignedOrganist;
           }
         } else {
-          dailyScheduleEntry.assignments[culto.id] = 'VAGO';
+          dailyScheduleEntry.assignments[culto.id] = "VAGO";
         }
       }
       schedule.push(dailyScheduleEntry);
     }
-    currentDate.setDate(currentDate.getDate() + 1);
+    currentDate = addDays(currentDate, 1);
   }
-  
+
   return schedule;
 };
