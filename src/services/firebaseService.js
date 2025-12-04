@@ -10,6 +10,7 @@ import {
   deleteDoc,
   updateDoc,
   Timestamp,
+  writeBatch,
   limit
 } from 'firebase/firestore';
 
@@ -46,6 +47,42 @@ export const deleteChurch = async (userId, churchId) => {
     await deleteDoc(churchDocRef);
   } catch (e) {
     console.error("Erro ao deletar igreja:", e);
+    throw e;
+  }
+};
+
+// Remove igreja e documentos nas subcollections especificadas (organists, schedules).
+// Usa batches de escrita para evitar exceder limites; para grandes volumes considere Cloud Functions.
+export const deleteChurchWithSubcollections = async (userId, churchId) => {
+  if (!userId || !churchId) throw new Error("ID inválido.");
+  try {
+    const subCollections = ['organists', 'schedules'];
+
+    for (const sub of subCollections) {
+      const colRef = collection(db, 'users', userId, 'churches', churchId, sub);
+      const snapshot = await getDocs(colRef);
+      if (snapshot.empty) continue;
+
+      let batch = writeBatch(db);
+      let ops = 0;
+      for (const docSnap of snapshot.docs) {
+        batch.delete(docSnap.ref);
+        ops++;
+        // commit parcial para evitar lotes muito grandes
+        if (ops >= 400) {
+          await batch.commit();
+          batch = writeBatch(db);
+          ops = 0;
+        }
+      }
+      if (ops > 0) await batch.commit();
+    }
+
+    // deleta o documento da igreja
+    const churchDocRef = doc(db, 'users', userId, 'churches', churchId);
+    await deleteDoc(churchDocRef);
+  } catch (e) {
+    console.error("Erro ao deletar igreja com subcollections:", e);
     throw e;
   }
 };
@@ -125,10 +162,10 @@ export const getChurchSchedules = async (userId, churchId, count = 3) => {
   try {
     const schedulesRef = collection(db, 'users', userId, 'churches', churchId, 'schedules');
     const q = query(schedulesRef, orderBy("generatedAt", "desc"), limit(count));
-    
+
     const querySnapshot = await getDocs(q);
     const schedules = [];
-    
+
     querySnapshot.forEach((doc) => {
       const data = doc.data();
       schedules.push({
