@@ -107,12 +107,14 @@ export const generateSchedule = (
   }, {});
 
   while (currentDate <= endDate) {
-    const dayOfWeekJs = currentDate.getDay();
-    const dayKey = DAY_KEY_MAP[dayOfWeekJs]; 
+    const dayOfWeekJs = getDayFn(currentDate);
+    const dayKey = DAY_INDEX_TO_CONFIG_KEY[dayOfWeekJs];
 
-    const cultosDoDia = churchConfig[dayKey];
+    // Verifica se a igreja tem cultos configurados para este dia
+    const cultosForThisDay =
+      churchConfig && churchConfig[dayKey] ? churchConfig[dayKey] : [];
 
-    if (cultosDoDia && cultosDoDia.length > 0) {
+    if (cultosForThisDay.length > 0) {
       const dailyScheduleEntry = {
         date: formatDate(currentDate),
         dayName: getDayName(currentDate),
@@ -121,37 +123,47 @@ export const generateSchedule = (
 
       let organistaEscaladoParaMeiaHora = null;
 
-      for (const culto of cultosDoDia) {
-        let availableOrganists = getAvailableOrganistsForSlot(organists, dayKey, culto, organistaEscaladoParaMeiaHora);
+      for (const culto of cultosForThisDay) {
+        let availableOrganistsForSlot = getAvailableOrganistsForSlot(
+          organists,
+          dayKey,
+          culto,
+          organistaEscaladoParaMeiaHora
+        );
 
-        if (availableOrganists.length > 0) {
-          availableOrganists.sort((a, b) => {
+        if (availableOrganistsForSlot.length > 0) {
+          availableOrganistsForSlot.sort((a, b) => {
             const usageA = organistUsage[a.id].count;
             const usageB = organistUsage[b.id].count;
             if (usageA !== usageB) return usageA - usageB;
 
-            const lastAssignedA = organistUsage[a.id].lastAssignedDate?.getTime() || 0;
-            const lastAssignedB = organistUsage[b.id].lastAssignedDate?.getTime() || 0;
+            const lastAssignedA = organistUsage[a.id].lastAssignedDate
+              ? organistUsage[a.id].lastAssignedDate.getTime()
+              : 0;
+            const lastAssignedB = organistUsage[b.id].lastAssignedDate
+              ? organistUsage[b.id].lastAssignedDate.getTime()
+              : 0;
             return lastAssignedA - lastAssignedB;
           });
-          
-          const assigned = availableOrganists[0];
-          
-          dailyScheduleEntry.assignments[culto.id] = assigned.name;
-          organistUsage[assigned.id].count++;
-          organistUsage[assigned.id].lastAssignedDate = new Date(currentDate.getTime());
 
-          if (culto.id === 'MeiaHoraCulto') {
-            organistaEscaladoParaMeiaHora = assigned;
+          const assignedOrganist = availableOrganistsForSlot[0];
+          dailyScheduleEntry.assignments[culto.id] = assignedOrganist.name;
+          organistUsage[assignedOrganist.id].count++;
+          organistUsage[assignedOrganist.id].lastAssignedDate = new Date(
+            currentDate.getTime()
+          );
+
+          if (culto.id === "MeiaHoraCulto") {
+            organistaEscaladoParaMeiaHora = assignedOrganist;
           }
         } else {
-          dailyScheduleEntry.assignments[culto.id] = 'VAGO';
+          dailyScheduleEntry.assignments[culto.id] = "VAGO";
         }
       }
       schedule.push(dailyScheduleEntry);
     }
-    currentDate.setDate(currentDate.getDate() + 1);
+    currentDate = addDays(currentDate, 1);
   }
-  
+
   return schedule;
 };
