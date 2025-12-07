@@ -26,20 +26,24 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${github.run_id}`
             github.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `CI ✅ Lint e build passaram para o commit ${context.sha}`
+              body: `CI ✅ Lint e build passaram para o commit ${context.sha} — [ver run](${runUrl})`
             })
       - name: Comment PR - failure
         if: ${{ github.event_name == 'pull_request' && failure() }}
         uses: actions/github-script@v6
         with:
           script: |
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${github.run_id}`
+            // Mention the repository owner for visibility (only one active contributor for now)
+            const mention = '@daniloMelin'
             github.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `CI ❌ Lint ou build falharam para o commit ${context.sha}. Verifique a aba Actions para detalhes.`
+              body: `${mention} CI ❌ Lint ou build falharam para o commit ${context.sha}. Detalhes: [ver run](${runUrl}).`
             })
