@@ -202,7 +202,11 @@ const ChurchScheduleGenerator = ({ user }) => {
       <button onClick={() => navigate(`/igreja/${id}`)} style={{ marginBottom: '20px', cursor: 'pointer' }}>
         &larr; Voltar para Painel
       </button>
-
+      {isLoading && (
+        <div style={{ marginBottom: '15px', padding: '10px', background: '#fff3cd', borderRadius: '4px', border: '1px solid #ffeeba' }}>
+          Carregando dados da igreja...
+        </div>
+      )}
       <h2 style={{ borderBottom: '2px solid #eee', paddingBottom: '10px' }}>
         Gerador de Escala: <span style={{ color: '#0056b3' }}>{selectedChurch?.name || 'Igreja'}</span>
       </h2>
@@ -218,9 +222,9 @@ const ChurchScheduleGenerator = ({ user }) => {
               <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Data Fim:</label>
               <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }} />
             </div>
-            <button
-              onClick={handleGenerate}
-              disabled={isGenerating}
+            <button 
+              onClick={handleGenerate} 
+              disabled={isGenerating || isLoading}
               style={{
                 padding: '10px 20px', background: '#007bff', color: 'white', border: 'none', borderRadius: '4px',
                 cursor: isGenerating ? 'wait' : 'pointer', fontWeight: 'bold'
@@ -281,9 +285,9 @@ const ChurchScheduleGenerator = ({ user }) => {
                 gap: '15px'
               }}>
                 {days.map((day) => {
-                  // Verifica se tem algo válido para mostrar (opcional, igual no PDF)
-                  const hasAssignments = Object.values(day.assignments).some(v => v && v !== 'VAGO');
-                  if (!hasAssignments && !isEditing) return null; // Esconde dias vazios se não estiver editando
+                        // Verifica se tem algo válido para mostrar (opcional, igual no PDF)
+                        const hasAssignments = Object.values(day.assignments).some(v => v && v !== 'VAGO');
+                        if (!hasAssignments && !isEditing) return null; // Esconde dias vazios se não estiver editando
 
                   return (
                     <div key={day.date} style={{

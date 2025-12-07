@@ -198,6 +198,11 @@ const ChurchManager = ({ user }) => {
   return (
     <div style={{ padding: '20px', maxWidth: '800px', margin: 'auto' }}>
       <h2>Gerenciamento de Igrejas</h2>
+      {isLoading && (
+        <div style={{ marginBottom: '15px', padding: '10px', background: '#fff3cd', borderRadius: '4px', border: '1px solid #ffeeba' }}>
+          Carregando dados da igreja...
+        </div>
+      )}
 
       <div style={{ marginBottom: '30px', padding: '20px', border: '1px solid #ccc', borderRadius: '8px', background: editingId ? '#fff3cd' : '#fff' }}>
         <h3 style={{ marginTop: 0 }}>{editingId ? 'Editar Igreja' : 'Cadastrar Nova Igreja'}</h3>
@@ -235,10 +240,10 @@ const ChurchManager = ({ user }) => {
           </div>
 
           <div style={{ display: 'flex', gap: '10px' }}>
-            <button type="submit" disabled={isSubmitting} style={{ padding: '10px 20px', backgroundColor: editingId ? '#ffc107' : '#007bff', color: editingId ? '#000' : 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
+            <button type="submit" disabled={isSubmitting || isLoading} style={{ padding: '10px 20px', backgroundColor: editingId ? '#ffc107' : '#007bff', color: editingId ? '#000' : 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
               {isSubmitting ? 'Salvando...' : (editingId ? 'Atualizar' : 'Cadastrar')}
             </button>
-            {editingId && <button type="button" onClick={handleCancelEdit} style={{ padding: '10px 15px', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Cancelar</button>}
+                {editingId && <button type="button" onClick={handleCancelEdit} style={{ padding: '10px 15px', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Cancelar</button>}
           </div>
           {error && <p style={{ color: 'red' }}>{error}</p>}
           {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
@@ -255,8 +260,8 @@ const ChurchManager = ({ user }) => {
               {church.code && <small style={{ color: '#666' }}>Código: {church.code}</small>}
             </div>
             <div style={{ display: 'flex', gap: '10px' }}>
-              <button onClick={(e) => handleStartEdit(e, church)} style={{ backgroundColor: '#ffc107', color: '#333', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Editar</button>
-              <button onClick={(e) => handleDeleteChurch(e, church.id, church.name)} style={{ backgroundColor: '#dc3545', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Excluir</button>
+              <button onClick={(e) => handleStartEdit(e, church)} disabled={isLoading} style={{ backgroundColor: '#ffc107', color: '#333', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: isLoading ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>Editar</button>
+              <button onClick={(e) => handleDeleteChurch(e, church.id, church.name)} disabled={isLoading} style={{ backgroundColor: '#dc3545', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: isLoading ? 'not-allowed' : 'pointer' }}>Excluir</button>
             </div>
           </li>
         ))}
