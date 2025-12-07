@@ -21,3 +21,25 @@ jobs:
         run: npm run lint
       - name: Build
         run: npm run build
+      - name: Comment PR - success
+        if: ${{ github.event_name == 'pull_request' && success() }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `CI ✅ Lint e build passaram para o commit ${context.sha}`
+            })
+      - name: Comment PR - failure
+        if: ${{ github.event_name == 'pull_request' && failure() }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `CI ❌ Lint ou build falharam para o commit ${context.sha}. Verifique a aba Actions para detalhes.`
+            })
