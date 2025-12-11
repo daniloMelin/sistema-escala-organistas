@@ -54,25 +54,6 @@ const getAvailabilityKey = (dayKey, cultoId) => {
   return dayKey;
 };
 
-const getAvailableOrganistsForSlot = (
-  allOrganists,
-  dayKey,
-  culto,
-  assignedForHalfHour
-) => {
-  const availabilityKey = getAvailabilityKey(dayKey, culto.id);
-
-  return allOrganists.filter((org) => {
-    const isAvailableOnDay =
-      org.availability && org.availability[availabilityKey];
-    if (!isAvailableOnDay) return false;
-    if (culto.id === "Culto" && assignedForHalfHour) {
-      return org.id !== assignedForHalfHour.id;
-    }
-    return true;
-  });
-};
-
 /**
  * Verifica se uma organista pode tocar em um dia específico da semana
  * @param {Object} organist - Organista com fixedDays ou availability
