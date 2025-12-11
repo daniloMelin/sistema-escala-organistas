@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { getChurches, addChurch, deleteChurchWithSubcollections, updateChurch } from '../services/firebaseService';
 import { useNavigate } from 'react-router-dom';
 import { useChurch } from '../contexts/ChurchContext';
 import { SERVICE_TEMPLATES } from '../utils/scheduleLogic';
+import { ALL_WEEK_DAYS, INITIAL_AVAILABILITY } from '../constants/days';
+import { validateChurchName, validateChurchCode, sanitizeString } from '../utils/validation';
 
 const ChurchManager = ({ user }) => {
   const [churches, setChurches] = useState([]);
@@ -13,16 +15,7 @@ const ChurchManager = ({ user }) => {
   const [churchCode, setChurchCode] = useState('');
 
   // CONFIGURAÇÃO DOS DIAS DE CULTO
-  const [selectedDays, setSelectedDays] = useState({
-    sunday_rjm: false,
-    sunday_culto: false,
-    monday: false,
-    tuesday: false,
-    wednesday: false,
-    thursday: false,
-    friday: false,
-    saturday: false
-  });
+  const [selectedDays, setSelectedDays] = useState(INITIAL_AVAILABILITY);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -31,18 +24,6 @@ const ChurchManager = ({ user }) => {
 
   const navigate = useNavigate();
   const { setSelectedChurch } = useChurch();
-
-  // Opções de checkbox para a tela
-  const daysOptions = [
-    { key: 'sunday_rjm', label: 'Domingo (RJM)' },
-    { key: 'sunday_culto', label: 'Domingo (Culto)' },
-    { key: 'monday', label: 'Segunda' },
-    { key: 'tuesday', label: 'Terça' },
-    { key: 'wednesday', label: 'Quarta' },
-    { key: 'thursday', label: 'Quinta' },
-    { key: 'friday', label: 'Sexta' },
-    { key: 'saturday', label: 'Sábado' },
-  ];
 
   const fetchChurches = useCallback(async () => {
     if (!user) return;
@@ -61,7 +42,7 @@ const ChurchManager = ({ user }) => {
   }, [fetchChurches]);
 
   // --- LÓGICA INTELIGENTE: Transforma os checkboxes na estrutura que o robô entende ---
-  const buildConfig = () => {
+  const buildConfig = useMemo(() => {
     const config = {};
 
     // Função auxiliar para adicionar serviços a um dia
@@ -87,7 +68,7 @@ const ChurchManager = ({ user }) => {
     });
 
     return config;
-  };
+  }, [selectedDays]);
 
   const handleStartEdit = (e, church) => {
     e.stopPropagation();
@@ -97,11 +78,7 @@ const ChurchManager = ({ user }) => {
 
     // Reconstrói os checkboxes baseados no que está salvo no banco
     if (church.config) {
-      const newSelection = {
-        sunday_rjm: false, sunday_culto: false,
-        monday: false, tuesday: false, wednesday: false,
-        thursday: false, friday: false, saturday: false
-      };
+      const newSelection = { ...INITIAL_AVAILABILITY };
 
       Object.keys(church.config).forEach(dayKey => {
         const services = church.config[dayKey];
@@ -131,11 +108,7 @@ const ChurchManager = ({ user }) => {
     setChurchCode('');
     setEditingId(null);
     // Reseta para o padrão
-    setSelectedDays({
-      sunday_rjm: false, sunday_culto: false,
-      monday: false, tuesday: false, wednesday: false,
-      thursday: false, friday: false, saturday: false
-    });
+    setSelectedDays(INITIAL_AVAILABILITY);
     setError('');
     setSuccessMessage('');
   };
@@ -146,7 +119,19 @@ const ChurchManager = ({ user }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!churchName) { setError('Nome obrigatório.'); return; }
+    
+    // Validação
+    const nameValidation = validateChurchName(churchName);
+    if (!nameValidation.isValid) {
+      setError(nameValidation.error);
+      return;
+    }
+    
+    const codeValidation = validateChurchCode(churchCode);
+    if (!codeValidation.isValid) {
+      setError(codeValidation.error);
+      return;
+    }
 
     setIsSubmitting(true);
     setError('');
@@ -154,9 +139,9 @@ const ChurchManager = ({ user }) => {
 
     try {
       const churchData = {
-        name: churchName,
-        code: churchCode,
-        config: buildConfig() // Gera a configuração estruturada
+        name: sanitizeString(churchName),
+        code: churchCode ? sanitizeString(churchCode) : '',
+        config: buildConfig // Gera a configuração estruturada
       };
 
       if (editingId) {
@@ -222,7 +207,7 @@ const ChurchManager = ({ user }) => {
             <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>Dias de Culto:</label>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '10px' }}>
-              {daysOptions.map(day => (
+              {ALL_WEEK_DAYS.map(day => (
                 <div key={day.key} style={{ display: 'flex', alignItems: 'center', background: 'white', padding: '5px', borderRadius: '4px', border: '1px solid #e0e0e0' }}>
                   <input
                     type="checkbox"

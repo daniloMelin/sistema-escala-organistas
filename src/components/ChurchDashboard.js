@@ -1,30 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-// Adicionamos o getChurch na importação
 import { getOrganistsByChurch, addOrganistToChurch, deleteOrganistFromChurch, updateOrganistInChurch, getChurch } from '../services/firebaseService';
 import { useChurch } from '../contexts/ChurchContext';
-
-const ALL_WEEK_DAYS = [
-  { key: 'sunday_rjm', label: 'Domingo (RJM)' },
-  { key: 'sunday_culto', label: 'Domingo (Culto)' },
-  { key: 'monday', label: 'Segunda' },
-  { key: 'tuesday', label: 'Terça' },
-  { key: 'wednesday', label: 'Quarta' },
-  { key: 'thursday', label: 'Quinta' },
-  { key: 'friday', label: 'Sexta' },
-  { key: 'saturday', label: 'Sábado' },
-];
-
-const INITIAL_AVAILABILITY = {
-  sunday_rjm: false,
-  sunday_culto: false,
-  monday: false,
-  tuesday: false,
-  wednesday: false,
-  thursday: false,
-  friday: false,
-  saturday: false,
-};
+import { ALL_WEEK_DAYS, INITIAL_AVAILABILITY, formatAvailability } from '../constants/days';
+import { validateOrganistName, sanitizeString } from '../utils/validation';
 
 const ChurchDashboard = ({ user }) => {
   const { id } = useParams();
@@ -118,7 +97,13 @@ const ChurchDashboard = ({ user }) => {
 
   const handleSaveOrganist = async (e) => {
     e.preventDefault();
-    if (!newOrganistName.trim()) return;
+    
+    // Validação
+    const nameValidation = validateOrganistName(newOrganistName);
+    if (!nameValidation.isValid) {
+      alert(nameValidation.error);
+      return;
+    }
 
     if (!user || !id) {
       alert("Erro de identificação.");
@@ -128,7 +113,7 @@ const ChurchDashboard = ({ user }) => {
     setIsSubmitting(true);
     try {
       const organistData = {
-        name: newOrganistName,
+        name: sanitizeString(newOrganistName),
         availability: availability,
       };
 
@@ -161,22 +146,10 @@ const ChurchDashboard = ({ user }) => {
     }
   };
 
-  const formatAvailability = (avail) => {
-    if (!avail) return "Sem disponibilidade";
-    // Filtra apenas os dias marcados como true
-    const activeDays = ALL_WEEK_DAYS.filter(day => {
-      // Checa chaves novas e antigas
-      return avail[day.key] || (day.key === 'sunday_culto' && avail['sunday']);
-    });
-
-    if (activeDays.length === 0) return "Nenhum dia";
-
-    return activeDays.map(d => {
-      if (d.key === 'sunday_rjm') return 'Dom(RJM)';
-      if (d.key === 'sunday_culto') return 'Dom(Culto)';
-      return d.label.substring(0, 3);
-    }).join(', ');
-  };
+  // Usa a função formatAvailability importada de constants/days.js
+  const formatOrganistAvailability = useCallback((avail) => {
+    return formatAvailability(avail);
+  }, []);
 
   if (!user) return <div style={{ padding: 20 }}>Carregando...</div>;
 
@@ -295,7 +268,7 @@ const ChurchDashboard = ({ user }) => {
                 </div>
               </div>
               <div style={{ color: '#666', fontSize: '0.9em' }}>
-                <strong>Disponível: </strong> {formatAvailability(org.availability)}
+                <strong>Disponível: </strong> {formatOrganistAvailability(org.availability)}
               </div>
             </li>
           ))}
