@@ -54,6 +54,13 @@ Este documento apresenta uma análise atualizada do código após as melhorias i
 - **Arquivo:** `src/components/ErrorBoundary.js`
 - **Uso:** Implementado no `App.js`
 
+#### ✅ Limpeza de Código Morto
+
+- **Status:** ✅ **RESOLVIDO**
+- **Arquivo:** `src/utils/scheduleLogic.js`
+- **Ação:** Remoção da função obsoleta `getAvailableOrganistsForSlot`.
+- **Resultado:** Código mais limpo e menor complexidade cognitiva.
+
 ### 3. Performance - Melhorias Implementadas
 
 #### ✅ Memoização
@@ -175,32 +182,7 @@ const logger = {
 
 ---
 
-### 5. Função `getAvailableOrganistsForSlot` Não Utilizada
-
-**Problema:** Função em `scheduleLogic.js` (linhas 57-74) não é mais usada.
-
-**Código:**
-
-```javascript
-const getAvailableOrganistsForSlot = (...) => { ... }
-```
-
-**Impacto:**
-
-- Código morto
-- Confusão para desenvolvedores
-- Aumenta complexidade desnecessariamente
-
-**Recomendação:**
-
-- Remover função não utilizada
-- Limpar código morto
-
-**Prioridade:** 🟢 BAIXA
-
----
-
-### 6. Falta de Tratamento de Erro em Alguns Callbacks
+### 5. Falta de Tratamento de Erro em Alguns Callbacks
 
 **Problema:** Alguns callbacks não tratam erros adequadamente.
 
@@ -227,7 +209,7 @@ const fetchChurches = useCallback(async () => {
 
 ---
 
-### 7. Estilos Inline Repetidos
+### 6. Estilos Inline Repetidos
 
 **Problema:** Estilos inline ainda são muito usados, mesmo com componentes UI criados.
 
@@ -254,7 +236,7 @@ style={{ padding: '10px 20px', backgroundColor: '#007bff', color: 'white', ... }
 
 ---
 
-### 8. Falta de TypeScript ou PropTypes
+### 7. Falta de TypeScript ou PropTypes
 
 **Problema:** Projeto tem `tsconfig.json` mas não usa TypeScript. Componentes não têm PropTypes.
 
@@ -273,7 +255,7 @@ style={{ padding: '10px 20px', backgroundColor: '#007bff', color: 'white', ... }
 
 ---
 
-### 9. Algoritmo de Escala - Complexidade
+### 8. Algoritmo de Escala - Complexidade
 
 **Problema:** Função `generateSchedule` está com 455 linhas e lógica complexa.
 
@@ -296,7 +278,7 @@ style={{ padding: '10px 20px', backgroundColor: '#007bff', color: 'white', ... }
 
 ---
 
-### 10. Falta de Testes
+### 9. Falta de Testes
 
 **Problema:** Não há testes unitários ou de integração visíveis.
 
@@ -313,37 +295,6 @@ style={{ padding: '10px 20px', backgroundColor: '#007bff', color: 'white', ... }
 - Configurar CI/CD com testes
 
 **Prioridade:** 🟡 ALTA
-
----
-
-## 🔴 Problemas Críticos (Novos ou Remanescentes)
-
-### 1. Credenciais do Firebase Ainda com Fallback Hardcoded
-
-**Problema:** `firebaseConfig.js` ainda tem valores hardcoded como fallback.
-
-**Código Atual:**
-
-```javascript
-// Não há fallback hardcoded no código atual - BOM!
-// Mas precisa garantir que .env.local existe
-```
-
-**Status:** ✅ **RESOLVIDO** - Não há mais credenciais hardcoded
-
----
-
-### 2. Regras do Firestore Não Deployadas
-
-**Problema:** Arquivo `firestore.rules` existe mas pode não estar deployado.
-
-**Ação Necessária:**
-
-```bash
-firebase deploy --only firestore:rules
-```
-
-**Prioridade:** 🔴 CRÍTICA (segurança)
 
 ---
 
@@ -366,13 +317,7 @@ firebase deploy --only firestore:rules
 
 ### Fase 1 - Crítico (URGENTE)
 
-1. **Deploy das Regras do Firestore**
-
-   ```bash
-   firebase deploy --only firestore:rules
-   ```
-
-2. **Criar Sistema de Logging**
+1. **Criar Sistema de Logging**
    - Substituir `console.error` por logger condicional
    - Implementar serviço de logging para produção
 
