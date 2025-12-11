@@ -16,7 +16,7 @@ Este documento apresenta uma análise completa do código do sistema, identifica
 
 ```javascript
 const firebaseConfig = {
-  apiKey: "AIzaSyCt_SvO6afXFQmYRu2yhhAhxguHOpKMLfc", // ⚠️ Exposto no código
+  apiKey: "AIzaSy...[OCULTADO]...", // ⚠️ Exposto no código
   // ...
 };
 ```
