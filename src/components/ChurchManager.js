@@ -7,6 +7,8 @@ import { ALL_WEEK_DAYS, INITIAL_AVAILABILITY } from '../constants/days';
 import { validateChurchName, validateChurchCode, sanitizeString } from '../utils/validation';
 import logger from '../utils/logger';
 import ConfirmDialog from './ui/ConfirmDialog';
+import Button from './ui/Button';
+import Input from './ui/Input';
 
 const ChurchManager = ({ user }) => {
   const [churches, setChurches] = useState([]);
@@ -203,14 +205,19 @@ const ChurchManager = ({ user }) => {
         <h3 style={{ marginTop: 0 }}>{editingId ? 'Editar Igreja' : 'Cadastrar Nova Igreja'}</h3>
 
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '10px' }}>
-            <label style={{ display: 'block', marginBottom: '5px' }}>Nome da Congregação:</label>
-            <input type="text" value={churchName} onChange={(e) => setChurchName(e.target.value)} style={{ width: '100%', padding: '8px', boxSizing: 'border-box', borderRadius: '4px', border: '1px solid #ccc' }} required />
-          </div>
-          <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', marginBottom: '5px' }}>Código (opcional):</label>
-            <input type="text" value={churchCode} onChange={(e) => setChurchCode(e.target.value)} style={{ width: '100%', padding: '8px', boxSizing: 'border-box', borderRadius: '4px', border: '1px solid #ccc' }} />
-          </div>
+          <Input
+            label="Nome da Congregação:"
+            type="text"
+            value={churchName}
+            onChange={(e) => setChurchName(e.target.value)}
+            required
+          />
+          <Input
+            label="Código (opcional):"
+            type="text"
+            value={churchCode}
+            onChange={(e) => setChurchCode(e.target.value)}
+          />
 
           {/* SELEÇÃO DE DIAS */}
           <div style={{ marginBottom: '20px', background: '#f9f9f9', padding: '15px', borderRadius: '4px', border: '1px solid #eee' }}>
@@ -235,10 +242,19 @@ const ChurchManager = ({ user }) => {
           </div>
 
           <div style={{ display: 'flex', gap: '10px' }}>
-            <button type="submit" disabled={isSubmitting || isLoading} style={{ padding: '10px 20px', backgroundColor: editingId ? '#ffc107' : '#007bff', color: editingId ? '#000' : 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
+            <Button
+              type="submit"
+              disabled={isSubmitting || isLoading}
+              variant={editingId ? 'warning' : 'primary'}
+              style={{ fontSize: '14px' }}
+            >
               {isSubmitting ? 'Salvando...' : (editingId ? 'Atualizar' : 'Cadastrar')}
-            </button>
-                {editingId && <button type="button" onClick={handleCancelEdit} style={{ padding: '10px 15px', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Cancelar</button>}
+            </Button>
+            {editingId && (
+              <Button type="button" onClick={handleCancelEdit} variant="secondary" style={{ fontSize: '14px' }}>
+                Cancelar
+              </Button>
+            )}
           </div>
           {error && <p style={{ color: 'red' }}>{error}</p>}
           {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
@@ -255,8 +271,22 @@ const ChurchManager = ({ user }) => {
               {church.code && <small style={{ color: '#666' }}>Código: {church.code}</small>}
             </div>
             <div style={{ display: 'flex', gap: '10px' }}>
-              <button onClick={(e) => handleStartEdit(e, church)} disabled={isLoading} style={{ backgroundColor: '#ffc107', color: '#333', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: isLoading ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>Editar</button>
-              <button onClick={(e) => handleRequestDeleteChurch(e, church.id, church.name)} disabled={isLoading} style={{ backgroundColor: '#dc3545', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: isLoading ? 'not-allowed' : 'pointer' }}>Excluir</button>
+              <Button
+                onClick={(e) => handleStartEdit(e, church)}
+                disabled={isLoading}
+                variant="warning"
+                style={{ fontSize: '12px', padding: '6px 12px' }}
+              >
+                Editar
+              </Button>
+              <Button
+                onClick={(e) => handleRequestDeleteChurch(e, church.id, church.name)}
+                disabled={isLoading}
+                variant="danger"
+                style={{ fontSize: '12px', padding: '6px 12px' }}
+              >
+                Excluir
+              </Button>
             </div>
           </li>
         ))}

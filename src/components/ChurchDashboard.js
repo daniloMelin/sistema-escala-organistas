@@ -6,6 +6,8 @@ import { ALL_WEEK_DAYS, INITIAL_AVAILABILITY, formatAvailability } from '../cons
 import { validateOrganistName, sanitizeString } from '../utils/validation';
 import logger from '../utils/logger';
 import ConfirmDialog from './ui/ConfirmDialog';
+import Button from './ui/Button';
+import Input from './ui/Input';
 
 const ChurchDashboard = ({ user }) => {
   const { id } = useParams();
@@ -174,19 +176,16 @@ const ChurchDashboard = ({ user }) => {
   return (
     <div style={{ padding: '20px', maxWidth: '900px', margin: 'auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <button onClick={() => navigate('/')} style={{ padding: '8px 12px', cursor: 'pointer' }}>
+        <Button onClick={() => navigate('/')} variant="secondary" style={{ padding: '8px 12px', fontSize: '14px' }}>
           &larr; Voltar para Igrejas
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => navigate(`/igreja/${id}/escala`)}
-          style={{
-            backgroundColor: '#007bff', color: 'white', border: 'none',
-            borderRadius: '4px', padding: '10px 20px', cursor: 'pointer',
-            fontWeight: 'bold', boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
-          }}
+          variant="primary"
+          style={{ boxShadow: '0 2px 5px rgba(0,0,0,0.2)' }}
         >
           📅 Gerar Escala
-        </button>
+        </Button>
       </div>
 
       <div style={{ borderBottom: '2px solid #eee', paddingBottom: '10px', marginBottom: '20px' }}>
@@ -213,14 +212,15 @@ const ChurchDashboard = ({ user }) => {
           {successMessage && (
             <p style={{ color: 'green', marginTop: 0, marginBottom: '12px' }}>{successMessage}</p>
           )}
-          <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'normal' }}>Nome da Organista:</label>
-            <input
-              type="text" value={newOrganistName} onChange={(e) => setNewOrganistName(e.target.value)}
-              required disabled={isSubmitting}
-              style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc', boxSizing: 'border-box' }}
-            />
-          </div>
+          <Input
+            label="Nome da Organista:"
+            type="text"
+            value={newOrganistName}
+            onChange={(e) => setNewOrganistName(e.target.value)}
+            required
+            disabled={isSubmitting}
+            style={{ padding: '10px' }}
+          />
 
           <div style={{ marginBottom: '15px' }}>
             <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'normal' }}>
@@ -254,22 +254,18 @@ const ChurchDashboard = ({ user }) => {
           </div>
 
           <div style={{ display: 'flex', gap: '10px' }}>
-            <button
+            <Button
               type="submit" disabled={isSubmitting}
-              style={{
-                padding: '10px 25px', cursor: isSubmitting ? 'wait' : 'pointer',
-                backgroundColor: editingId ? '#ffc107' : '#28a745',
-                color: editingId ? '#000' : 'white',
-                border: 'none', borderRadius: '4px', fontWeight: 'bold', fontSize: '16px', flex: 1
-              }}
+              variant={editingId ? 'warning' : 'success'}
+              style={{ flex: 1 }}
             >
               {isSubmitting ? 'Salvando...' : (editingId ? 'Atualizar Organista' : 'Cadastrar Organista')}
-            </button>
+            </Button>
 
             {editingId && (
-              <button type="button" onClick={handleCancelEdit} disabled={isSubmitting} style={{ padding: '10px 15px', cursor: 'pointer', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '4px', fontWeight: 'bold' }}>
+              <Button type="button" onClick={handleCancelEdit} disabled={isSubmitting} variant="secondary" style={{ fontSize: '14px' }}>
                 Cancelar
-              </button>
+              </Button>
             )}
           </div>
         </form>
@@ -287,8 +283,12 @@ const ChurchDashboard = ({ user }) => {
                 </div>
 
                 <div style={{ display: 'flex', gap: '10px' }}>
-                  <button onClick={() => handleStartEdit(org)} style={{ fontSize: '0.8em', padding: '6px 10px', background: '#ffc107', border: 'none', color: '#333', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Editar</button>
-                  <button onClick={() => handleRequestDeleteOrganist(org.id, org.name)} style={{ fontSize: '0.8em', padding: '6px 10px', background: '#dc3545', border: 'none', color: 'white', borderRadius: '4px', cursor: 'pointer' }}>Excluir</button>
+                  <Button onClick={() => handleStartEdit(org)} variant="warning" style={{ fontSize: '12px', padding: '6px 10px' }}>
+                    Editar
+                  </Button>
+                  <Button onClick={() => handleRequestDeleteOrganist(org.id, org.name)} variant="danger" style={{ fontSize: '12px', padding: '6px 10px' }}>
+                    Excluir
+                  </Button>
                 </div>
               </div>
               <div style={{ color: '#666', fontSize: '0.9em' }}>
