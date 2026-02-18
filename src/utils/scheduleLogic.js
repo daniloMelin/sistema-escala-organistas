@@ -7,6 +7,7 @@ import {
   isValid,
   getDay as getDayFn,
 } from "date-fns";
+import logger from "./logger";
 
 export const SERVICE_TEMPLATES = {
   RJM: { id: "RJM", label: "RJM", needs: 1 },
@@ -266,19 +267,19 @@ export const generateSchedule = (
 ) => {
   // Validações iniciais
   if (!organists || organists.length === 0) {
-    console.warn("Nenhum organista cadastrado para gerar escala.");
+    logger.warn("Nenhum organista cadastrado para gerar escala.");
     return [];
   }
 
   if (!startDateStr || !endDateStr) {
-    console.error("Datas de início ou término inválidas.");
+    logger.error("Datas de início ou término inválidas.");
     return [];
   }
 
   const parsedStart = parseISO(startDateStr);
   const parsedEnd = parseISO(endDateStr);
   if (!isValid(parsedStart) || !isValid(parsedEnd) || parsedStart > parsedEnd) {
-    console.error("Datas de início ou término inválidas.");
+    logger.error("Datas de início ou término inválidas.");
     return [];
   }
 
@@ -307,7 +308,7 @@ export const generateSchedule = (
   }
 
   if (periodDates.length === 0) {
-    console.warn("Nenhum dia de culto configurado no período.");
+    logger.warn("Nenhum dia de culto configurado no período.");
     return [];
   }
 

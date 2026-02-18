@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route, NavLink, useNavigate } from 're
 import ChurchManager from './components/ChurchManager';
 import Auth from './components/Auth';
 import ErrorBoundary from './components/ErrorBoundary';
+import logger from './utils/logger';
 
 // Contexto e Autenticação
 import { ChurchProvider } from './contexts/ChurchContext';
@@ -29,7 +30,7 @@ const Layout = ({ children, user }) => {
       await signOut(auth);
       navigate('/');
     } catch (error) {
-      console.error("Erro ao fazer logout:", error);
+      logger.error("Erro ao fazer logout:", error);
     }
   };
 

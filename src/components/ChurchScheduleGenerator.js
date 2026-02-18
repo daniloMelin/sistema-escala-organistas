@@ -6,6 +6,7 @@ import { exportScheduleToPDF } from '../utils/pdfGenerator';
 import { useChurch } from '../contexts/ChurchContext';
 import { getMonthYearLabel } from '../utils/dateUtils';
 import { validateDateRange } from '../utils/validation';
+import logger from '../utils/logger';
 
 const ChurchScheduleGenerator = ({ user }) => {
   const { id } = useParams();
@@ -45,7 +46,7 @@ const ChurchScheduleGenerator = ({ user }) => {
       const schedulesData = await getChurchSchedules(user.uid, id);
       setSavedSchedules(schedulesData);
     } catch (err) {
-      console.error(err);
+      logger.error('Erro ao carregar dados da igreja:', err);
       setError("Erro ao carregar dados da igreja.");
     } finally {
       setIsLoading(false);
@@ -64,7 +65,7 @@ const ChurchScheduleGenerator = ({ user }) => {
     try {
       exportScheduleToPDF(generatedSchedule, startDate, endDate, churchName);
     } catch (err) {
-      console.error(err);
+      logger.error('Erro ao exportar PDF:', err);
       setError(`Erro ao exportar PDF: ${err.message || err}`);
     }
   };
@@ -97,7 +98,7 @@ const ChurchScheduleGenerator = ({ user }) => {
 
       if (schedule.length === 0) {
         setError("Não foi possível gerar escala.");
-        console.error('[ERROR] Schedule is empty!');
+        logger.error('Schedule vazio após geração.');
         setIsGenerating(false);
         return;
       }
@@ -121,7 +122,7 @@ const ChurchScheduleGenerator = ({ user }) => {
       setSavedSchedules(updatedSchedules);
 
     } catch (err) {
-      console.error(err);
+      logger.error('Erro ao gerar/salvar escala:', err);
       setError("Erro ao gerar/salvar escala.");
     } finally {
       setIsGenerating(false);
@@ -168,7 +169,7 @@ const ChurchScheduleGenerator = ({ user }) => {
       const updatedSchedules = await getChurchSchedules(user.uid, id);
       setSavedSchedules(updatedSchedules);
     } catch (err) {
-      console.error(err);
+      logger.error('Erro ao salvar alterações da escala:', err);
       setError("Erro ao salvar as alterações.");
     } finally {
       setIsGenerating(false);

@@ -5,6 +5,7 @@ import { useChurch } from '../contexts/ChurchContext';
 import { SERVICE_TEMPLATES } from '../utils/scheduleLogic';
 import { ALL_WEEK_DAYS, INITIAL_AVAILABILITY } from '../constants/days';
 import { validateChurchName, validateChurchCode, sanitizeString } from '../utils/validation';
+import logger from '../utils/logger';
 
 const ChurchManager = ({ user }) => {
   const [churches, setChurches] = useState([]);
@@ -155,7 +156,7 @@ const ChurchManager = ({ user }) => {
       await fetchChurches();
     } catch (err) {
       setError('Erro ao salvar.');
-      console.error(err);
+      logger.error('Erro ao salvar igreja:', err);
     }
     setIsSubmitting(false);
   };
@@ -169,7 +170,7 @@ const ChurchManager = ({ user }) => {
         if (editingId === churchId) handleCancelEdit();
         fetchChurches();
       } catch (err) {
-        console.error(err);
+        logger.error('Erro ao excluir igreja:', err);
         alert('Erro ao excluir igreja. Tente novamente.');
       }
     }

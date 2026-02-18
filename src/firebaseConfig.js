@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import logger from "./utils/logger";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -13,7 +14,7 @@ const firebaseConfig = {
 
 // Validação básica
 if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
-  console.error("⚠️ Configuração do Firebase incompleta. Verifique as variáveis de ambiente.");
+  logger.error("Configuração do Firebase incompleta. Verifique as variáveis de ambiente.");
 }
 
 // Inicializa e exporta os serviços do Firebase

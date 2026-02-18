@@ -1,5 +1,6 @@
 import jsPDF from 'jspdf';
 import { getMonthYearLabel } from './dateUtils';
+import logger from './logger';
 
 // Cores padrão (RGB)
 const COLORS = {
@@ -195,7 +196,7 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
     doc.save(`${safeChurchName}_${fileDate}.pdf`);
 
   } catch (error) {
-    console.error("Erro ao gerar PDF:", error);
+    logger.error("Erro ao gerar PDF:", error);
     throw error;
   }
 };

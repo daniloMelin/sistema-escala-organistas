@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getOrganistsByChurch, addOrganistToChurch, deleteOrganistFromChurch, updateOrganistInChurch, getChurch } from '../services/firebaseService';
 import { useChurch } from '../contexts/ChurchContext';
 import { ALL_WEEK_DAYS, INITIAL_AVAILABILITY, formatAvailability } from '../constants/days';
 import { validateOrganistName, sanitizeString } from '../utils/validation';
+import logger from '../utils/logger';
 
 const ChurchDashboard = ({ user }) => {
   const { id } = useParams();
@@ -59,7 +60,7 @@ const ChurchDashboard = ({ user }) => {
       }
 
     } catch (error) {
-      console.error("Erro ao carregar dados:", error);
+      logger.error("Erro ao carregar dados:", error);
     } finally {
       setLoading(false);
     }
@@ -127,7 +128,7 @@ const ChurchDashboard = ({ user }) => {
       await fetchData(); // Recarrega tudo
 
     } catch (error) {
-      console.error("Erro ao salvar:", error);
+      logger.error("Erro ao salvar organista:", error);
       alert("Erro ao salvar organista.");
     } finally {
       setIsSubmitting(false);
@@ -140,7 +141,7 @@ const ChurchDashboard = ({ user }) => {
         await deleteOrganistFromChurch(user.uid, id, organistId);
         await fetchData();
       } catch (error) {
-        console.error(error);
+        logger.error("Erro ao excluir organista:", error);
         alert("Erro ao excluir organista.");
       }
     }
