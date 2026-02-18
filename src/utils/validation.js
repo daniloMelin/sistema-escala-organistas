@@ -22,7 +22,7 @@ export const validateChurchName = (name) => {
   }
   
   // Remove caracteres perigosos (XSS prevention)
-  const dangerousChars = /[<>\"'&]/;
+  const dangerousChars = /[<>"'&]/;
   if (dangerousChars.test(name)) {
     return { isValid: false, error: 'Nome contém caracteres inválidos.' };
   }
@@ -49,7 +49,7 @@ export const validateOrganistName = (name) => {
   }
   
   // Remove caracteres perigosos
-  const dangerousChars = /[<>\"'&]/;
+  const dangerousChars = /[<>"'&]/;
   if (dangerousChars.test(name)) {
     return { isValid: false, error: 'Nome contém caracteres inválidos.' };
   }
@@ -123,7 +123,6 @@ export const sanitizeString = (input) => {
   
   return input
     .trim()
-    .replace(/[<>\"'&]/g, '') // Remove caracteres perigosos
+    .replace(/[<>"'&]/g, '') // Remove caracteres perigosos
     .replace(/\s+/g, ' '); // Normaliza espaços
 };
-
