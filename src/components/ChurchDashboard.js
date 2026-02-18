@@ -33,6 +33,7 @@ const ChurchDashboard = ({ user }) => {
   const fetchData = useCallback(async () => {
     if (!user || !id) return;
     setLoading(true);
+    setError('');
     try {
       // 1. Busca Organistas
       const orgsData = await getOrganistsByChurch(user.uid, id);
@@ -64,9 +65,11 @@ const ChurchDashboard = ({ user }) => {
         // Fallback: Se não tiver config (igreja antiga), mostra tudo
         setVisibleDays(ALL_WEEK_DAYS);
       }
+      setError('');
 
     } catch (error) {
       logger.error("Erro ao carregar dados:", error);
+      setError('Falha ao carregar dados da igreja.');
     } finally {
       setLoading(false);
     }

@@ -1,3 +1,6 @@
+import logger from '../utils/logger';
+import { generateSchedule, SERVICE_TEMPLATES } from '../utils/scheduleLogic';
+
 jest.mock('../utils/logger', () => ({
   __esModule: true,
   default: {
@@ -6,9 +9,6 @@ jest.mock('../utils/logger', () => ({
     info: jest.fn(),
   },
 }));
-
-import logger from '../utils/logger';
-import { generateSchedule, SERVICE_TEMPLATES } from '../utils/scheduleLogic';
 
 const SUNDAY_CONFIG = {
   sunday: [SERVICE_TEMPLATES.MeiaHora, SERVICE_TEMPLATES.Culto],

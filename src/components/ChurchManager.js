@@ -36,7 +36,9 @@ const ChurchManager = ({ user }) => {
     try {
       const userChurches = await getChurches(user.uid);
       setChurches(userChurches);
+      setError('');
     } catch (err) {
+      logger.error('Falha ao carregar as igrejas:', err);
       setError('Falha ao carregar as igrejas.');
     }
     setIsLoading(false);
