@@ -5,6 +5,7 @@ import { useChurch } from '../contexts/ChurchContext';
 import { ALL_WEEK_DAYS, INITIAL_AVAILABILITY, formatAvailability } from '../constants/days';
 import { validateOrganistName, sanitizeString } from '../utils/validation';
 import logger from '../utils/logger';
+import ConfirmDialog from './ui/ConfirmDialog';
 
 const ChurchDashboard = ({ user }) => {
   const { id } = useParams();
@@ -22,6 +23,9 @@ const ChurchDashboard = ({ user }) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [pendingDeleteOrganist, setPendingDeleteOrganist] = useState(null);
 
   // Carrega Dados (Organistas + Configuração da Igreja)
   const fetchData = useCallback(async () => {
@@ -87,6 +91,8 @@ const ChurchDashboard = ({ user }) => {
 
     setAvailability(loadedAvailability);
     setEditingId(organist.id);
+    setError('');
+    setSuccessMessage('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -94,6 +100,7 @@ const ChurchDashboard = ({ user }) => {
     setNewOrganistName('');
     setAvailability(INITIAL_AVAILABILITY);
     setEditingId(null);
+    setError('');
   };
 
   const handleSaveOrganist = async (e) => {
@@ -102,16 +109,18 @@ const ChurchDashboard = ({ user }) => {
     // Validação
     const nameValidation = validateOrganistName(newOrganistName);
     if (!nameValidation.isValid) {
-      alert(nameValidation.error);
+      setError(nameValidation.error);
       return;
     }
 
     if (!user || !id) {
-      alert("Erro de identificação.");
+      setError("Erro de identificação.");
       return;
     }
 
     setIsSubmitting(true);
+    setError('');
+    setSuccessMessage('');
     try {
       const organistData = {
         name: sanitizeString(newOrganistName),
@@ -126,24 +135,32 @@ const ChurchDashboard = ({ user }) => {
 
       handleCancelEdit();
       await fetchData(); // Recarrega tudo
+      setSuccessMessage(editingId ? 'Organista atualizada com sucesso.' : 'Organista cadastrada com sucesso.');
 
     } catch (error) {
       logger.error("Erro ao salvar organista:", error);
-      alert("Erro ao salvar organista.");
+      setError("Erro ao salvar organista.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleDeleteOrganist = async (organistId, organistName) => {
-    if (window.confirm(`Tem certeza que deseja excluir a organista ${organistName}?`)) {
-      try {
-        await deleteOrganistFromChurch(user.uid, id, organistId);
-        await fetchData();
-      } catch (error) {
-        logger.error("Erro ao excluir organista:", error);
-        alert("Erro ao excluir organista.");
-      }
+  const handleRequestDeleteOrganist = (organistId, organistName) => {
+    setPendingDeleteOrganist({ id: organistId, name: organistName });
+  };
+
+  const handleConfirmDeleteOrganist = async () => {
+    if (!pendingDeleteOrganist) return;
+    try {
+      await deleteOrganistFromChurch(user.uid, id, pendingDeleteOrganist.id);
+      await fetchData();
+      setSuccessMessage('Organista excluída com sucesso.');
+      setError('');
+    } catch (error) {
+      logger.error("Erro ao excluir organista:", error);
+      setError("Erro ao excluir organista.");
+    } finally {
+      setPendingDeleteOrganist(null);
     }
   };
 
@@ -190,6 +207,12 @@ const ChurchDashboard = ({ user }) => {
         </h4>
 
         <form onSubmit={handleSaveOrganist}>
+          {error && (
+            <p style={{ color: 'red', marginTop: 0, marginBottom: '12px' }}>{error}</p>
+          )}
+          {successMessage && (
+            <p style={{ color: 'green', marginTop: 0, marginBottom: '12px' }}>{successMessage}</p>
+          )}
           <div style={{ marginBottom: '15px' }}>
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'normal' }}>Nome da Organista:</label>
             <input
@@ -265,7 +288,7 @@ const ChurchDashboard = ({ user }) => {
 
                 <div style={{ display: 'flex', gap: '10px' }}>
                   <button onClick={() => handleStartEdit(org)} style={{ fontSize: '0.8em', padding: '6px 10px', background: '#ffc107', border: 'none', color: '#333', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Editar</button>
-                  <button onClick={() => handleDeleteOrganist(org.id, org.name)} style={{ fontSize: '0.8em', padding: '6px 10px', background: '#dc3545', border: 'none', color: 'white', borderRadius: '4px', cursor: 'pointer' }}>Excluir</button>
+                  <button onClick={() => handleRequestDeleteOrganist(org.id, org.name)} style={{ fontSize: '0.8em', padding: '6px 10px', background: '#dc3545', border: 'none', color: 'white', borderRadius: '4px', cursor: 'pointer' }}>Excluir</button>
                 </div>
               </div>
               <div style={{ color: '#666', fontSize: '0.9em' }}>
@@ -275,6 +298,20 @@ const ChurchDashboard = ({ user }) => {
           ))}
         </ul>
       )}
+      <ConfirmDialog
+        isOpen={Boolean(pendingDeleteOrganist)}
+        title="Excluir organista"
+        message={
+          pendingDeleteOrganist
+            ? `Tem certeza que deseja excluir a organista ${pendingDeleteOrganist.name}?`
+            : ''
+        }
+        confirmText="Excluir"
+        cancelText="Cancelar"
+        isDanger
+        onConfirm={handleConfirmDeleteOrganist}
+        onCancel={() => setPendingDeleteOrganist(null)}
+      />
     </div>
   );
 };

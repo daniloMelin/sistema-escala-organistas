@@ -6,6 +6,7 @@ import { SERVICE_TEMPLATES } from '../utils/scheduleLogic';
 import { ALL_WEEK_DAYS, INITIAL_AVAILABILITY } from '../constants/days';
 import { validateChurchName, validateChurchCode, sanitizeString } from '../utils/validation';
 import logger from '../utils/logger';
+import ConfirmDialog from './ui/ConfirmDialog';
 
 const ChurchManager = ({ user }) => {
   const [churches, setChurches] = useState([]);
@@ -22,6 +23,7 @@ const ChurchManager = ({ user }) => {
   const [editingId, setEditingId] = useState(null);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [pendingDeleteChurch, setPendingDeleteChurch] = useState(null);
 
   const navigate = useNavigate();
   const { setSelectedChurch } = useChurch();
@@ -161,18 +163,25 @@ const ChurchManager = ({ user }) => {
     setIsSubmitting(false);
   };
 
-  const handleDeleteChurch = async (e, churchId, churchName) => {
+  const handleRequestDeleteChurch = (e, churchId, churchName) => {
     e.stopPropagation();
-    if (window.confirm(`Tem certeza que deseja excluir a igreja "${churchName}"? \n\nATENÇÃO: Todas as organistas e escalas desta igreja serão perdidas para sempre.`)) {
-      try {
-        await deleteChurchWithSubcollections(user.uid, churchId);
-        setSuccessMessage('Igreja e dados associados excluídos com sucesso.');
-        if (editingId === churchId) handleCancelEdit();
-        fetchChurches();
-      } catch (err) {
-        logger.error('Erro ao excluir igreja:', err);
-        alert('Erro ao excluir igreja. Tente novamente.');
-      }
+    setPendingDeleteChurch({ id: churchId, name: churchName });
+  };
+
+  const handleConfirmDeleteChurch = async () => {
+    if (!pendingDeleteChurch) return;
+
+    try {
+      await deleteChurchWithSubcollections(user.uid, pendingDeleteChurch.id);
+      setSuccessMessage('Igreja e dados associados excluídos com sucesso.');
+      setError('');
+      if (editingId === pendingDeleteChurch.id) handleCancelEdit();
+      fetchChurches();
+    } catch (err) {
+      logger.error('Erro ao excluir igreja:', err);
+      setError('Erro ao excluir igreja. Tente novamente.');
+    } finally {
+      setPendingDeleteChurch(null);
     }
   };
 
@@ -247,11 +256,25 @@ const ChurchManager = ({ user }) => {
             </div>
             <div style={{ display: 'flex', gap: '10px' }}>
               <button onClick={(e) => handleStartEdit(e, church)} disabled={isLoading} style={{ backgroundColor: '#ffc107', color: '#333', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: isLoading ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>Editar</button>
-              <button onClick={(e) => handleDeleteChurch(e, church.id, church.name)} disabled={isLoading} style={{ backgroundColor: '#dc3545', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: isLoading ? 'not-allowed' : 'pointer' }}>Excluir</button>
+              <button onClick={(e) => handleRequestDeleteChurch(e, church.id, church.name)} disabled={isLoading} style={{ backgroundColor: '#dc3545', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: isLoading ? 'not-allowed' : 'pointer' }}>Excluir</button>
             </div>
           </li>
         ))}
       </ul>
+      <ConfirmDialog
+        isOpen={Boolean(pendingDeleteChurch)}
+        title="Excluir igreja"
+        message={
+          pendingDeleteChurch
+            ? `Tem certeza que deseja excluir a igreja "${pendingDeleteChurch.name}"?\n\nATENÇÃO: Todas as organistas e escalas desta igreja serão perdidas para sempre.`
+            : ''
+        }
+        confirmText="Excluir"
+        cancelText="Cancelar"
+        isDanger
+        onConfirm={handleConfirmDeleteChurch}
+        onCancel={() => setPendingDeleteChurch(null)}
+      />
     </div>
   );
 };
