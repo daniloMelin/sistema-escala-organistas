@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, useNavigate } from 'react-router-dom';
 
 // Componentes Atuais
 import ChurchManager from './components/ChurchManager';
-import ChurchDashboard from './components/ChurchDashboard';
-import ChurchScheduleGenerator from './components/ChurchScheduleGenerator';
 import Auth from './components/Auth';
+import ErrorBoundary from './components/ErrorBoundary';
+import logger from './utils/logger';
 
 // Contexto e Autenticação
 import { ChurchProvider } from './contexts/ChurchContext';
 import { auth } from './firebaseConfig';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+
+// Lazy loading para componentes grandes
+const ChurchDashboard = lazy(() => import('./components/ChurchDashboard'));
+const ChurchScheduleGenerator = lazy(() => import('./components/ChurchScheduleGenerator'));
 
 // Componente de Layout
 const Layout = ({ children, user }) => {
@@ -26,7 +30,7 @@ const Layout = ({ children, user }) => {
       await signOut(auth);
       navigate('/');
     } catch (error) {
-      console.error("Erro ao fazer logout:", error);
+      logger.error("Erro ao fazer logout:", error);
     }
   };
 
@@ -83,28 +87,32 @@ function App() {
   }
 
   return (
-    <Router>
-      {user ? (
-        <ChurchProvider>
-          <Layout user={user}>
-            <Routes>
-              {/* Rota principal: Lista de Igrejas */}
-              <Route path="/" element={<ChurchManager user={user} />} />
+    <ErrorBoundary>
+      <Router>
+        {user ? (
+          <ChurchProvider>
+            <Layout user={user}>
+              <Suspense fallback={<div style={{textAlign: 'center', marginTop: '50px'}}>Carregando...</div>}>
+                <Routes>
+                  {/* Rota principal: Lista de Igrejas */}
+                  <Route path="/" element={<ChurchManager user={user} />} />
 
-              {/* Rota do Painel da Igreja */}
-              <Route path="/igreja/:id" element={<ChurchDashboard user={user} />} />
-              
-              {/* Rota do Gerador de Escala */}
-              <Route path="/igreja/:id/escala" element={<ChurchScheduleGenerator user={user} />} />
+                  {/* Rota do Painel da Igreja */}
+                  <Route path="/igreja/:id" element={<ChurchDashboard user={user} />} />
+                  
+                  {/* Rota do Gerador de Escala */}
+                  <Route path="/igreja/:id/escala" element={<ChurchScheduleGenerator user={user} />} />
 
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          </Layout>
-        </ChurchProvider>
-      ) : (
-        <Auth />
-      )}
-    </Router>
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              </Suspense>
+            </Layout>
+          </ChurchProvider>
+        ) : (
+          <Auth />
+        )}
+      </Router>
+    </ErrorBoundary>
   );
 }
 

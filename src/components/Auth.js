@@ -7,6 +7,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider
 } from 'firebase/auth';
+import logger from '../utils/logger';
 
 const Auth = () => {
   const [error, setError] = useState('');
@@ -39,7 +40,7 @@ const Auth = () => {
 
     } catch (err) {
       setError('Falha ao autenticar com o Google. Tente novamente.');
-      console.error("Erro com Google Sign-In:", err);
+      logger.error("Erro com Google Sign-In:", err);
       setIsLoading(false);
     }
   };

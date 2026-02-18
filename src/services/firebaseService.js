@@ -13,6 +13,7 @@ import {
   writeBatch,
   limit
 } from 'firebase/firestore';
+import logger from '../utils/logger';
 
 // --- IGREJAS ---
 
@@ -22,7 +23,7 @@ export const addChurch = async (userId, churchData) => {
     const churchesCollectionRef = collection(db, 'users', userId, 'churches');
     await addDoc(churchesCollectionRef, { ...churchData, createdAt: Timestamp.now() });
   } catch (e) {
-    console.error("Erro ao adicionar igreja:", e);
+    logger.error("Erro ao adicionar igreja:", e);
     throw e;
   }
 };
@@ -35,7 +36,7 @@ export const getChurches = async (userId) => {
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   } catch (e) {
-    console.error("Erro ao buscar igrejas:", e);
+    logger.error("Erro ao buscar igrejas:", e);
     throw e;
   }
 };
@@ -46,7 +47,7 @@ export const deleteChurch = async (userId, churchId) => {
     const churchDocRef = doc(db, 'users', userId, 'churches', churchId);
     await deleteDoc(churchDocRef);
   } catch (e) {
-    console.error("Erro ao deletar igreja:", e);
+    logger.error("Erro ao deletar igreja:", e);
     throw e;
   }
 };
@@ -82,7 +83,7 @@ export const deleteChurchWithSubcollections = async (userId, churchId) => {
     const churchDocRef = doc(db, 'users', userId, 'churches', churchId);
     await deleteDoc(churchDocRef);
   } catch (e) {
-    console.error("Erro ao deletar igreja com subcollections:", e);
+    logger.error("Erro ao deletar igreja com subcollections:", e);
     throw e;
   }
 };
@@ -98,7 +99,7 @@ export const getOrganistsByChurch = async (userId, churchId) => {
       ...doc.data(),
     }));
   } catch (error) {
-    console.error("Erro ao buscar organistas:", error);
+    logger.error("Erro ao buscar organistas:", error);
     throw error;
   }
 };
@@ -113,7 +114,7 @@ export const addOrganistToChurch = async (userId, churchId, organistData) => {
     });
     return { id: docRef.id, ...organistData };
   } catch (error) {
-    console.error("Erro ao adicionar organista na igreja:", error);
+    logger.error("Erro ao adicionar organista na igreja:", error);
     throw error;
   }
 };
@@ -124,7 +125,7 @@ export const updateOrganistInChurch = async (userId, churchId, organistId, dataT
     const organistDocRef = doc(db, "users", userId, "churches", churchId, "organists", organistId);
     await updateDoc(organistDocRef, dataToUpdate);
   } catch (error) {
-    console.error("Erro ao atualizar organista:", error);
+    logger.error("Erro ao atualizar organista:", error);
     throw error;
   }
 };
@@ -135,7 +136,7 @@ export const deleteOrganistFromChurch = async (userId, churchId, organistId) => 
     const organistDocRef = doc(db, "users", userId, "churches", churchId, "organists", organistId);
     await deleteDoc(organistDocRef);
   } catch (error) {
-    console.error("Erro ao deletar organista:", error);
+    logger.error("Erro ao deletar organista:", error);
     throw error;
   }
 };
@@ -152,7 +153,7 @@ export const saveScheduleToChurch = async (userId, churchId, scheduleId, schedul
     };
     await setDoc(scheduleDocRef, dataToSave);
   } catch (e) {
-    console.error("Erro ao salvar escala da igreja:", e);
+    logger.error("Erro ao salvar escala da igreja:", e);
     throw e;
   }
 };
@@ -176,7 +177,7 @@ export const getChurchSchedules = async (userId, churchId, count = 3) => {
     });
     return schedules;
   } catch (e) {
-    console.error("Erro ao buscar escalas da igreja:", e);
+    logger.error("Erro ao buscar escalas da igreja:", e);
     throw e;
   }
 };
@@ -188,7 +189,7 @@ export const updateChurch = async (userId, churchId, dataToUpdate) => {
     const churchDocRef = doc(db, 'users', userId, 'churches', churchId);
     await updateDoc(churchDocRef, dataToUpdate);
   } catch (e) {
-    console.error("Erro ao atualizar igreja:", e);
+    logger.error("Erro ao atualizar igreja:", e);
     throw e;
   }
 };
@@ -202,7 +203,7 @@ export const getChurch = async (userId, churchId) => {
     }
     return null;
   } catch (e) {
-    console.error("Erro ao buscar igreja:", e);
+    logger.error("Erro ao buscar igreja:", e);
     throw e;
   }
 };

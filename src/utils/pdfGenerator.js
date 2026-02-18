@@ -1,4 +1,6 @@
 import jsPDF from 'jspdf';
+import { getMonthYearLabel } from './dateUtils';
+import logger from './logger';
 
 // Cores padrão (RGB)
 const COLORS = {
@@ -21,21 +23,6 @@ const hasValidAssignments = (assignments) => {
     return false;
   }
   return Object.values(assignments).some(value => value && value.toUpperCase() !== 'VAGO');
-};
-
-const getMonthYearLabel = (dateStr) => {
-  if (!dateStr) return '';
-  const parts = dateStr.split('/');
-  if (parts.length < 3) return dateStr;
-
-  const monthIndex = parseInt(parts[1], 10) - 1;
-  const year = parts[2];
-  const months = [
-    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-  ];
-
-  return `${months[monthIndex]} de ${year}`;
 };
 
 export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName) => {
@@ -209,7 +196,7 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
     doc.save(`${safeChurchName}_${fileDate}.pdf`);
 
   } catch (error) {
-    console.error("Erro ao gerar PDF:", error);
+    logger.error("Erro ao gerar PDF:", error);
     throw error;
   }
 };

@@ -1,22 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getOrganistsByChurch, saveScheduleToChurch, getChurchSchedules, getChurch } from '../services/firebaseService';
 import { generateSchedule as generateScheduleLogic } from '../utils/scheduleLogic';
 import { exportScheduleToPDF } from '../utils/pdfGenerator';
 import { useChurch } from '../contexts/ChurchContext';
-
-// Função auxiliar para agrupar dias por mês (Mesma lógica do PDF)
-const getMonthYearLabel = (dateStr) => {
-  if (!dateStr) return '';
-  const parts = dateStr.split('/');
-  const monthIndex = parseInt(parts[1], 10) - 1;
-  const year = parts[2];
-  const months = [
-    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-  ];
-  return `${months[monthIndex]} de ${year}`;
-};
+import { getMonthYearLabel } from '../utils/dateUtils';
+import { validateDateRange } from '../utils/validation';
+import logger from '../utils/logger';
 
 const ChurchScheduleGenerator = ({ user }) => {
   const { id } = useParams();
@@ -56,7 +46,7 @@ const ChurchScheduleGenerator = ({ user }) => {
       const schedulesData = await getChurchSchedules(user.uid, id);
       setSavedSchedules(schedulesData);
     } catch (err) {
-      console.error(err);
+      logger.error('Erro ao carregar dados da igreja:', err);
       setError("Erro ao carregar dados da igreja.");
     } finally {
       setIsLoading(false);
@@ -75,7 +65,7 @@ const ChurchScheduleGenerator = ({ user }) => {
     try {
       exportScheduleToPDF(generatedSchedule, startDate, endDate, churchName);
     } catch (err) {
-      console.error(err);
+      logger.error('Erro ao exportar PDF:', err);
       setError(`Erro ao exportar PDF: ${err.message || err}`);
     }
   };
@@ -86,8 +76,10 @@ const ChurchScheduleGenerator = ({ user }) => {
     setSuccessMessage('');
     setIsEditing(false);
 
-    if (!startDate || !endDate) {
-      setError("Defina as datas de início e fim.");
+    // Validação de datas
+    const dateValidation = validateDateRange(startDate, endDate);
+    if (!dateValidation.isValid) {
+      setError(dateValidation.error);
       return;
     }
     if (organists.length === 0) {
@@ -106,7 +98,7 @@ const ChurchScheduleGenerator = ({ user }) => {
 
       if (schedule.length === 0) {
         setError("Não foi possível gerar escala.");
-        console.error('[ERROR] Schedule is empty!');
+        logger.error('Schedule vazio após geração.');
         setIsGenerating(false);
         return;
       }
@@ -130,7 +122,7 @@ const ChurchScheduleGenerator = ({ user }) => {
       setSavedSchedules(updatedSchedules);
 
     } catch (err) {
-      console.error(err);
+      logger.error('Erro ao gerar/salvar escala:', err);
       setError("Erro ao gerar/salvar escala.");
     } finally {
       setIsGenerating(false);
@@ -177,7 +169,7 @@ const ChurchScheduleGenerator = ({ user }) => {
       const updatedSchedules = await getChurchSchedules(user.uid, id);
       setSavedSchedules(updatedSchedules);
     } catch (err) {
-      console.error(err);
+      logger.error('Erro ao salvar alterações da escala:', err);
       setError("Erro ao salvar as alterações.");
     } finally {
       setIsGenerating(false);
@@ -186,15 +178,18 @@ const ChurchScheduleGenerator = ({ user }) => {
 
   // --- AGRUPAMENTO PARA EXIBIÇÃO ---
   // Precisamos manter o índice original para a edição funcionar
-  const groupedSchedule = generatedSchedule.reduce((acc, day, index) => {
-    // Adicionamos o índice original ao objeto do dia
-    const dayWithIndex = { ...day, originalIndex: index };
-    const monthKey = getMonthYearLabel(day.date);
+  // Usa useMemo para evitar recálculo desnecessário
+  const groupedSchedule = useMemo(() => {
+    return generatedSchedule.reduce((acc, day, index) => {
+      // Adicionamos o índice original ao objeto do dia
+      const dayWithIndex = { ...day, originalIndex: index };
+      const monthKey = getMonthYearLabel(day.date);
 
-    if (!acc[monthKey]) acc[monthKey] = [];
-    acc[monthKey].push(dayWithIndex);
-    return acc;
-  }, {});
+      if (!acc[monthKey]) acc[monthKey] = [];
+      acc[monthKey].push(dayWithIndex);
+      return acc;
+    }, {});
+  }, [generatedSchedule]);
 
 
   return (
@@ -348,9 +343,14 @@ const ChurchScheduleGenerator = ({ user }) => {
             {savedSchedules.map(sch => (
               <li key={sch.id} style={{ border: '1px solid #eee', padding: '15px', marginBottom: '10px', borderRadius: '4px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'white' }}>
                 <div>
-                  <strong>{new Date(sch.period.start + "T00:00:00").toLocaleDateString()} até {new Date(sch.period.end + "T00:00:00").toLocaleDateString()}</strong>
+                  <strong>
+                    {sch.period?.start ? new Date(sch.period.start + "T00:00:00").toLocaleDateString() : 'N/A'} até{' '}
+                    {sch.period?.end ? new Date(sch.period.end + "T00:00:00").toLocaleDateString() : 'N/A'}
+                  </strong>
                   <br />
-                  <small style={{ color: '#999' }}>Atualizada em: {new Date(sch.generatedAt).toLocaleString()}</small>
+                  <small style={{ color: '#999' }}>
+                    Atualizada em: {sch.generatedAt ? new Date(sch.generatedAt).toLocaleString() : 'N/A'}
+                  </small>
                 </div>
                 <button
                   onClick={() => handleViewSaved(sch)}
