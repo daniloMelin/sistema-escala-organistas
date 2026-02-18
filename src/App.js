@@ -5,7 +5,8 @@ import { BrowserRouter as Router, Routes, Route, NavLink, useNavigate } from 're
 import ChurchManager from './components/ChurchManager';
 import Auth from './components/Auth';
 import ErrorBoundary from './components/ErrorBoundary';
-import logger from './utils/logger';
+import logger, { setLoggerReporter, setLoggerContextProvider } from './utils/logger';
+import { createFirestoreLoggerReporter } from './services/firestoreLoggerReporter';
 
 // Contexto e Autenticação
 import { ChurchProvider } from './contexts/ChurchContext';
@@ -15,6 +16,9 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 // Lazy loading para componentes grandes
 const ChurchDashboard = lazy(() => import('./components/ChurchDashboard'));
 const ChurchScheduleGenerator = lazy(() => import('./components/ChurchScheduleGenerator'));
+const firestoreReporter = createFirestoreLoggerReporter({
+  getUser: () => auth.currentUser,
+});
 
 // Componente de Layout
 const Layout = ({ children, user }) => {
@@ -73,6 +77,21 @@ const NotFoundPage = () => (
 function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setLoggerReporter(firestoreReporter);
+    setLoggerContextProvider(() => ({
+      route:
+        typeof window !== 'undefined' && window.location
+          ? window.location.pathname
+          : '',
+    }));
+
+    return () => {
+      setLoggerReporter(null);
+      setLoggerContextProvider(null);
+    };
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {

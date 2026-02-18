@@ -29,6 +29,12 @@ service cloud.firestore {
         match /schedules/{scheduleId} {
           allow read, write: if isOwner(userId);
         }
+
+      }
+
+      // Subcoleção de logs da aplicação (observabilidade)
+      match /appLogs/{logId} {
+        allow read, write: if isOwner(userId);
       }
     }
     
@@ -38,4 +44,3 @@ service cloud.firestore {
     }
   }
 }
-
