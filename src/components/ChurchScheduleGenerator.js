@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getOrganistsByChurch, saveScheduleToChurch, getChurchSchedules, getChurch } from '../services/firebaseService';
 import { generateSchedule as generateScheduleLogic } from '../utils/scheduleLogic';
@@ -365,6 +366,13 @@ const ChurchScheduleGenerator = ({ user }) => {
       )}
     </div>
   );
+};
+
+ChurchScheduleGenerator.propTypes = {
+  user: PropTypes.shape({
+    uid: PropTypes.string.isRequired,
+    email: PropTypes.string,
+  }).isRequired,
 };
 
 export default ChurchScheduleGenerator;

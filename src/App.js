@@ -1,4 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
+import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Routes, Route, NavLink, useNavigate } from 'react-router-dom';
 
 // Componentes Atuais
@@ -65,6 +66,14 @@ const Layout = ({ children, user }) => {
       </footer>
     </>
   );
+};
+
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+  user: PropTypes.shape({
+    uid: PropTypes.string,
+    email: PropTypes.string,
+  }),
 };
 
 const NotFoundPage = () => (

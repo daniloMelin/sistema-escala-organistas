@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const ConfirmDialog = ({
   isOpen,
@@ -81,6 +82,17 @@ const ConfirmDialog = ({
       </div>
     </div>
   );
+};
+
+ConfirmDialog.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  title: PropTypes.string,
+  message: PropTypes.string,
+  confirmText: PropTypes.string,
+  cancelText: PropTypes.string,
+  onConfirm: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  isDanger: PropTypes.bool,
 };
 
 export default ConfirmDialog;

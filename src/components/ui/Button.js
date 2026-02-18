@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const BUTTON_STYLES = {
   primary: { backgroundColor: '#007bff', color: 'white' },
@@ -44,5 +45,13 @@ const Button = ({
   );
 };
 
-export default Button;
+Button.propTypes = {
+  children: PropTypes.node.isRequired,
+  variant: PropTypes.oneOf(['primary', 'secondary', 'success', 'danger', 'warning', 'info']),
+  disabled: PropTypes.bool,
+  type: PropTypes.oneOf(['button', 'submit', 'reset']),
+  onClick: PropTypes.func,
+  style: PropTypes.object,
+};
 
+export default Button;

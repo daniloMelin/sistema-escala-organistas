@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getOrganistsByChurch, addOrganistToChurch, deleteOrganistFromChurch, updateOrganistInChurch, getChurch } from '../services/firebaseService';
 import { useChurch } from '../contexts/ChurchContext';
@@ -317,6 +318,13 @@ const ChurchDashboard = ({ user }) => {
       />
     </div>
   );
+};
+
+ChurchDashboard.propTypes = {
+  user: PropTypes.shape({
+    uid: PropTypes.string.isRequired,
+    email: PropTypes.string,
+  }).isRequired,
 };
 
 export default ChurchDashboard;

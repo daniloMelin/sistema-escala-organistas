@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { getChurches, addChurch, deleteChurchWithSubcollections, updateChurch } from '../services/firebaseService';
 import { useNavigate } from 'react-router-dom';
 import { useChurch } from '../contexts/ChurchContext';
@@ -310,4 +311,12 @@ const ChurchManager = ({ user }) => {
     </div>
   );
 };
+
+ChurchManager.propTypes = {
+  user: PropTypes.shape({
+    uid: PropTypes.string.isRequired,
+    email: PropTypes.string,
+  }).isRequired,
+};
+
 export default ChurchManager;
