@@ -30,10 +30,10 @@ const ChurchManager = ({ user }) => {
   } = useChurchManager(user);
 
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: 'auto' }}>
+    <div className="page-container page-container--md">
       <h2>Gerenciamento de Igrejas</h2>
       {isLoading && (
-        <div style={{ marginBottom: '15px', padding: '10px', background: '#fff3cd', borderRadius: '4px', border: '1px solid #ffeeba' }}>
+        <div className="alert alert--warning">
           Carregando dados da igreja...
         </div>
       )}

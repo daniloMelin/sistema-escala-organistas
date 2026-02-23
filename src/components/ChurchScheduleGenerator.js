@@ -37,17 +37,17 @@ const ChurchScheduleGenerator = ({ user }) => {
 
 
   return (
-    <div style={{ padding: '20px', maxWidth: '1100px', margin: 'auto' }}>
-      <Button onClick={() => navigate(`/igreja/${id}`)} variant="secondary" style={{ marginBottom: '20px', fontSize: '14px' }}>
+    <div className="page-container page-container--xl">
+      <Button onClick={() => navigate(`/igreja/${id}`)} variant="secondary" size="sm" className="mb-20">
         &larr; Voltar para Painel
       </Button>
       {isLoading && (
-        <div style={{ marginBottom: '15px', padding: '10px', background: '#fff3cd', borderRadius: '4px', border: '1px solid #ffeeba' }}>
+        <div className="alert alert--warning">
           Carregando dados da igreja...
         </div>
       )}
-      <h2 style={{ borderBottom: '2px solid #eee', paddingBottom: '10px' }}>
-        Gerador de Escala: <span style={{ color: '#0056b3' }}>{selectedChurch?.name || 'Igreja'}</span>
+      <h2 className="section-title">
+        Gerador de Escala: <span className="section-title__highlight">{selectedChurch?.name || 'Igreja'}</span>
       </h2>
 
       {!isEditing && (

@@ -11,45 +11,28 @@ const OrganistList = ({ loading, organists, formatOrganistAvailability, onStartE
       ) : organists.length === 0 ? (
         <p>Nenhuma organista cadastrada.</p>
       ) : (
-        <ul style={{ listStyle: 'none', padding: 0 }}>
+        <ul className="list-reset">
           {organists.map((org) => (
-            <li
-              key={org.id}
-              style={{
-                padding: '15px',
-                marginBottom: '10px',
-                border: '1px solid #eee',
-                borderRadius: '6px',
-                background: 'white',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginBottom: '5px',
-                }}
-              >
+            <li key={org.id} className="organist-list__item">
+              <div className="organist-list__header">
                 <div>
-                  <strong style={{ fontSize: '1.1em', color: '#333' }}>{org.name}</strong>
+                  <strong className="organist-list__name">{org.name}</strong>
                 </div>
 
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <Button onClick={() => onStartEdit(org)} variant="warning" style={{ fontSize: '12px', padding: '6px 10px' }}>
+                <div className="actions-row">
+                  <Button onClick={() => onStartEdit(org)} variant="warning" size="sm">
                     Editar
                   </Button>
                   <Button
                     onClick={() => onRequestDeleteOrganist(org.id, org.name)}
                     variant="danger"
-                    style={{ fontSize: '12px', padding: '6px 10px' }}
+                    size="sm"
                   >
                     Excluir
                   </Button>
                 </div>
               </div>
-              <div style={{ color: '#666', fontSize: '0.9em' }}>
+              <div className="muted-text muted-text--sm">
                 <strong>Disponivel: </strong> {formatOrganistAvailability(org.availability)}
               </div>
             </li>

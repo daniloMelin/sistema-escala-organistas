@@ -15,27 +15,17 @@ const ScheduleGridView = ({
   if (Object.keys(groupedSchedule).length === 0) return null;
 
   return (
-    <div style={{ marginBottom: '40px' }}>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '15px',
-          background: '#eee',
-          padding: '10px',
-          borderRadius: '4px',
-        }}
-      >
-        <h3 style={{ margin: 0 }}>{isEditing ? '✏️ Editando Escala' : 'Visualização da Escala'}</h3>
+    <div className="schedule-grid">
+      <div className="schedule-grid__toolbar">
+        <h3 className="schedule-grid__title">{isEditing ? '✏️ Editando Escala' : 'Visualização da Escala'}</h3>
 
-        <div style={{ display: 'flex', gap: '10px' }}>
+        <div className="actions-row">
           {isEditing ? (
             <>
               <Button
                 onClick={() => onToggleEditing(false)}
                 variant="secondary"
-                style={{ padding: '8px 15px', fontSize: '14px' }}
+                size="sm"
               >
                 Cancelar
               </Button>
@@ -43,7 +33,7 @@ const ScheduleGridView = ({
                 onClick={onSaveChanges}
                 disabled={isGenerating}
                 variant="success"
-                style={{ padding: '8px 15px', fontSize: '14px' }}
+                size="sm"
               >
                 {isGenerating ? 'Salvando...' : 'Salvar Alterações'}
               </Button>
@@ -53,14 +43,14 @@ const ScheduleGridView = ({
               <Button
                 onClick={() => onToggleEditing(true)}
                 variant="warning"
-                style={{ padding: '8px 15px', fontSize: '14px' }}
+                size="sm"
               >
                 ✏️ Editar Manualmente
               </Button>
               <Button
                 onClick={onExportClick}
                 variant="info"
-                style={{ padding: '8px 15px', fontSize: '14px' }}
+                size="sm"
               >
                 📥 Baixar PDF
               </Button>
@@ -70,69 +60,33 @@ const ScheduleGridView = ({
       </div>
 
       {Object.entries(groupedSchedule).map(([monthLabel, days]) => (
-        <div key={monthLabel} style={{ marginBottom: '30px' }}>
-          <div
-            style={{
-              background: '#e0e0e0',
-              padding: '8px',
-              textAlign: 'center',
-              fontWeight: 'bold',
-              borderRadius: '4px',
-              marginBottom: '10px',
-              color: '#555',
-            }}
-          >
+        <div key={monthLabel} className="schedule-grid__month">
+          <div className="schedule-grid__month-header">
             {monthLabel.toUpperCase()}
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '15px' }}>
+          <div className="schedule-grid__cards">
             {days.map((day) => {
               const hasAssignments = Object.values(day.assignments).some((v) => v && v !== 'VAGO');
               if (!hasAssignments && !isEditing) return null;
 
               return (
-                <div
-                  key={day.date}
-                  style={{
-                    border: '1px solid #ccc',
-                    borderRadius: '6px',
-                    overflow: 'hidden',
-                    boxShadow: '0 2px 5px rgba(0,0,0,0.05)',
-                    background: 'white',
-                  }}
-                >
-                  <div
-                    style={{
-                      background: '#f0f0f0',
-                      padding: '8px',
-                      textAlign: 'center',
-                      fontWeight: 'bold',
-                      borderBottom: '1px solid #eee',
-                    }}
-                  >
+                <div key={day.date} className="schedule-card">
+                  <div className="schedule-card__header">
                     {day.dayName}, {day.date}
                   </div>
 
-                  <div style={{ padding: '15px' }}>
-                    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                  <div className="schedule-card__body">
+                    <ul className="list-reset">
                       {Object.entries(day.assignments).map(([culto, nome]) => (
-                        <li
-                          key={culto}
-                          style={{
-                            marginBottom: '8px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            fontSize: '0.95em',
-                          }}
-                        >
-                          <span style={{ color: '#666', fontWeight: 'bold' }}>{culto}:</span>
+                        <li key={culto} className="schedule-card__row">
+                          <span className="schedule-card__role">{culto}:</span>
 
                           {isEditing ? (
                             <select
                               value={nome}
                               onChange={(e) => onAssignmentChange(day.originalIndex, culto, e.target.value)}
-                              style={{ padding: '4px', borderRadius: '4px', borderColor: '#ccc', maxWidth: '150px' }}
+                              className="schedule-card__select"
                             >
                               <option value="VAGO">VAGO</option>
                               {organists.map((org) => (
@@ -142,7 +96,7 @@ const ScheduleGridView = ({
                               ))}
                             </select>
                           ) : (
-                            <span style={{ color: nome === 'VAGO' ? 'red' : '#333', fontWeight: nome === 'VAGO' ? 'bold' : 'normal' }}>
+                            <span className={nome === 'VAGO' ? 'schedule-card__name schedule-card__name--empty' : 'schedule-card__name'}>
                               {nome}
                             </span>
                           )}

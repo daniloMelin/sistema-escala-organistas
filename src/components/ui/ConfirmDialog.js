@@ -18,44 +18,24 @@ const ConfirmDialog = ({
     <div
       role="dialog"
       aria-modal="true"
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: 'rgba(0, 0, 0, 0.45)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 9999,
-        padding: '16px',
-      }}
+      className="confirm-dialog__backdrop"
       onClick={onCancel}
     >
       <div
-        style={{
-          width: '100%',
-          maxWidth: '460px',
-          background: '#fff',
-          borderRadius: '8px',
-          border: '1px solid #ddd',
-          padding: '20px',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
-        }}
+        className="confirm-dialog__card"
         onClick={(e) => e.stopPropagation()}
       >
-        <h4 style={{ marginTop: 0, marginBottom: '10px' }}>{title}</h4>
-        <p style={{ marginTop: 0, marginBottom: '18px', color: '#444', whiteSpace: 'pre-line' }}>
+        <h4 className="confirm-dialog__title">{title}</h4>
+        <p className="confirm-dialog__message">
           {message}
         </p>
 
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+        <div className="confirm-dialog__actions">
           <Button
             type="button"
             onClick={onCancel}
             variant="secondary"
-            style={{ padding: '8px 14px', fontSize: '14px' }}
+            size="sm"
           >
             {cancelText}
           </Button>
@@ -63,7 +43,7 @@ const ConfirmDialog = ({
             type="button"
             onClick={onConfirm}
             variant={isDanger ? 'danger' : 'primary'}
-            style={{ padding: '8px 14px', fontSize: '14px' }}
+            size="sm"
           >
             {confirmText}
           </Button>

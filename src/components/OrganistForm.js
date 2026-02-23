@@ -17,23 +17,15 @@ const OrganistForm = ({
   onCancelEdit,
 }) => {
   return (
-    <div
-      style={{
-        background: editingId ? '#fff3cd' : '#f8f9fa',
-        padding: '20px',
-        borderRadius: '8px',
-        marginBottom: '30px',
-        border: editingId ? '1px solid #ffeeba' : '1px solid #ddd',
-      }}
-    >
-      <h4 style={{ marginTop: 0, borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
+    <div className={`organist-form ${editingId ? 'organist-form--editing' : ''}`}>
+      <h4 className="organist-form__title">
         {editingId ? `Editando: ${newOrganistName}` : 'Cadastrar Nova Organista'}
       </h4>
 
       <form onSubmit={onSubmit}>
-        {error && <p style={{ color: 'red', marginTop: 0, marginBottom: '12px' }}>{error}</p>}
+        {error && <p className="feedback feedback--error feedback--tight">{error}</p>}
         {successMessage && (
-          <p style={{ color: 'green', marginTop: 0, marginBottom: '12px' }}>{successMessage}</p>
+          <p className="feedback feedback--success feedback--tight">{successMessage}</p>
         )}
         <Input
           label="Nome da Organista:"
@@ -42,34 +34,22 @@ const OrganistForm = ({
           onChange={(e) => onNameChange(e.target.value)}
           required
           disabled={isSubmitting}
-          style={{ padding: '10px' }}
         />
 
-        <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'normal' }}>
+        <div className="organist-form__availability">
+          <label className="organist-form__availability-label">
             Disponibilidade (Baseado nos dias de culto desta igreja):
           </label>
 
           {visibleDays.length === 0 ? (
-            <p style={{ color: 'orange', fontStyle: 'italic' }}>
+            <p className="feedback feedback--warn feedback--italic">
               Nenhum dia de culto configurado para esta igreja. Va em "Minhas Igrejas" e edite as
               configuracoes.
             </p>
           ) : (
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+            <div className="organist-form__days">
               {visibleDays.map((day) => (
-                <div
-                  key={day.key}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '5px',
-                    background: 'white',
-                    padding: '8px 12px',
-                    borderRadius: '4px',
-                    border: '1px solid #ccc',
-                  }}
-                >
+                <div key={day.key} className="organist-form__day-item">
                   <input
                     type="checkbox"
                     id={day.key}
@@ -78,7 +58,7 @@ const OrganistForm = ({
                     onChange={onCheckboxChange}
                     disabled={isSubmitting}
                   />
-                  <label htmlFor={day.key} style={{ cursor: 'pointer', fontSize: '0.9em' }}>
+                  <label htmlFor={day.key} className="organist-form__day-label">
                     {day.label}
                   </label>
                 </div>
@@ -87,13 +67,13 @@ const OrganistForm = ({
           )}
         </div>
 
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <Button type="submit" disabled={isSubmitting} variant={editingId ? 'warning' : 'success'} style={{ flex: 1 }}>
+        <div className="organist-form__actions">
+          <Button type="submit" disabled={isSubmitting} variant={editingId ? 'warning' : 'success'} className="organist-form__submit">
             {isSubmitting ? 'Salvando...' : editingId ? 'Atualizar Organista' : 'Cadastrar Organista'}
           </Button>
 
           {editingId && (
-            <Button type="button" onClick={onCancelEdit} disabled={isSubmitting} variant="secondary" style={{ fontSize: '14px' }}>
+            <Button type="button" onClick={onCancelEdit} disabled={isSubmitting} variant="secondary" size="sm">
               Cancelar
             </Button>
           )}

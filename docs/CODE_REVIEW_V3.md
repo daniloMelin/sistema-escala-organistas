@@ -19,6 +19,7 @@ Data de início: **23/02/2026**
 - [ ] Atingir e manter >= 70% nos arquivos críticos definidos
 
 Arquivos críticos atuais:
+
 - `src/utils/validation.js`
 - `src/utils/scheduleLogic.js`
 - `src/utils/dateUtils.js`
@@ -31,7 +32,7 @@ Arquivos críticos atuais:
 - [ ] Remover inline styles remanescentes dos componentes de domínio
 - [ ] Revisar consistência de tamanhos e variantes de botões
 
-### Etapa 3 - E2E (por último)
+### Etapa 3 - E2E
 
 - [ ] Definir stack E2E (Cypress ou Playwright)
 - [ ] Implementar cenário E2E: autenticação + cadastro de igreja + cadastro de organista

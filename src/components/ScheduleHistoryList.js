@@ -7,37 +7,25 @@ const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
 
   return (
     <>
-      <h3 style={{ marginTop: '40px', borderTop: '2px solid #eee', paddingTop: '20px' }}>Histórico de Escalas</h3>
-      {savedSchedules.length === 0 && <p style={{ color: '#777' }}>Nenhuma escala salva ainda.</p>}
-      <ul style={{ listStyle: 'none', padding: 0 }}>
+      <h3 className="history-title">Histórico de Escalas</h3>
+      {savedSchedules.length === 0 && <p className="muted-text">Nenhuma escala salva ainda.</p>}
+      <ul className="list-reset">
         {savedSchedules.map((sch) => (
-          <li
-            key={sch.id}
-            style={{
-              border: '1px solid #eee',
-              padding: '15px',
-              marginBottom: '10px',
-              borderRadius: '4px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              background: 'white',
-            }}
-          >
+          <li key={sch.id} className="history-item">
             <div>
               <strong>
                 {sch.period?.start ? new Date(`${sch.period.start}T00:00:00`).toLocaleDateString() : 'N/A'} até{' '}
                 {sch.period?.end ? new Date(`${sch.period.end}T00:00:00`).toLocaleDateString() : 'N/A'}
               </strong>
               <br />
-              <small style={{ color: '#999' }}>
+              <small className="history-item__date">
                 Atualizada em: {sch.generatedAt ? new Date(sch.generatedAt).toLocaleString() : 'N/A'}
               </small>
             </div>
             <Button
               onClick={() => onViewSaved(sch)}
               variant="secondary"
-              style={{ padding: '8px 15px', fontSize: '14px' }}
+              size="sm"
             >
               Visualizar
             </Button>

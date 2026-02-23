@@ -20,16 +20,8 @@ const ChurchForm = ({
   onCancelEdit,
 }) => {
   return (
-    <div
-      style={{
-        marginBottom: '30px',
-        padding: '20px',
-        border: '1px solid #ccc',
-        borderRadius: '8px',
-        background: editingId ? '#fff3cd' : '#fff',
-      }}
-    >
-      <h3 style={{ marginTop: 0 }}>{editingId ? 'Editar Igreja' : 'Cadastrar Nova Igreja'}</h3>
+    <div className={`church-form ${editingId ? 'church-form--editing' : ''}`}>
+      <h3 className="church-form__title">{editingId ? 'Editar Igreja' : 'Cadastrar Nova Igreja'}</h3>
 
       <form onSubmit={onSubmit}>
         <Input
@@ -46,48 +38,24 @@ const ChurchForm = ({
           onChange={(e) => onChurchCodeChange(e.target.value)}
         />
 
-        <div
-          style={{
-            marginBottom: '20px',
-            background: '#f9f9f9',
-            padding: '15px',
-            borderRadius: '4px',
-            border: '1px solid #eee',
-          }}
-        >
-          <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>
+        <div className="church-form__days">
+          <label className="church-form__days-label">
             Dias de Culto:
           </label>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
-              gap: '10px',
-            }}
-          >
+          <div className="church-form__days-grid">
             {ALL_WEEK_DAYS.map((day) => (
-              <div
-                key={day.key}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  background: 'white',
-                  padding: '5px',
-                  borderRadius: '4px',
-                  border: '1px solid #e0e0e0',
-                }}
-              >
+              <div key={day.key} className="church-form__day-item">
                 <input
                   type="checkbox"
                   id={`day-${day.key}`}
                   checked={selectedDays[day.key]}
                   onChange={() => onDayChange(day.key)}
-                  style={{ cursor: 'pointer' }}
+                  className="church-form__day-checkbox"
                 />
                 <label
                   htmlFor={`day-${day.key}`}
-                  style={{ marginLeft: '6px', cursor: 'pointer', fontSize: '0.9em' }}
+                  className="church-form__day-label"
                 >
                   {day.label}
                 </label>
@@ -96,23 +64,23 @@ const ChurchForm = ({
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px' }}>
+        <div className="church-form__actions">
           <Button
             type="submit"
             disabled={isSubmitting || isLoading}
             variant={editingId ? 'warning' : 'primary'}
-            style={{ fontSize: '14px' }}
+            size="sm"
           >
             {isSubmitting ? 'Salvando...' : editingId ? 'Atualizar' : 'Cadastrar'}
           </Button>
           {editingId && (
-            <Button type="button" onClick={onCancelEdit} variant="secondary" style={{ fontSize: '14px' }}>
+            <Button type="button" onClick={onCancelEdit} variant="secondary" size="sm">
               Cancelar
             </Button>
           )}
         </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+        {error && <p className="feedback feedback--error">{error}</p>}
+        {successMessage && <p className="feedback feedback--success">{successMessage}</p>}
       </form>
     </div>
   );

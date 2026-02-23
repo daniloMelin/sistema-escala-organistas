@@ -15,23 +15,15 @@ const ScheduleControls = ({
   onGenerate,
 }) => {
   return (
-    <div
-      style={{
-        background: '#f8f9fa',
-        padding: '20px',
-        borderRadius: '8px',
-        marginBottom: '30px',
-        border: '1px solid #ddd',
-      }}
-    >
-      <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
+    <div className="schedule-controls">
+      <div className="schedule-controls__row">
         <Input
           id="schedule-start-date"
           label="Data Início:"
           type="date"
           value={startDate}
           onChange={(e) => onStartDateChange(e.target.value)}
-          style={{ padding: '8px', fontSize: '14px' }}
+          size="sm"
         />
         <Input
           id="schedule-end-date"
@@ -39,25 +31,25 @@ const ScheduleControls = ({
           type="date"
           value={endDate}
           onChange={(e) => onEndDateChange(e.target.value)}
-          style={{ padding: '8px', fontSize: '14px' }}
+          size="sm"
         />
         <Button
           onClick={onGenerate}
           disabled={isGenerating || isLoading}
           variant="primary"
-          style={{ marginBottom: '15px' }}
+          className="schedule-controls__generate"
         >
           {isGenerating ? 'Gerando...' : 'Gerar Nova Escala'}
         </Button>
       </div>
 
       {error && (
-        <p style={{ color: 'red', marginTop: '10px', background: '#ffd2d2', padding: '10px', borderRadius: '4px' }}>
+        <p className="feedback feedback--error feedback--box">
           {error}
         </p>
       )}
       {successMessage && (
-        <p style={{ color: 'green', marginTop: '10px', background: '#d4edda', padding: '10px', borderRadius: '4px' }}>
+        <p className="feedback feedback--success feedback--box">
           {successMessage}
         </p>
       )}

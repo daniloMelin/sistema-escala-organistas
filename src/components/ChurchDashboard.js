@@ -34,26 +34,26 @@ const ChurchDashboard = ({ user }) => {
     formatOrganistAvailability,
   } = useChurchDashboard(user);
 
-  if (!user) return <div style={{ padding: 20 }}>Carregando...</div>;
+  if (!user) return <div className="page-loading">Carregando...</div>;
 
   return (
-    <div style={{ padding: '20px', maxWidth: '900px', margin: 'auto' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <Button onClick={() => navigate('/')} variant="secondary" style={{ padding: '8px 12px', fontSize: '14px' }}>
+    <div className="page-container page-container--lg">
+      <div className="dashboard-toolbar">
+        <Button onClick={() => navigate('/')} variant="secondary" size="sm">
           &larr; Voltar para Igrejas
         </Button>
         <Button
           onClick={() => navigate(`/igreja/${id}/escala`)}
           variant="primary"
-          style={{ boxShadow: '0 2px 5px rgba(0,0,0,0.2)' }}
+          className="btn--elevated"
         >
           📅 Gerar Escala
         </Button>
       </div>
 
-      <div style={{ borderBottom: '2px solid #eee', paddingBottom: '10px', marginBottom: '20px' }}>
+      <div className="section-header">
         <h2>Painel de Gerenciamento</h2>
-        <h3 style={{ color: '#0056b3', margin: '5px 0' }}>
+        <h3 className="section-header__subtitle">
           {selectedChurch ? selectedChurch.name : `Igreja (ID: ${id})`}
         </h3>
       </div>

@@ -12,35 +12,24 @@ const ChurchList = ({
   return (
     <>
       <h3>Igrejas Cadastradas:</h3>
-      <ul style={{ listStyle: 'none', padding: 0 }}>
+      <ul className="list-reset">
         {churches.map((church) => (
           <li
             key={church.id}
             onClick={() => onChurchSelect(church)}
-            style={{
-              border: '1px solid #eee',
-              padding: '15px',
-              marginBottom: '10px',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              background: 'white',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
-            }}
+            className="church-list__item"
           >
             <div>
-              <strong style={{ fontSize: '1.1em', color: '#0056b3' }}>{church.name}</strong>
+              <strong className="church-list__name">{church.name}</strong>
               <br />
-              {church.code && <small style={{ color: '#666' }}>Código: {church.code}</small>}
+              {church.code && <small className="muted-text">Código: {church.code}</small>}
             </div>
-            <div style={{ display: 'flex', gap: '10px' }}>
+            <div className="actions-row">
               <Button
                 onClick={(e) => onStartEdit(e, church)}
                 disabled={isLoading}
                 variant="warning"
-                style={{ fontSize: '12px', padding: '6px 12px' }}
+                size="sm"
               >
                 Editar
               </Button>
@@ -48,7 +37,7 @@ const ChurchList = ({
                 onClick={(e) => onRequestDeleteChurch(e, church.id, church.name)}
                 disabled={isLoading}
                 variant="danger"
-                style={{ fontSize: '12px', padding: '6px 12px' }}
+                size="sm"
               >
                 Excluir
               </Button>
