@@ -8,7 +8,8 @@ import { validateOrganistName, sanitizeString } from '../utils/validation';
 import logger from '../utils/logger';
 import ConfirmDialog from './ui/ConfirmDialog';
 import Button from './ui/Button';
-import Input from './ui/Input';
+import OrganistForm from './OrganistForm';
+import OrganistList from './OrganistList';
 
 const ChurchDashboard = ({ user }) => {
   const { id } = useParams();
@@ -199,109 +200,26 @@ const ChurchDashboard = ({ user }) => {
         </h3>
       </div>
 
-      {/* --- FORMULÁRIO --- */}
-      <div style={{
-        background: editingId ? '#fff3cd' : '#f8f9fa',
-        padding: '20px', borderRadius: '8px', marginBottom: '30px',
-        border: editingId ? '1px solid #ffeeba' : '1px solid #ddd',
-      }}>
-        <h4 style={{ marginTop: 0, borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
-          {editingId ? `Editando: ${newOrganistName}` : 'Cadastrar Nova Organista'}
-        </h4>
-
-        <form onSubmit={handleSaveOrganist}>
-          {error && (
-            <p style={{ color: 'red', marginTop: 0, marginBottom: '12px' }}>{error}</p>
-          )}
-          {successMessage && (
-            <p style={{ color: 'green', marginTop: 0, marginBottom: '12px' }}>{successMessage}</p>
-          )}
-          <Input
-            label="Nome da Organista:"
-            type="text"
-            value={newOrganistName}
-            onChange={(e) => setNewOrganistName(e.target.value)}
-            required
-            disabled={isSubmitting}
-            style={{ padding: '10px' }}
-          />
-
-          <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'normal' }}>
-              Disponibilidade (Baseado nos dias de culto desta igreja):
-            </label>
-
-            {visibleDays.length === 0 ? (
-              <p style={{ color: 'orange', fontStyle: 'italic' }}>
-                Nenhum dia de culto configurado para esta igreja. Vá em "Minhas Igrejas" e edite as configurações.
-              </p>
-            ) : (
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                {visibleDays.map(day => (
-                  <div key={day.key} style={{
-                    display: 'flex', alignItems: 'center', gap: '5px',
-                    background: 'white', padding: '8px 12px', borderRadius: '4px', border: '1px solid #ccc'
-                  }}>
-                    <input
-                      type="checkbox"
-                      id={day.key}
-                      name={day.key}
-                      checked={availability[day.key]}
-                      onChange={handleCheckboxChange}
-                      disabled={isSubmitting}
-                    />
-                    <label htmlFor={day.key} style={{ cursor: 'pointer', fontSize: '0.9em' }}>{day.label}</label>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <Button
-              type="submit" disabled={isSubmitting}
-              variant={editingId ? 'warning' : 'success'}
-              style={{ flex: 1 }}
-            >
-              {isSubmitting ? 'Salvando...' : (editingId ? 'Atualizar Organista' : 'Cadastrar Organista')}
-            </Button>
-
-            {editingId && (
-              <Button type="button" onClick={handleCancelEdit} disabled={isSubmitting} variant="secondary" style={{ fontSize: '14px' }}>
-                Cancelar
-              </Button>
-            )}
-          </div>
-        </form>
-      </div>
-
-      {/* --- LISTA --- */}
-      <h3>Organistas Cadastradas</h3>
-      {loading ? <p>Carregando dados...</p> : organists.length === 0 ? <p>Nenhuma organista cadastrada.</p> : (
-        <ul style={{ listStyle: 'none', padding: 0 }}>
-          {organists.map((org) => (
-            <li key={org.id} style={{ padding: '15px', marginBottom: '10px', border: '1px solid #eee', borderRadius: '6px', background: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
-                <div>
-                  <strong style={{ fontSize: '1.1em', color: '#333' }}>{org.name}</strong>
-                </div>
-
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <Button onClick={() => handleStartEdit(org)} variant="warning" style={{ fontSize: '12px', padding: '6px 10px' }}>
-                    Editar
-                  </Button>
-                  <Button onClick={() => handleRequestDeleteOrganist(org.id, org.name)} variant="danger" style={{ fontSize: '12px', padding: '6px 10px' }}>
-                    Excluir
-                  </Button>
-                </div>
-              </div>
-              <div style={{ color: '#666', fontSize: '0.9em' }}>
-                <strong>Disponível: </strong> {formatOrganistAvailability(org.availability)}
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+      <OrganistForm
+        editingId={editingId}
+        newOrganistName={newOrganistName}
+        isSubmitting={isSubmitting}
+        error={error}
+        successMessage={successMessage}
+        visibleDays={visibleDays}
+        availability={availability}
+        onNameChange={setNewOrganistName}
+        onCheckboxChange={handleCheckboxChange}
+        onSubmit={handleSaveOrganist}
+        onCancelEdit={handleCancelEdit}
+      />
+      <OrganistList
+        loading={loading}
+        organists={organists}
+        formatOrganistAvailability={formatOrganistAvailability}
+        onStartEdit={handleStartEdit}
+        onRequestDeleteOrganist={handleRequestDeleteOrganist}
+      />
       <ConfirmDialog
         isOpen={Boolean(pendingDeleteOrganist)}
         title="Excluir organista"
