@@ -14,6 +14,10 @@ const SUNDAY_CONFIG = {
   sunday: [SERVICE_TEMPLATES.MeiaHora, SERVICE_TEMPLATES.Culto],
 };
 
+const TUESDAY_CONFIG = {
+  tuesday: [SERVICE_TEMPLATES.MeiaHora, SERVICE_TEMPLATES.Culto],
+};
+
 describe('generateSchedule', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -76,5 +80,27 @@ describe('generateSchedule', () => {
     const assignments = result[0].assignments;
     expect(assignments.Culto).toBe('Ana');
     expect(assignments.MeiaHoraCulto).toBe('Ana');
+  });
+
+  test('distributes assignments fairly among organists with same availability', () => {
+    const organists = [
+      { id: '1', name: 'Ana', fixedDays: [2] },
+      { id: '2', name: 'Bia', fixedDays: [2] },
+      { id: '3', name: 'Clara', fixedDays: [2] },
+      { id: '4', name: 'Dani', fixedDays: [2] },
+    ];
+
+    const result = generateSchedule(organists, '2026-03-03', '2026-03-24', TUESDAY_CONFIG);
+    const totals = {};
+
+    result.forEach((day) => {
+      Object.values(day.assignments).forEach((name) => {
+        totals[name] = (totals[name] || 0) + 1;
+      });
+    });
+
+    const values = Object.values(totals);
+    expect(Object.keys(totals)).toHaveLength(4);
+    expect(Math.max(...values) - Math.min(...values)).toBeLessThanOrEqual(1);
   });
 });
