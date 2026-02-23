@@ -14,6 +14,10 @@ const SUNDAY_CONFIG = {
   sunday: [SERVICE_TEMPLATES.MeiaHora, SERVICE_TEMPLATES.Culto],
 };
 
+const SUNDAY_WITH_RJM_CONFIG = {
+  sunday: [SERVICE_TEMPLATES.RJM, SERVICE_TEMPLATES.MeiaHora, SERVICE_TEMPLATES.Culto],
+};
+
 const TUESDAY_CONFIG = {
   tuesday: [SERVICE_TEMPLATES.MeiaHora, SERVICE_TEMPLATES.Culto],
 };
@@ -102,5 +106,35 @@ describe('generateSchedule', () => {
     const values = Object.values(totals);
     expect(Object.keys(totals)).toHaveLength(4);
     expect(Math.max(...values) - Math.min(...values)).toBeLessThanOrEqual(1);
+  });
+
+  test('prioritizes scarce organist for RJM to preserve feasible sunday assignments', () => {
+    const organists = [
+      {
+        id: '1',
+        name: 'RjmOnly',
+        availability: { sunday_rjm: true, sunday_culto: false },
+        stats: { meiaHora: 0, culto: 0, total: 5 },
+      },
+      {
+        id: '2',
+        name: 'Flexible',
+        availability: { sunday_rjm: true, sunday_culto: true },
+        stats: { meiaHora: 0, culto: 0, total: 0 },
+      },
+    ];
+
+    const result = generateSchedule(
+      organists,
+      '2026-03-01',
+      '2026-03-01',
+      SUNDAY_WITH_RJM_CONFIG
+    );
+    expect(result).toHaveLength(1);
+
+    const assignments = result[0].assignments;
+    expect(assignments.RJM).toBe('RjmOnly');
+    expect(assignments.MeiaHoraCulto).toBe('Flexible');
+    expect(assignments.Culto).toBe('Flexible');
   });
 });

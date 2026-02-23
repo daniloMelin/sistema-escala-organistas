@@ -220,15 +220,17 @@ const runPrimaryAllocation = ({
           const statsA = organistStats[a.id] || { meiaHora: 0, culto: 0, total: 0 };
           const statsB = organistStats[b.id] || { meiaHora: 0, culto: 0, total: 0 };
 
+          // Em caso de empate local, prioriza quem tem menos opções no período
+          // para evitar bloquear alocações viáveis no mesmo dia (ex.: domingo com RJM).
+          const scarcityDiff = (availabilityScores[a.id] || 0) - (availabilityScores[b.id] || 0);
+          if (scarcityDiff !== 0) return scarcityDiff;
+
           const totalDiff = (statsA.total || 0) - (statsB.total || 0);
           if (totalDiff !== 0) return totalDiff;
 
           const roleDiff =
             getRoleCountForCulto(statsA, culto.id) - getRoleCountForCulto(statsB, culto.id);
           if (roleDiff !== 0) return roleDiff;
-
-          const scarcityDiff = (availabilityScores[a.id] || 0) - (availabilityScores[b.id] || 0);
-          if (scarcityDiff !== 0) return scarcityDiff;
 
           return (a.name || "").localeCompare(b.name || "");
         });
