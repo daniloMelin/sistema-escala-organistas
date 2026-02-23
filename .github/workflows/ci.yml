@@ -17,6 +17,8 @@ jobs:
         run: npm ci
       - name: Lint
         run: npm run lint
+      - name: Critical coverage gate (V3)
+        run: npm run test:coverage:critical
       - name: Build
         run: npm run build
       - name: Comment PR - success

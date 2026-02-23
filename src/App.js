@@ -1,6 +1,7 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Routes, Route, NavLink, useNavigate } from 'react-router-dom';
+import './App.css';
 
 // Componentes Atuais
 import ChurchManager from './components/ChurchManager';
@@ -25,12 +26,6 @@ const firestoreReporter = createFirestoreLoggerReporter({
 // Componente de Layout
 const Layout = ({ children, user }) => {
   const navigate = useNavigate();
-  const activeStyle = {
-    fontWeight: 'bold',
-    color: '#007bff',
-    textDecoration: 'underline',
-  };
-
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -43,28 +38,32 @@ const Layout = ({ children, user }) => {
   return (
     <>
       <header>
-        <nav style={{ background: '#f8f9fa', padding: '15px 20px', marginBottom: '25px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <ul style={{ listStyle: 'none', display: 'flex', gap: '25px', margin: 0, padding: 0, alignItems: 'center' }}>
+        <nav className="app-nav">
+          <ul className="app-nav-list">
             <li>
-                <NavLink to="/" style={({ isActive }) => isActive ? activeStyle : { textDecoration: 'none', color: '#333' }} end>
-                    🏠 Minhas Igrejas
-                </NavLink>
+              <NavLink
+                to="/"
+                className={({ isActive }) => (isActive ? 'app-nav-link app-nav-link-active' : 'app-nav-link')}
+                end
+              >
+                🏠 Minhas Igrejas
+              </NavLink>
             </li>
           </ul>
           {user && (
-            <div>
-              <span style={{ marginRight: '15px', color: '#555' }}>Olá, {user.email}</span>
-              <Button onClick={handleLogout} variant="secondary" style={{ padding: '8px 12px', fontSize: '14px' }}>
+            <div className="app-nav-user">
+              <span className="app-nav-greeting">Olá, {user.email}</span>
+              <Button onClick={handleLogout} variant="secondary" size="sm">
                 Sair
               </Button>
             </div>
           )}
         </nav>
       </header>
-      <main style={{ padding: '0 20px' }}>
+      <main className="app-main">
         {children}
       </main>
-      <footer style={{ textAlign: 'center', padding: '20px', marginTop: '40px', fontSize: '0.9em', color: '#777', borderTop: '1px solid #eee' }}>
+      <footer className="app-footer">
         <p>&copy; {new Date().getFullYear()} Gerenciador de Escalas.</p>
       </footer>
     </>
@@ -80,7 +79,7 @@ Layout.propTypes = {
 };
 
 const NotFoundPage = () => (
-   <div style={{ padding: '20px', textAlign: 'center' }}>
+  <div className="app-center-block">
     <h2>Página Não Encontrada (404)</h2>
     <p>A página que você procura não existe ou foi removida.</p>
   </div>
@@ -114,7 +113,7 @@ function App() {
   }, []);
 
   if (isLoading) {
-    return <div style={{textAlign: 'center', marginTop: '50px'}}>Carregando...</div>;
+    return <div className="app-loading">Carregando...</div>;
   }
 
   return (
@@ -123,7 +122,7 @@ function App() {
         {user ? (
           <ChurchProvider>
             <Layout user={user}>
-              <Suspense fallback={<div style={{textAlign: 'center', marginTop: '50px'}}>Carregando...</div>}>
+              <Suspense fallback={<div className="app-loading">Carregando...</div>}>
                 <Routes>
                   {/* Rota principal: Lista de Igrejas */}
                   <Route path="/" element={<ChurchManager user={user} />} />
