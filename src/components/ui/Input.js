@@ -1,34 +1,36 @@
-import React from 'react';
+import React, { useId } from 'react';
+import PropTypes from 'prop-types';
 
 const Input = ({ 
   label, 
   error, 
   required = false,
-  style = {},
+  size = 'md',
+  id,
   ...props 
 }) => {
+  const generatedId = useId();
+  const inputId = id || `input-${generatedId}`;
+
   return (
-    <div style={{ marginBottom: '15px' }}>
+    <div className="input-field">
       {label && (
-        <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'normal' }}>
+        <label htmlFor={inputId} className="input-field__label">
           {label}
-          {required && <span style={{ color: 'red' }}> *</span>}
+          {required && <span className="input-field__required"> *</span>}
         </label>
       )}
       <input
-        style={{
-          width: '100%',
-          padding: '8px',
-          boxSizing: 'border-box',
-          borderRadius: '4px',
-          border: error ? '1px solid red' : '1px solid #ccc',
-          fontSize: '16px',
-          ...style
-        }}
+        id={inputId}
+        className={[
+          'input-field__control',
+          size === 'sm' ? 'input-field__control--sm' : '',
+          error ? 'input-field__control--error' : '',
+        ].join(' ').trim()}
         {...props}
       />
       {error && (
-        <p style={{ color: 'red', fontSize: '0.9em', marginTop: '5px', marginBottom: 0 }}>
+        <p className="input-field__error">
           {error}
         </p>
       )}
@@ -36,5 +38,12 @@ const Input = ({
   );
 };
 
-export default Input;
+Input.propTypes = {
+  label: PropTypes.string,
+  error: PropTypes.string,
+  required: PropTypes.bool,
+  size: PropTypes.oneOf(['sm', 'md']),
+  id: PropTypes.string,
+};
 
+export default Input;

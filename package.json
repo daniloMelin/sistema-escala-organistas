@@ -13,6 +13,7 @@
     "date-fns": "^2.30.0",
     "firebase": "^11.7.1",
     "jspdf": "^3.0.1",
+    "prop-types": "^15.8.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.0",
@@ -23,6 +24,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:coverage": "react-scripts test --watchAll=false --coverage --runInBand",
+    "test:coverage:critical": "react-scripts test --watchAll=false --coverage --runInBand --coverageReporters=text --coverageReporters=json-summary --collectCoverageFrom=src/utils/validation.js --collectCoverageFrom=src/utils/scheduleLogic.js --collectCoverageFrom=src/utils/dateUtils.js --collectCoverageFrom=src/hooks/useChurchDashboard.js && node scripts/check-critical-coverage.js",
     "lint": "eslint --ext .js,.jsx src",
     "eject": "react-scripts eject"
   },

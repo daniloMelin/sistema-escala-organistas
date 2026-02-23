@@ -4,6 +4,11 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,6 +22,8 @@ jobs:
         run: npm ci
       - name: Lint
         run: npm run lint
+      - name: Critical coverage gate (V3)
+        run: npm run test:coverage:critical
       - name: Build
         run: npm run build
       - name: Comment PR - success
@@ -24,24 +31,24 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${github.run_id}`
-            github.issues.createComment({
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: `CI ✅ Lint e build passaram para o commit ${context.sha} — [ver run](${runUrl})`
+              issue_number: context.payload.pull_request.number,
+              body: `CI ✅ Lint, cobertura crítica e build passaram para o commit ${context.sha} — [ver run](${runUrl})`
             })
       - name: Comment PR - failure
         if: ${{ github.event_name == 'pull_request' && failure() }}
         uses: actions/github-script@v6
         with:
           script: |
-            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${github.run_id}`
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             // Mention the repository owner for visibility (only one active contributor for now)
             const mention = '@daniloMelin'
-            github.issues.createComment({
+            await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: `${mention} CI ❌ Lint ou build falharam para o commit ${context.sha}. Detalhes: [ver run](${runUrl}).`
+              issue_number: context.payload.pull_request.number,
+              body: `${mention} CI ❌ Falha em lint/cobertura/build para o commit ${context.sha}. Detalhes: [ver run](${runUrl}).`
             })

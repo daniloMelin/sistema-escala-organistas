@@ -118,130 +118,199 @@ const calculateAvailabilityScores = (organists, periodDates, churchConfig) => {
   return scores;
 };
 
-/**
- * PASSO B: Ordena organistas por escassez (menor availabilityScore primeiro)
- * Organistas com poucos dias disponíveis são alocadas primeiro
- */
-const sortOrganistsByScarcity = (organists, availabilityScores) => {
-  return [...organists].sort((a, b) => {
-    const scoreA = availabilityScores[a.id] || 0;
-    const scoreB = availabilityScores[b.id] || 0;
-    return scoreA - scoreB; // Crescente: menos disponíveis primeiro
+const SERVICE_PRIORITY = {
+  RJM: 0,
+  MeiaHoraCulto: 1,
+  Culto: 2,
+};
+
+const getRoleCountForCulto = (stats, cultoId) => {
+  if (cultoId === "MeiaHoraCulto") return stats.meiaHora || 0;
+  if (cultoId === "Culto") return stats.culto || 0;
+  return stats.total || 0;
+};
+
+const incrementStatsForCulto = (stats, cultoId) => {
+  const next = {
+    meiaHora: stats.meiaHora || 0,
+    culto: stats.culto || 0,
+    total: (stats.total || 0) + 1,
+  };
+
+  if (cultoId === "MeiaHoraCulto") next.meiaHora += 1;
+  if (cultoId === "Culto") next.culto += 1;
+
+  return next;
+};
+
+const buildPeriodDates = (parsedStart, parsedEnd, churchConfig) => {
+  let currentDate = startOfDay(parsedStart);
+  const endDate = endOfDay(parsedEnd);
+  const periodDates = [];
+
+  while (currentDate <= endDate) {
+    const dayOfWeek = getDayFn(currentDate); // 0 = Domingo, 6 = Sábado
+    const dayKey = DAY_INDEX_TO_CONFIG_KEY[dayOfWeek];
+    const cultosForThisDay = churchConfig && churchConfig[dayKey] ? churchConfig[dayKey] : [];
+
+    if (cultosForThisDay.length > 0) {
+      periodDates.push({
+        date: new Date(currentDate),
+        dateStr: formatDate(currentDate),
+        dayName: getDayName(currentDate),
+        dayOfWeek,
+        dayKey,
+        cultos: cultosForThisDay,
+      });
+    }
+
+    currentDate = addDays(currentDate, 1);
+  }
+
+  return periodDates;
+};
+
+const initializeAllocationState = (organists, periodDates) => {
+  const organistStats = {};
+  organists.forEach((org) => {
+    organistStats[org.id] = org.stats ? { ...org.stats } : { meiaHora: 0, culto: 0, total: 0 };
+  });
+
+  const assignedDates = {};
+  organists.forEach((org) => {
+    assignedDates[org.id] = new Set();
+  });
+
+  const schedule = periodDates.map((dayInfo) => ({
+    date: dayInfo.dateStr,
+    dayName: dayInfo.dayName,
+    assignments: {},
+  }));
+
+  return { organistStats, assignedDates, schedule };
+};
+
+const runPrimaryAllocation = ({
+  organists,
+  availabilityScores,
+  periodDates,
+  schedule,
+  assignedDates,
+  organistStats,
+  churchConfig,
+}) => {
+  periodDates.forEach((dayInfo, dayIndex) => {
+    const { date, dayOfWeek, dayKey, cultos } = dayInfo;
+    const dateStr = format(date, "yyyy-MM-dd");
+    const currentDayAssignments = schedule[dayIndex].assignments || {};
+
+    const orderedCultos = [...cultos].sort(
+      (a, b) => (SERVICE_PRIORITY[a.id] ?? 99) - (SERVICE_PRIORITY[b.id] ?? 99)
+    );
+
+    orderedCultos.forEach((culto) => {
+      if (currentDayAssignments[culto.id]) return;
+
+      const candidates = organists
+        .filter((organist) => {
+          if (assignedDates[organist.id].has(dateStr)) return false;
+          return canOrganistPlayOnDay(organist, dayOfWeek, dayKey, culto.id, churchConfig);
+        })
+        .sort((a, b) => {
+          const statsA = organistStats[a.id] || { meiaHora: 0, culto: 0, total: 0 };
+          const statsB = organistStats[b.id] || { meiaHora: 0, culto: 0, total: 0 };
+
+          // Em caso de empate local, prioriza quem tem menos opções no período
+          // para evitar bloquear alocações viáveis no mesmo dia (ex.: domingo com RJM).
+          const scarcityDiff = (availabilityScores[a.id] || 0) - (availabilityScores[b.id] || 0);
+          if (scarcityDiff !== 0) return scarcityDiff;
+
+          const totalDiff = (statsA.total || 0) - (statsB.total || 0);
+          if (totalDiff !== 0) return totalDiff;
+
+          const roleDiff =
+            getRoleCountForCulto(statsA, culto.id) - getRoleCountForCulto(statsB, culto.id);
+          if (roleDiff !== 0) return roleDiff;
+
+          return (a.name || "").localeCompare(b.name || "");
+        });
+
+      const selected = candidates[0];
+      if (!selected) return;
+
+      currentDayAssignments[culto.id] = selected.name;
+      assignedDates[selected.id].add(dateStr);
+
+      const currentStats =
+        organistStats[selected.id] ||
+        (selected.stats ? { ...selected.stats } : { meiaHora: 0, culto: 0, total: 0 });
+      organistStats[selected.id] = incrementStatsForCulto(currentStats, culto.id);
+    });
   });
 };
 
-/**
- * PASSO C: Aloca organista em um dia específico, respeitando equilíbrio de funções
- * 
- * Regras:
- * - Uma organista NÃO pode tocar 2 vezes no mesmo dia
- * - Se ambos slots vazios: escolhe baseado em stats (equilíbrio)
- * - Se só um vazio: preenche o que sobrou
- * 
- * @param {Object} organist - Organista a ser alocada
- * @param {number} dayOfWeek - Dia da semana (0-6)
- * @param {string} dayKey - Chave do dia (sunday, monday, etc.)
- * @param {Array} cultos - Array de cultos configurados para este dia
- * @param {Object} organistStats - Estatísticas de alocação (será atualizado)
- * @param {Object} churchConfig - Configuração da igreja
- * @param {Object} currentDayAssignments - Atribuições já feitas neste dia
- * @returns {Object} { assignments: {}, assigned: boolean }
- */
-const assignOrganistToDay = (
-  organist,
-  dayOfWeek,
-  dayKey,
-  cultos,
+const applyDoubleDutyRule = ({
+  periodDates,
+  schedule,
+  organists,
   organistStats,
   churchConfig,
-  currentDayAssignments = {}
-) => {
-  const assignments = {};
-  let assigned = false;
+}) => {
+  periodDates.forEach((dayInfo, dayIndex) => {
+    const { dayOfWeek, dayKey, cultos } = dayInfo;
+    const dayAssignments = schedule[dayIndex].assignments || {};
 
-  // Filtra cultos que a organista pode tocar (respeitando fixedDays)
-  const availableCultos = cultos.filter(culto => 
-    canOrganistPlayOnDay(organist, dayOfWeek, dayKey, culto.id, churchConfig)
-  );
+    const meiaHoraCulto = cultos.find((c) => c.id === 'MeiaHoraCulto');
+    const cultoCulto = cultos.find((c) => c.id === 'Culto');
+    if (!meiaHoraCulto || !cultoCulto) return;
 
-  if (availableCultos.length === 0) {
-    return { assignments, assigned: false };
-  }
+    const meiaHoraAssigned = dayAssignments[meiaHoraCulto.id];
+    const cultoAssigned = dayAssignments[cultoCulto.id];
 
-  // Verifica quais vagas já estão preenchidas neste dia
-  const meiaHoraCulto = cultos.find(c => c.id === 'MeiaHoraCulto');
-  const cultoCulto = cultos.find(c => c.id === 'Culto');
-  const rjmCulto = cultos.find(c => c.id === 'RJM');
-  
-  const meiaHoraIsFree = meiaHoraCulto && !currentDayAssignments[meiaHoraCulto.id];
-  const cultoIsFree = cultoCulto && !currentDayAssignments[cultoCulto.id];
-  const rjmIsFree = rjmCulto && !currentDayAssignments[rjmCulto.id];
+    // Se Meia Hora está vazia mas Culto está preenchido
+    if (!meiaHoraAssigned && cultoAssigned) {
+      const organistName = cultoAssigned;
+      const organist = organists.find((org) => org.name === organistName);
+      if (!organist) return;
 
-  // Verifica se a organista pode tocar em cada culto
-  const canPlayRJM = availableCultos.some(c => c.id === 'RJM');
-  const canPlayMeiaHora = availableCultos.some(c => c.id === 'MeiaHoraCulto');
-  const canPlayCulto = availableCultos.some(c => c.id === 'Culto');
+      const canPlayMeiaHora = canOrganistPlayOnDay(
+        organist,
+        dayOfWeek,
+        dayKey,
+        'MeiaHoraCulto',
+        churchConfig
+      );
 
-  // Inicializa stats se não existir (usa stats da organista ou cria novo)
-  const stats = organistStats[organist.id] || 
-    (organist.stats ? { ...organist.stats } : { meiaHora: 0, culto: 0, total: 0 });
+      if (canPlayMeiaHora) {
+        schedule[dayIndex].assignments[meiaHoraCulto.id] = organistName;
 
-  // REGRA DE DECISÃO DO CARGO
-  // Prioridade 1: RJM (culto independente, verifica primeiro)
-  if (rjmIsFree && canPlayRJM) {
-    assignments[rjmCulto.id] = organist.name;
-    organistStats[organist.id] = {
-      meiaHora: stats.meiaHora,
-      culto: stats.culto,
-      total: stats.total + 1
-    };
-    assigned = true;
-  }
-  // Prioridade 2: Meia Hora e Culto (se ambos estão livres, decide por equilíbrio)
-  else if (meiaHoraIsFree && cultoIsFree && canPlayMeiaHora && canPlayCulto) {
-    // Ambas as vagas estão livres: decide baseado no equilíbrio de funções (stats)
-    if (stats.meiaHora <= stats.culto) {
-      // Aloca na Meia Hora (ela tocou mais Cultos até agora)
-      assignments[meiaHoraCulto.id] = organist.name;
-      organistStats[organist.id] = {
-        meiaHora: stats.meiaHora + 1,
-        culto: stats.culto,
-        total: stats.total + 1
-      };
-      assigned = true;
-    } else {
-      // Aloca no Culto (ela tocou mais Meia Hora até agora)
-      assignments[cultoCulto.id] = organist.name;
-      organistStats[organist.id] = {
-        meiaHora: stats.meiaHora,
-        culto: stats.culto + 1,
-        total: stats.total + 1
-      };
-      assigned = true;
+        const stats = organistStats[organist.id] || { meiaHora: 0, culto: 0, total: 0 };
+        organistStats[organist.id] = incrementStatsForCulto(stats, "MeiaHoraCulto");
+      }
     }
-  }
-  // Prioridade 3: Apenas um slot livre (complemento)
-  else if (meiaHoraIsFree && canPlayMeiaHora) {
-    // Apenas Meia Hora está livre (complemento)
-    assignments[meiaHoraCulto.id] = organist.name;
-    organistStats[organist.id] = {
-      meiaHora: stats.meiaHora + 1,
-      culto: stats.culto,
-      total: stats.total + 1
-    };
-    assigned = true;
-  } else if (cultoIsFree && canPlayCulto) {
-    // Apenas Culto está livre (complemento)
-    assignments[cultoCulto.id] = organist.name;
-    organistStats[organist.id] = {
-      meiaHora: stats.meiaHora,
-      culto: stats.culto + 1,
-      total: stats.total + 1
-    };
-    assigned = true;
-  }
 
-  return { assignments, assigned };
+    // Cenário simétrico: Culto vazio e Meia Hora preenchido
+    if (!cultoAssigned && meiaHoraAssigned) {
+      const organistName = meiaHoraAssigned;
+      const organist = organists.find((org) => org.name === organistName);
+      if (!organist) return;
+
+      const canPlayCulto = canOrganistPlayOnDay(
+        organist,
+        dayOfWeek,
+        dayKey,
+        'Culto',
+        churchConfig
+      );
+
+      if (canPlayCulto) {
+        schedule[dayIndex].assignments[cultoCulto.id] = organistName;
+
+        const stats = organistStats[organist.id] || { meiaHora: 0, culto: 0, total: 0 };
+        organistStats[organist.id] = incrementStatsForCulto(stats, "Culto");
+      }
+    }
+  });
 };
 
 /**
@@ -249,8 +318,8 @@ const assignOrganistToDay = (
  * 
  * Algoritmo:
  * 1. Calcula availabilityScore (organistas restritas têm score baixo)
- * 2. Ordena por escassez (menos disponíveis primeiro)
- * 3. Aloca respeitando duplicidade e equilíbrio de funções
+ * 2. Aloca por dia/culto, escolhendo menor carga total primeiro
+ * 3. Em empates, prioriza equilíbrio por função e escassez (availabilityScore)
  * 4. Slots não preenchidos ficam como null/undefined (não "VAGO")
  * 
  * @param {Array} organists - Array de organistas { id, name, fixedDays, stats }
@@ -284,28 +353,7 @@ export const generateSchedule = (
   }
 
   // Prepara periodDates: array de objetos representando cada dia do período
-  let currentDate = startOfDay(parsedStart);
-  const endDate = endOfDay(parsedEnd);
-  const periodDates = [];
-
-  while (currentDate <= endDate) {
-    const dayOfWeek = getDayFn(currentDate); // 0 = Domingo, 6 = Sábado
-    const dayKey = DAY_INDEX_TO_CONFIG_KEY[dayOfWeek];
-    const cultosForThisDay = churchConfig && churchConfig[dayKey] ? churchConfig[dayKey] : [];
-
-    if (cultosForThisDay.length > 0) {
-      periodDates.push({
-        date: new Date(currentDate),
-        dateStr: formatDate(currentDate),
-        dayName: getDayName(currentDate),
-        dayOfWeek,
-        dayKey,
-        cultos: cultosForThisDay
-      });
-    }
-
-    currentDate = addDays(currentDate, 1);
-  }
+  const periodDates = buildPeriodDates(parsedStart, parsedEnd, churchConfig);
 
   if (periodDates.length === 0) {
     logger.warn("Nenhum dia de culto configurado no período.");
@@ -315,117 +363,26 @@ export const generateSchedule = (
   // PASSO A: Calcula Availability Score para cada organista
   const availabilityScores = calculateAvailabilityScores(organists, periodDates, churchConfig);
 
-  // PASSO B: Ordena organistas por escassez (crescente: menos disponíveis primeiro)
-  const sortedOrganists = sortOrganistsByScarcity(organists, availabilityScores);
-
-  // Inicializa estatísticas de alocação (será atualizado durante o processo)
-  const organistStats = {};
-  organists.forEach(org => {
-    // Usa stats da organista se existir, senão inicializa com zeros
-    organistStats[org.id] = org.stats ? { ...org.stats } : { meiaHora: 0, culto: 0, total: 0 };
-  });
-
-  // Rastreia datas já atribuídas para cada organista (evita duplicidade no mesmo dia)
-  const assignedDates = {};
-  organists.forEach(org => {
-    assignedDates[org.id] = new Set();
-  });
-
-  // Inicializa o schedule (estrutura de retorno)
-  const schedule = periodDates.map(dayInfo => ({
-    date: dayInfo.dateStr,
-    dayName: dayInfo.dayName,
-    assignments: {}
-  }));
+  const { organistStats, assignedDates, schedule } = initializeAllocationState(organists, periodDates);
 
   // PASSO C: Alocação e Equilíbrio (Loop Principal)
-  // Itera sobre organistas ordenadas por escassez
-  sortedOrganists.forEach(organist => {
-    // Para cada organista, tenta encaixá-la nos dias que batem com sua disponibilidade
-    periodDates.forEach((dayInfo, dayIndex) => {
-      const { date, dayOfWeek, dayKey, cultos } = dayInfo;
-      const dateStr = format(date, 'yyyy-MM-dd');
-
-      // Regra de Duplicidade: uma organista NÃO pode tocar 2 vezes no mesmo dia
-      if (assignedDates[organist.id].has(dateStr)) {
-        return; // Já foi alocada neste dia, pula
-      }
-
-      // Verifica atribuições atuais do dia para saber quais slots estão livres
-      const currentDayAssignments = schedule[dayIndex].assignments || {};
-
-      // Tenta alocar a organista neste dia
-      const { assignments, assigned } = assignOrganistToDay(
-        organist,
-        dayOfWeek,
-        dayKey,
-        cultos,
-        organistStats,
-        churchConfig,
-        currentDayAssignments
-      );
-
-      if (assigned) {
-        // Marca a data como usada para esta organista
-        assignedDates[organist.id].add(dateStr);
-
-        // Adiciona as atribuições ao schedule
-        Object.keys(assignments).forEach(cultoId => {
-          if (!schedule[dayIndex].assignments[cultoId]) {
-            schedule[dayIndex].assignments[cultoId] = assignments[cultoId];
-          }
-        });
-      }
-    });
+  runPrimaryAllocation({
+    organists,
+    availabilityScores,
+    periodDates,
+    schedule,
+    assignedDates,
+    organistStats,
+    churchConfig,
   });
 
   // PASSO D: Regra de Dobradinha (Double Duty) - Aplicar após alocação principal
-  // Se Meia Hora ficou vazia e há alguém no Culto, a mesma pessoa faz ambos
-  periodDates.forEach((dayInfo, dayIndex) => {
-    const { dayOfWeek, dayKey, cultos } = dayInfo;
-    const dayAssignments = schedule[dayIndex].assignments || {};
-    
-    // Verifica se há MeiaHoraCulto e Culto configurados para este dia
-    const meiaHoraCulto = cultos.find(c => c.id === 'MeiaHoraCulto');
-    const cultoCulto = cultos.find(c => c.id === 'Culto');
-    
-    if (!meiaHoraCulto || !cultoCulto) {
-      return; // Não tem ambos os cultos, pula
-    }
-    
-    const meiaHoraAssigned = dayAssignments[meiaHoraCulto.id];
-    const cultoAssigned = dayAssignments[cultoCulto.id];
-    
-    // Se Meia Hora está vazia mas Culto está preenchido
-    if (!meiaHoraAssigned && cultoAssigned) {
-      // Encontra a organista que está escalada para o Culto
-      const organistName = cultoAssigned;
-      const organist = organists.find(org => org.name === organistName);
-      
-      if (organist) {
-        // Verifica se a organista pode tocar Meia Hora neste dia
-        const canPlayMeiaHora = canOrganistPlayOnDay(
-          organist,
-          dayOfWeek,
-          dayKey,
-          'MeiaHoraCulto',
-          churchConfig
-        );
-        
-        if (canPlayMeiaHora) {
-          // Aplica a dobradinha: mesma organista faz Meia Hora também
-          schedule[dayIndex].assignments[meiaHoraCulto.id] = organistName;
-          
-          // Atualiza estatísticas da organista
-          const stats = organistStats[organist.id] || { meiaHora: 0, culto: 0, total: 0 };
-          organistStats[organist.id] = {
-            meiaHora: stats.meiaHora + 1,
-            culto: stats.culto,
-            total: stats.total + 1
-          };
-        }
-      }
-    }
+  applyDoubleDutyRule({
+    periodDates,
+    schedule,
+    organists,
+    organistStats,
+    churchConfig,
   });
 
   // Tratamento de Falhas: slots não preenchidos ficam como null/undefined

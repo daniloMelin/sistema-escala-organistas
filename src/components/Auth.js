@@ -8,6 +8,7 @@ import {
   GoogleAuthProvider
 } from 'firebase/auth';
 import logger from '../utils/logger';
+import Button from './ui/Button';
 
 const Auth = () => {
   const [error, setError] = useState('');
@@ -46,40 +47,24 @@ const Auth = () => {
   };
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '100vh',
-      textAlign: 'center',
-      padding: '20px'
-    }}>
-      <div style={{ maxWidth: '450px', padding: '30px', border: '1px solid #ddd', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
-        <h2 style={{ marginBottom: '10px' }}>Sistema de Escala de Organistas</h2>
-        <p style={{ color: '#555', marginBottom: '25px' }}>
+    <div className="auth-shell">
+      <div className="auth-card">
+        <h2 className="auth-title">Sistema de Escala de Organistas</h2>
+        <p className="auth-subtitle">
           Utilize sua conta Google para entrar ou criar seu acesso ao sistema.
         </p>
 
-        {error && <p style={{ color: 'red', marginBottom: '15px' }}>{error}</p>}
+        {error && <p className="auth-error">{error}</p>}
 
-        <button
+        <Button
           onClick={handleGoogleSignIn}
           disabled={isLoading}
-          style={{
-            padding: '12px 24px',
-            backgroundColor: '#4285F4',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: isLoading ? 'not-allowed' : 'pointer',
-            fontSize: '16px',
-            opacity: isLoading ? 0.7 : 1,
-            width: '100%'
-          }}
+          variant="primary"
+          size="lg"
+          fullWidth
         >
           {isLoading ? 'Aguarde...' : 'Entrar com o Google'}
-        </button>
+        </Button>
       </div>
     </div>
   );
