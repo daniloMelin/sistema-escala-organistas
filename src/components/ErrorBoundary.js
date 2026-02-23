@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import logger from '../utils/logger';
+import Button from './ui/Button';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -65,21 +66,13 @@ class ErrorBoundary extends React.Component {
               </pre>
             </details>
           )}
-          <button
+          <Button
             onClick={this.handleReload}
-            style={{
-              padding: '12px 24px',
-              backgroundColor: '#007bff',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              fontSize: '16px'
-            }}
+            variant="primary"
+            style={{ fontSize: '16px' }}
           >
             Recarregar Página
-          </button>
+          </Button>
         </div>
       );
     }

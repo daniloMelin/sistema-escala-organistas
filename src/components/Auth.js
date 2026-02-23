@@ -8,6 +8,7 @@ import {
   GoogleAuthProvider
 } from 'firebase/auth';
 import logger from '../utils/logger';
+import Button from './ui/Button';
 
 const Auth = () => {
   const [error, setError] = useState('');
@@ -63,23 +64,19 @@ const Auth = () => {
 
         {error && <p style={{ color: 'red', marginBottom: '15px' }}>{error}</p>}
 
-        <button
+        <Button
           onClick={handleGoogleSignIn}
           disabled={isLoading}
+          variant="primary"
           style={{
             padding: '12px 24px',
             backgroundColor: '#4285F4',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: isLoading ? 'not-allowed' : 'pointer',
             fontSize: '16px',
-            opacity: isLoading ? 0.7 : 1,
             width: '100%'
           }}
         >
           {isLoading ? 'Aguarde...' : 'Entrar com o Google'}
-        </button>
+        </Button>
       </div>
     </div>
   );

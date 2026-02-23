@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from './ui/Button';
+import Input from './ui/Input';
 
 const ScheduleControls = ({
   startDate,
@@ -23,39 +25,30 @@ const ScheduleControls = ({
       }}
     >
       <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
-        <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Data Início:</label>
-          <input
-            type="date"
-            value={startDate}
-            onChange={(e) => onStartDateChange(e.target.value)}
-            style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
-          />
-        </div>
-        <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Data Fim:</label>
-          <input
-            type="date"
-            value={endDate}
-            onChange={(e) => onEndDateChange(e.target.value)}
-            style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
-          />
-        </div>
-        <button
+        <Input
+          id="schedule-start-date"
+          label="Data Início:"
+          type="date"
+          value={startDate}
+          onChange={(e) => onStartDateChange(e.target.value)}
+          style={{ padding: '8px', fontSize: '14px' }}
+        />
+        <Input
+          id="schedule-end-date"
+          label="Data Fim:"
+          type="date"
+          value={endDate}
+          onChange={(e) => onEndDateChange(e.target.value)}
+          style={{ padding: '8px', fontSize: '14px' }}
+        />
+        <Button
           onClick={onGenerate}
           disabled={isGenerating || isLoading}
-          style={{
-            padding: '10px 20px',
-            background: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: isGenerating ? 'wait' : 'pointer',
-            fontWeight: 'bold',
-          }}
+          variant="primary"
+          style={{ marginBottom: '15px' }}
         >
           {isGenerating ? 'Gerando...' : 'Gerar Nova Escala'}
-        </button>
+        </Button>
       </div>
 
       {error && (

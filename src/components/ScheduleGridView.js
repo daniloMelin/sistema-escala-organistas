@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from './ui/Button';
 
 const ScheduleGridView = ({
   groupedSchedule,
@@ -31,65 +32,38 @@ const ScheduleGridView = ({
         <div style={{ display: 'flex', gap: '10px' }}>
           {isEditing ? (
             <>
-              <button
+              <Button
                 onClick={() => onToggleEditing(false)}
-                style={{
-                  background: '#6c757d',
-                  color: 'white',
-                  border: 'none',
-                  padding: '8px 15px',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                }}
+                variant="secondary"
+                style={{ padding: '8px 15px', fontSize: '14px' }}
               >
                 Cancelar
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={onSaveChanges}
                 disabled={isGenerating}
-                style={{
-                  background: '#28a745',
-                  color: 'white',
-                  border: 'none',
-                  padding: '8px 15px',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                }}
+                variant="success"
+                style={{ padding: '8px 15px', fontSize: '14px' }}
               >
                 {isGenerating ? 'Salvando...' : 'Salvar Alterações'}
-              </button>
+              </Button>
             </>
           ) : (
             <>
-              <button
+              <Button
                 onClick={() => onToggleEditing(true)}
-                style={{
-                  background: '#ffc107',
-                  color: '#333',
-                  border: 'none',
-                  padding: '8px 15px',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                }}
+                variant="warning"
+                style={{ padding: '8px 15px', fontSize: '14px' }}
               >
                 ✏️ Editar Manualmente
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={onExportClick}
-                style={{
-                  background: '#17a2b8',
-                  color: 'white',
-                  border: 'none',
-                  padding: '8px 15px',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                }}
+                variant="info"
+                style={{ padding: '8px 15px', fontSize: '14px' }}
               >
                 📥 Baixar PDF
-              </button>
+              </Button>
             </>
           )}
         </div>

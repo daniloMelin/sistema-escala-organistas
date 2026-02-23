@@ -5,6 +5,7 @@ import { useChurch } from '../contexts/ChurchContext';
 import ScheduleControls from './ScheduleControls';
 import ScheduleGridView from './ScheduleGridView';
 import ScheduleHistoryList from './ScheduleHistoryList';
+import Button from './ui/Button';
 import { useChurchScheduleGenerator } from '../hooks/useChurchScheduleGenerator';
 
 const ChurchScheduleGenerator = ({ user }) => {
@@ -37,9 +38,9 @@ const ChurchScheduleGenerator = ({ user }) => {
 
   return (
     <div style={{ padding: '20px', maxWidth: '1100px', margin: 'auto' }}>
-      <button onClick={() => navigate(`/igreja/${id}`)} style={{ marginBottom: '20px', cursor: 'pointer' }}>
+      <Button onClick={() => navigate(`/igreja/${id}`)} variant="secondary" style={{ marginBottom: '20px', fontSize: '14px' }}>
         &larr; Voltar para Painel
-      </button>
+      </Button>
       {isLoading && (
         <div style={{ marginBottom: '15px', padding: '10px', background: '#fff3cd', borderRadius: '4px', border: '1px solid #ffeeba' }}>
           Carregando dados da igreja...

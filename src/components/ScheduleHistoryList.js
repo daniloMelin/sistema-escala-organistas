@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from './ui/Button';
 
 const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
   if (isEditing) return null;
@@ -33,19 +34,13 @@ const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
                 Atualizada em: {sch.generatedAt ? new Date(sch.generatedAt).toLocaleString() : 'N/A'}
               </small>
             </div>
-            <button
+            <Button
               onClick={() => onViewSaved(sch)}
-              style={{
-                cursor: 'pointer',
-                padding: '8px 15px',
-                background: '#6c757d',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-              }}
+              variant="secondary"
+              style={{ padding: '8px 15px', fontSize: '14px' }}
             >
               Visualizar
-            </button>
+            </Button>
           </li>
         ))}
       </ul>

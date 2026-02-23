@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from './Button';
 
 const ConfirmDialog = ({
   isOpen,
@@ -50,34 +51,22 @@ const ConfirmDialog = ({
         </p>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-          <button
+          <Button
             type="button"
             onClick={onCancel}
-            style={{
-              padding: '8px 14px',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-              background: '#f5f5f5',
-              cursor: 'pointer',
-            }}
+            variant="secondary"
+            style={{ padding: '8px 14px', fontSize: '14px' }}
           >
             {cancelText}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             onClick={onConfirm}
-            style={{
-              padding: '8px 14px',
-              border: 'none',
-              borderRadius: '4px',
-              background: isDanger ? '#dc3545' : '#007bff',
-              color: 'white',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-            }}
+            variant={isDanger ? 'danger' : 'primary'}
+            style={{ padding: '8px 14px', fontSize: '14px' }}
           >
             {confirmText}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

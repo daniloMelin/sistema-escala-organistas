@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route, NavLink, useNavigate } from 're
 import ChurchManager from './components/ChurchManager';
 import Auth from './components/Auth';
 import ErrorBoundary from './components/ErrorBoundary';
+import Button from './components/ui/Button';
 import logger, { setLoggerReporter, setLoggerContextProvider } from './utils/logger';
 import { createFirestoreLoggerReporter } from './services/firestoreLoggerReporter';
 
@@ -53,7 +54,9 @@ const Layout = ({ children, user }) => {
           {user && (
             <div>
               <span style={{ marginRight: '15px', color: '#555' }}>Olá, {user.email}</span>
-              <button onClick={handleLogout} style={{ padding: '8px 12px', cursor: 'pointer', border: '1px solid #ccc', borderRadius: '4px', background: 'white' }}>Sair</button>
+              <Button onClick={handleLogout} variant="secondary" style={{ padding: '8px 12px', fontSize: '14px' }}>
+                Sair
+              </Button>
             </div>
           )}
         </nav>
