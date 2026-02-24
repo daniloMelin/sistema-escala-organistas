@@ -1,5 +1,12 @@
 # Novo Algoritmo de Geração de Escala
 
+## Histórico de Revisões
+
+| Versão | Data                    | Autor(es)    | Descrição da Revisão         |
+| ------ | ----------------------- | ------------ | ---------------------------- |
+| 1.0    | 24 de fevereiro de 2026 | Danilo Melin | Criação inicial do documento |
+
+
 ## 📋 Resumo
 
 A função `generateSchedule` foi completamente reescrita para implementar um algoritmo baseado em **Escassez de Disponibilidade** e **Equilíbrio de Funções**, resolvendo problemas com organistas que têm restrições rígidas de dias.
