@@ -6,7 +6,7 @@
 | ------ | ----------------------- | ------------ | ------------------------------------------------------------------------------------------------------- |
 | 1.0    | 24 de fevereiro de 2026 | Danilo Melin | Criação do Code Review V4 com avaliação técnica em padrão sênior e definição das fases de implementação |
 | 1.1    | 24 de fevereiro de 2026 | Danilo Melin | Implementação inicial da Fase 1: schema validation em Firestore Rules e documentação de contrato |
-
+| 1.2    | 24 de fevereiro de 2026 | Danilo Melin | Conclusão da Fase 1 após deploy das Firestore Rules em produção |
 
 ## Objetivo
 
@@ -27,7 +27,7 @@ Elevar robustez de produção com foco em segurança de dados, confiabilidade de
 
 #### 1.1 Validar schema nas Firestore Rules (**AÇÃO INICIAL**)
 
-- Status: `IMPLEMENTADO`
+- Status: `CONCLUÍDO`
 - Prioridade: `CRÍTICA`
 - Motivo:
   - hoje as rules validam ownership, mas não validam estrutura/tipos dos documentos.
