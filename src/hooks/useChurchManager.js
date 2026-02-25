@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useChurch } from '../contexts/ChurchContext';
 import {
@@ -27,22 +27,33 @@ export const useChurchManager = (user) => {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [pendingDeleteChurch, setPendingDeleteChurch] = useState(null);
+  const isMountedRef = useRef(false);
 
   const navigate = useNavigate();
   const { setSelectedChurch } = useChurch();
 
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
   const fetchChurches = useCallback(async () => {
     if (!user) return;
-    setIsLoading(true);
+    if (isMountedRef.current) setIsLoading(true);
     try {
       const userChurches = await getChurches(user.uid);
+      if (!isMountedRef.current) return;
       setChurches(userChurches);
       setError('');
     } catch (err) {
+      if (!isMountedRef.current) return;
       logger.error('Falha ao carregar as igrejas:', err);
       setError('Falha ao carregar as igrejas.');
+    } finally {
+      if (isMountedRef.current) setIsLoading(false);
     }
-    setIsLoading(false);
   }, [user]);
 
   useEffect(() => {
@@ -101,7 +112,6 @@ export const useChurchManager = (user) => {
     setEditingId(null);
     setSelectedDays(INITIAL_AVAILABILITY);
     setError('');
-    setSuccessMessage('');
   };
 
   const handleDayChange = (key) => {
@@ -136,18 +146,23 @@ export const useChurchManager = (user) => {
 
       if (editingId) {
         await updateChurch(user.uid, editingId, churchData);
+        if (!isMountedRef.current) return;
         setSuccessMessage('Igreja atualizada!');
       } else {
         await addChurch(user.uid, churchData);
+        if (!isMountedRef.current) return;
         setSuccessMessage('Igreja criada!');
       }
+      if (!isMountedRef.current) return;
       handleCancelEdit();
       await fetchChurches();
     } catch (err) {
+      if (!isMountedRef.current) return;
       setError('Erro ao salvar.');
       logger.error('Erro ao salvar igreja:', err);
+    } finally {
+      if (isMountedRef.current) setIsSubmitting(false);
     }
-    setIsSubmitting(false);
   };
 
   const handleRequestDeleteChurch = (e, churchId, churchName) => {
@@ -160,15 +175,17 @@ export const useChurchManager = (user) => {
 
     try {
       await deleteChurchWithSubcollections(user.uid, pendingDeleteChurch.id);
+      if (!isMountedRef.current) return;
       setSuccessMessage('Igreja e dados associados excluídos com sucesso.');
       setError('');
       if (editingId === pendingDeleteChurch.id) handleCancelEdit();
-      fetchChurches();
+      await fetchChurches();
     } catch (err) {
+      if (!isMountedRef.current) return;
       logger.error('Erro ao excluir igreja:', err);
       setError('Erro ao excluir igreja. Tente novamente.');
     } finally {
-      setPendingDeleteChurch(null);
+      if (isMountedRef.current) setPendingDeleteChurch(null);
     }
   };
 
@@ -200,4 +217,3 @@ export const useChurchManager = (user) => {
     handleChurchSelect,
   };
 };
-
