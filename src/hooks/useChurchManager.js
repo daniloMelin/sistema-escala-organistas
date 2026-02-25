@@ -101,7 +101,6 @@ export const useChurchManager = (user) => {
     setEditingId(null);
     setSelectedDays(INITIAL_AVAILABILITY);
     setError('');
-    setSuccessMessage('');
   };
 
   const handleDayChange = (key) => {
@@ -200,4 +199,3 @@ export const useChurchManager = (user) => {
     handleChurchSelect,
   };
 };
-
