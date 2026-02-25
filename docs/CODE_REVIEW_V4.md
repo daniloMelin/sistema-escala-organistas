@@ -9,6 +9,7 @@
 | 1.2    | 24 de fevereiro de 2026 | Danilo Melin | Conclusão da Fase 1 após deploy das Firestore Rules em produção |
 | 1.3    | 25 de fevereiro de 2026 | Danilo Melin | Implementação da Fase 2.1: correção do fluxo de feedback de sucesso em `useChurchManager` |
 | 1.4    | 25 de fevereiro de 2026 | Danilo Melin | Implementação da Fase 2.2: proteção de hooks assíncronos contra `setState` após unmount |
+| 1.5    | 25 de fevereiro de 2026 | Danilo Melin | Implementação da Fase 2.3: guard explícito no `useChurch` context e teste unitário dedicado |
 
 ## Objetivo
 
@@ -77,7 +78,7 @@ Elevar robustez de produção com foco em segurança de dados, confiabilidade de
 
 #### 2.3 Guard explícito no `useChurch` context
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 
 ### Fase 3 - Sustentabilidade Técnica
@@ -108,6 +109,6 @@ Elevar robustez de produção com foco em segurança de dados, confiabilidade de
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
-- [ ] Fase 2.3 concluída
+- [x] Fase 2.3 concluída
 - [ ] Fase 3.1 concluída
 - [ ] Fase 3.2 concluída
