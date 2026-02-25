@@ -1,16 +1,19 @@
-# Code Review Senior
+# Code Review V4
 
 ## Histórico de Revisões
 
-| Versão | Data                    | Autor(es)    | Descrição da Revisão                                                              |
-| ------ | ----------------------- | ------------ | --------------------------------------------------------------------------------- |
-| 1.0    | 24 de fevereiro de 2026 | Danilo Melin | Criação do documento de Code Review Senior e definição das fases de implementação |
+| Versão | Data                    | Autor(es)    | Descrição da Revisão                                                                                    |
+| ------ | ----------------------- | ------------ | ------------------------------------------------------------------------------------------------------- |
+| 1.0    | 24 de fevereiro de 2026 | Danilo Melin | Criação do Code Review V4 com avaliação técnica em padrão sênior e definição das fases de implementação |
+| 1.1    | 24 de fevereiro de 2026 | Danilo Melin | Implementação inicial da Fase 1: schema validation em Firestore Rules e documentação de contrato |
+
 
 ## Objetivo
 
 Elevar robustez de produção com foco em segurança de dados, confiabilidade de fluxo e manutenção.
 
 - Escopo: continuação após `CODE_REVIEW_V2` e `CODE_REVIEW_V3`.
+- Critério de avaliação: recomendações e priorização com visão de engenharia sênior.
 
 ## Diretriz de Prioridade
 
@@ -24,7 +27,7 @@ Elevar robustez de produção com foco em segurança de dados, confiabilidade de
 
 #### 1.1 Validar schema nas Firestore Rules (**AÇÃO INICIAL**)
 
-- Status: `PENDENTE`
+- Status: `IMPLEMENTADO`
 - Prioridade: `CRÍTICA`
 - Motivo:
   - hoje as rules validam ownership, mas não validam estrutura/tipos dos documentos.
@@ -46,10 +49,10 @@ Elevar robustez de produção com foco em segurança de dados, confiabilidade de
 
 #### 1.2 Padronizar contrato de payload entre frontend e Firestore
 
-- Status: `PENDENTE`
+- Status: `IMPLEMENTADO`
 - Prioridade: `ALTA`
 - Entregáveis:
-  - documento curto de schema esperado por coleção
+  - documento curto de schema esperado por coleção (`docs/FIRESTORE_SCHEMA.md`)
   - mapeamento de compatibilidade com dados legados
 
 ### Fase 2 - Estabilidade de Aplicação
@@ -99,8 +102,8 @@ Elevar robustez de produção com foco em segurança de dados, confiabilidade de
 
 ## Registro de progresso
 
-- [ ] Fase 1.1 concluída
-- [ ] Fase 1.2 concluída
+- [x] Fase 1.1 concluída
+- [x] Fase 1.2 concluída
 - [ ] Fase 2.1 concluída
 - [ ] Fase 2.2 concluída
 - [ ] Fase 2.3 concluída

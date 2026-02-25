@@ -6,7 +6,6 @@
 | ------ | ----------------------- | ------------ | ---------------------------- |
 | 1.0    | 24 de fevereiro de 2026 | Danilo Melin | Criação inicial do documento |
 
-
 Este glossário serve como referência rápida para descrições de testes e nomes técnicos do código.
 
 ## 1. Descrições de testes unitários
