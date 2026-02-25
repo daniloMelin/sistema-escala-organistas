@@ -1,5 +1,12 @@
 # Code Review V2 - Sistema de Escala de Organistas
 
+## Histórico de Revisões
+
+| Versão | Data                    | Autor(es)    | Descrição da Revisão         |
+| ------ | ----------------------- | ------------ | ---------------------------- |
+| 1.0    | 24 de fevereiro de 2026 | Danilo Melin | Criação inicial do documento |
+
+
 ## 📋 Resumo Executivo
 
 Este documento apresenta uma análise atualizada do código após as melhorias implementadas, identificando progressos, problemas remanescentes e novas oportunidades de melhoria.
@@ -349,16 +356,16 @@ firebase deploy --only firestore:rules
 
 ## 📊 Métricas de Qualidade Atualizadas
 
-| Métrica                      | Antes       | Depois      | Meta         | Status          |
-| ---------------------------- | ----------- | ----------- | ------------ | --------------- |
+| Métrica                      | Antes       | Depois      | Meta         | Status         |
+| ---------------------------- | ----------- | ----------- | ------------ | -------------- |
 | Duplicação de Código         | ~15%        | ~8%         | < 5%         | 🟡 Melhorou     |
 | Cobertura de Testes          | 0%          | 0%          | > 70%        | 🔴 Sem mudança  |
 | Tamanho Médio de Componente  | ~250 linhas | ~250 linhas | < 150 linhas | 🟡 Sem mudança  |
 | Validação de Inputs          | 0%          | 100%        | 100%         | ✅ Concluído    |
-| Segurança (Regras Firestore) | ❌          | ✅          | ✅           | ✅ Implementado |
+| Segurança (Regras Firestore) | ❌           | ✅           | ✅            | ✅ Implementado |
 | Memoização                   | 0%          | ~30%        | > 50%        | 🟡 Parcial      |
-| Lazy Loading                 | ❌          | ✅          | ✅           | ✅ Implementado |
-| ErrorBoundary                | ❌          | ✅          | ✅           | ✅ Implementado |
+| Lazy Loading                 | ❌           | ✅           | ✅            | ✅ Implementado |
+| ErrorBoundary                | ❌           | ✅           | ✅            | ✅ Implementado |
 
 ---
 

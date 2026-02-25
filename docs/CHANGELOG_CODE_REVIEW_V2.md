@@ -1,5 +1,12 @@
 # Changelog de Fechamento - Code Review V2
 
+## Histórico de Revisões
+
+| Versão | Data                    | Autor(es)    | Descrição da Revisão         |
+| ------ | ----------------------- | ------------ | ---------------------------- |
+| 1.0    | 24 de fevereiro de 2026 | Danilo Melin | Criação inicial do documento |
+
+
 ## Contexto
 
 - Documento base: `docs/CODE_REVIEW_V2.md`

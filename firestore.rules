@@ -1,44 +1,210 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Helper function para verificar autenticação
     function isAuthenticated() {
       return request.auth != null;
     }
-    
-    // Helper function para verificar se o usuário é o dono do recurso
+
     function isOwner(userId) {
       return isAuthenticated() && request.auth.uid == userId;
     }
-    
-    // Regras para a coleção de usuários
+
+    function optionalString(data, key, maxLen) {
+      return !(key in data) || (data[key] is string && data[key].size() <= maxLen);
+    }
+
+    function optionalBool(data, key) {
+      return !(key in data) || data[key] is bool;
+    }
+
+    function optionalTimestamp(data, key) {
+      return !(key in data) || data[key] is timestamp;
+    }
+
+    function optionalMap(data, key) {
+      return !(key in data) || data[key] is map;
+    }
+
+    function isIsoDate(value) {
+      return value is string && value.matches('^\\d{4}-\\d{2}-\\d{2}$');
+    }
+
+    function isAllowedServiceId(serviceId) {
+      return serviceId in ['RJM', 'MeiaHoraCulto', 'Culto'];
+    }
+
+    function isValidService(svc) {
+      return svc is map
+        && svc.keys().hasOnly(['id', 'label', 'needs'])
+        && svc.id is string
+        && isAllowedServiceId(svc.id)
+        && svc.label is string
+        && svc.label.size() > 0
+        && svc.label.size() <= 40
+        && svc.needs is int
+        && svc.needs >= 1
+        && svc.needs <= 2;
+    }
+
+    // Regras não suportam iteração arbitrária; limitamos cardinalidade e validamos índices possíveis.
+    function isValidServiceList(services) {
+      return services is list
+        && services.size() >= 1
+        && services.size() <= 3
+        && isValidService(services[0])
+        && (services.size() < 2 || isValidService(services[1]))
+        && (services.size() < 3 || isValidService(services[2]));
+    }
+
+    function isValidChurchConfig(config) {
+      return config is map
+        && config.keys().hasOnly(['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'])
+        && (!('sunday' in config) || isValidServiceList(config.sunday))
+        && (!('monday' in config) || isValidServiceList(config.monday))
+        && (!('tuesday' in config) || isValidServiceList(config.tuesday))
+        && (!('wednesday' in config) || isValidServiceList(config.wednesday))
+        && (!('thursday' in config) || isValidServiceList(config.thursday))
+        && (!('friday' in config) || isValidServiceList(config.friday))
+        && (!('saturday' in config) || isValidServiceList(config.saturday));
+    }
+
+    function isValidAvailabilityMap(availability) {
+      return availability is map
+        && availability.keys().hasOnly([
+          'sunday',
+          'sunday_rjm',
+          'sunday_culto',
+          'monday',
+          'tuesday',
+          'wednesday',
+          'thursday',
+          'friday',
+          'saturday'
+        ])
+        && optionalBool(availability, 'sunday')
+        && optionalBool(availability, 'sunday_rjm')
+        && optionalBool(availability, 'sunday_culto')
+        && optionalBool(availability, 'monday')
+        && optionalBool(availability, 'tuesday')
+        && optionalBool(availability, 'wednesday')
+        && optionalBool(availability, 'thursday')
+        && optionalBool(availability, 'friday')
+        && optionalBool(availability, 'saturday');
+    }
+
+    function isValidUserDoc(data) {
+      return data is map
+        && data.keys().hasOnly(['email', 'lastLogin', 'createdAt', 'displayName', 'photoURL'])
+        && optionalString(data, 'email', 320)
+        && optionalString(data, 'displayName', 120)
+        && optionalString(data, 'photoURL', 2000)
+        && optionalTimestamp(data, 'lastLogin')
+        && optionalTimestamp(data, 'createdAt');
+    }
+
+    function isValidChurchDoc(data) {
+      return data is map
+        && data.keys().hasOnly(['name', 'code', 'config', 'createdAt'])
+        && data.name is string
+        && data.name.size() >= 3
+        && data.name.size() <= 100
+        && optionalString(data, 'code', 50)
+        && ('config' in data)
+        && isValidChurchConfig(data.config)
+        && optionalTimestamp(data, 'createdAt');
+    }
+
+    function isValidOrganistDoc(data) {
+      return data is map
+        && data.keys().hasOnly(['name', 'availability', 'createdAt', 'fixedDays', 'blockedDates', 'stats'])
+        && data.name is string
+        && data.name.size() >= 2
+        && data.name.size() <= 100
+        && ('availability' in data)
+        && isValidAvailabilityMap(data.availability)
+        && optionalTimestamp(data, 'createdAt')
+        && (!( 'fixedDays' in data) || data.fixedDays is list)
+        && (!( 'blockedDates' in data) || data.blockedDates is list)
+        && optionalMap(data, 'stats');
+    }
+
+    function isValidScheduleDoc(data) {
+      return data is map
+        && data.keys().hasOnly(['period', 'generatedAt', 'data', 'organistCount'])
+        && ('period' in data)
+        && data.period is map
+        && data.period.keys().hasOnly(['start', 'end'])
+        && isIsoDate(data.period.start)
+        && isIsoDate(data.period.end)
+        && ('generatedAt' in data)
+        && data.generatedAt is timestamp
+        && ('data' in data)
+        && data.data is list
+        && data.data.size() >= 1
+        && data.data.size() <= 500
+        && ('organistCount' in data)
+        && data.organistCount is int
+        && data.organistCount >= 1
+        && data.organistCount <= 100;
+    }
+
+    function isValidAppLogDoc(data) {
+      return data is map
+        && data.keys().hasOnly([
+          'level',
+          'message',
+          'meta',
+          'context',
+          'clientTimestamp',
+          'createdAt',
+          'route',
+          'userAgent'
+        ])
+        && ('level' in data)
+        && data.level in ['error', 'warn']
+        && ('message' in data)
+        && data.message is string
+        && data.message.size() >= 1
+        && data.message.size() <= 1000
+        && optionalMap(data, 'meta')
+        && optionalMap(data, 'context')
+        && optionalString(data, 'clientTimestamp', 80)
+        && ('createdAt' in data)
+        && data.createdAt is timestamp
+        && optionalString(data, 'route', 200)
+        && optionalString(data, 'userAgent', 1000);
+    }
+
     match /users/{userId} {
-      // Usuários só podem ler/escrever seus próprios dados
-      allow read, write: if isOwner(userId);
-      
-      // Subcoleção de igrejas
+      allow read: if isOwner(userId);
+      allow create, update: if isOwner(userId) && isValidUserDoc(request.resource.data);
+      allow delete: if isOwner(userId);
+
       match /churches/{churchId} {
-        allow read, write: if isOwner(userId);
-        
-        // Subcoleção de organistas
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidChurchDoc(request.resource.data);
+        allow delete: if isOwner(userId);
+
         match /organists/{organistId} {
-          allow read, write: if isOwner(userId);
-        }
-        
-        // Subcoleção de escalas
-        match /schedules/{scheduleId} {
-          allow read, write: if isOwner(userId);
+          allow read: if isOwner(userId);
+          allow create, update: if isOwner(userId) && isValidOrganistDoc(request.resource.data);
+          allow delete: if isOwner(userId);
         }
 
+        match /schedules/{scheduleId} {
+          allow read: if isOwner(userId);
+          allow create, update: if isOwner(userId) && isValidScheduleDoc(request.resource.data);
+          allow delete: if isOwner(userId);
+        }
       }
 
-      // Subcoleção de logs da aplicação (observabilidade)
       match /appLogs/{logId} {
-        allow read, write: if isOwner(userId);
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidAppLogDoc(request.resource.data);
+        allow update, delete: if false;
       }
     }
-    
-    // Bloqueia acesso a qualquer outro documento
+
     match /{document=**} {
       allow read, write: if false;
     }
