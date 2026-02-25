@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   getOrganistsByChurch,
@@ -28,16 +28,28 @@ export const useChurchDashboard = (user) => {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [pendingDeleteOrganist, setPendingDeleteOrganist] = useState(null);
+  const isMountedRef = useRef(false);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   const fetchData = useCallback(async () => {
     if (!user || !id) return;
-    setLoading(true);
-    setError('');
+    if (isMountedRef.current) {
+      setLoading(true);
+      setError('');
+    }
     try {
       const orgsData = await getOrganistsByChurch(user.uid, id);
+      if (!isMountedRef.current) return;
       setOrganists(orgsData);
 
       const churchData = await getChurch(user.uid, id);
+      if (!isMountedRef.current) return;
       if (churchData && churchData.config) {
         const config = churchData.config;
         const filteredDays = ALL_WEEK_DAYS.filter((dayObj) => {
@@ -55,10 +67,11 @@ export const useChurchDashboard = (user) => {
       }
       setError('');
     } catch (fetchError) {
+      if (!isMountedRef.current) return;
       logger.error('Erro ao carregar dados:', fetchError);
       setError('Falha ao carregar dados da igreja.');
     } finally {
-      setLoading(false);
+      if (isMountedRef.current) setLoading(false);
     }
   }, [id, user]);
 
@@ -121,19 +134,22 @@ export const useChurchDashboard = (user) => {
       } else {
         await addOrganistToChurch(user.uid, id, organistData);
       }
+      if (!isMountedRef.current) return;
 
       handleCancelEdit();
       await fetchData();
+      if (!isMountedRef.current) return;
       setSuccessMessage(
         editingId
           ? 'Organista atualizada com sucesso.'
           : 'Organista cadastrada com sucesso.'
       );
     } catch (saveError) {
+      if (!isMountedRef.current) return;
       logger.error('Erro ao salvar organista:', saveError);
       setError('Erro ao salvar organista.');
     } finally {
-      setIsSubmitting(false);
+      if (isMountedRef.current) setIsSubmitting(false);
     }
   };
 
@@ -145,14 +161,17 @@ export const useChurchDashboard = (user) => {
     if (!pendingDeleteOrganist) return;
     try {
       await deleteOrganistFromChurch(user.uid, id, pendingDeleteOrganist.id);
+      if (!isMountedRef.current) return;
       await fetchData();
+      if (!isMountedRef.current) return;
       setSuccessMessage('Organista excluída com sucesso.');
       setError('');
     } catch (deleteError) {
+      if (!isMountedRef.current) return;
       logger.error('Erro ao excluir organista:', deleteError);
       setError('Erro ao excluir organista.');
     } finally {
-      setPendingDeleteOrganist(null);
+      if (isMountedRef.current) setPendingDeleteOrganist(null);
     }
   };
 
@@ -181,4 +200,3 @@ export const useChurchDashboard = (user) => {
     formatOrganistAvailability,
   };
 };
-

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   getOrganistsByChurch,
@@ -27,26 +27,38 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [churchConfig, setChurchConfig] = useState(null);
+  const isMountedRef = useRef(false);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   const loadData = useCallback(async () => {
     if (!user || !id) return;
-    setIsLoading(true);
+    if (isMountedRef.current) setIsLoading(true);
     try {
       const orgsData = await getOrganistsByChurch(user.uid, id);
+      if (!isMountedRef.current) return;
       setOrganists(orgsData);
 
       const churchData = await getChurch(user.uid, id);
+      if (!isMountedRef.current) return;
       if (churchData && churchData.config) {
         setChurchConfig(churchData.config);
       }
 
       const schedulesData = await getChurchSchedules(user.uid, id);
+      if (!isMountedRef.current) return;
       setSavedSchedules(schedulesData);
     } catch (err) {
+      if (!isMountedRef.current) return;
       logger.error('Erro ao carregar dados da igreja:', err);
       setError('Erro ao carregar dados da igreja.');
     } finally {
-      setIsLoading(false);
+      if (isMountedRef.current) setIsLoading(false);
     }
   }, [id, user]);
 
@@ -65,9 +77,11 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
   };
 
   const handleGenerate = async () => {
-    setError('');
-    setSuccessMessage('');
-    setIsEditing(false);
+    if (isMountedRef.current) {
+      setError('');
+      setSuccessMessage('');
+      setIsEditing(false);
+    }
 
     const dateValidation = validateDateRange(startDate, endDate);
     if (!dateValidation.isValid) {
@@ -90,11 +104,11 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
     try {
       const schedule = generateScheduleLogic(organists, startDate, endDate, churchConfig);
       if (schedule.length === 0) {
-        setError('Não foi possível gerar escala.');
+        if (isMountedRef.current) setError('Não foi possível gerar escala.');
         logger.error('Schedule vazio após geração.');
-        setIsGenerating(false);
         return;
       }
+      if (!isMountedRef.current) return;
 
       setGeneratedSchedule(schedule);
 
@@ -107,16 +121,19 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
       };
 
       await saveScheduleToChurch(user.uid, id, scheduleId, scheduleData);
+      if (!isMountedRef.current) return;
 
       setCurrentScheduleId(scheduleId);
       setSuccessMessage('Escala gerada e salva com sucesso!');
       const updatedSchedules = await getChurchSchedules(user.uid, id);
+      if (!isMountedRef.current) return;
       setSavedSchedules(updatedSchedules);
     } catch (err) {
+      if (!isMountedRef.current) return;
       logger.error('Erro ao gerar/salvar escala:', err);
       setError('Erro ao gerar/salvar escala.');
     } finally {
-      setIsGenerating(false);
+      if (isMountedRef.current) setIsGenerating(false);
     }
   };
 
@@ -142,7 +159,7 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
 
   const handleSaveChanges = async () => {
     if (!currentScheduleId) return;
-    setIsGenerating(true);
+    if (isMountedRef.current) setIsGenerating(true);
     try {
       const scheduleData = {
         period: { start: startDate, end: endDate },
@@ -151,15 +168,18 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
         organistCount: organists.length,
       };
       await saveScheduleToChurch(user.uid, id, currentScheduleId, scheduleData);
+      if (!isMountedRef.current) return;
       setSuccessMessage('Alterações salvas com sucesso!');
       setIsEditing(false);
       const updatedSchedules = await getChurchSchedules(user.uid, id);
+      if (!isMountedRef.current) return;
       setSavedSchedules(updatedSchedules);
     } catch (err) {
+      if (!isMountedRef.current) return;
       logger.error('Erro ao salvar alterações da escala:', err);
       setError('Erro ao salvar as alterações.');
     } finally {
-      setIsGenerating(false);
+      if (isMountedRef.current) setIsGenerating(false);
     }
   };
 
@@ -196,4 +216,3 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
     handleSaveChanges,
   };
 };
-
