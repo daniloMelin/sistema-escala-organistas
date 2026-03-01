@@ -7,6 +7,7 @@ import ScheduleGridView from './ScheduleGridView';
 import ScheduleHistoryList from './ScheduleHistoryList';
 import Button from './ui/Button';
 import { useChurchScheduleGenerator } from '../hooks/useChurchScheduleGenerator';
+import './ChurchScheduleGenerator.css';
 
 const ChurchScheduleGenerator = ({ user }) => {
   const { id } = useParams();

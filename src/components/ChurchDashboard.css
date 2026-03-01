@@ -1,0 +1,78 @@
+.organist-form {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  border: 1px solid #dddddd;
+}
+
+.organist-form--editing {
+  background: var(--warning-bg);
+  border-color: var(--warning-border);
+}
+
+.organist-form__title {
+  margin-top: 0;
+  border-bottom: 1px solid #cccccc;
+  padding-bottom: 10px;
+}
+
+.organist-form__availability {
+  margin-bottom: 15px;
+}
+
+.organist-form__availability-label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.organist-form__days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.organist-form__day-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #ffffff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #cccccc;
+}
+
+.organist-form__day-label {
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.organist-form__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.organist-form__submit {
+  flex: 1;
+}
+
+.organist-list__item {
+  padding: 15px;
+  margin-bottom: 10px;
+  border: 1px solid #eeeeee;
+  border-radius: 6px;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.organist-list__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.organist-list__name {
+  font-size: 1.1em;
+  color: var(--app-text);
+}

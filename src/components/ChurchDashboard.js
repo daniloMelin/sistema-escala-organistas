@@ -7,6 +7,7 @@ import Button from './ui/Button';
 import OrganistForm from './OrganistForm';
 import OrganistList from './OrganistList';
 import { useChurchDashboard } from '../hooks/useChurchDashboard';
+import './ChurchDashboard.css';
 
 const ChurchDashboard = ({ user }) => {
   const navigate = useNavigate();

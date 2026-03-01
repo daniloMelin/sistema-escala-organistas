@@ -4,6 +4,7 @@ import ConfirmDialog from './ui/ConfirmDialog';
 import ChurchForm from './ChurchForm';
 import ChurchList from './ChurchList';
 import { useChurchManager } from '../hooks/useChurchManager';
+import './ChurchManager.css';
 
 const ChurchManager = ({ user }) => {
   const {

@@ -2,14 +2,16 @@
 
 ## Histórico de Revisões
 
-| Versão | Data                    | Autor(es)    | Descrição da Revisão                                                                                    |
-| ------ | ----------------------- | ------------ | ------------------------------------------------------------------------------------------------------- |
-| 1.0    | 24 de fevereiro de 2026 | Danilo Melin | Criação do Code Review V4 com avaliação técnica em padrão sênior e definição das fases de implementação |
-| 1.1    | 24 de fevereiro de 2026 | Danilo Melin | Implementação inicial da Fase 1: schema validation em Firestore Rules e documentação de contrato |
-| 1.2    | 24 de fevereiro de 2026 | Danilo Melin | Conclusão da Fase 1 após deploy das Firestore Rules em produção |
-| 1.3    | 25 de fevereiro de 2026 | Danilo Melin | Implementação da Fase 2.1: correção do fluxo de feedback de sucesso em `useChurchManager` |
-| 1.4    | 25 de fevereiro de 2026 | Danilo Melin | Implementação da Fase 2.2: proteção de hooks assíncronos contra `setState` após unmount |
-| 1.5    | 25 de fevereiro de 2026 | Danilo Melin | Implementação da Fase 2.3: guard explícito no `useChurch` context e teste unitário dedicado |
+| Versão | Data                    | Autor(es)    | Descrição da Revisão                                                                                         |
+| ------ | ----------------------- | ------------ | ------------------------------------------------------------------------------------------------------------ |
+| 1.0    | 24 de fevereiro de 2026 | Danilo Melin | Criação do Code Review V4 com avaliação técnica em padrão sênior e definição das fases de implementação      |
+| 1.1    | 24 de fevereiro de 2026 | Danilo Melin | Implementação inicial da Fase 1: schema validation em Firestore Rules e documentação de contrato             |
+| 1.2    | 24 de fevereiro de 2026 | Danilo Melin | Conclusão da Fase 1 após deploy das Firestore Rules em produção                                              |
+| 1.3    | 25 de fevereiro de 2026 | Danilo Melin | Implementação da Fase 2.1: correção do fluxo de feedback de sucesso em `useChurchManager`                    |
+| 1.4    | 25 de fevereiro de 2026 | Danilo Melin | Implementação da Fase 2.2: proteção de hooks assíncronos contra `setState` após unmount                      |
+| 1.5    | 25 de fevereiro de 2026 | Danilo Melin | Implementação da Fase 2.3: guard explícito no `useChurch` context e teste unitário dedicado                  |
+| 1.6    | 25 de fevereiro de 2026 | Danilo Melin | Implementação da Fase 3.1: modularização do CSS por domínio/componente                                       |
+| 1.7    | 25 de fevereiro de 2026 | Danilo Melin | Conclusão da Fase 3.2 com spike técnico de migração CRA -> Vite e recomendação de execução em ciclo dedicado |
 
 ## Objetivo
 
@@ -85,23 +87,19 @@ Elevar robustez de produção com foco em segurança de dados, confiabilidade de
 
 #### 3.1 Modularizar CSS por domínio/componente
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 
 #### 3.2 Spike de migração CRA -> Vite (V4)
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo do spike:
   - esforço estimado
   - riscos de compatibilidade
   - plano de rollback
-
-## Ordem de execução confirmada
-
-1. **Iniciar por 1.1 (Firestore Rules schema validation)**  
-2. Seguir para fase 2 (estabilidade)  
-3. Depois fase 3 (sustentabilidade)
+- Entregável:
+  - `docs/VITE_SPIKE_V4.md`
 
 ## Registro de progresso
 
@@ -110,5 +108,5 @@ Elevar robustez de produção com foco em segurança de dados, confiabilidade de
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
 - [x] Fase 2.3 concluída
-- [ ] Fase 3.1 concluída
-- [ ] Fase 3.2 concluída
+- [x] Fase 3.1 concluída
+- [x] Fase 3.2 concluída
