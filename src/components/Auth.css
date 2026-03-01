@@ -1,0 +1,31 @@
+.auth-shell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  text-align: center;
+}
+
+.auth-card {
+  max-width: 450px;
+  width: 100%;
+  padding: 30px;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.auth-title {
+  margin-bottom: 10px;
+}
+
+.auth-subtitle {
+  color: #555555;
+  margin-bottom: 25px;
+}
+
+.auth-error {
+  color: #dc3545;
+  margin-bottom: 15px;
+}

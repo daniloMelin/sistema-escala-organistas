@@ -1,0 +1,41 @@
+.error-boundary {
+  padding: 40px 20px;
+  text-align: center;
+  max-width: 600px;
+  margin: 50px auto;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.error-boundary__title {
+  color: var(--danger);
+  margin-bottom: 20px;
+}
+
+.error-boundary__text {
+  color: var(--app-muted);
+  margin-bottom: 30px;
+}
+
+.error-boundary__details {
+  text-align: left;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.error-boundary__summary {
+  cursor: pointer;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.error-boundary__stack {
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--danger);
+}

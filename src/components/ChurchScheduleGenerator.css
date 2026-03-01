@@ -1,0 +1,126 @@
+.schedule-controls {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  border: 1px solid #dddddd;
+}
+
+.schedule-controls__row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.schedule-controls__generate {
+  margin-bottom: 15px;
+}
+
+.history-title {
+  margin-top: 40px;
+  border-top: 2px solid #eeeeee;
+  padding-top: 20px;
+}
+
+.history-item {
+  border: 1px solid #eeeeee;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+}
+
+.history-item__date {
+  color: #999999;
+}
+
+.schedule-grid {
+  margin-bottom: 40px;
+}
+
+.schedule-grid__toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  background: #eeeeee;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.schedule-grid__title {
+  margin: 0;
+}
+
+.schedule-grid__month {
+  margin-bottom: 30px;
+}
+
+.schedule-grid__month-header {
+  background: #e0e0e0;
+  padding: 8px;
+  text-align: center;
+  font-weight: 700;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  color: #555555;
+}
+
+.schedule-grid__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.schedule-card {
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+}
+
+.schedule-card__header {
+  background: #f0f0f0;
+  padding: 8px;
+  text-align: center;
+  font-weight: 700;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.schedule-card__body {
+  padding: 15px;
+}
+
+.schedule-card__row {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.95em;
+}
+
+.schedule-card__role {
+  color: var(--app-muted);
+  font-weight: 700;
+}
+
+.schedule-card__select {
+  padding: 4px;
+  border-radius: 4px;
+  border: 1px solid #cccccc;
+  max-width: 150px;
+}
+
+.schedule-card__name {
+  color: var(--app-text);
+}
+
+.schedule-card__name--empty {
+  color: var(--danger);
+  font-weight: 700;
+}

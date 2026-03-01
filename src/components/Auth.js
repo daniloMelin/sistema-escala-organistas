@@ -9,6 +9,7 @@ import {
 } from 'firebase/auth';
 import logger from '../utils/logger';
 import Button from './ui/Button';
+import './Auth.css';
 
 const Auth = () => {
   const [error, setError] = useState('');

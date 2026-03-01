@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import logger from '../utils/logger';
 import Button from './ui/Button';
+import './ErrorBoundary.css';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
