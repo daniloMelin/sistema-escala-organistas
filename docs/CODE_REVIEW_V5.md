@@ -10,6 +10,7 @@
 | 1.3    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.1 com cenários E2E de autenticação e navegação inicial               |
 | 1.4    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.2 com cenários E2E de cadastro e edição de igreja                    |
 | 1.5    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.3 com cenários E2E de cadastro e edição de organista                 |
+| 1.6    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.4 com cenário E2E de geração de escala e validação do histórico      |
 
 ## Objetivo
 
@@ -101,7 +102,7 @@ Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos flu
 
 #### 2.4 Fluxo E2E de geração de escala
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `CRÍTICA`
 - Escopo:
   - gerar escala
@@ -139,9 +140,8 @@ Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos flu
 
 ## Ordem de execução confirmada
 
-1. **Fase 2.4 - Geração de escala**
-2. Fase 2.5 - Edição manual e exportação
-3. Fase 3 - Integrar, documentar e estabilizar no CI
+1. **Fase 2.5 - Edição manual e exportação**
+2. Fase 3 - Integrar, documentar e estabilizar no CI
 
 ## Registro de progresso
 
@@ -150,7 +150,7 @@ Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos flu
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
 - [x] Fase 2.3 concluída
-- [ ] Fase 2.4 concluída
+- [x] Fase 2.4 concluída
 - [ ] Fase 2.5 concluída
 - [ ] Fase 3.1 concluída
 - [ ] Fase 3.2 concluída
