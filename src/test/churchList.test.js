@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import ChurchList from '../components/ChurchList';
 
 describe('ChurchList', () => {
-  test('calls select, edit and delete handlers', () => {
+  test('chama os manipuladores de selecionar, editar e excluir', () => {
     const props = {
       churches: [{ id: 'c1', name: 'Jardim', code: 'JDG' }],
       isLoading: false,

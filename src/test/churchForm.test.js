@@ -20,7 +20,7 @@ const buildProps = (overrides = {}) => ({
 });
 
 describe('ChurchForm', () => {
-  test('submits form and triggers callbacks', () => {
+  test('envia o formulario e dispara os callbacks', () => {
     const props = buildProps();
     render(<ChurchForm {...props} />);
 
@@ -40,7 +40,7 @@ describe('ChurchForm', () => {
     expect(props.onSubmit).toHaveBeenCalled();
   });
 
-  test('shows cancel button only while editing', () => {
+  test('exibe o botao cancelar apenas durante a edicao', () => {
     const { rerender } = render(<ChurchForm {...buildProps({ editingId: null })} />);
     expect(screen.queryByRole('button', { name: 'Cancelar' })).not.toBeInTheDocument();
 

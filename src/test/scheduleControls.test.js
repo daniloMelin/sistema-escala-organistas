@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import ScheduleControls from '../components/ScheduleControls';
 
 describe('ScheduleControls', () => {
-  test('changes dates and triggers generation', () => {
+  test('altera as datas e dispara a geracao', () => {
     const props = {
       startDate: '2026-03-01',
       endDate: '2026-03-31',

@@ -22,7 +22,7 @@ module.exports = defineConfig({
     viewport: { width: 1440, height: 900 },
   },
   webServer: {
-    command: `HOST=127.0.0.1 PORT=${PORT} BROWSER=none npm start`,
+    command: `HOST=127.0.0.1 PORT=${PORT} BROWSER=none REACT_APP_E2E_MODE=true npm start`,
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

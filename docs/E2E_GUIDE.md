@@ -5,6 +5,7 @@
 | Versão | Data               | Autor(es)    | Descrição da Revisão                                              |
 | ------ | ------------------ | ------------ | ----------------------------------------------------------------- |
 | 1.0    | 1 de março de 2026 | Danilo Melin | Criação do guia inicial de execução dos testes E2E com Playwright |
+| 1.1    | 2 de março de 2026 | Danilo Melin | Atualização do guia com modo E2E controlado, autenticação local e helper de sessão |
 
 ## Objetivo
 
@@ -52,9 +53,11 @@ npm run test:e2e:ui
 
 - o Playwright sobe automaticamente a aplicação com `npm start`
 - a URL base padrão é `http://127.0.0.1:3000`
+- a aplicação é iniciada com `REACT_APP_E2E_MODE=true`
 - em ambiente local, reutiliza servidor existente quando disponível
 - gera relatório HTML em `playwright-report/`
 - mantém screenshot, vídeo e trace apenas em falhas/retries configurados
+- em modo E2E, autenticação e persistência usam fluxo local controlado
 
 ## Escopo atual da Fase 1.1
 
@@ -66,8 +69,22 @@ Arquivo inicial:
 
 - `e2e/auth-smoke.spec.js`
 
+Helper inicial:
+
+- `e2e/helpers/session.js`
+
+Teste adicional de login controlado:
+
+- `e2e/e2e-login.spec.js`
+
+## Estratégia de ambiente e dados
+
+Documento complementar:
+
+- `docs/E2E_STRATEGY.md`
+
 ## Próximos passos
 
-1. Definir estratégia de autenticação para ambiente E2E.
-2. Definir massa mínima de dados para fluxos críticos.
-3. Expandir para cadastro de igreja, organista e geração de escala.
+1. Expandir para cadastro de igreja, organista e geração de escala.
+2. Introduzir helpers de massa de dados por cenário.
+3. Integrar execução E2E ao CI de forma progressiva.

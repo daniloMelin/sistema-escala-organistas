@@ -10,6 +10,13 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Button from './components/ui/Button';
 import logger, { setLoggerReporter, setLoggerContextProvider } from './utils/logger';
 import { createFirestoreLoggerReporter } from './services/firestoreLoggerReporter';
+import {
+  isE2EMode,
+  E2E_TEST_USER,
+  getE2ESession,
+  setE2ESession,
+  clearE2ESession,
+} from './utils/e2eMode';
 
 // Contexto e Autenticação
 import { ChurchProvider } from './contexts/ChurchContext';
@@ -24,11 +31,11 @@ const firestoreReporter = createFirestoreLoggerReporter({
 });
 
 // Componente de Layout
-const Layout = ({ children, user }) => {
+const Layout = ({ children, user, onLogout }) => {
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
-      await signOut(auth);
+      await onLogout();
       navigate('/');
     } catch (error) {
       logger.error("Erro ao fazer logout:", error);
@@ -72,6 +79,7 @@ const Layout = ({ children, user }) => {
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
+  onLogout: PropTypes.func.isRequired,
   user: PropTypes.shape({
     uid: PropTypes.string,
     email: PropTypes.string,
@@ -105,6 +113,12 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (isE2EMode) {
+      setUser(getE2ESession());
+      setIsLoading(false);
+      return undefined;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setIsLoading(false);
@@ -116,12 +130,28 @@ function App() {
     return <div className="app-loading">Carregando...</div>;
   }
 
+  const handleLogout = async () => {
+    if (isE2EMode) {
+      clearE2ESession();
+      setUser(null);
+      return;
+    }
+
+    await signOut(auth);
+  };
+
+  const handleE2ELogin = () => {
+    if (!isE2EMode) return;
+    setE2ESession(E2E_TEST_USER);
+    setUser(E2E_TEST_USER);
+  };
+
   return (
     <ErrorBoundary>
       <Router>
         {user ? (
           <ChurchProvider>
-            <Layout user={user}>
+            <Layout user={user} onLogout={handleLogout}>
               <Suspense fallback={<div className="app-loading">Carregando...</div>}>
                 <Routes>
                   {/* Rota principal: Lista de Igrejas */}
@@ -139,7 +169,7 @@ function App() {
             </Layout>
           </ChurchProvider>
         ) : (
-          <Auth />
+          <Auth onE2ELogin={handleE2ELogin} />
         )}
       </Router>
     </ErrorBoundary>

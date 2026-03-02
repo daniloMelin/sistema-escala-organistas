@@ -10,4 +10,8 @@ test('exibe a tela inicial de autenticacao', async ({ page }) => {
   await expect(
     page.getByRole('button', { name: 'Entrar com o Google' })
   ).toBeVisible();
+
+  await expect(
+    page.getByRole('button', { name: 'Entrar em modo E2E' })
+  ).toBeVisible();
 });

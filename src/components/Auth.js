@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import { auth, db } from '../firebaseConfig';
 import { doc, setDoc, Timestamp } from 'firebase/firestore';
@@ -10,8 +11,9 @@ import {
 import logger from '../utils/logger';
 import Button from './ui/Button';
 import './Auth.css';
+import { isE2EMode } from '../utils/e2eMode';
 
-const Auth = () => {
+const Auth = ({ onE2ELogin }) => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -66,9 +68,24 @@ const Auth = () => {
         >
           {isLoading ? 'Aguarde...' : 'Entrar com o Google'}
         </Button>
+
+        {isE2EMode && (
+          <Button
+            onClick={onE2ELogin}
+            variant="secondary"
+            size="lg"
+            fullWidth
+          >
+            Entrar em modo E2E
+          </Button>
+        )}
       </div>
     </div>
   );
+};
+
+Auth.propTypes = {
+  onE2ELogin: PropTypes.func,
 };
 
 export default Auth;

@@ -2,14 +2,14 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import ScheduleHistoryList from '../components/ScheduleHistoryList';
 
 describe('ScheduleHistoryList', () => {
-  test('does not render while editing', () => {
+  test('nao renderiza enquanto estiver em edicao', () => {
     const { container } = render(
       <ScheduleHistoryList isEditing savedSchedules={[]} onViewSaved={jest.fn()} />
     );
     expect(container).toBeEmptyDOMElement();
   });
 
-  test('renders items and triggers view action', () => {
+  test('renderiza itens e dispara a acao de visualizacao', () => {
     const onViewSaved = jest.fn();
     const schedule = {
       id: 's1',

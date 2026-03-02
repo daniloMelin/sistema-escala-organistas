@@ -8,21 +8,21 @@ import {
 
 describe('validation utils', () => {
   describe('validateChurchName', () => {
-    test('rejects empty name', () => {
+    test('rejeita nome vazio', () => {
       expect(validateChurchName('')).toEqual({
         isValid: false,
         error: 'Nome da igreja é obrigatório.',
       });
     });
 
-    test('rejects dangerous characters', () => {
+    test('rejeita caracteres perigosos', () => {
       expect(validateChurchName('Igreja <script>')).toEqual({
         isValid: false,
         error: 'Nome contém caracteres inválidos.',
       });
     });
 
-    test('accepts valid name', () => {
+    test('aceita nome valido', () => {
       expect(validateChurchName('Congregacao Central')).toEqual({
         isValid: true,
       });
@@ -30,14 +30,14 @@ describe('validation utils', () => {
   });
 
   describe('validateOrganistName', () => {
-    test('requires at least 2 chars', () => {
+    test('exige pelo menos 2 caracteres', () => {
       expect(validateOrganistName('A')).toEqual({
         isValid: false,
         error: 'Nome deve ter pelo menos 2 caracteres.',
       });
     });
 
-    test('accepts valid name', () => {
+    test('aceita nome valido', () => {
       expect(validateOrganistName('Ana')).toEqual({
         isValid: true,
       });
@@ -45,45 +45,45 @@ describe('validation utils', () => {
   });
 
   describe('validateChurchCode', () => {
-    test('accepts empty code', () => {
+    test('aceita codigo vazio', () => {
       expect(validateChurchCode('')).toEqual({ isValid: true });
     });
 
-    test('rejects invalid code pattern', () => {
+    test('rejeita padrao de codigo invalido', () => {
       expect(validateChurchCode('ABC 123')).toEqual({
         isValid: false,
         error: 'Código contém caracteres inválidos. Use apenas letras, números, hífen e underscore.',
       });
     });
 
-    test('accepts valid code', () => {
+    test('aceita codigo valido', () => {
       expect(validateChurchCode('ABC_123-TEST')).toEqual({ isValid: true });
     });
   });
 
   describe('validateDateRange', () => {
-    test('rejects missing dates', () => {
+    test('rejeita datas ausentes', () => {
       expect(validateDateRange('', '')).toEqual({
         isValid: false,
         error: 'Defina as datas de início e fim.',
       });
     });
 
-    test('rejects invalid order', () => {
+    test('rejeita ordem de datas invalida', () => {
       expect(validateDateRange('2026-03-10', '2026-03-01')).toEqual({
         isValid: false,
         error: 'Data de início deve ser anterior à data de fim.',
       });
     });
 
-    test('rejects periods longer than one year', () => {
+    test('rejeita periodos maiores que um ano', () => {
       expect(validateDateRange('2026-01-01', '2027-02-01')).toEqual({
         isValid: false,
         error: 'Período não pode exceder 1 ano.',
       });
     });
 
-    test('accepts valid range', () => {
+    test('aceita intervalo valido', () => {
       expect(validateDateRange('2026-01-01', '2026-03-31')).toEqual({
         isValid: true,
       });
@@ -91,7 +91,7 @@ describe('validation utils', () => {
   });
 
   describe('sanitizeString', () => {
-    test('removes dangerous chars and normalizes spaces', () => {
+    test('remove caracteres perigosos e normaliza espacos', () => {
       expect(sanitizeString("  Ana   <b>'&  ")).toBe('Ana b');
     });
   });
