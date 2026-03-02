@@ -14,11 +14,26 @@ import {
   limit
 } from 'firebase/firestore';
 import logger from '../utils/logger';
+import { isE2EMode } from '../utils/e2eMode';
+import {
+  addChurchLocal,
+  getChurchesLocal,
+  deleteChurchLocal,
+  updateChurchLocal,
+  getChurchLocal,
+  addOrganistLocal,
+  getOrganistsLocal,
+  updateOrganistLocal,
+  deleteOrganistLocal,
+  saveScheduleLocal,
+  getSchedulesLocal,
+} from './e2eStorageService';
 
 // --- IGREJAS ---
 
 export const addChurch = async (userId, churchData) => {
   if (!userId) throw new Error("ID do usuário é necessário.");
+  if (isE2EMode) return addChurchLocal(userId, churchData);
   try {
     const churchesCollectionRef = collection(db, 'users', userId, 'churches');
     await addDoc(churchesCollectionRef, { ...churchData, createdAt: Timestamp.now() });
@@ -30,6 +45,7 @@ export const addChurch = async (userId, churchData) => {
 
 export const getChurches = async (userId) => {
   if (!userId) return [];
+  if (isE2EMode) return getChurchesLocal(userId);
   try {
     const churchesCollectionRef = collection(db, 'users', userId, 'churches');
     const q = query(churchesCollectionRef, orderBy("name"));
@@ -43,6 +59,7 @@ export const getChurches = async (userId) => {
 
 export const deleteChurch = async (userId, churchId) => {
   if (!userId || !churchId) throw new Error("ID inválido.");
+  if (isE2EMode) return deleteChurchLocal(userId, churchId);
   try {
     const churchDocRef = doc(db, 'users', userId, 'churches', churchId);
     await deleteDoc(churchDocRef);
@@ -56,6 +73,7 @@ export const deleteChurch = async (userId, churchId) => {
 // Usa batches de escrita para evitar exceder limites; para grandes volumes considere Cloud Functions.
 export const deleteChurchWithSubcollections = async (userId, churchId) => {
   if (!userId || !churchId) throw new Error("ID inválido.");
+  if (isE2EMode) return deleteChurchLocal(userId, churchId);
   try {
     const subCollections = ['organists', 'schedules'];
 
@@ -91,6 +109,7 @@ export const deleteChurchWithSubcollections = async (userId, churchId) => {
 // --- ORGANISTAS (POR IGREJA) ---
 
 export const getOrganistsByChurch = async (userId, churchId) => {
+  if (isE2EMode) return getOrganistsLocal(userId, churchId);
   try {
     const organistsRef = collection(db, "users", userId, "churches", churchId, "organists");
     const snapshot = await getDocs(organistsRef);
@@ -106,6 +125,7 @@ export const getOrganistsByChurch = async (userId, churchId) => {
 
 export const addOrganistToChurch = async (userId, churchId, organistData) => {
   if (!userId || !churchId) throw new Error("ID do usuário e da Igreja são necessários.");
+  if (isE2EMode) return addOrganistLocal(userId, churchId, organistData);
   try {
     const organistsRef = collection(db, "users", userId, "churches", churchId, "organists");
     const docRef = await addDoc(organistsRef, {
@@ -121,6 +141,7 @@ export const addOrganistToChurch = async (userId, churchId, organistData) => {
 
 export const updateOrganistInChurch = async (userId, churchId, organistId, dataToUpdate) => {
   if (!userId || !churchId || !organistId) throw new Error("Dados insuficientes.");
+  if (isE2EMode) return updateOrganistLocal(userId, churchId, organistId, dataToUpdate);
   try {
     const organistDocRef = doc(db, "users", userId, "churches", churchId, "organists", organistId);
     await updateDoc(organistDocRef, dataToUpdate);
@@ -132,6 +153,7 @@ export const updateOrganistInChurch = async (userId, churchId, organistId, dataT
 
 export const deleteOrganistFromChurch = async (userId, churchId, organistId) => {
   if (!userId || !churchId || !organistId) throw new Error("Dados insuficientes.");
+  if (isE2EMode) return deleteOrganistLocal(userId, churchId, organistId);
   try {
     const organistDocRef = doc(db, "users", userId, "churches", churchId, "organists", organistId);
     await deleteDoc(organistDocRef);
@@ -145,6 +167,7 @@ export const deleteOrganistFromChurch = async (userId, churchId, organistId) => 
 
 export const saveScheduleToChurch = async (userId, churchId, scheduleId, scheduleData) => {
   if (!userId || !churchId) throw new Error("ID do usuário e da Igreja são necessários.");
+  if (isE2EMode) return saveScheduleLocal(userId, churchId, scheduleId, scheduleData);
   try {
     const scheduleDocRef = doc(db, 'users', userId, 'churches', churchId, 'schedules', scheduleId);
     const dataToSave = {
@@ -160,6 +183,7 @@ export const saveScheduleToChurch = async (userId, churchId, scheduleId, schedul
 
 export const getChurchSchedules = async (userId, churchId, count = 3) => {
   if (!userId || !churchId) return [];
+  if (isE2EMode) return getSchedulesLocal(userId, churchId, count);
   try {
     const schedulesRef = collection(db, 'users', userId, 'churches', churchId, 'schedules');
     const q = query(schedulesRef, orderBy("generatedAt", "desc"), limit(count));
@@ -185,6 +209,7 @@ export const getChurchSchedules = async (userId, churchId, count = 3) => {
 // Atualizar dados de uma Igreja
 export const updateChurch = async (userId, churchId, dataToUpdate) => {
   if (!userId || !churchId) throw new Error("Dados insuficientes.");
+  if (isE2EMode) return updateChurchLocal(userId, churchId, dataToUpdate);
   try {
     const churchDocRef = doc(db, 'users', userId, 'churches', churchId);
     await updateDoc(churchDocRef, dataToUpdate);
@@ -195,6 +220,7 @@ export const updateChurch = async (userId, churchId, dataToUpdate) => {
 };
 
 export const getChurch = async (userId, churchId) => {
+  if (isE2EMode) return getChurchLocal(userId, churchId);
   try {
     const docRef = doc(db, 'users', userId, 'churches', churchId);
     const docSnap = await getDoc(docRef);

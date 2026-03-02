@@ -27,13 +27,13 @@ describe('generateSchedule', () => {
     jest.clearAllMocks();
   });
 
-  test('returns empty list when there are no organists', () => {
+  test('retorna lista vazia quando nao ha organistas', () => {
     const result = generateSchedule([], '2026-03-01', '2026-03-01', SUNDAY_CONFIG);
     expect(result).toEqual([]);
     expect(logger.warn).toHaveBeenCalledWith('Nenhum organista cadastrado para gerar escala.');
   });
 
-  test('returns empty list when date range is invalid', () => {
+  test('retorna lista vazia quando o intervalo de datas e invalido', () => {
     const result = generateSchedule(
       [{ id: '1', name: 'Ana', fixedDays: [0] }],
       '2026-03-10',
@@ -45,7 +45,7 @@ describe('generateSchedule', () => {
     expect(logger.error).toHaveBeenCalledWith('Datas de início ou término inválidas.');
   });
 
-  test('fills two sunday slots with different organists', () => {
+  test('preenche dois slots de domingo com organistas diferentes', () => {
     const organists = [
       { id: '1', name: 'Ana', fixedDays: [0] },
       { id: '2', name: 'Bia', fixedDays: [0] },
@@ -60,7 +60,7 @@ describe('generateSchedule', () => {
     expect(assignments.MeiaHoraCulto).not.toBe(assignments.Culto);
   });
 
-  test('does not assign organist outside fixedDays', () => {
+  test('nao escala organista fora dos fixedDays', () => {
     const organists = [{ id: '1', name: 'Ana', fixedDays: [1] }]; // segunda
 
     const result = generateSchedule(organists, '2026-03-01', '2026-03-01', SUNDAY_CONFIG); // domingo
@@ -68,7 +68,7 @@ describe('generateSchedule', () => {
     expect(result[0].assignments).toEqual({});
   });
 
-  test('applies double duty when Culto is assigned first', () => {
+  test('aplica atribuicao dupla quando Culto e definido primeiro', () => {
     const organists = [
       {
         id: '1',
@@ -86,7 +86,7 @@ describe('generateSchedule', () => {
     expect(assignments.MeiaHoraCulto).toBe('Ana');
   });
 
-  test('distributes assignments fairly among organists with same availability', () => {
+  test('distribui atribuicoes de forma equilibrada entre organistas com a mesma disponibilidade', () => {
     const organists = [
       { id: '1', name: 'Ana', fixedDays: [2] },
       { id: '2', name: 'Bia', fixedDays: [2] },
@@ -108,7 +108,7 @@ describe('generateSchedule', () => {
     expect(Math.max(...values) - Math.min(...values)).toBeLessThanOrEqual(1);
   });
 
-  test('prioritizes scarce organist for RJM to preserve feasible sunday assignments', () => {
+  test('prioriza organista escassa para RJM para preservar atribuicoes viaveis no domingo', () => {
     const organists = [
       {
         id: '1',

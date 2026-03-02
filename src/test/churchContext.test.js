@@ -9,7 +9,7 @@ describe('ChurchContext', () => {
     );
   });
 
-  test('fornece selectedChurch e setSelectedChurch dentro do provider', () => {
+  test('fornece selectedChurch e setSelectedChurch dentro do provedor', () => {
     const wrapper = ({ children }) => <ChurchProvider>{children}</ChurchProvider>;
 
     const { result } = renderHook(() => useChurch(), { wrapper });

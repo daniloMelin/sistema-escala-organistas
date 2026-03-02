@@ -31,13 +31,13 @@ const buildProps = (overrides = {}) => ({
 });
 
 describe('ScheduleGridView', () => {
-  test('shows non-empty day cards while not editing', () => {
+  test('exibe apenas cards de dias com escala quando nao esta em edicao', () => {
     render(<ScheduleGridView {...buildProps()} />);
     expect(screen.getByText('Domingo, 01/03/2026')).toBeInTheDocument();
     expect(screen.queryByText('Domingo, 08/03/2026')).not.toBeInTheDocument();
   });
 
-  test('handles toolbar and assignment change while editing', () => {
+  test('processa a barra de acoes e a troca de atribuicao durante a edicao', () => {
     const props = buildProps({ isEditing: true });
     render(<ScheduleGridView {...props} />);
 

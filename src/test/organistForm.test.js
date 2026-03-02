@@ -22,7 +22,7 @@ const buildProps = (overrides = {}) => ({
 });
 
 describe('OrganistForm', () => {
-  test('handles form interactions', () => {
+  test('processa as interacoes do formulario', () => {
     const props = buildProps();
     render(<OrganistForm {...props} />);
 
@@ -37,7 +37,7 @@ describe('OrganistForm', () => {
     expect(props.onSubmit).toHaveBeenCalled();
   });
 
-  test('shows empty-days warning', () => {
+  test('exibe aviso quando nao ha dias disponiveis', () => {
     render(<OrganistForm {...buildProps({ visibleDays: [] })} />);
     expect(screen.getByText(/Nenhum dia de culto configurado/i)).toBeInTheDocument();
   });

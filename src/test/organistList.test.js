@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import OrganistList from '../components/OrganistList';
 
 describe('OrganistList', () => {
-  test('renders list and triggers actions', () => {
+  test('renderiza a lista e dispara as acoes', () => {
     const props = {
       loading: false,
       organists: [{ id: 'o1', name: 'Maria', availability: { monday: true } }],

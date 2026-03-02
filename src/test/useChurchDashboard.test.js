@@ -50,7 +50,7 @@ describe('useChurchDashboard', () => {
     });
   });
 
-  test('loads organists and visible days based on church config', async () => {
+  test('carrega organistas e dias visiveis com base na configuracao da igreja', async () => {
     const { result } = renderHook(() => useChurchDashboard(user));
 
     await waitFor(() => expect(result.current.loading).toBe(false));
@@ -63,7 +63,7 @@ describe('useChurchDashboard', () => {
     );
   });
 
-  test('saves new organist and resets edit state', async () => {
+  test('salva nova organista e redefine o estado de edicao', async () => {
     const { result } = renderHook(() => useChurchDashboard(user));
 
     await waitFor(() => expect(result.current.loading).toBe(false));
@@ -93,7 +93,7 @@ describe('useChurchDashboard', () => {
     expect(result.current.availability).toEqual(INITIAL_AVAILABILITY);
   });
 
-  test('requests and confirms organist deletion', async () => {
+  test('solicita e confirma a exclusao de organista', async () => {
     const { result } = renderHook(() => useChurchDashboard(user));
 
     await waitFor(() => expect(result.current.loading).toBe(false));
