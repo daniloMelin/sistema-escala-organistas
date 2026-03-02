@@ -2,11 +2,12 @@
 
 ## Histórico de Revisões
 
-| Versão | Data                | Autor(es)    | Descrição da Revisão                                                           |
-| ------ | ------------------- | ------------ | ------------------------------------------------------------------------------ |
-| 1.0    | 1 de março de 2026  | Danilo Melin | Criação do Code Review V5 com foco em testes E2E e robustez dos fluxos principais |
-| 1.1    | 1 de março de 2026  | Danilo Melin | Implementação da Fase 1.1 com adoção de Playwright, configuração inicial e documentação base |
-| 1.2    | 2 de março de 2026  | Danilo Melin | Implementação da Fase 1.2 com estratégia local controlada de autenticação e dados para E2E |
+| Versão | Data               | Autor(es)    | Descrição da Revisão                                                                         |
+| ------ | ------------------ | ------------ | -------------------------------------------------------------------------------------------- |
+| 1.0    | 1 de março de 2026 | Danilo Melin | Criação do Code Review V5 com foco em testes E2E e robustez dos fluxos principais            |
+| 1.1    | 1 de março de 2026 | Danilo Melin | Implementação da Fase 1.1 com adoção de Playwright, configuração inicial e documentação base |
+| 1.2    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 1.2 com estratégia local controlada de autenticação e dados para E2E   |
+| 1.3    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.1 com cenários E2E de autenticação e navegação inicial               |
 
 ## Objetivo
 
@@ -71,7 +72,7 @@ Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos flu
 
 #### 2.1 Fluxo E2E de autenticação e navegação inicial
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - entrada no sistema
@@ -136,18 +137,17 @@ Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos flu
 
 ## Ordem de execução confirmada
 
-1. **Fase 2.1 - Fluxo E2E de autenticação e navegação inicial**
-2. Fase 2.2 - Cadastro e edição de igreja
-3. Fase 2.3 - Cadastro e edição de organista
-4. Fase 2.4 - Geração de escala
-5. Fase 2.5 - Edição manual e exportação
-6. Fase 3 - Integrar, documentar e estabilizar no CI
+1. **Fase 2.2 - Cadastro e edição de igreja**
+2. Fase 2.3 - Cadastro e edição de organista
+3. Fase 2.4 - Geração de escala
+4. Fase 2.5 - Edição manual e exportação
+5. Fase 3 - Integrar, documentar e estabilizar no CI
 
 ## Registro de progresso
 
 - [x] Fase 1.1 concluída
 - [x] Fase 1.2 concluída
-- [ ] Fase 2.1 concluída
+- [x] Fase 2.1 concluída
 - [ ] Fase 2.2 concluída
 - [ ] Fase 2.3 concluída
 - [ ] Fase 2.4 concluída

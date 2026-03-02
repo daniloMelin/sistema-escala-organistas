@@ -1,8 +1,72 @@
+const E2E_STORAGE_KEYS = {
+  session: 'organist_scheduler_e2e_session',
+  database: 'organist_scheduler_e2e_db',
+};
+
+const E2E_TEST_USER = {
+  uid: 'e2e-user',
+  email: 'e2e@example.com',
+};
+
+async function resetE2EState(page, database = { users: {} }) {
+  await page.addInitScript(({ keys, user, db }) => {
+    window.localStorage.setItem(keys.session, JSON.stringify(user));
+    window.localStorage.setItem(keys.database, JSON.stringify(db));
+  }, { keys: E2E_STORAGE_KEYS, user: E2E_TEST_USER, db: database });
+}
+
+async function clearE2EState(page) {
+  await page.addInitScript(({ keys }) => {
+    window.localStorage.removeItem(keys.session);
+    window.localStorage.removeItem(keys.database);
+  }, { keys: E2E_STORAGE_KEYS });
+}
+
 async function loginAsE2EUser(page) {
   await page.goto('/');
   await page.getByRole('button', { name: 'Entrar em modo E2E' }).click();
 }
 
+function buildChurchDatabase({
+  churchId = 'church-seed-1',
+  churchName = 'Igreja Seed',
+  churchCode = 'SEED',
+  includeSundayCulto = true,
+} = {}) {
+  const sundayConfig = [];
+
+  if (includeSundayCulto) {
+    sundayConfig.push(
+      { id: 'MeiaHoraCulto', label: 'Meia Hora' },
+      { id: 'Culto', label: 'Culto' }
+    );
+  }
+
+  return {
+    users: {
+      [E2E_TEST_USER.uid]: {
+        profile: { email: E2E_TEST_USER.email },
+        churches: {
+          [churchId]: {
+            id: churchId,
+            name: churchName,
+            code: churchCode,
+            config: {
+              sunday: sundayConfig,
+            },
+            createdAt: new Date('2026-03-02T00:00:00.000Z').toISOString(),
+            organists: {},
+            schedules: {},
+          },
+        },
+      },
+    },
+  };
+}
+
 module.exports = {
+  buildChurchDatabase,
+  clearE2EState,
   loginAsE2EUser,
+  resetE2EState,
 };
