@@ -32,6 +32,7 @@ function buildChurchDatabase({
   churchName = 'Igreja Seed',
   churchCode = 'SEED',
   includeSundayCulto = true,
+  organists = [],
 } = {}) {
   const sundayConfig = [];
 
@@ -41,6 +42,17 @@ function buildChurchDatabase({
       { id: 'Culto', label: 'Culto' }
     );
   }
+
+  const organistsMap = organists.reduce((acc, organist, index) => {
+    const id = organist.id || `organist-seed-${index + 1}`;
+    acc[id] = {
+      id,
+      name: organist.name,
+      availability: organist.availability || {},
+      createdAt: new Date('2026-03-02T00:00:00.000Z').toISOString(),
+    };
+    return acc;
+  }, {});
 
   return {
     users: {
@@ -55,7 +67,7 @@ function buildChurchDatabase({
               sunday: sundayConfig,
             },
             createdAt: new Date('2026-03-02T00:00:00.000Z').toISOString(),
-            organists: {},
+            organists: organistsMap,
             schedules: {},
           },
         },
