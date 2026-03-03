@@ -12,6 +12,9 @@
 | 1.5    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.3 com cenários E2E de cadastro e edição de organista                 |
 | 1.6    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.4 com cenário E2E de geração de escala e validação do histórico      |
 | 1.7    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.5 com cenário E2E de edição manual e exportação de PDF               |
+| 1.8    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 3.1 com padronização de comandos E2E e execução local determinística   |
+| 1.9    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 3.2 com workflow E2E dedicado no GitHub Actions e gatilho controlado   |
+| 1.10   | 3 de março de 2026 | Danilo Melin | Implementação da Fase 3.3 com revisão da cobertura funcional, lacunas remanescentes e fechamento do ciclo |
 
 ## Objetivo
 
@@ -19,7 +22,7 @@ Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos flu
 
 ## Status do Ciclo
 
-- Status geral: `EM ANDAMENTO`
+- Status geral: `CONCLUÍDO`
 - Data de início: `1 de março de 2026`
 - Contexto: continuidade do `CODE_REVIEW_V4`, iniciando novo ciclo com prioridade em cobertura E2E
 
@@ -123,12 +126,12 @@ Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos flu
 
 #### 3.1 Padronizar comandos e documentação de execução
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 
 #### 3.2 Integrar E2E ao CI com gatilho controlado
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Direção recomendada:
   - não bloquear toda PR no início
@@ -136,12 +139,16 @@ Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos flu
 
 #### 3.3 Revisar cobertura funcional e lacunas remanescentes
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
+- Entregáveis:
+  - matriz resumida da cobertura atual
+  - lista priorizada de lacunas remanescentes
+  - recomendação objetiva para próximo ciclo
 
 ## Ordem de execução confirmada
 
-1. **Fase 3 - Integrar, documentar e estabilizar no CI**
+1. **Ciclo V5 concluído**
 
 ## Registro de progresso
 
@@ -152,9 +159,9 @@ Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos flu
 - [x] Fase 2.3 concluída
 - [x] Fase 2.4 concluída
 - [x] Fase 2.5 concluída
-- [ ] Fase 3.1 concluída
-- [ ] Fase 3.2 concluída
-- [ ] Fase 3.3 concluída
+- [x] Fase 3.1 concluída
+- [x] Fase 3.2 concluída
+- [x] Fase 3.3 concluída
 
 ## Critério de Conclusão do V5
 
@@ -162,3 +169,21 @@ Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos flu
 - fluxos críticos principais cobertos por cenários ponta a ponta
 - documentação suficiente para execução por terceiros
 - estratégia de CI definida e aplicada sem comprometer a estabilidade do pipeline principal
+
+## Fechamento do Ciclo
+
+### Resumo Executivo
+
+O V5 consolidou a primeira suíte E2E do projeto com `Playwright`, execução local reproduzível e integração controlada ao GitHub Actions. O ciclo reduziu o risco sobre os fluxos mais críticos sem ampliar desnecessariamente a complexidade operacional do pipeline.
+
+### Evidências do Ciclo
+
+- suíte E2E criada e documentada
+- fluxo local controlado com autenticação e dados isolados
+- cobertura dos principais fluxos de igreja, organista e escala
+- workflow dedicado de CI com gatilho manual ou por label
+- revisão formal das lacunas restantes em `docs/E2E_COVERAGE_V5.md`
+
+### Próximo Passo Recomendado
+
+O próximo ciclo deve priorizar cobertura de exclusões, cenários negativos e erros operacionais antes de expandir a suíte para navegadores adicionais ou tornar a execução obrigatória em toda PR.

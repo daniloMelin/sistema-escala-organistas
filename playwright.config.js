@@ -1,6 +1,6 @@
 const { defineConfig, devices } = require('@playwright/test');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.E2E_PORT || 3001;
 const baseURL = process.env.PLAYWRIGHT_BASE_URL || `http://127.0.0.1:${PORT}`;
 
 module.exports = defineConfig({
@@ -24,7 +24,7 @@ module.exports = defineConfig({
   webServer: {
     command: `HOST=127.0.0.1 PORT=${PORT} BROWSER=none REACT_APP_E2E_MODE=true npm start`,
     url: baseURL,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
     timeout: 120_000,
   },
   projects: [
