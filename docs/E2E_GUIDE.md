@@ -6,6 +6,7 @@
 | ------ | ------------------ | ------------ | ----------------------------------------------------------------- |
 | 1.0    | 1 de março de 2026 | Danilo Melin | Criação do guia inicial de execução dos testes E2E com Playwright |
 | 1.1    | 2 de março de 2026 | Danilo Melin | Atualização do guia com modo E2E controlado, autenticação local e helper de sessão |
+| 1.2    | 3 de março de 2026 | Danilo Melin | Padronização dos comandos E2E e adoção de porta dedicada para execução determinística |
 
 ## Objetivo
 
@@ -22,6 +23,8 @@ Documentar a base inicial de testes ponta a ponta do projeto.
 ```bash
 npm run test:e2e
 npm run test:e2e:ui
+npm run test:e2e:headed
+npm run test:e2e:report
 ```
 
 ## Pré-requisitos
@@ -49,12 +52,25 @@ Modo interativo do Playwright:
 npm run test:e2e:ui
 ```
 
+Execução com navegador visível:
+
+```bash
+npm run test:e2e:headed
+```
+
+Abrir o relatório HTML após a execução:
+
+```bash
+npm run test:e2e:report
+```
+
 ## Comportamento da configuração atual
 
 - o Playwright sobe automaticamente a aplicação com `npm start`
-- a URL base padrão é `http://127.0.0.1:3000`
+- a URL base padrão é `http://127.0.0.1:3001`
 - a aplicação é iniciada com `REACT_APP_E2E_MODE=true`
-- em ambiente local, reutiliza servidor existente quando disponível
+- a porta E2E é dedicada e separada do uso normal da aplicação
+- a configuração não reutiliza servidor existente, evitando testes contra uma instância fora do modo E2E
 - gera relatório HTML em `playwright-report/`
 - mantém screenshot, vídeo e trace apenas em falhas/retries configurados
 - em modo E2E, autenticação e persistência usam fluxo local controlado

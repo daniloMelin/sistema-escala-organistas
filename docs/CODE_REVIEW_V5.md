@@ -12,6 +12,7 @@
 | 1.5    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.3 com cenários E2E de cadastro e edição de organista                 |
 | 1.6    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.4 com cenário E2E de geração de escala e validação do histórico      |
 | 1.7    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.5 com cenário E2E de edição manual e exportação de PDF               |
+| 1.8    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 3.1 com padronização de comandos E2E e execução local determinística   |
 
 ## Objetivo
 
@@ -123,7 +124,7 @@ Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos flu
 
 #### 3.1 Padronizar comandos e documentação de execução
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 
 #### 3.2 Integrar E2E ao CI com gatilho controlado
@@ -141,7 +142,8 @@ Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos flu
 
 ## Ordem de execução confirmada
 
-1. **Fase 3 - Integrar, documentar e estabilizar no CI**
+1. **Fase 3.2 - Integrar E2E ao CI com gatilho controlado**
+2. Fase 3.3 - Revisar cobertura funcional e lacunas remanescentes
 
 ## Registro de progresso
 
@@ -152,7 +154,7 @@ Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos flu
 - [x] Fase 2.3 concluída
 - [x] Fase 2.4 concluída
 - [x] Fase 2.5 concluída
-- [ ] Fase 3.1 concluída
+- [x] Fase 3.1 concluída
 - [ ] Fase 3.2 concluída
 - [ ] Fase 3.3 concluída
 

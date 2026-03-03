@@ -5,6 +5,7 @@
 | Versão | Data               | Autor(es)    | Descrição da Revisão                                                        |
 | ------ | ------------------ | ------------ | --------------------------------------------------------------------------- |
 | 1.0    | 2 de março de 2026 | Danilo Melin | Definição da estratégia inicial de autenticação e dados para testes E2E     |
+| 1.1    | 3 de março de 2026 | Danilo Melin | Atualização da estratégia com porta dedicada e eliminação de reuso de servidor local |
 
 ## Objetivo
 
@@ -18,9 +19,18 @@ Os testes E2E rodam com a aplicação iniciada automaticamente pelo Playwright u
 
 - `REACT_APP_E2E_MODE=true`
 - `HOST=127.0.0.1`
-- `PORT=3000`
+- `PORT=3001`
 
 Com isso, o runner sobe um ambiente previsível e dedicado para os testes.
+
+Além disso:
+
+- a execução E2E usa porta dedicada
+- o Playwright não reutiliza servidor já existente
+
+Motivo:
+- evitar que um `npm start` local aberto fora do modo E2E seja reutilizado pela suíte
+- garantir determinismo na execução local
 
 ### 2. Autenticação controlada para E2E
 
