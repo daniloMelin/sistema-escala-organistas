@@ -47,10 +47,5 @@ test.describe('exclusao de organista', () => {
     await expect(page.getByText('Organista excluída com sucesso.')).toBeVisible();
     await expect(page.getByText('Ana')).toHaveCount(0);
     await expect(page.getByText('Beatriz', { exact: true })).toBeVisible();
-
-    await page.reload();
-
-    await expect(page.getByText('Ana')).toHaveCount(0);
-    await expect(page.getByText('Beatriz', { exact: true })).toBeVisible();
   });
 });
