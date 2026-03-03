@@ -6,6 +6,7 @@
 | ------ | ------------------ | ------------ | --------------------------------------------------------------------------------------- |
 | 1.0    | 3 de março de 2026 | Danilo Melin | Criação do Code Review V6 com foco em exclusões, cenários negativos e erros operacionais |
 | 1.1    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 1.1 com cenário E2E de exclusão de igreja                         |
+| 1.2    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 1.2 com cenário E2E de exclusão de organista                      |
 
 ## Objetivo
 
@@ -41,7 +42,7 @@ Expandir a confiabilidade da aplicação sobre os cenários ainda não cobertos 
 
 #### 1.2 Fluxo E2E de exclusão de organista
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - abrir confirmação de exclusão
@@ -103,17 +104,16 @@ Expandir a confiabilidade da aplicação sobre os cenários ainda não cobertos 
 
 ## Ordem de execução recomendada
 
-1. **Fase 1.2 - Exclusão de organista**
-2. **Fase 2.1 - Validações negativas de igreja**
-3. **Fase 2.2 - Validações negativas de organista**
-4. **Fase 3.2 - Falhas operacionais controladas**
-5. **Fase 3.1 - Estados vazios**
-6. **Fase 4.1 - Consolidação da suíte**
+1. **Fase 2.1 - Validações negativas de igreja**
+2. **Fase 2.2 - Validações negativas de organista**
+3. **Fase 3.2 - Falhas operacionais controladas**
+4. **Fase 3.1 - Estados vazios**
+5. **Fase 4.1 - Consolidação da suíte**
 
 ## Registro de progresso
 
 - [x] Fase 1.1 concluída
-- [ ] Fase 1.2 concluída
+- [x] Fase 1.2 concluída
 - [ ] Fase 2.1 concluída
 - [ ] Fase 2.2 concluída
 - [ ] Fase 3.1 concluída
