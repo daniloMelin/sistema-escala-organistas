@@ -2,9 +2,9 @@
 
 ## Histórico de Revisões
 
-| Versão | Data               | Autor(es)    | Descrição da Revisão                                                        |
-| ------ | ------------------ | ------------ | --------------------------------------------------------------------------- |
-| 1.0    | 2 de março de 2026 | Danilo Melin | Definição da estratégia inicial de autenticação e dados para testes E2E     |
+| Versão | Data               | Autor(es)    | Descrição da Revisão                                                                 |
+| ------ | ------------------ | ------------ | ------------------------------------------------------------------------------------ |
+| 1.0    | 2 de março de 2026 | Danilo Melin | Definição da estratégia inicial de autenticação e dados para testes E2E              |
 | 1.1    | 3 de março de 2026 | Danilo Melin | Atualização da estratégia com porta dedicada e eliminação de reuso de servidor local |
 
 ## Objetivo
@@ -29,6 +29,7 @@ Além disso:
 - o Playwright não reutiliza servidor já existente
 
 Motivo:
+
 - evitar que um `npm start` local aberto fora do modo E2E seja reutilizado pela suíte
 - garantir determinismo na execução local
 
@@ -41,6 +42,7 @@ Em modo E2E, a aplicação expõe um fluxo de entrada controlado:
 - sessão local persistida em `localStorage`
 
 Motivo:
+
 - elimina dependência de popup do Google
 - evita flakiness em autenticação externa
 - torna a execução local e futura execução em CI previsíveis
@@ -50,11 +52,13 @@ Motivo:
 Em modo E2E, as operações de dados passam a usar armazenamento local no navegador em vez de Firestore real.
 
 Escopo atual coberto:
+
 - igrejas
 - organistas
 - escalas
 
 Motivo:
+
 - evitar dependência de projeto Firebase de testes
 - evitar sujeira em base real
 - permitir isolamento por contexto de navegador
@@ -64,6 +68,7 @@ Motivo:
 A estratégia usa o contexto padrão isolado do Playwright, o que reduz contaminação entre cenários.
 
 Na prática:
+
 - cada teste começa com sessão/dados controlados pelo próprio contexto do navegador
 - massa de teste pode ser criada dentro do cenário ou por helper dedicado
 

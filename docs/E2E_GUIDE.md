@@ -2,11 +2,12 @@
 
 ## Histórico de Revisões
 
-| Versão | Data               | Autor(es)    | Descrição da Revisão                                              |
-| ------ | ------------------ | ------------ | ----------------------------------------------------------------- |
-| 1.0    | 1 de março de 2026 | Danilo Melin | Criação do guia inicial de execução dos testes E2E com Playwright |
-| 1.1    | 2 de março de 2026 | Danilo Melin | Atualização do guia com modo E2E controlado, autenticação local e helper de sessão |
-| 1.2    | 3 de março de 2026 | Danilo Melin | Padronização dos comandos E2E e adoção de porta dedicada para execução determinística |
+| Versão | Data               | Autor(es)    | Descrição da Revisão                                                                              |
+| ------ | ------------------ | ------------ | ------------------------------------------------------------------------------------------------- |
+| 1.0    | 1 de março de 2026 | Danilo Melin | Criação do guia inicial de execução dos testes E2E com Playwright                                 |
+| 1.1    | 2 de março de 2026 | Danilo Melin | Atualização do guia com modo E2E controlado, autenticação local e helper de sessão                |
+| 1.2    | 3 de março de 2026 | Danilo Melin | Padronização dos comandos E2E e adoção de porta dedicada para execução determinística             |
+| 1.3    | 3 de março de 2026 | Danilo Melin | Documentação da execução E2E no GitHub Actions com gatilho controlado por label e workflow manual |
 
 ## Objetivo
 
@@ -103,4 +104,33 @@ Documento complementar:
 
 1. Expandir para cadastro de igreja, organista e geração de escala.
 2. Introduzir helpers de massa de dados por cenário.
-3. Integrar execução E2E ao CI de forma progressiva.
+3. Revisar cobertura funcional remanescente e evolução futura da suíte.
+
+## Execução no GitHub Actions
+
+O projeto possui um workflow E2E dedicado:
+
+- arquivo: `.github/workflows/e2e.yml`
+
+### Como disparar no CI
+
+Opção 1. Execução manual:
+
+- GitHub > `Actions` > workflow `E2E` > `Run workflow`
+
+Opção 2. Pull request com gatilho controlado:
+
+- adicionar a label `run-e2e` na PR
+
+### Motivo do gatilho controlado
+
+- evitar bloquear toda PR desde o início do ciclo
+- permitir uso seletivo enquanto a suíte E2E amadurece
+- manter o pipeline principal leve
+
+### Evidências geradas
+
+O workflow publica artefatos quando executado:
+
+- `playwright-report`
+- `playwright-test-results`

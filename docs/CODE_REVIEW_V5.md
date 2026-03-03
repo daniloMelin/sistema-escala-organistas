@@ -13,6 +13,7 @@
 | 1.6    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.4 com cenário E2E de geração de escala e validação do histórico      |
 | 1.7    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.5 com cenário E2E de edição manual e exportação de PDF               |
 | 1.8    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 3.1 com padronização de comandos E2E e execução local determinística   |
+| 1.9    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 3.2 com workflow E2E dedicado no GitHub Actions e gatilho controlado   |
 
 ## Objetivo
 
@@ -129,7 +130,7 @@ Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos flu
 
 #### 3.2 Integrar E2E ao CI com gatilho controlado
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Direção recomendada:
   - não bloquear toda PR no início
@@ -142,8 +143,7 @@ Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos flu
 
 ## Ordem de execução confirmada
 
-1. **Fase 3.2 - Integrar E2E ao CI com gatilho controlado**
-2. Fase 3.3 - Revisar cobertura funcional e lacunas remanescentes
+1. **Fase 3.3 - Revisar cobertura funcional e lacunas remanescentes**
 
 ## Registro de progresso
 
@@ -155,7 +155,7 @@ Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos flu
 - [x] Fase 2.4 concluída
 - [x] Fase 2.5 concluída
 - [x] Fase 3.1 concluída
-- [ ] Fase 3.2 concluída
+- [x] Fase 3.2 concluída
 - [ ] Fase 3.3 concluída
 
 ## Critério de Conclusão do V5
