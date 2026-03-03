@@ -8,6 +8,7 @@
 | 1.1    | 2 de março de 2026 | Danilo Melin | Atualização do guia com modo E2E controlado, autenticação local e helper de sessão                |
 | 1.2    | 3 de março de 2026 | Danilo Melin | Padronização dos comandos E2E e adoção de porta dedicada para execução determinística             |
 | 1.3    | 3 de março de 2026 | Danilo Melin | Documentação da execução E2E no GitHub Actions com gatilho controlado por label e workflow manual |
+| 1.4    | 3 de março de 2026 | Danilo Melin | Referência da cobertura atual da suíte E2E e encaminhamento das lacunas remanescentes             |
 
 ## Objetivo
 
@@ -99,12 +100,13 @@ Teste adicional de login controlado:
 Documento complementar:
 
 - `docs/E2E_STRATEGY.md`
+- `docs/E2E_COVERAGE_V5.md`
 
 ## Próximos passos
 
-1. Expandir para cadastro de igreja, organista e geração de escala.
-2. Introduzir helpers de massa de dados por cenário.
-3. Revisar cobertura funcional remanescente e evolução futura da suíte.
+1. Cobrir exclusões e cenários negativos prioritários.
+2. Introduzir cenários de erro operacional controlado.
+3. Reavaliar expansão para outros navegadores e gatilhos mais amplos no CI.
 
 ## Execução no GitHub Actions
 
