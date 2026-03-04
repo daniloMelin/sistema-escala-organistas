@@ -6,6 +6,7 @@
 | ------ | ------------------ | ------------ | ------------------------------------------------------------------------------------ |
 | 1.0    | 2 de março de 2026 | Danilo Melin | Definição da estratégia inicial de autenticação e dados para testes E2E              |
 | 1.1    | 3 de março de 2026 | Danilo Melin | Atualização da estratégia com porta dedicada e eliminação de reuso de servidor local |
+| 1.2    | 4 de março de 2026 | Danilo Melin | Inclusão de injeção de falhas operacionais controladas no modo E2E                   |
 
 ## Objetivo
 
@@ -71,6 +72,22 @@ Na prática:
 
 - cada teste começa com sessão/dados controlados pelo próprio contexto do navegador
 - massa de teste pode ser criada dentro do cenário ou por helper dedicado
+
+### 5. Falhas operacionais controladas
+
+A estratégia E2E suporta simular falhas de carregamento e salvamento por operação usando chave dedicada em `localStorage`:
+
+- chave: `organist_scheduler_e2e_failures`
+- configuração por operação local (ex.: `getChurchesLocal`, `addOrganistLocal`)
+- modos suportados:
+  - `true` / `always`: falha sempre
+  - `once`: falha uma única vez
+  - número positivo: falha a quantidade definida e depois limpa
+
+Motivo:
+
+- validar fallback visual e mensagens de erro de forma reproduzível
+- evitar dependência de instabilidade artificial no backend real
 
 ## Vantagens da estratégia atual
 

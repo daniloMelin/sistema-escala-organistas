@@ -1,6 +1,7 @@
 const E2E_STORAGE_KEYS = {
   session: 'organist_scheduler_e2e_session',
   database: 'organist_scheduler_e2e_db',
+  failures: 'organist_scheduler_e2e_failures',
 };
 
 const E2E_TEST_USER = {
@@ -8,17 +9,20 @@ const E2E_TEST_USER = {
   email: 'e2e@example.com',
 };
 
-async function resetE2EState(page, database = { users: {} }) {
-  await page.addInitScript(({ keys, user, db }) => {
+async function resetE2EState(page, database = { users: {} }, options = {}) {
+  const failures = options.failures || {};
+  await page.addInitScript(({ keys, user, db, failures }) => {
     window.localStorage.setItem(keys.session, JSON.stringify(user));
     window.localStorage.setItem(keys.database, JSON.stringify(db));
-  }, { keys: E2E_STORAGE_KEYS, user: E2E_TEST_USER, db: database });
+    window.localStorage.setItem(keys.failures, JSON.stringify(failures || {}));
+  }, { keys: E2E_STORAGE_KEYS, user: E2E_TEST_USER, db: database, failures });
 }
 
 async function clearE2EState(page) {
   await page.addInitScript(({ keys }) => {
     window.localStorage.removeItem(keys.session);
     window.localStorage.removeItem(keys.database);
+    window.localStorage.removeItem(keys.failures);
   }, { keys: E2E_STORAGE_KEYS });
 }
 
