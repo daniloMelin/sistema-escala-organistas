@@ -9,6 +9,7 @@
 | 1.2    | 3 de março de 2026 | Danilo Melin | Padronização dos comandos E2E e adoção de porta dedicada para execução determinística             |
 | 1.3    | 3 de março de 2026 | Danilo Melin | Documentação da execução E2E no GitHub Actions com gatilho controlado por label e workflow manual |
 | 1.4    | 3 de março de 2026 | Danilo Melin | Referência da cobertura atual da suíte E2E e encaminhamento das lacunas remanescentes             |
+| 1.5    | 5 de março de 2026 | Danilo Melin | Consolidação da suíte com revisão de manutenção e recomendação de smoke para próximo ciclo          |
 
 ## Objetivo
 
@@ -101,12 +102,13 @@ Documento complementar:
 
 - `docs/E2E_STRATEGY.md`
 - `docs/E2E_COVERAGE_V5.md`
+- `docs/E2E_CONSOLIDATION_V6.md`
 
 ## Próximos passos
 
-1. Cobrir exclusões e cenários negativos prioritários.
-2. Introduzir cenários de erro operacional controlado.
-3. Reavaliar expansão para outros navegadores e gatilhos mais amplos no CI.
+1. Revisar periodicamente o conjunto de smoke conforme crescimento da suíte.
+2. Evoluir cobertura de fluxos com falhas operacionais mais complexas.
+3. Reavaliar execução em navegador adicional quando custo de CI permitir.
 
 ## Execução no GitHub Actions
 
