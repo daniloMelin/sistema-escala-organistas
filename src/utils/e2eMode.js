@@ -3,6 +3,7 @@ export const isE2EMode = process.env.REACT_APP_E2E_MODE === 'true';
 export const E2E_STORAGE_KEYS = {
   session: 'organist_scheduler_e2e_session',
   database: 'organist_scheduler_e2e_db',
+  failures: 'organist_scheduler_e2e_failures',
 };
 
 export const E2E_TEST_USER = {

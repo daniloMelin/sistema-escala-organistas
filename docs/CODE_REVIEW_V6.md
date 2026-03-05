@@ -2,13 +2,15 @@
 
 ## Histórico de Revisões
 
-| Versão | Data               | Autor(es)    | Descrição da Revisão                                                                    |
-| ------ | ------------------ | ------------ | --------------------------------------------------------------------------------------- |
+| Versão | Data               | Autor(es)    | Descrição da Revisão                                                                     |
+| ------ | ------------------ | ------------ | ---------------------------------------------------------------------------------------- |
 | 1.0    | 3 de março de 2026 | Danilo Melin | Criação do Code Review V6 com foco em exclusões, cenários negativos e erros operacionais |
-| 1.1    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 1.1 com cenário E2E de exclusão de igreja                         |
-| 1.2    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 1.2 com cenário E2E de exclusão de organista                      |
-| 1.3    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 2.1 com cenário E2E de validação negativa no cadastro de igreja   |
+| 1.1    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 1.1 com cenário E2E de exclusão de igreja                          |
+| 1.2    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 1.2 com cenário E2E de exclusão de organista                       |
+| 1.3    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 2.1 com cenário E2E de validação negativa no cadastro de igreja    |
 | 1.4    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 2.2 com cenário E2E de validação negativa no cadastro de organista |
+| 1.5    | 4 de março de 2026 | Danilo Melin | Implementação da Fase 3.2 com cenários E2E de falhas operacionais controladas            |
+| 1.6    | 4 de março de 2026 | Danilo Melin | Implementação da Fase 3.1 com cenários E2E de estados vazios e mensagens orientativas    |
 
 ## Objetivo
 
@@ -76,7 +78,7 @@ Expandir a confiabilidade da aplicação sobre os cenários ainda não cobertos 
 
 #### 3.1 Estados vazios e comportamento inicial sem dados
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - aplicação sem igreja cadastrada
@@ -85,7 +87,7 @@ Expandir a confiabilidade da aplicação sobre os cenários ainda não cobertos 
 
 #### 3.2 Falhas operacionais controladas
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - erro em carregamento de dados
@@ -106,9 +108,7 @@ Expandir a confiabilidade da aplicação sobre os cenários ainda não cobertos 
 
 ## Ordem de execução recomendada
 
-1. **Fase 3.2 - Falhas operacionais controladas**
-2. **Fase 3.1 - Estados vazios**
-3. **Fase 4.1 - Consolidação da suíte**
+1. **Fase 4.1 - Consolidação da suíte**
 
 ## Registro de progresso
 
@@ -116,8 +116,8 @@ Expandir a confiabilidade da aplicação sobre os cenários ainda não cobertos 
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
-- [ ] Fase 3.1 concluída
-- [ ] Fase 3.2 concluída
+- [x] Fase 3.1 concluída
+- [x] Fase 3.2 concluída
 - [ ] Fase 4.1 concluída
 
 ## Critério de Conclusão do V6

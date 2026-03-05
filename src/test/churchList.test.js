@@ -22,4 +22,33 @@ describe('ChurchList', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Excluir' }));
     expect(props.onRequestDeleteChurch).toHaveBeenCalled();
   });
+
+  test('exibe mensagem quando nao ha igrejas cadastradas', () => {
+    render(
+      <ChurchList
+        churches={[]}
+        isLoading={false}
+        onChurchSelect={jest.fn()}
+        onStartEdit={jest.fn()}
+        onRequestDeleteChurch={jest.fn()}
+      />
+    );
+
+    expect(screen.getByText('Nenhuma igreja cadastrada.')).toBeInTheDocument();
+  });
+
+  test('nao exibe estado vazio quando ha erro de carregamento', () => {
+    render(
+      <ChurchList
+        churches={[]}
+        isLoading={false}
+        hasLoadError
+        onChurchSelect={jest.fn()}
+        onStartEdit={jest.fn()}
+        onRequestDeleteChurch={jest.fn()}
+      />
+    );
+
+    expect(screen.queryByText('Nenhuma igreja cadastrada.')).not.toBeInTheDocument();
+  });
 });

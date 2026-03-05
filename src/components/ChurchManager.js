@@ -57,6 +57,7 @@ const ChurchManager = ({ user }) => {
       <ChurchList
         churches={churches}
         isLoading={isLoading}
+        hasLoadError={error === 'Falha ao carregar as igrejas.'}
         onChurchSelect={handleChurchSelect}
         onStartEdit={handleStartEdit}
         onRequestDeleteChurch={handleRequestDeleteChurch}
