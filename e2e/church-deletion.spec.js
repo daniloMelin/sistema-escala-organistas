@@ -1,59 +1,37 @@
 const { test, expect } = require('@playwright/test');
-const { resetE2EState } = require('./helpers/session');
+const { buildChurchesDatabase, resetE2EState } = require('./helpers/session');
+const { gotoChurchManager, openChurchDashboard } = require('./helpers/navigation');
 
 test.describe('exclusao de igreja', () => {
   test('confirma a exclusao, remove a igreja da lista e preserva a navegacao com as demais', async ({ page }) => {
-    await resetE2EState(page, {
-      users: {
-        'e2e-user': {
-          profile: { email: 'e2e@example.com' },
-          churches: {
-            'church-delete-1': {
-              id: 'church-delete-1',
-              name: 'Jardim da Granja',
-              code: 'JDG',
-              config: {
-                sunday: [
-                  { id: 'MeiaHoraCulto', label: 'Meia Hora' },
-                  { id: 'Culto', label: 'Culto' },
-                ],
-              },
-              createdAt: new Date('2026-03-03T00:00:00.000Z').toISOString(),
-              organists: {
-                'organist-1': {
-                  id: 'organist-1',
-                  name: 'Marcia',
-                  availability: { sunday_culto: true },
-                  createdAt: new Date('2026-03-03T00:00:00.000Z').toISOString(),
-                },
-              },
-              schedules: {
-                'schedule-1': {
-                  id: 'schedule-1',
-                  generatedAt: new Date('2026-03-03T00:00:00.000Z').toISOString(),
-                  generatedMonth: 3,
-                  generatedYear: 2026,
-                  assignments: [],
-                },
-              },
+    await resetE2EState(
+      page,
+      buildChurchesDatabase([
+        {
+          id: 'church-delete-1',
+          name: 'Jardim da Granja',
+          code: 'JDG',
+          organists: [
+            {
+              id: 'organist-1',
+              name: 'Marcia',
+              availability: { sunday_culto: true },
             },
-            'church-delete-2': {
-              id: 'church-delete-2',
-              name: 'Vila Operaria',
-              code: 'VOP',
-              config: {
-                sunday: [{ id: 'Culto', label: 'Culto' }],
-              },
-              createdAt: new Date('2026-03-03T00:00:00.000Z').toISOString(),
-              organists: {},
-              schedules: {},
-            },
+          ],
+          schedules: [{ id: 'schedule-1', assignments: [] }],
+        },
+        {
+          id: 'church-delete-2',
+          name: 'Vila Operaria',
+          code: 'VOP',
+          config: {
+            sunday: [{ id: 'Culto', label: 'Culto' }],
           },
         },
-      },
-    });
+      ])
+    );
 
-    await page.goto('/');
+    await gotoChurchManager(page);
 
     const churchToDelete = page.locator('li').filter({ hasText: 'Jardim da Granja' });
     await expect(churchToDelete).toBeVisible();
@@ -75,10 +53,7 @@ test.describe('exclusao de igreja', () => {
     await expect(page.getByText('Jardim da Granja')).toHaveCount(0);
     await expect(page.getByText('Vila Operaria')).toBeVisible();
 
-    await page.getByText('Vila Operaria').click();
-    await expect(
-      page.getByRole('heading', { name: 'Painel de Gerenciamento' })
-    ).toBeVisible();
+    await openChurchDashboard(page, 'Vila Operaria');
     await expect(page.getByText('Vila Operaria')).toBeVisible();
   });
 });

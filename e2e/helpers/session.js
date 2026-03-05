@@ -37,24 +37,66 @@ function buildChurchDatabase({
   churchCode = 'SEED',
   includeSundayCulto = true,
   organists = [],
+  schedules = [],
 } = {}) {
-  const sundayConfig = [];
+  return buildChurchesDatabase([
+    {
+      id: churchId,
+      name: churchName,
+      code: churchCode,
+      includeSundayCulto,
+      organists,
+      schedules,
+    },
+  ]);
+}
 
-  if (includeSundayCulto) {
-    sundayConfig.push(
-      { id: 'MeiaHoraCulto', label: 'Meia Hora' },
-      { id: 'Culto', label: 'Culto' }
-    );
-  }
+function buildChurchesDatabase(churches = []) {
+  const churchesMap = churches.reduce((acc, church, index) => {
+    const id = church.id || `church-seed-${index + 1}`;
+    const includeSundayCulto = church.includeSundayCulto !== false;
+    const config = church.config || {
+      sunday: includeSundayCulto
+        ? [
+            { id: 'MeiaHoraCulto', label: 'Meia Hora' },
+            { id: 'Culto', label: 'Culto' },
+          ]
+        : [],
+    };
 
-  const organistsMap = organists.reduce((acc, organist, index) => {
-    const id = organist.id || `organist-seed-${index + 1}`;
+    const organistsMap = (church.organists || []).reduce((orgAcc, organist, orgIndex) => {
+      const orgId = organist.id || `organist-seed-${orgIndex + 1}`;
+      orgAcc[orgId] = {
+        id: orgId,
+        name: organist.name,
+        availability: organist.availability || {},
+        createdAt: organist.createdAt || new Date('2026-03-02T00:00:00.000Z').toISOString(),
+      };
+      return orgAcc;
+    }, {});
+
+    const schedulesMap = (church.schedules || []).reduce((scheduleAcc, schedule, scheduleIndex) => {
+      const scheduleId = schedule.id || `schedule-seed-${scheduleIndex + 1}`;
+      scheduleAcc[scheduleId] = {
+        id: scheduleId,
+        generatedAt: schedule.generatedAt || new Date('2026-03-02T00:00:00.000Z').toISOString(),
+        generatedMonth: schedule.generatedMonth || 3,
+        generatedYear: schedule.generatedYear || 2026,
+        assignments: schedule.assignments || [],
+      };
+      return scheduleAcc;
+    }, {});
+
     acc[id] = {
       id,
-      name: organist.name,
-      availability: organist.availability || {},
-      createdAt: new Date('2026-03-02T00:00:00.000Z').toISOString(),
+      name: church.name || `Igreja Seed ${index + 1}`,
+      code: church.code || `SEED${index + 1}`,
+      config,
+      createdAt: church.createdAt || new Date('2026-03-02T00:00:00.000Z').toISOString(),
+      organists: organistsMap,
+      schedules: schedulesMap,
     };
+
     return acc;
   }, {});
 
@@ -62,25 +104,14 @@ function buildChurchDatabase({
     users: {
       [E2E_TEST_USER.uid]: {
         profile: { email: E2E_TEST_USER.email },
-        churches: {
-          [churchId]: {
-            id: churchId,
-            name: churchName,
-            code: churchCode,
-            config: {
-              sunday: sundayConfig,
-            },
-            createdAt: new Date('2026-03-02T00:00:00.000Z').toISOString(),
-            organists: organistsMap,
-            schedules: {},
-          },
-        },
+        churches: churchesMap,
       },
     },
   };
 }
 
 module.exports = {
+  buildChurchesDatabase,
   buildChurchDatabase,
   clearE2EState,
   loginAsE2EUser,

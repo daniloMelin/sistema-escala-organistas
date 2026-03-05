@@ -1,5 +1,6 @@
 const { test, expect } = require('@playwright/test');
 const { buildChurchDatabase, resetE2EState } = require('./helpers/session');
+const { gotoChurchManager, openChurchDashboard } = require('./helpers/navigation');
 
 test.describe('falhas operacionais controladas', () => {
   test('exibe fallback de erro quando falha o carregamento de igrejas', async ({ page }) => {
@@ -13,11 +14,7 @@ test.describe('falhas operacionais controladas', () => {
       }
     );
 
-    await page.goto('/');
-
-    await expect(
-      page.getByRole('heading', { name: 'Gerenciamento de Igrejas' })
-    ).toBeVisible();
+    await gotoChurchManager(page);
     await expect(page.getByText('Falha ao carregar as igrejas.')).toBeVisible();
   });
 
@@ -36,8 +33,8 @@ test.describe('falhas operacionais controladas', () => {
       }
     );
 
-    await page.goto('/');
-    await page.getByText('Igreja Falha Operacional').click();
+    await gotoChurchManager(page);
+    await openChurchDashboard(page, 'Igreja Falha Operacional');
 
     await page.getByRole('textbox', { name: 'Nome da Organista:' }).fill('Marina');
     await page.getByLabel('Domingo (Culto)').check();

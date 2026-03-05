@@ -1,5 +1,6 @@
 const { test, expect } = require('@playwright/test');
 const { buildChurchDatabase, resetE2EState } = require('./helpers/session');
+const { gotoChurchManager, openChurchDashboard } = require('./helpers/navigation');
 
 test.describe('cadastro e edicao de organista', () => {
   test('cadastra nova organista e exibe feedback no painel da igreja', async ({ page }) => {
@@ -12,12 +13,8 @@ test.describe('cadastro e edicao de organista', () => {
       })
     );
 
-    await page.goto('/');
-    await page.getByText('Igreja Organistas').click();
-
-    await expect(
-      page.getByRole('heading', { name: 'Painel de Gerenciamento' })
-    ).toBeVisible();
+    await gotoChurchManager(page);
+    await openChurchDashboard(page, 'Igreja Organistas');
 
     await page.getByRole('textbox', { name: 'Nome da Organista:' }).fill('Maria');
     await page.getByLabel('Domingo (Culto)').check();
@@ -45,8 +42,8 @@ test.describe('cadastro e edicao de organista', () => {
       })
     );
 
-    await page.goto('/');
-    await page.getByText('Igreja Edicao Organista').click();
+    await gotoChurchManager(page);
+    await openChurchDashboard(page, 'Igreja Edicao Organista');
 
     await page.getByRole('button', { name: 'Editar' }).click();
     await page.getByRole('textbox', { name: 'Nome da Organista:' }).fill('Ana Paula');

@@ -1,14 +1,11 @@
 const { test, expect } = require('@playwright/test');
 const { resetE2EState } = require('./helpers/session');
+const { gotoChurchManager } = require('./helpers/navigation');
 
 test.describe('validacoes negativas de igreja', () => {
   test('bloqueia cadastro com nome invalido e nao persiste igreja na lista', async ({ page }) => {
     await resetE2EState(page, { users: {} });
-    await page.goto('/');
-
-    await expect(
-      page.getByRole('heading', { name: 'Gerenciamento de Igrejas' })
-    ).toBeVisible();
+    await gotoChurchManager(page);
 
     const textboxes = page.getByRole('textbox');
     await textboxes.nth(0).fill('AB');

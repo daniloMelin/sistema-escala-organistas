@@ -1,14 +1,11 @@
 const { test, expect } = require('@playwright/test');
 const { buildChurchDatabase, resetE2EState } = require('./helpers/session');
+const { gotoChurchManager } = require('./helpers/navigation');
 
 test.describe('cadastro e edicao de igreja', () => {
   test('cadastra nova igreja e exibe feedback de sucesso na lista', async ({ page }) => {
     await resetE2EState(page, { users: {} });
-    await page.goto('/');
-
-    await expect(
-      page.getByRole('heading', { name: 'Gerenciamento de Igrejas' })
-    ).toBeVisible();
+    await gotoChurchManager(page);
 
     const textboxes = page.getByRole('textbox');
     await textboxes.nth(0).fill('Congregacao Nova');
@@ -31,7 +28,7 @@ test.describe('cadastro e edicao de igreja', () => {
       })
     );
 
-    await page.goto('/');
+    await gotoChurchManager(page);
 
     await page.getByRole('button', { name: 'Editar' }).click();
 

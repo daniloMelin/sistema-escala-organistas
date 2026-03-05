@@ -1,5 +1,6 @@
 const { test, expect } = require('@playwright/test');
 const { buildChurchDatabase, resetE2EState } = require('./helpers/session');
+const { gotoChurchManager, openChurchDashboard } = require('./helpers/navigation');
 
 test.describe('exclusao de organista', () => {
   test('confirma a exclusao, remove a organista da lista e mantem o painel consistente', async ({ page }) => {
@@ -24,12 +25,8 @@ test.describe('exclusao de organista', () => {
       })
     );
 
-    await page.goto('/');
-    await page.getByText('Igreja Exclusao Organista').click();
-
-    await expect(
-      page.getByRole('heading', { name: 'Painel de Gerenciamento' })
-    ).toBeVisible();
+    await gotoChurchManager(page);
+    await openChurchDashboard(page, 'Igreja Exclusao Organista');
 
     const organistToDelete = page.locator('li').filter({ hasText: 'Ana' });
     await expect(organistToDelete).toBeVisible();

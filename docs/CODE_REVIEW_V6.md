@@ -11,6 +11,7 @@
 | 1.4    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 2.2 com cenário E2E de validação negativa no cadastro de organista |
 | 1.5    | 4 de março de 2026 | Danilo Melin | Implementação da Fase 3.2 com cenários E2E de falhas operacionais controladas            |
 | 1.6    | 4 de março de 2026 | Danilo Melin | Implementação da Fase 3.1 com cenários E2E de estados vazios e mensagens orientativas    |
+| 1.7    | 5 de março de 2026 | Danilo Melin | Implementação da Fase 4.1 com consolidação da suíte E2E e recomendação de smoke no CI     |
 
 ## Objetivo
 
@@ -18,7 +19,7 @@ Expandir a confiabilidade da aplicação sobre os cenários ainda não cobertos 
 
 ## Status do Ciclo
 
-- Status geral: `EM ANDAMENTO`
+- Status geral: `CONCLUÍDO`
 - Data de início: `3 de março de 2026`
 - Contexto: continuidade direta do `CODE_REVIEW_V5`, a partir das lacunas registradas em `docs/E2E_COVERAGE_V5.md`
 
@@ -99,16 +100,21 @@ Expandir a confiabilidade da aplicação sobre os cenários ainda não cobertos 
 
 #### 4.1 Revisão de estabilidade e utilidade dos testes E2E
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - revisar redundâncias na suíte
   - consolidar helpers reaproveitáveis
   - revisar se algum cenário já pode subir de importância no CI
+- Entregáveis executados:
+  - helper de navegação reutilizável em `e2e/helpers/navigation.js`
+  - helper de seed de múltiplas igrejas em `e2e/helpers/session.js`
+  - documentação de consolidação em `docs/E2E_CONSOLIDATION_V6.md`
+  - recomendação formal de smoke E2E para próximo ciclo
 
 ## Ordem de execução recomendada
 
-1. **Fase 4.1 - Consolidação da suíte**
+1. **Ciclo V6 concluído**
 
 ## Registro de progresso
 
@@ -118,7 +124,7 @@ Expandir a confiabilidade da aplicação sobre os cenários ainda não cobertos 
 - [x] Fase 2.2 concluída
 - [x] Fase 3.1 concluída
 - [x] Fase 3.2 concluída
-- [ ] Fase 4.1 concluída
+- [x] Fase 4.1 concluída
 
 ## Critério de Conclusão do V6
 
@@ -126,3 +132,25 @@ Expandir a confiabilidade da aplicação sobre os cenários ainda não cobertos 
 - principais cenários negativos de formulário cobertos
 - pelo menos um fluxo de falha operacional exercitado ponta a ponta
 - documentação atualizada com riscos remanescentes e decisões do ciclo
+
+## Fechamento do Ciclo
+
+### Resumo Executivo
+
+O V6 consolidou a suíte E2E em três dimensões: cobertura funcional de cenários críticos, validação de falhas operacionais e melhoria de sustentabilidade da própria suíte.
+
+### Evidências do Ciclo
+
+- cobertura E2E de exclusões e validações negativas
+- cobertura E2E de estados vazios e falhas operacionais controladas
+- redução de redundância por helpers reutilizáveis
+- política de CI revisada com recomendação de promoção gradual do smoke no V7
+- execução completa preservada com gatilho controlado
+
+### Próximo Passo Recomendado
+
+Iniciar o V7 focando em:
+
+1. recuperação explícita em cenários de falha (`retry`/ação de recarregar)
+2. expansão gradual para segundo navegador no smoke ou nightly
+3. revisão periódica de custo x valor dos cenários no CI
