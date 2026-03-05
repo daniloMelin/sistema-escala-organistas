@@ -36,4 +36,19 @@ describe('ChurchList', () => {
 
     expect(screen.getByText('Nenhuma igreja cadastrada.')).toBeInTheDocument();
   });
+
+  test('nao exibe estado vazio quando ha erro de carregamento', () => {
+    render(
+      <ChurchList
+        churches={[]}
+        isLoading={false}
+        hasLoadError
+        onChurchSelect={jest.fn()}
+        onStartEdit={jest.fn()}
+        onRequestDeleteChurch={jest.fn()}
+      />
+    );
+
+    expect(screen.queryByText('Nenhuma igreja cadastrada.')).not.toBeInTheDocument();
+  });
 });

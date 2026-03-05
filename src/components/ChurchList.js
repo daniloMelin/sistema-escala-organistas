@@ -5,6 +5,7 @@ import Button from './ui/Button';
 const ChurchList = ({
   churches,
   isLoading,
+  hasLoadError = false,
   onChurchSelect,
   onStartEdit,
   onRequestDeleteChurch,
@@ -12,7 +13,7 @@ const ChurchList = ({
   return (
     <>
       <h3>Igrejas Cadastradas:</h3>
-      {!isLoading && churches.length === 0 ? (
+      {!isLoading && !hasLoadError && churches.length === 0 ? (
         <p>Nenhuma igreja cadastrada.</p>
       ) : (
         <ul className="list-reset">
@@ -63,6 +64,7 @@ ChurchList.propTypes = {
     })
   ).isRequired,
   isLoading: PropTypes.bool.isRequired,
+  hasLoadError: PropTypes.bool,
   onChurchSelect: PropTypes.func.isRequired,
   onStartEdit: PropTypes.func.isRequired,
   onRequestDeleteChurch: PropTypes.func.isRequired,
