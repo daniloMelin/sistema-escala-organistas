@@ -17,6 +17,7 @@ const ChurchManager = ({ user }) => {
     isSubmitting,
     editingId,
     error,
+    loadError,
     successMessage,
     pendingDeleteChurch,
     setChurchName,
@@ -32,7 +33,7 @@ const ChurchManager = ({ user }) => {
     handleRetryLoadChurches,
   } = useChurchManager(user);
 
-  const hasLoadError = error === 'Falha ao carregar as igrejas.';
+  const hasLoadError = loadError === 'Falha ao carregar as igrejas.';
 
   return (
     <div className="page-container page-container--md">
@@ -44,7 +45,7 @@ const ChurchManager = ({ user }) => {
       )}
       {hasLoadError && !isLoading && (
         <div className="alert alert--danger">
-          <p>Falha ao carregar as igrejas.</p>
+          <p>{loadError}</p>
           <Button onClick={handleRetryLoadChurches} variant="secondary" size="sm">
             Tentar novamente
           </Button>
