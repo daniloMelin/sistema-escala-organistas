@@ -6,6 +6,7 @@
 | ------ | ------------------ | ------------ | -------------------------------------------------------------------------------------- |
 | 1.0    | 13 de março de 2026 | Danilo Melin | Criação do Code Review V7 com foco em recuperação após falhas, smoke e evolução de CI |
 | 1.1    | 13 de março de 2026 | Danilo Melin | Implementação da Fase 1.1 com retry explícito após falha transitória no carregamento de igrejas |
+| 1.2    | 13 de março de 2026 | Danilo Melin | Implementação da Fase 1.2 com retry explícito após falha transitória no salvamento de organista |
 
 ## Objetivo
 
@@ -40,7 +41,7 @@ Evoluir a suíte E2E do projeto para um estágio mais confiável em recuperaçã
 
 #### 1.2 Retry explícito após falha de salvamento de organista
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - simular falha transitória de salvamento
@@ -101,17 +102,16 @@ Evoluir a suíte E2E do projeto para um estágio mais confiável em recuperaçã
 
 ## Ordem de execução recomendada
 
-1. **Fase 1.2 - Retry após falha de salvamento**
-3. **Fase 2.1 - Definir subconjunto smoke**
-4. **Fase 2.2 - Integrar smoke ao CI**
-5. **Fase 3.2 - Revisar custo x valor da suíte**
-6. **Fase 3.1 - Avaliar segundo navegador**
-7. **Fase 4.1 - Fechamento do ciclo**
+1. **Fase 2.1 - Definir subconjunto smoke**
+2. **Fase 2.2 - Integrar smoke ao CI**
+3. **Fase 3.2 - Revisar custo x valor da suíte**
+4. **Fase 3.1 - Avaliar segundo navegador**
+5. **Fase 4.1 - Fechamento do ciclo**
 
 ## Registro de progresso
 
 - [x] Fase 1.1 concluída
-- [ ] Fase 1.2 concluída
+- [x] Fase 1.2 concluída
 - [ ] Fase 2.1 concluída
 - [ ] Fase 2.2 concluída
 - [ ] Fase 3.1 concluída

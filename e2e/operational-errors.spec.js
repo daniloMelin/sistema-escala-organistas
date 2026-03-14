@@ -71,4 +71,37 @@ test.describe('falhas operacionais controladas', () => {
     await expect(page.getByText('Erro ao salvar organista.')).toBeVisible();
     await expect(page.getByText('Marina', { exact: true })).toHaveCount(0);
   });
+
+  test('permite salvar organista apos nova tentativa quando a falha eh transitória', async ({ page }) => {
+    await resetE2EState(
+      page,
+      buildChurchDatabase({
+        churchId: 'church-failure-2',
+        churchName: 'Igreja Retry Organista',
+        churchCode: 'RTO',
+      }),
+      {
+        failures: {
+          addOrganistLocal: 'once',
+        },
+      }
+    );
+
+    await gotoChurchManager(page);
+    await openChurchDashboard(page, 'Igreja Retry Organista');
+
+    await page.getByRole('textbox', { name: 'Nome da Organista:' }).fill('Marina');
+    await page.getByLabel('Domingo (Culto)').check();
+    await page.getByRole('button', { name: 'Cadastrar Organista' }).click();
+
+    await expect(page.getByText('Erro ao salvar organista.')).toBeVisible();
+    await expect(page.getByText('Marina', { exact: true })).toHaveCount(0);
+
+    await page.getByRole('button', { name: 'Cadastrar Organista' }).click();
+
+    await expect(page.getByText('Erro ao salvar organista.')).toHaveCount(0);
+    await expect(page.getByText('Organista cadastrada com sucesso.')).toBeVisible();
+    await expect(page.getByText('Marina', { exact: true })).toBeVisible();
+    await expect(page.getByText(/Dom\(Culto\)/)).toBeVisible();
+  });
 });
