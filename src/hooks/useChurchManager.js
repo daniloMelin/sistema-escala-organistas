@@ -41,7 +41,10 @@ export const useChurchManager = (user) => {
 
   const fetchChurches = useCallback(async () => {
     if (!user) return;
-    if (isMountedRef.current) setIsLoading(true);
+    if (isMountedRef.current) {
+      setIsLoading(true);
+      setError('');
+    }
     try {
       const userChurches = await getChurches(user.uid);
       if (!isMountedRef.current) return;
@@ -215,5 +218,6 @@ export const useChurchManager = (user) => {
     handleRequestDeleteChurch,
     handleConfirmDeleteChurch,
     handleChurchSelect,
+    handleRetryLoadChurches: fetchChurches,
   };
 };

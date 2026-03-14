@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ConfirmDialog from './ui/ConfirmDialog';
 import ChurchForm from './ChurchForm';
 import ChurchList from './ChurchList';
+import Button from './ui/Button';
 import { useChurchManager } from '../hooks/useChurchManager';
 import './ChurchManager.css';
 
@@ -28,7 +29,10 @@ const ChurchManager = ({ user }) => {
     handleRequestDeleteChurch,
     handleConfirmDeleteChurch,
     handleChurchSelect,
+    handleRetryLoadChurches,
   } = useChurchManager(user);
+
+  const hasLoadError = error === 'Falha ao carregar as igrejas.';
 
   return (
     <div className="page-container page-container--md">
@@ -36,6 +40,14 @@ const ChurchManager = ({ user }) => {
       {isLoading && (
         <div className="alert alert--warning">
           Carregando dados da igreja...
+        </div>
+      )}
+      {hasLoadError && !isLoading && (
+        <div className="alert alert--danger">
+          <p>Falha ao carregar as igrejas.</p>
+          <Button onClick={handleRetryLoadChurches} variant="secondary" size="sm">
+            Tentar novamente
+          </Button>
         </div>
       )}
 
@@ -57,7 +69,7 @@ const ChurchManager = ({ user }) => {
       <ChurchList
         churches={churches}
         isLoading={isLoading}
-        hasLoadError={error === 'Falha ao carregar as igrejas.'}
+        hasLoadError={hasLoadError}
         onChurchSelect={handleChurchSelect}
         onStartEdit={handleStartEdit}
         onRequestDeleteChurch={handleRequestDeleteChurch}
