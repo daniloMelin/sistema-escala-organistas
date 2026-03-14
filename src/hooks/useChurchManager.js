@@ -25,6 +25,7 @@ export const useChurchManager = (user) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [error, setError] = useState('');
+  const [loadError, setLoadError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [pendingDeleteChurch, setPendingDeleteChurch] = useState(null);
   const isMountedRef = useRef(false);
@@ -41,16 +42,19 @@ export const useChurchManager = (user) => {
 
   const fetchChurches = useCallback(async () => {
     if (!user) return;
-    if (isMountedRef.current) setIsLoading(true);
+    if (isMountedRef.current) {
+      setIsLoading(true);
+      setLoadError('');
+    }
     try {
       const userChurches = await getChurches(user.uid);
       if (!isMountedRef.current) return;
       setChurches(userChurches);
-      setError('');
+      setLoadError('');
     } catch (err) {
       if (!isMountedRef.current) return;
       logger.error('Falha ao carregar as igrejas:', err);
-      setError('Falha ao carregar as igrejas.');
+      setLoadError('Falha ao carregar as igrejas.');
     } finally {
       if (isMountedRef.current) setIsLoading(false);
     }
@@ -102,6 +106,7 @@ export const useChurchManager = (user) => {
     }
 
     setError('');
+    setLoadError('');
     setSuccessMessage('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -112,6 +117,7 @@ export const useChurchManager = (user) => {
     setEditingId(null);
     setSelectedDays(INITIAL_AVAILABILITY);
     setError('');
+    setLoadError('');
   };
 
   const handleDayChange = (key) => {
@@ -135,6 +141,7 @@ export const useChurchManager = (user) => {
 
     setIsSubmitting(true);
     setError('');
+    setLoadError('');
     setSuccessMessage('');
 
     try {
@@ -178,6 +185,7 @@ export const useChurchManager = (user) => {
       if (!isMountedRef.current) return;
       setSuccessMessage('Igreja e dados associados excluídos com sucesso.');
       setError('');
+      setLoadError('');
       if (editingId === pendingDeleteChurch.id) handleCancelEdit();
       await fetchChurches();
     } catch (err) {
@@ -203,6 +211,7 @@ export const useChurchManager = (user) => {
     isSubmitting,
     editingId,
     error,
+    loadError,
     successMessage,
     pendingDeleteChurch,
     setChurchName,
@@ -215,5 +224,6 @@ export const useChurchManager = (user) => {
     handleRequestDeleteChurch,
     handleConfirmDeleteChurch,
     handleChurchSelect,
+    handleRetryLoadChurches: fetchChurches,
   };
 };

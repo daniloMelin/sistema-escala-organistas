@@ -11,7 +11,7 @@
 | 1.4    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 2.2 com cenário E2E de validação negativa no cadastro de organista |
 | 1.5    | 4 de março de 2026 | Danilo Melin | Implementação da Fase 3.2 com cenários E2E de falhas operacionais controladas            |
 | 1.6    | 4 de março de 2026 | Danilo Melin | Implementação da Fase 3.1 com cenários E2E de estados vazios e mensagens orientativas    |
-| 1.7    | 5 de março de 2026 | Danilo Melin | Implementação da Fase 4.1 com consolidação da suíte E2E e recomendação de smoke no CI     |
+| 1.7    | 5 de março de 2026 | Danilo Melin | Implementação da Fase 4.1 com consolidação da suíte E2E e recomendação de smoke no CI    |
 
 ## Objetivo
 
