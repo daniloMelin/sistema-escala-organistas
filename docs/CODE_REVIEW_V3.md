@@ -2,10 +2,10 @@
 
 ## Histórico de Revisões
 
-| Versão | Data                    | Autor(es)    | Descrição da Revisão         |
-| ------ | ----------------------- | ------------ | ---------------------------- |
-| 1.0    | 24 de fevereiro de 2026 | Danilo Melin | Criação inicial do documento |
-
+- Versão: `1.0`
+  - Data: `24 de fevereiro de 2026`
+  - Autor(es): `Danilo Melin`
+  - Descrição: Criação inicial do documento.
 
 ## Objetivo do ciclo
 

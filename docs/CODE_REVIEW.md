@@ -2,18 +2,21 @@
 
 ## Histórico de Revisões
 
-| Versão | Data                    | Autor(es)    | Descrição da Revisão         |
-| ------ | ----------------------- | ------------ | ---------------------------- |
-| 1.0    | 24 de fevereiro de 2026 | Danilo Melin | Criação inicial do documento |
-
+- Versão: `1.0`
+  - Data: `24 de fevereiro de 2026`
+  - Autor(es): `Danilo Melin`
+  - Descrição: Criação inicial do documento.
 
 ## 📋 Resumo Executivo
 
-Este documento apresenta uma análise atualizada do código após as melhorias implementadas, identificando progressos, problemas remanescentes e novas oportunidades de melhoria.
+Este documento apresenta uma análise atualizada do código após as
+melhorias implementadas, identificando progressos, problemas
+remanescentes e novas oportunidades de melhoria.
 
 **Data da Revisão:** 2024  
 **Versão Anterior:** CODE_REVIEW.md  
-**Status Geral:** ✅ Melhorias significativas implementadas, alguns pontos ainda precisam de atenção
+**Status Geral:** ✅ Melhorias significativas implementadas, alguns
+pontos ainda precisam de atenção
 
 ---
 
@@ -245,7 +248,8 @@ style={{ padding: '10px 20px', backgroundColor: '#007bff', color: 'white', ... }
 
 ### 7. Falta de TypeScript ou PropTypes
 
-**Problema:** Projeto tem `tsconfig.json` mas não usa TypeScript. Componentes não têm PropTypes.
+**Problema:** Projeto tem `tsconfig.json` mas não usa TypeScript.
+Componentes não têm PropTypes.
 
 **Impacto:**
 
@@ -307,16 +311,46 @@ style={{ padding: '10px 20px', backgroundColor: '#007bff', color: 'white', ... }
 
 ## 📊 Métricas de Qualidade Atualizadas
 
-| Métrica                      | Antes       | Depois      | Meta         | Status         |
-| ---------------------------- | ----------- | ----------- | ------------ | -------------- |
-| Duplicação de Código         | ~15%        | ~8%         | < 5%         | 🟡 Melhorou     |
-| Cobertura de Testes          | 0%          | 0%          | > 70%        | 🔴 Sem mudança  |
-| Tamanho Médio de Componente  | ~250 linhas | ~250 linhas | < 150 linhas | 🟡 Sem mudança  |
-| Validação de Inputs          | 0%          | 100%        | 100%         | ✅ Concluído    |
-| Segurança (Regras Firestore) | ❌           | ✅           | ✅            | ✅ Implementado |
-| Memoização                   | 0%          | ~30%        | > 50%        | 🟡 Parcial      |
-| Lazy Loading                 | ❌           | ✅           | ✅            | ✅ Implementado |
-| ErrorBoundary                | ❌           | ✅           | ✅            | ✅ Implementado |
+- Métrica: `Duplicação de Código`
+  - Antes: `~15%`
+  - Depois: `~8%`
+  - Meta: `< 5%`
+  - Status: `🟡 Melhorou`
+- Métrica: `Cobertura de Testes`
+  - Antes: `0%`
+  - Depois: `0%`
+  - Meta: `> 70%`
+  - Status: `🔴 Sem mudança`
+- Métrica: `Tamanho Médio de Componente`
+  - Antes: `~250 linhas`
+  - Depois: `~250 linhas`
+  - Meta: `< 150 linhas`
+  - Status: `🟡 Sem mudança`
+- Métrica: `Validação de Inputs`
+  - Antes: `0%`
+  - Depois: `100%`
+  - Meta: `100%`
+  - Status: `✅ Concluído`
+- Métrica: `Segurança (Regras Firestore)`
+  - Antes: `❌`
+  - Depois: `✅`
+  - Meta: `✅`
+  - Status: `✅ Implementado`
+- Métrica: `Memoização`
+  - Antes: `0%`
+  - Depois: `~30%`
+  - Meta: `> 50%`
+  - Status: `🟡 Parcial`
+- Métrica: `Lazy Loading`
+  - Antes: `❌`
+  - Depois: `✅`
+  - Meta: `✅`
+  - Status: `✅ Implementado`
+- Métrica: `ErrorBoundary`
+  - Antes: `❌`
+  - Depois: `✅`
+  - Meta: `✅`
+  - Status: `✅ Implementado`
 
 ---
 
@@ -422,7 +456,9 @@ O sistema teve **melhorias significativas** desde o code review anterior:
 
 - Deploy das regras do Firestore (segurança)
 
-**Recomendação Geral:** O sistema está em **bom estado**, mas ainda há espaço para melhorias, especialmente em testes e uso consistente dos componentes UI criados.
+**Recomendação Geral:** O sistema está em **bom estado**, mas ainda há
+espaço para melhorias, especialmente em testes e uso consistente dos
+componentes UI criados.
 
 ---
 

@@ -12,6 +12,17 @@
   - Autor(es): `Danilo Melin`
   - Descrição: Conclusão da Fase 1.1 com normalização dos documentos
     E2E e do review V7.
+- Versão: `1.2`
+  - Data: `21 de março de 2026`
+  - Autor(es): `Danilo Melin`
+  - Descrição: Conclusão da Fase 1.2 com saneamento do `README.md`,
+    `CONTRIBUTING.md` e `CHANGELOG.md`.
+- Versão: `1.3`
+  - Data: `21 de março de 2026`
+  - Autor(es): `Danilo Melin`
+  - Descrição: Conclusão da Fase 2.1 com saneamento dos reviews
+    históricos `CODE_REVIEW.md`, `CODE_REVIEW_V2.md` e
+    `CODE_REVIEW_V3.md`.
 
 ## Objetivo
 
@@ -76,23 +87,31 @@ Os arquivos mais afetados são:
 
 #### 1.2 Ajustar documentos institucionais de entrada
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - corrigir `README.md`, `CONTRIBUTING.md` e `CHANGELOG.md`
   - melhorar legibilidade sem reescrever a mensagem dos documentos
+  - resultado alcançado:
+    - documentos-alvo limpos no `markdownlint`
+    - quebras de linha normalizadas
+    - links e blocos de código do `README.md` ajustados
 
 ### Fase 2 - Documentos Históricos do Projeto
 
 #### 2.1 Sanear documentos legado de review
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - corrigir `docs/CODE_REVIEW.md`, `docs/CODE_REVIEW_V2.md` e
     `docs/CODE_REVIEW_V3.md`
   - remover múltiplas linhas em branco
   - normalizar listas e tabelas
+  - resultado alcançado:
+    - documentos-alvo limpos no `markdownlint`
+    - históricos convertidos para listas
+    - tabelas de métricas convertidas para blocos mais sustentáveis
 
 #### 2.2 Sanear documentos técnicos extensos
 
@@ -146,8 +165,8 @@ Os arquivos mais afetados são:
 ## Registro de progresso
 
 - [x] Fase 1.1 concluída
-- [ ] Fase 1.2 concluída
-- [ ] Fase 2.1 concluída
+- [x] Fase 1.2 concluída
+- [x] Fase 2.1 concluída
 - [ ] Fase 2.2 concluída
 - [ ] Fase 3.1 concluída
 - [ ] Fase 3.2 concluída
