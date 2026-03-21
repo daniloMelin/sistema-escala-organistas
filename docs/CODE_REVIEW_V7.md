@@ -2,18 +2,18 @@
 
 ## Histórico de Revisões
 
-| Versão | Data               | Autor(es)    | Descrição da Revisão                                                                   |
-| ------ | ------------------ | ------------ | -------------------------------------------------------------------------------------- |
-| 1.0    | 13 de março de 2026 | Danilo Melin | Criação do Code Review V7 com foco em recuperação após falhas, smoke e evolução de CI |
-| 1.1    | 13 de março de 2026 | Danilo Melin | Implementação da Fase 1.1 com retry explícito após falha transitória no carregamento de igrejas |
-| 1.2    | 13 de março de 2026 | Danilo Melin | Implementação da Fase 1.2 com retry explícito após falha transitória no salvamento de organista |
-| 1.3    | 21 de março de 2026 | Danilo Melin | Implementação da Fase 2.1 com definição formal do subconjunto smoke e seus critérios de seleção |
-| 1.4    | 21 de março de 2026 | Danilo Melin | Implementação da Fase 2.2 com integração do subconjunto smoke ao GitHub Actions em PR |
-| 1.5    | 21 de março de 2026 | Danilo Melin | Ajuste do smoke para incluir o fluxo real de login E2E após revisão da PR |
-| 1.6    | 21 de março de 2026 | Danilo Melin | Refinamento do smoke para priorizar cenários determinísticos e manter seeded flows na suíte completa |
-| 1.7    | 21 de março de 2026 | Danilo Melin | Implementação da Fase 3.2 com política explícita de custo x valor da suíte E2E no CI |
+| Versão | Data                | Autor(es)    | Descrição da Revisão                                                                                       |
+| ------ | ------------------- | ------------ | ---------------------------------------------------------------------------------------------------------- |
+| 1.0    | 13 de março de 2026 | Danilo Melin | Criação do Code Review V7 com foco em recuperação após falhas, smoke e evolução de CI                      |
+| 1.1    | 13 de março de 2026 | Danilo Melin | Implementação da Fase 1.1 com retry explícito após falha transitória no carregamento de igrejas            |
+| 1.2    | 13 de março de 2026 | Danilo Melin | Implementação da Fase 1.2 com retry explícito após falha transitória no salvamento de organista            |
+| 1.3    | 21 de março de 2026 | Danilo Melin | Implementação da Fase 2.1 com definição formal do subconjunto smoke e seus critérios de seleção            |
+| 1.4    | 21 de março de 2026 | Danilo Melin | Implementação da Fase 2.2 com integração do subconjunto smoke ao GitHub Actions em PR                      |
+| 1.5    | 21 de março de 2026 | Danilo Melin | Ajuste do smoke para incluir o fluxo real de login E2E após revisão da PR                                  |
+| 1.6    | 21 de março de 2026 | Danilo Melin | Refinamento do smoke para priorizar cenários determinísticos e manter seeded flows na suíte completa       |
+| 1.7    | 21 de março de 2026 | Danilo Melin | Implementação da Fase 3.2 com política explícita de custo x valor da suíte E2E no CI                       |
 | 1.8    | 21 de março de 2026 | Danilo Melin | Implementação da Fase 3.1 com decisão por execução periódica dedicada em vez de segundo navegador no smoke |
-| 1.9    | 21 de março de 2026 | Danilo Melin | Fechamento formal do ciclo V7 com consolidação das decisões operacionais do E2E |
+| 1.9    | 21 de março de 2026 | Danilo Melin | Fechamento formal do ciclo V7 com consolidação das decisões operacionais do E2E                            |
 
 ## Objetivo
 

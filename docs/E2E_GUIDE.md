@@ -2,21 +2,21 @@
 
 ## Histórico de Revisões
 
-| Versão | Data               | Autor(es)    | Descrição da Revisão                                                                              |
-| ------ | ------------------ | ------------ | ------------------------------------------------------------------------------------------------- |
-| 1.0    | 1 de março de 2026 | Danilo Melin | Criação do guia inicial de execução dos testes E2E com Playwright                                 |
-| 1.1    | 2 de março de 2026 | Danilo Melin | Atualização do guia com modo E2E controlado, autenticação local e helper de sessão                |
-| 1.2    | 3 de março de 2026 | Danilo Melin | Padronização dos comandos E2E e adoção de porta dedicada para execução determinística             |
-| 1.3    | 3 de março de 2026 | Danilo Melin | Documentação da execução E2E no GitHub Actions com gatilho controlado por label e workflow manual |
-| 1.4    | 3 de março de 2026 | Danilo Melin | Referência da cobertura atual da suíte E2E e encaminhamento das lacunas remanescentes             |
-| 1.5    | 5 de março de 2026 | Danilo Melin | Consolidação da suíte com revisão de manutenção e recomendação de smoke para próximo ciclo          |
-| 1.6    | 21 de março de 2026 | Danilo Melin | Inclusão da referência ao subconjunto smoke definido no ciclo V7                                   |
-| 1.7    | 21 de março de 2026 | Danilo Melin | Inclusão do comando smoke e da integração automática no GitHub Actions                             |
+| Versão | Data                | Autor(es)    | Descrição da Revisão                                                                              |
+| ------ | ------------------- | ------------ | ------------------------------------------------------------------------------------------------- |
+| 1.0    | 1 de março de 2026  | Danilo Melin | Criação do guia inicial de execução dos testes E2E com Playwright                                 |
+| 1.1    | 2 de março de 2026  | Danilo Melin | Atualização do guia com modo E2E controlado, autenticação local e helper de sessão                |
+| 1.2    | 3 de março de 2026  | Danilo Melin | Padronização dos comandos E2E e adoção de porta dedicada para execução determinística             |
+| 1.3    | 3 de março de 2026  | Danilo Melin | Documentação da execução E2E no GitHub Actions com gatilho controlado por label e workflow manual |
+| 1.4    | 3 de março de 2026  | Danilo Melin | Referência da cobertura atual da suíte E2E e encaminhamento das lacunas remanescentes             |
+| 1.5    | 5 de março de 2026  | Danilo Melin | Consolidação da suíte com revisão de manutenção e recomendação de smoke para próximo ciclo        |
+| 1.6    | 21 de março de 2026 | Danilo Melin | Inclusão da referência ao subconjunto smoke definido no ciclo V7                                  |
+| 1.7    | 21 de março de 2026 | Danilo Melin | Inclusão do comando smoke e da integração automática no GitHub Actions                            |
 | 1.8    | 21 de março de 2026 | Danilo Melin | Ampliação do smoke para incluir o fluxo real de login E2E                                         |
 | 1.9    | 21 de março de 2026 | Danilo Melin | Ajuste do smoke para manter apenas fluxos mais determinísticos no CI                              |
-| 2.0    | 21 de março de 2026 | Danilo Melin | Inclusão da política de custo x valor da suíte E2E no CI                                         |
-| 2.1    | 21 de março de 2026 | Danilo Melin | Registro da decisão de expansão com execução periódica dedicada no ciclo V7                      |
-| 2.2    | 21 de março de 2026 | Danilo Melin | Fechamento operacional do ciclo V7 com consolidação do fluxo smoke, completo e nightly           |
+| 2.0    | 21 de março de 2026 | Danilo Melin | Inclusão da política de custo x valor da suíte E2E no CI                                          |
+| 2.1    | 21 de março de 2026 | Danilo Melin | Registro da decisão de expansão com execução periódica dedicada no ciclo V7                       |
+| 2.2    | 21 de março de 2026 | Danilo Melin | Fechamento operacional do ciclo V7 com consolidação do fluxo smoke, completo e nightly            |
 
 ## Objetivo
 

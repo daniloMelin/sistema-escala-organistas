@@ -1,0 +1,7 @@
+*.md
+docs/**/*.md
+.github/**/*.yml
+.github/**/*.yaml
+package-lock.json
+package.json
+firebase.json
