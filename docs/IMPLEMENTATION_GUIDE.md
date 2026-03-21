@@ -2,12 +2,13 @@
 
 ## Histórico de Revisões
 
-| Versão | Data                    | Autor(es)    | Descrição da Revisão         |
-| ------ | ----------------------- | ------------ | ---------------------------- |
-| 1.0    | 24 de fevereiro de 2026 | Danilo Melin | Criação inicial do documento |
+- Versão: `1.0`
+  - Data: `24 de fevereiro de 2026`
+  - Autor(es): `Danilo Melin`
+  - Descrição: Criação inicial do documento.
 
-
-Este guia fornece instruções passo a passo para implementar as melhorias identificadas no code review.
+Este guia fornece instruções passo a passo para implementar as
+melhorias identificadas no code review.
 
 ## 🔴 Fase 1: Segurança (URGENTE)
 
@@ -19,35 +20,35 @@ Este guia fornece instruções passo a passo para implementar as melhorias ident
 
 1. Crie um arquivo `.env.local` na raiz do projeto:
 
-    ```bash
-    touch .env.local
-    ```
+   ```bash
+   touch .env.local
+   ```
 
 2. Adicione suas credenciais do Firebase no arquivo `.env.local`:
 
-    ```env
-    REACT_APP_FIREBASE_API_KEY=sua_chave_aqui
-    REACT_APP_FIREBASE_AUTH_DOMAIN=seu_dominio_aqui
-    REACT_APP_FIREBASE_PROJECT_ID=seu_projeto_id_aqui
-    REACT_APP_FIREBASE_STORAGE_BUCKET=seu_storage_bucket_aqui
-    REACT_APP_FIREBASE_MESSAGING_SENDER_ID=seu_sender_id_aqui
-    REACT_APP_FIREBASE_APP_ID=seu_app_id_aqui
-    ```
+   ```env
+   REACT_APP_FIREBASE_API_KEY=sua_chave_aqui
+   REACT_APP_FIREBASE_AUTH_DOMAIN=seu_dominio_aqui
+   REACT_APP_FIREBASE_PROJECT_ID=seu_projeto_id_aqui
+   REACT_APP_FIREBASE_STORAGE_BUCKET=seu_storage_bucket_aqui
+   REACT_APP_FIREBASE_MESSAGING_SENDER_ID=seu_sender_id_aqui
+   REACT_APP_FIREBASE_APP_ID=seu_app_id_aqui
+   ```
 
 3. **IMPORTANTE:** Verifique se `.env.local` está no `.gitignore` (já está)
 
 4. Remova as credenciais hardcoded do `firebaseConfig.js` após testar:
 
-    ```javascript
-    // Remova os valores padrão após confirmar que .env.local funciona
-    apiKey: process.env.REACT_APP_FIREBASE_API_KEY, // Sem fallback
-    ```
+   ```javascript
+   // Remova os valores padrão após confirmar que .env.local funciona
+   apiKey: process.env.REACT_APP_FIREBASE_API_KEY, // Sem fallback
+   ```
 
 5. Reinicie o servidor de desenvolvimento:
 
-    ```bash
-    npm start
-    ```
+   ```bash
+   npm start
+   ```
 
 ---
 
@@ -59,18 +60,17 @@ Este guia fornece instruções passo a passo para implementar as melhorias ident
 
 1. Faça deploy das regras:
 
-    ```bash
-    firebase deploy --only firestore:rules
-    ```
+   ```bash
+   firebase deploy --only firestore:rules
+   ```
 
 2. Verifique se as regras foram aplicadas:
 
-    ```bash
-    firebase firestore:rules:get
-    ```
+   ```bash
+   firebase firestore:rules:get
+   ```
 
 3. Teste as regras no console do Firebase:
-
    - Vá para Firebase Console > Firestore > Rules
    - Use o simulador de regras para testar
 
@@ -99,20 +99,20 @@ import { validateChurchName, validateChurchCode } from '../utils/validation';
 ```javascript
 const handleSubmit = async (e) => {
   e.preventDefault();
-  
+
   // Validação
   const nameValidation = validateChurchName(churchName);
   if (!nameValidation.isValid) {
     setError(nameValidation.error);
     return;
   }
-  
+
   const codeValidation = validateChurchCode(churchCode);
   if (!codeValidation.isValid) {
     setError(codeValidation.error);
     return;
   }
-  
+
   // Continua com o salvamento...
 };
 ```
@@ -264,7 +264,7 @@ const Button = ({ children, variant = 'primary', ...props }) => {
     danger: { backgroundColor: '#dc3545', color: 'white' },
     warning: { backgroundColor: '#ffc107', color: '#333' },
   };
-  
+
   return (
     <button
       style={{
@@ -274,7 +274,7 @@ const Button = ({ children, variant = 'primary', ...props }) => {
         cursor: 'pointer',
         fontWeight: 'bold',
         ...styles[variant],
-        ...props.style
+        ...props.style,
       }}
       {...props}
     >
@@ -290,11 +290,7 @@ const Button = ({ children, variant = 'primary', ...props }) => {
 const Input = ({ label, error, ...props }) => {
   return (
     <div style={{ marginBottom: '15px' }}>
-      {label && (
-        <label style={{ display: 'block', marginBottom: '5px' }}>
-          {label}
-        </label>
-      )}
+      {label && <label style={{ display: 'block', marginBottom: '5px' }}>{label}</label>}
       <input
         style={{
           width: '100%',
@@ -302,7 +298,7 @@ const Input = ({ label, error, ...props }) => {
           boxSizing: 'border-box',
           borderRadius: '4px',
           border: error ? '1px solid red' : '1px solid #ccc',
-          ...props.style
+          ...props.style,
         }}
         {...props}
       />
@@ -328,9 +324,12 @@ const ChurchScheduleGenerator = lazy(() => import('./components/ChurchScheduleGe
 <Suspense fallback={<div>Carregando...</div>}>
   <Routes>
     <Route path="/igreja/:id" element={<ChurchDashboard user={user} />} />
-    <Route path="/igreja/:id/escala" element={<ChurchScheduleGenerator user={user} />} />
+    <Route
+      path="/igreja/:id/escala"
+      element={<ChurchScheduleGenerator user={user} />}
+    />
   </Routes>
-</Suspense>
+</Suspense>;
 ```
 
 ---
@@ -362,9 +361,7 @@ class ErrorBoundary extends React.Component {
         <div style={{ padding: '20px', textAlign: 'center' }}>
           <h2>Algo deu errado</h2>
           <p>Por favor, recarregue a página.</p>
-          <button onClick={() => window.location.reload()}>
-            Recarregar
-          </button>
+          <button onClick={() => window.location.reload()}>Recarregar</button>
         </div>
       );
     }
@@ -378,9 +375,7 @@ class ErrorBoundary extends React.Component {
 
 ```javascript
 <ErrorBoundary>
-  <Router>
-    {/* ... */}
-  </Router>
+  <Router>{/* ... */}</Router>
 </ErrorBoundary>
 ```
 

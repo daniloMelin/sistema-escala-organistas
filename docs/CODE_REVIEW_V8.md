@@ -23,6 +23,12 @@
   - Descrição: Conclusão da Fase 2.1 com saneamento dos reviews
     históricos `CODE_REVIEW.md`, `CODE_REVIEW_V2.md` e
     `CODE_REVIEW_V3.md`.
+- Versão: `1.4`
+  - Data: `21 de março de 2026`
+  - Autor(es): `Danilo Melin`
+  - Descrição: Conclusão da Fase 2.2 com saneamento de
+    `FIRESTORE_SCHEMA.md`, `IMPLEMENTATION_GUIDE.md`,
+    `SCHEDULE_ALGORITHM.md` e `VITE_SPIKE_V4.md`.
 
 ## Objetivo
 
@@ -115,12 +121,16 @@ Os arquivos mais afetados são:
 
 #### 2.2 Sanear documentos técnicos extensos
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - corrigir `docs/FIRESTORE_SCHEMA.md`, `docs/IMPLEMENTATION_GUIDE.md`,
     `docs/SCHEDULE_ALGORITHM.md` e `docs/VITE_SPIKE_V4.md`
   - revisar listas, blocos e largura de linha
+  - resultado alcançado:
+    - documentos-alvo limpos no `markdownlint`
+    - históricos convertidos para listas
+    - listas e blocos normalizados com foco em legibilidade
 
 ### Fase 3 - Baseline de Formatação do Repositório
 
@@ -167,7 +177,7 @@ Os arquivos mais afetados são:
 - [x] Fase 1.1 concluída
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
-- [ ] Fase 2.2 concluída
+- [x] Fase 2.2 concluída
 - [ ] Fase 3.1 concluída
 - [ ] Fase 3.2 concluída
 - [ ] Fase 4.1 concluída

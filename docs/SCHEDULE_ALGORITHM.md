@@ -2,14 +2,17 @@
 
 ## Histórico de Revisões
 
-| Versão | Data                    | Autor(es)    | Descrição da Revisão         |
-| ------ | ----------------------- | ------------ | ---------------------------- |
-| 1.0    | 24 de fevereiro de 2026 | Danilo Melin | Criação inicial do documento |
-
+- Versão: `1.0`
+  - Data: `24 de fevereiro de 2026`
+  - Autor(es): `Danilo Melin`
+  - Descrição: Criação inicial do documento.
 
 ## 📋 Resumo
 
-A função `generateSchedule` foi completamente reescrita para implementar um algoritmo baseado em **Escassez de Disponibilidade** e **Equilíbrio de Funções**, resolvendo problemas com organistas que têm restrições rígidas de dias.
+A função `generateSchedule` foi completamente reescrita para
+implementar um algoritmo baseado em **Escassez de Disponibilidade** e
+**Equilíbrio de Funções**, resolvendo problemas com organistas que têm
+restrições rígidas de dias.
 
 ## 🔑 Características Principais
 
@@ -17,24 +20,29 @@ A função `generateSchedule` foi completamente reescrita para implementar um al
 
 O algoritmo agora suporta:
 
-- **`fixedDays`**: Array de números 0-6 representando os únicos dias da semana que a organista pode tocar
+- **`fixedDays`**: Array de números 0-6 representando os únicos dias da
+  semana que a organista pode tocar
   - Exemplo: `fixedDays: [6]` = só pode tocar aos sábados
-- **`blockedDates`**: Array de strings ISO (yyyy-MM-dd) com datas específicas bloqueadas
+- **`blockedDates`**: Array de strings ISO (yyyy-MM-dd) com datas
+  específicas bloqueadas
   - Exemplo: `blockedDates: ["2024-12-25", "2024-01-01"]`
-- **Compatibilidade**: Mantém suporte à estrutura antiga de `availability` (objeto com chaves como `sunday_rjm`, `monday`, etc.)
+- **Compatibilidade**: Mantém suporte à estrutura antiga de
+  `availability` (objeto com chaves como `sunday_rjm`, `monday`, etc.)
 
 ### 2. **Algoritmo em 4 Passos**
 
 #### **PASSO A: Cálculo de Availability Score**
 
-- Para cada organista, calcula quantos dias tecnicamente ela poderia tocar no período
+- Para cada organista, calcula quantos dias tecnicamente ela poderia
+  tocar no período
 - Considera: `fixedDays`, `blockedDates`, e `availability`
 - Armazena o score em `availabilityScores[organistId]`
 
 #### **PASSO B: Ordenação por Escassez**
 
 - Ordena organistas de forma **crescente** baseada no `availabilityScore`
-- **Motivo**: Organistas com poucos dias disponíveis (ex: só sábados) são alocadas primeiro
+- **Motivo**: Organistas com poucos dias disponíveis (ex: só sábados)
+  são alocadas primeiro
 - Analogia: "Pedras Grandes" antes da "Areia"
 
 #### **PASSO C: Alocação e Equilíbrio de Cargos**
@@ -43,7 +51,8 @@ O algoritmo agora suporta:
 - Para cada organista, tenta alocá-la em seus dias disponíveis
 - **Regra de Decisão do Cargo**:
   - Se **ambas as vagas estão livres** (Meia Hora e Culto):
-    - Verifica histórico: se tocou mais "Cultos", aloca na "Meia Hora" (e vice-versa)
+    - Verifica histórico: se tocou mais "Cultos", aloca na
+      "Meia Hora" (e vice-versa)
     - Objetivo: manter média 50/50 entre funções
   - Se **apenas uma vaga está livre**:
     - Aloca na vaga que sobrou (complemento)
@@ -51,7 +60,8 @@ O algoritmo agora suporta:
 #### **PASSO D: Restrições**
 
 - Uma organista **não pode tocar duas vezes no mesmo dia**
-- Respeita rigorosamente `fixedDays` (ex: se `fixedDays = [6]`, ignora domingos e quartas)
+- Respeita rigorosamente `fixedDays` (ex: se `fixedDays = [6]`, ignora
+  domingos e quartas)
 - Respeita `blockedDates` (datas específicas bloqueadas)
 
 ## 📊 Estrutura de Dados
