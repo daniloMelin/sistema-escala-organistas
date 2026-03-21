@@ -10,6 +10,7 @@
 | 1.3    | 3 de março de 2026 | Danilo Melin | Documentação da execução E2E no GitHub Actions com gatilho controlado por label e workflow manual |
 | 1.4    | 3 de março de 2026 | Danilo Melin | Referência da cobertura atual da suíte E2E e encaminhamento das lacunas remanescentes             |
 | 1.5    | 5 de março de 2026 | Danilo Melin | Consolidação da suíte com revisão de manutenção e recomendação de smoke para próximo ciclo          |
+| 1.6    | 21 de março de 2026 | Danilo Melin | Inclusão da referência ao subconjunto smoke definido no ciclo V7                                   |
 
 ## Objetivo
 
@@ -103,11 +104,12 @@ Documento complementar:
 - `docs/E2E_STRATEGY.md`
 - `docs/E2E_COVERAGE_V5.md`
 - `docs/E2E_CONSOLIDATION_V6.md`
+- `docs/E2E_SMOKE_V7.md`
 
 ## Próximos passos
 
-1. Revisar periodicamente o conjunto de smoke conforme crescimento da suíte.
-2. Evoluir cobertura de fluxos com falhas operacionais mais complexas.
+1. Integrar o subconjunto smoke ao CI de PR.
+2. Revisar periodicamente o conjunto de smoke conforme crescimento da suíte.
 3. Reavaliar execução em navegador adicional quando custo de CI permitir.
 
 ## Execução no GitHub Actions
