@@ -1,5 +1,6 @@
 const { test, expect } = require('@playwright/test');
 const { buildChurchDatabase, resetE2EState } = require('./helpers/session');
+const { gotoChurchManager } = require('./helpers/navigation');
 
 test.describe('edicao manual e exportacao da escala', () => {
   test('edita a escala manualmente, salva alteracoes e exporta PDF', async ({ page }) => {
@@ -24,7 +25,7 @@ test.describe('edicao manual e exportacao da escala', () => {
       })
     );
 
-    await page.goto('/');
+    await gotoChurchManager(page);
     await page.getByText('Igreja Edicao Escala').click();
     await page.getByRole('button', { name: /Gerar Escala/i }).click();
 

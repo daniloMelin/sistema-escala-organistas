@@ -1,5 +1,6 @@
 const { test, expect } = require('@playwright/test');
 const { buildChurchDatabase, resetE2EState } = require('./helpers/session');
+const { gotoChurchManager } = require('./helpers/navigation');
 
 test.describe('geracao de escala', () => {
   test('gera escala com sucesso e exibe grade e historico', async ({ page }) => {
@@ -24,7 +25,7 @@ test.describe('geracao de escala', () => {
       })
     );
 
-    await page.goto('/');
+    await gotoChurchManager(page);
     await page.getByText('Igreja Escala').click();
     await page.getByRole('button', { name: /Gerar Escala/i }).click();
 

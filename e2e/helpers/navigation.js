@@ -1,24 +1,31 @@
 const { expect } = require('@playwright/test');
 
 async function gotoChurchManager(page) {
-  await page.goto('/');
-
-  await page.waitForFunction(() => {
-    const content = document.body?.innerText || '';
-    return (
-      content.includes('Gerenciamento de Igrejas') ||
-      content.includes('Sistema de Escala de Organistas')
-    );
-  }, { timeout: 15_000 });
-
+  const managerHeading = page.getByRole('heading', { name: 'Gerenciamento de Igrejas' });
+  const authHeading = page.getByRole('heading', { name: 'Sistema de Escala de Organistas' });
   const loginButton = page.getByRole('button', { name: 'Entrar em modo E2E' });
-  if (await loginButton.isVisible().catch(() => false)) {
-    await loginButton.click();
+
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    if (await managerHeading.isVisible().catch(() => false)) {
+      return;
+    }
+
+    const authScreenVisible =
+      (await authHeading.isVisible().catch(() => false)) ||
+      (await loginButton.isVisible().catch(() => false));
+
+    if (authScreenVisible) {
+      await loginButton.click();
+      await expect(managerHeading).toBeVisible({ timeout: 10_000 });
+      return;
+    }
+
+    await page.waitForTimeout(250);
   }
 
-  await expect(
-    page.getByRole('heading', { name: 'Gerenciamento de Igrejas' })
-  ).toBeVisible({ timeout: 10_000 });
+  await expect(managerHeading).toBeVisible({ timeout: 10_000 });
 }
 
 async function openChurchDashboard(page, churchName) {
