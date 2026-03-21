@@ -31,13 +31,23 @@
     "test:e2e:report": "playwright show-report",
     "test:coverage": "react-scripts test --watchAll=false --coverage --runInBand",
     "test:coverage:critical": "react-scripts test --watchAll=false --coverage --runInBand --coverageReporters=text --coverageReporters=json-summary --collectCoverageFrom=src/utils/validation.js --collectCoverageFrom=src/utils/scheduleLogic.js --collectCoverageFrom=src/utils/dateUtils.js --collectCoverageFrom=src/hooks/useChurchDashboard.js && node scripts/check-critical-coverage.js",
-    "lint": "eslint --ext .js,.jsx src",
+    "lint": "eslint --ext .js,.jsx src e2e",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "e2e/**/*.js"
+        ],
+        "rules": {
+          "testing-library/prefer-screen-queries": "off"
+        }
+      }
     ]
   },
   "browserslist": {
