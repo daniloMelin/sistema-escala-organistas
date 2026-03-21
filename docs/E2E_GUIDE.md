@@ -12,6 +12,7 @@
 | 1.5    | 5 de março de 2026 | Danilo Melin | Consolidação da suíte com revisão de manutenção e recomendação de smoke para próximo ciclo          |
 | 1.6    | 21 de março de 2026 | Danilo Melin | Inclusão da referência ao subconjunto smoke definido no ciclo V7                                   |
 | 1.7    | 21 de março de 2026 | Danilo Melin | Inclusão do comando smoke e da integração automática no GitHub Actions                             |
+| 1.8    | 21 de março de 2026 | Danilo Melin | Ampliação do smoke para incluir o fluxo real de login E2E                                         |
 
 ## Objetivo
 
@@ -104,6 +105,13 @@ Helper inicial:
 Teste adicional de login controlado:
 
 - `e2e/e2e-login.spec.js`
+
+O subconjunto smoke atual cobre:
+
+- `e2e/auth-smoke.spec.js`
+- `e2e/e2e-login.spec.js`
+- `e2e/navigation-initial.spec.js`
+- `e2e/empty-states.spec.js`
 
 ## Estratégia de ambiente e dados
 

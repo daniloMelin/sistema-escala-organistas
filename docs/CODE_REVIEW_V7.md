@@ -9,6 +9,7 @@
 | 1.2    | 13 de março de 2026 | Danilo Melin | Implementação da Fase 1.2 com retry explícito após falha transitória no salvamento de organista |
 | 1.3    | 21 de março de 2026 | Danilo Melin | Implementação da Fase 2.1 com definição formal do subconjunto smoke e seus critérios de seleção |
 | 1.4    | 21 de março de 2026 | Danilo Melin | Implementação da Fase 2.2 com integração do subconjunto smoke ao GitHub Actions em PR |
+| 1.5    | 21 de março de 2026 | Danilo Melin | Ajuste do smoke para incluir o fluxo real de login E2E após revisão da PR |
 
 ## Objetivo
 

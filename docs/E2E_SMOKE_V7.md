@@ -6,6 +6,7 @@
 | ------ | ------------------ | ------------ | ---------------------------------------------------------------------- |
 | 1.0    | 21 de março de 2026 | Danilo Melin | Definição inicial do subconjunto smoke para pull requests no ciclo V7 |
 | 1.1    | 21 de março de 2026 | Danilo Melin | Integração do subconjunto smoke ao Playwright e ao GitHub Actions      |
+| 1.2    | 21 de março de 2026 | Danilo Melin | Inclusão do fluxo real de login E2E no subconjunto smoke              |
 
 ## Objetivo
 
@@ -37,7 +38,15 @@ Um cenário fica fora do smoke quando:
   - valida carregamento da tela inicial
   - detecta regressão estrutural do app antes de login
 
-### 2. Navegação inicial autenticada
+### 2. Transição real de autenticação
+
+- arquivo: `e2e/e2e-login.spec.js`
+- motivo:
+  - valida o fluxo `Entrar em modo E2E`
+  - protege a transição da tela pública para a área autenticada
+  - detecta regressão no caminho `Auth -> App`
+
+### 3. Navegação inicial autenticada
 
 - arquivo: `e2e/navigation-initial.spec.js`
 - cenários de maior valor:
@@ -46,7 +55,7 @@ Um cenário fica fora do smoke quando:
 - motivo:
   - cobre a espinha dorsal da navegação após autenticação
 
-### 3. Estados vazios principais
+### 4. Estados vazios principais
 
 - arquivo: `e2e/empty-states.spec.js`
 - motivo:
@@ -71,6 +80,7 @@ Motivo:
 No ciclo V7, a validação local foi feita com base na estabilidade comprovada desses cenários dentro da suíte E2E completa:
 
 - `e2e/auth-smoke.spec.js`
+- `e2e/e2e-login.spec.js`
 - `e2e/navigation-initial.spec.js`
 - `e2e/empty-states.spec.js`
 
@@ -98,5 +108,6 @@ Decisão do ciclo:
 ## Resultado Prático
 
 - toda PR passa a validar regressão estrutural básica
+- toda PR passa a validar também a transição real de entrada no sistema
 - o custo da automação permanece controlado
 - a suíte completa segue disponível para validações mais profundas
