@@ -10,6 +10,7 @@
 | 1.3 | 21 de março de 2026 | Danilo Melin | Fase 2.1 concluída |
 | 1.4 | 21 de março de 2026 | Danilo Melin | Fase 2.2 concluída |
 | 1.5 | 21 de março de 2026 | Danilo Melin | Fase 3.1 concluída |
+| 1.6 | 21 de março de 2026 | Danilo Melin | Fase 3.2 concluída |
 
 ## Objetivo
 
@@ -130,11 +131,15 @@ Os arquivos mais afetados são:
 
 #### 3.2 Validar baseline operacional do lint documental
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - reduzir o volume de erros de `lint:md` a um conjunto residual controlável
   - confirmar se a equipe já consegue usar `lint:md` no fluxo diário
+  - resultado alcançado:
+    - baseline operacional do `lint:md` registrada
+    - passivo residual isolado em poucos documentos
+    - uso do comando como diagnóstico local validado
 
 ### Fase 4 - Fechamento do Ciclo
 
@@ -164,7 +169,7 @@ Os arquivos mais afetados são:
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
 - [x] Fase 3.1 concluída
-- [ ] Fase 3.2 concluída
+- [x] Fase 3.2 concluída
 - [ ] Fase 4.1 concluída
 
 ## Critério de Conclusão do V8
