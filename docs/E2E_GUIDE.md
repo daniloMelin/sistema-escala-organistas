@@ -13,6 +13,7 @@
 | 1.6    | 21 de março de 2026 | Danilo Melin | Inclusão da referência ao subconjunto smoke definido no ciclo V7                                   |
 | 1.7    | 21 de março de 2026 | Danilo Melin | Inclusão do comando smoke e da integração automática no GitHub Actions                             |
 | 1.8    | 21 de março de 2026 | Danilo Melin | Ampliação do smoke para incluir o fluxo real de login E2E                                         |
+| 1.9    | 21 de março de 2026 | Danilo Melin | Ajuste do smoke para manter apenas fluxos mais determinísticos no CI                              |
 
 ## Objetivo
 
@@ -110,8 +111,8 @@ O subconjunto smoke atual cobre:
 
 - `e2e/auth-smoke.spec.js`
 - `e2e/e2e-login.spec.js`
-- `e2e/navigation-initial.spec.js`
-- `e2e/empty-states.spec.js`
+
+Os cenários seeded de navegação inicial e estados vazios permanecem na suíte E2E completa.
 
 ## Estratégia de ambiente e dados
 

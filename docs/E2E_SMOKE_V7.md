@@ -7,6 +7,7 @@
 | 1.0    | 21 de março de 2026 | Danilo Melin | Definição inicial do subconjunto smoke para pull requests no ciclo V7 |
 | 1.1    | 21 de março de 2026 | Danilo Melin | Integração do subconjunto smoke ao Playwright e ao GitHub Actions      |
 | 1.2    | 21 de março de 2026 | Danilo Melin | Inclusão do fluxo real de login E2E no subconjunto smoke              |
+| 1.3    | 21 de março de 2026 | Danilo Melin | Redução do smoke para fluxos mais determinísticos após estabilização no CI |
 
 ## Objetivo
 
@@ -46,27 +47,26 @@ Um cenário fica fora do smoke quando:
   - protege a transição da tela pública para a área autenticada
   - detecta regressão no caminho `Auth -> App`
 
-### 3. Navegação inicial autenticada
+## Ajuste de Estabilidade Aplicado no CI
 
-- arquivo: `e2e/navigation-initial.spec.js`
-- cenários de maior valor:
-  - carregamento da área principal
-  - navegação lista -> painel -> gerador -> painel -> lista
-- motivo:
-  - cobre a espinha dorsal da navegação após autenticação
+Após a primeira execução do smoke em PR, os cenários abaixo foram retirados do subconjunto automático:
 
-### 4. Estados vazios principais
+- `e2e/navigation-initial.spec.js`
+- `e2e/empty-states.spec.js`
 
-- arquivo: `e2e/empty-states.spec.js`
-- motivo:
-  - valida UX básica sem massa prévia de dados
-  - cobre telas propensas a regressão visual e de fluxo
+Motivo:
+
+- dependem de bootstrap autenticado seeded mais sensível ao CI
+- seguem valiosos, mas são mais adequados para a suíte completa
+- o smoke precisa priorizar determinismo acima de cobertura ampla
 
 ## Itens Explicitamente Fora do Smoke Inicial
 
 - exclusões de igreja e organista
 - validações negativas de formulário
 - falhas operacionais controladas
+- navegação seeded após autenticação
+- estados vazios seeded
 - geração, edição e exportação de escala
 
 Motivo:
@@ -81,8 +81,6 @@ No ciclo V7, a validação local foi feita com base na estabilidade comprovada d
 
 - `e2e/auth-smoke.spec.js`
 - `e2e/e2e-login.spec.js`
-- `e2e/navigation-initial.spec.js`
-- `e2e/empty-states.spec.js`
 
 Decisão do ciclo:
 
@@ -107,7 +105,7 @@ Decisão do ciclo:
 
 ## Resultado Prático
 
-- toda PR passa a validar regressão estrutural básica
-- toda PR passa a validar também a transição real de entrada no sistema
+- toda PR passa a validar regressão estrutural básica da tela pública
+- toda PR passa a validar a transição real de entrada no sistema
 - o custo da automação permanece controlado
 - a suíte completa segue disponível para validações mais profundas

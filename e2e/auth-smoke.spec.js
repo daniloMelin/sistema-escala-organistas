@@ -1,7 +1,8 @@
 const { test, expect } = require('@playwright/test');
+const { gotoAuthScreen } = require('./helpers/navigation');
 
 test('exibe a tela inicial de autenticacao', async ({ page }) => {
-  await page.goto('/');
+  await gotoAuthScreen(page);
 
   await expect(
     page.getByRole('heading', { name: 'Sistema de Escala de Organistas' })

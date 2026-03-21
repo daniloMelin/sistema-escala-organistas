@@ -10,6 +10,7 @@
 | 1.3    | 21 de março de 2026 | Danilo Melin | Implementação da Fase 2.1 com definição formal do subconjunto smoke e seus critérios de seleção |
 | 1.4    | 21 de março de 2026 | Danilo Melin | Implementação da Fase 2.2 com integração do subconjunto smoke ao GitHub Actions em PR |
 | 1.5    | 21 de março de 2026 | Danilo Melin | Ajuste do smoke para incluir o fluxo real de login E2E após revisão da PR |
+| 1.6    | 21 de março de 2026 | Danilo Melin | Refinamento do smoke para priorizar cenários determinísticos e manter seeded flows na suíte completa |
 
 ## Objetivo
 
