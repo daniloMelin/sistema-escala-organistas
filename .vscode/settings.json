@@ -6,8 +6,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "eslint.validate": [
     "javascript",
-    "javascriptreact",
-    "markdown"
+    "javascriptreact"
   ],
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -21,6 +20,8 @@
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "files.autoSave": "onFocusChange",
+  "files.autoSaveDelay": 500,
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
   "errorLens.enabled": true,
