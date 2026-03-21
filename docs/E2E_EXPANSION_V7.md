@@ -2,13 +2,17 @@
 
 ## Histórico de Revisões
 
-| Versão | Data | Autor(es) | Descrição da Revisão |
-| ------ | ---- | --------- | -------------------- |
-| 1.0 | 21 de março de 2026 | Danilo Melin | Avaliação entre segundo navegador no smoke e execução periódica dedicada durante a Fase 3.1 do V7 |
+### Versão 1.0
+
+- Data: `21 de março de 2026`
+- Autor(es): `Danilo Melin`
+- Descrição: Avaliação entre segundo navegador no smoke e execução periódica
+  dedicada durante a Fase 3.1 do V7.
 
 ## Objetivo
 
-Registrar a decisão do ciclo V7 para ampliar a confiança do CI sem degradar o fluxo principal das pull requests.
+Registrar a decisão do ciclo V7 para ampliar a confiança do CI sem
+degradar o fluxo principal das pull requests.
 
 ## Opções Avaliadas
 
@@ -31,7 +35,8 @@ Vantagens:
 
 - preserva PR leve e estável
 - amplia confiança com a suíte completa fora do caminho crítico
-- cria espaço para medir estabilidade antes de promover novos cenários ou navegadores no smoke
+- cria espaço para medir estabilidade antes de promover novos cenários
+  ou navegadores no smoke
 
 Desvantagens:
 
@@ -49,7 +54,8 @@ No ciclo atual, a decisão é:
 
 - o smoke acabou de ser estabilizado com dois fluxos mínimos de alto valor
 - aumentar navegador agora elevaria custo antes de consolidar a política atual
-- a suíte completa já possui cobertura funcional mais rica e se beneficia melhor de uma execução recorrente fora da PR
+- a suíte completa já possui cobertura funcional mais rica e se
+  beneficia melhor de uma execução recorrente fora da PR
 
 ## Implementação
 

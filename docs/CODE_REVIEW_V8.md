@@ -2,9 +2,16 @@
 
 ## Histórico de Revisões
 
-| Versão | Data               | Autor(es)    | Descrição da Revisão                                                                            |
-| ------ | ------------------ | ------------ | ----------------------------------------------------------------------------------------------- |
-| 1.0    | 21 de março de 2026 | Danilo Melin | Criação do Code Review V8 com foco em saneamento documental, aderência ao markdownlint e baseline de formatação |
+- Versão: `1.0`
+  - Data: `21 de março de 2026`
+  - Autor(es): `Danilo Melin`
+  - Descrição: Criação do Code Review V8 com foco em saneamento
+    documental, aderência ao markdownlint e baseline de formatação.
+- Versão: `1.1`
+  - Data: `21 de março de 2026`
+  - Autor(es): `Danilo Melin`
+  - Descrição: Conclusão da Fase 1.1 com normalização dos documentos
+    E2E e do review V7.
 
 ## Objetivo
 
@@ -14,7 +21,7 @@ mais sustentáveis para manutenção contínua.
 
 ## Status do Ciclo
 
-- Status geral: `PLANEJADO`
+- Status geral: `EM ANDAMENTO`
 - Data de início: `21 de março de 2026`
 - Contexto: continuidade direta do fechamento do `CODE_REVIEW_V7` e da fase de
   padronização de tooling/documentação
@@ -55,13 +62,17 @@ Os arquivos mais afetados são:
 
 #### 1.1 Normalizar documentos do fluxo E2E e dos reviews recentes
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - corrigir `CODE_REVIEW_V7`, `E2E_GUIDE`, `E2E_SMOKE_V7`,
     `E2E_CI_POLICY_V7` e `E2E_EXPANSION_V7`
   - reduzir `MD013` e inconsistências de tabelas
   - manter o conteúdo funcionalmente idêntico
+  - resultado alcançado:
+    - documentos-alvo limpos no `markdownlint`
+    - tabelas históricas convertidas para listas mais sustentáveis
+    - quebras de linha normalizadas sem alterar o conteúdo
 
 #### 1.2 Ajustar documentos institucionais de entrada
 
@@ -134,7 +145,7 @@ Os arquivos mais afetados são:
 
 ## Registro de progresso
 
-- [ ] Fase 1.1 concluída
+- [x] Fase 1.1 concluída
 - [ ] Fase 1.2 concluída
 - [ ] Fase 2.1 concluída
 - [ ] Fase 2.2 concluída

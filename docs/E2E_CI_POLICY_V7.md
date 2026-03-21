@@ -2,20 +2,28 @@
 
 ## Histórico de Revisões
 
-| Versão | Data | Autor(es) | Descrição da Revisão |
-| ------ | ---- | --------- | -------------------- |
-| 1.0 | 21 de março de 2026 | Danilo Melin | Consolidação da política de custo x valor da suíte E2E no CI durante o ciclo V7 |
+### Versão 1.0
+
+- Data: `21 de março de 2026`
+- Autor(es): `Danilo Melin`
+- Descrição: Consolidação da política de custo x valor da suíte E2E no CI
+  durante o ciclo V7.
 
 ## Objetivo
 
-Documentar como a suíte E2E deve ser distribuída entre smoke automático em PR, suíte completa sob gatilho controlado e possíveis execuções periódicas futuras.
+Documentar como a suíte E2E deve ser distribuída entre smoke automático
+em PR, suíte completa sob gatilho controlado e possíveis execuções
+periódicas futuras.
 
 ## Princípios de Decisão
 
 - cenários de PR devem priorizar sinal rápido e determinístico
-- cenários seeded ou com setup mais pesado continuam valiosos, mas não devem degradar o fluxo principal de revisão
-- o smoke deve proteger regressões estruturais de alto impacto com o menor custo operacional possível
-- a suíte completa continua sendo a camada de confiança mais profunda para fluxos críticos
+- cenários seeded ou com setup mais pesado continuam valiosos, mas não
+  devem degradar o fluxo principal de revisão
+- o smoke deve proteger regressões estruturais de alto impacto com o
+  menor custo operacional possível
+- a suíte completa continua sendo a camada de confiança mais profunda
+  para fluxos críticos
 
 ## Classificação Atual da Suíte
 
@@ -65,7 +73,8 @@ Motivo:
 
 - cobrem regras críticas do produto
 - seguem úteis para validação antes de merge sensível, refatoração ou entrega maior
-- ficam melhores sob execução seletiva/manual para evitar instabilidade desnecessária em toda PR
+- ficam melhores sob execução seletiva/manual para evitar instabilidade
+  desnecessária em toda PR
 
 ### Grupo 3. Candidatos a execução periódica futura
 
@@ -91,7 +100,8 @@ Motivo:
 ### Pull Request para `main`
 
 - executa `smoke` automaticamente
-- objetivo: detectar regressão estrutural cedo sem bloquear o fluxo com cenários mais caros
+- objetivo: detectar regressão estrutural cedo sem bloquear o fluxo com
+  cenários mais caros
 
 ### Workflow completo E2E
 
@@ -106,7 +116,8 @@ Reavaliar a distribuição da suíte quando ocorrer qualquer um dos eventos abai
 - aumento recorrente de flakiness no smoke
 - aumento relevante de tempo médio da PR
 - introdução de novo fluxo central de entrada ou navegação
-- amadurecimento dos seeded flows a ponto de se tornarem determinísticos em PR
+- amadurecimento dos seeded flows a ponto de se tornarem determinísticos
+  em PR
 
 ## Decisão do Ciclo V7
 
@@ -114,7 +125,8 @@ Ao final da Fase 3.2, a decisão é:
 
 - manter o smoke automático reduzido e estável
 - manter a suíte completa fora do caminho crítico da PR
-- usar a Fase 3.1 para decidir entre segundo navegador no smoke ou execução periódica dedicada
+- usar a Fase 3.1 para decidir entre segundo navegador no smoke ou
+  execução periódica dedicada
 
 ## Resultado Prático
 
