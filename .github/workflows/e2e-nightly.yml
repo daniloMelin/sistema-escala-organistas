@@ -1,17 +1,17 @@
-name: E2E Smoke
+name: E2E Nightly
 
 on:
-  pull_request:
-    branches: [ main ]
-    types: [opened, synchronize, reopened, ready_for_review]
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  e2e-smoke:
+  e2e-nightly:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
 
     steps:
       - uses: actions/checkout@v4
@@ -28,21 +28,21 @@ jobs:
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
 
-      - name: Run E2E smoke suite
-        run: npm run test:e2e:smoke
+      - name: Run full E2E suite
+        run: npm run test:e2e
 
-      - name: Upload Playwright smoke report
+      - name: Upload Playwright report
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-smoke-report
+          name: playwright-nightly-report
           path: playwright-report
           if-no-files-found: ignore
 
-      - name: Upload Playwright smoke test results
+      - name: Upload Playwright test results
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-smoke-test-results
+          name: playwright-nightly-test-results
           path: test-results
           if-no-files-found: ignore

@@ -14,6 +14,9 @@
 | 1.7    | 21 de março de 2026 | Danilo Melin | Inclusão do comando smoke e da integração automática no GitHub Actions                             |
 | 1.8    | 21 de março de 2026 | Danilo Melin | Ampliação do smoke para incluir o fluxo real de login E2E                                         |
 | 1.9    | 21 de março de 2026 | Danilo Melin | Ajuste do smoke para manter apenas fluxos mais determinísticos no CI                              |
+| 2.0    | 21 de março de 2026 | Danilo Melin | Inclusão da política de custo x valor da suíte E2E no CI                                         |
+| 2.1    | 21 de março de 2026 | Danilo Melin | Registro da decisão de expansão com execução periódica dedicada no ciclo V7                      |
+| 2.2    | 21 de março de 2026 | Danilo Melin | Fechamento operacional do ciclo V7 com consolidação do fluxo smoke, completo e nightly           |
 
 ## Objetivo
 
@@ -122,12 +125,20 @@ Documento complementar:
 - `docs/E2E_COVERAGE_V5.md`
 - `docs/E2E_CONSOLIDATION_V6.md`
 - `docs/E2E_SMOKE_V7.md`
+- `docs/E2E_CI_POLICY_V7.md`
+- `docs/E2E_EXPANSION_V7.md`
+
+## Estado Operacional Atual
+
+1. `Smoke` roda automaticamente em toda PR para `main`.
+2. `Suíte completa` continua disponível por workflow manual e por label controlada.
+3. `Nightly` executa a suíte completa diariamente em `Chromium`.
 
 ## Próximos passos
 
-1. Integrar o subconjunto smoke ao CI de PR.
-2. Revisar periodicamente o conjunto de smoke conforme crescimento da suíte.
-3. Reavaliar execução em navegador adicional quando custo de CI permitir.
+1. Revisar periodicamente o conjunto de smoke conforme crescimento da suíte.
+2. Acompanhar a estabilidade do `E2E Nightly` antes de promover novos cenários para caminhos automáticos.
+3. Reavaliar execução em navegador adicional apenas quando houver evidência de maturidade suficiente.
 
 ## Execução no GitHub Actions
 
@@ -138,6 +149,10 @@ O projeto possui um workflow E2E dedicado:
 O projeto também possui um workflow smoke para PR:
 
 - arquivo: `.github/workflows/e2e-smoke.yml`
+
+O projeto também possui um workflow periódico da suíte completa:
+
+- arquivo: `.github/workflows/e2e-nightly.yml`
 
 ### Como disparar no CI
 
@@ -154,11 +169,21 @@ Smoke automático em PR:
 - executado automaticamente em toda PR para `main`
 - roda o comando `npm run test:e2e:smoke`
 
+Execução periódica dedicada:
+
+- executada diariamente no workflow `E2E Nightly`
+- também pode ser disparada manualmente
+
 ### Motivo do gatilho controlado
 
 - evitar bloquear toda PR desde o início do ciclo
 - permitir uso seletivo enquanto a suíte E2E amadurece
 - manter o pipeline principal leve
+
+Documento complementar da política atual:
+
+- `docs/E2E_CI_POLICY_V7.md`
+- `docs/E2E_EXPANSION_V7.md`
 
 ### Evidências geradas
 
