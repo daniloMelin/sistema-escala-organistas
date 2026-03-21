@@ -9,6 +9,7 @@
 | 1.2 | 21 de março de 2026 | Danilo Melin | Fase 1.2 concluída |
 | 1.3 | 21 de março de 2026 | Danilo Melin | Fase 2.1 concluída |
 | 1.4 | 21 de março de 2026 | Danilo Melin | Fase 2.2 concluída |
+| 1.5 | 21 de março de 2026 | Danilo Melin | Fase 3.1 concluída |
 
 ## Objetivo
 
@@ -116,12 +117,16 @@ Os arquivos mais afetados são:
 
 #### 3.1 Definir recorte seguro para `format:check`
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - decidir se o repositório deve caminhar para formatação completa ou gradual
   - documentar o recorte inicial seguro
   - evitar PRs gigantes só de estilo
+  - resultado alcançado:
+    - baseline atual do `format:check` registrada
+    - estratégia gradual documentada
+    - gate global adiado até redução do passivo
 
 #### 3.2 Validar baseline operacional do lint documental
 
@@ -158,7 +163,7 @@ Os arquivos mais afetados são:
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
-- [ ] Fase 3.1 concluída
+- [x] Fase 3.1 concluída
 - [ ] Fase 3.2 concluída
 - [ ] Fase 4.1 concluída
 
