@@ -32,6 +32,9 @@
     "test:coverage": "react-scripts test --watchAll=false --coverage --runInBand",
     "test:coverage:critical": "react-scripts test --watchAll=false --coverage --runInBand --coverageReporters=text --coverageReporters=json-summary --collectCoverageFrom=src/utils/validation.js --collectCoverageFrom=src/utils/scheduleLogic.js --collectCoverageFrom=src/utils/dateUtils.js --collectCoverageFrom=src/hooks/useChurchDashboard.js && node scripts/check-critical-coverage.js",
     "lint": "eslint --ext .js,.jsx src e2e",
+    "lint:md": "markdownlint \"**/*.md\" --ignore node_modules --ignore build --ignore coverage",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -68,6 +71,8 @@
     "@types/node": "^24.0.10",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "markdownlint-cli": "^0.48.0",
+    "prettier": "^3.8.1",
     "typescript": "^4.9.5"
   }
 }
