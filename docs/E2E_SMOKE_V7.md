@@ -5,6 +5,7 @@
 | Versão | Data               | Autor(es)    | Descrição da Revisão                                                   |
 | ------ | ------------------ | ------------ | ---------------------------------------------------------------------- |
 | 1.0    | 21 de março de 2026 | Danilo Melin | Definição inicial do subconjunto smoke para pull requests no ciclo V7 |
+| 1.1    | 21 de março de 2026 | Danilo Melin | Integração do subconjunto smoke ao Playwright e ao GitHub Actions      |
 
 ## Objetivo
 
@@ -78,8 +79,24 @@ Decisão do ciclo:
 - a definição do subconjunto fica concluída nesta fase
 - a execução dedicada do smoke e sua integração ao CI entram na Fase 2.2
 
-## Resultado Esperado para a Fase 2.2
+## Integração Implementada na Fase 2.2
 
-- criar comando dedicado do smoke
-- integrar smoke automático em PR
-- manter a suíte completa via gatilho controlado
+- comando dedicado:
+  - `npm run test:e2e:smoke`
+- configuração dedicada:
+  - `playwright.smoke.config.js`
+- workflow automático em PR:
+  - `.github/workflows/e2e-smoke.yml`
+
+## Política Atual de Execução
+
+- smoke:
+  - executa automaticamente em toda PR para `main`
+- suíte completa:
+  - continua sob workflow dedicado e gatilho controlado por label/manual
+
+## Resultado Prático
+
+- toda PR passa a validar regressão estrutural básica
+- o custo da automação permanece controlado
+- a suíte completa segue disponível para validações mais profundas

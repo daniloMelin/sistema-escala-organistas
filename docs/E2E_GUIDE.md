@@ -11,6 +11,7 @@
 | 1.4    | 3 de março de 2026 | Danilo Melin | Referência da cobertura atual da suíte E2E e encaminhamento das lacunas remanescentes             |
 | 1.5    | 5 de março de 2026 | Danilo Melin | Consolidação da suíte com revisão de manutenção e recomendação de smoke para próximo ciclo          |
 | 1.6    | 21 de março de 2026 | Danilo Melin | Inclusão da referência ao subconjunto smoke definido no ciclo V7                                   |
+| 1.7    | 21 de março de 2026 | Danilo Melin | Inclusão do comando smoke e da integração automática no GitHub Actions                             |
 
 ## Objetivo
 
@@ -26,6 +27,7 @@ Documentar a base inicial de testes ponta a ponta do projeto.
 
 ```bash
 npm run test:e2e
+npm run test:e2e:smoke
 npm run test:e2e:ui
 npm run test:e2e:headed
 npm run test:e2e:report
@@ -48,6 +50,12 @@ Execução padrão:
 
 ```bash
 npm run test:e2e
+```
+
+Execução do subconjunto smoke:
+
+```bash
+npm run test:e2e:smoke
 ```
 
 Modo interativo do Playwright:
@@ -118,6 +126,10 @@ O projeto possui um workflow E2E dedicado:
 
 - arquivo: `.github/workflows/e2e.yml`
 
+O projeto também possui um workflow smoke para PR:
+
+- arquivo: `.github/workflows/e2e-smoke.yml`
+
 ### Como disparar no CI
 
 Opção 1. Execução manual:
@@ -127,6 +139,11 @@ Opção 1. Execução manual:
 Opção 2. Pull request com gatilho controlado:
 
 - adicionar a label `run-e2e` na PR
+
+Smoke automático em PR:
+
+- executado automaticamente em toda PR para `main`
+- roda o comando `npm run test:e2e:smoke`
 
 ### Motivo do gatilho controlado
 
@@ -140,3 +157,5 @@ O workflow publica artefatos quando executado:
 
 - `playwright-report`
 - `playwright-test-results`
+- `playwright-smoke-report`
+- `playwright-smoke-test-results`

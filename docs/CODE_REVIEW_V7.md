@@ -8,6 +8,7 @@
 | 1.1    | 13 de março de 2026 | Danilo Melin | Implementação da Fase 1.1 com retry explícito após falha transitória no carregamento de igrejas |
 | 1.2    | 13 de março de 2026 | Danilo Melin | Implementação da Fase 1.2 com retry explícito após falha transitória no salvamento de organista |
 | 1.3    | 21 de março de 2026 | Danilo Melin | Implementação da Fase 2.1 com definição formal do subconjunto smoke e seus critérios de seleção |
+| 1.4    | 21 de março de 2026 | Danilo Melin | Implementação da Fase 2.2 com integração do subconjunto smoke ao GitHub Actions em PR |
 
 ## Objetivo
 
@@ -63,7 +64,7 @@ Evoluir a suíte E2E do projeto para um estágio mais confiável em recuperaçã
 
 #### 2.2 Integrar smoke ao GitHub Actions para toda PR
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - criar workflow dedicado e leve
@@ -103,17 +104,16 @@ Evoluir a suíte E2E do projeto para um estágio mais confiável em recuperaçã
 
 ## Ordem de execução recomendada
 
-1. **Fase 2.2 - Integrar smoke ao CI**
-2. **Fase 3.2 - Revisar custo x valor da suíte**
-3. **Fase 3.1 - Avaliar segundo navegador**
-4. **Fase 4.1 - Fechamento do ciclo**
+1. **Fase 3.2 - Revisar custo x valor da suíte**
+2. **Fase 3.1 - Avaliar segundo navegador**
+3. **Fase 4.1 - Fechamento do ciclo**
 
 ## Registro de progresso
 
 - [x] Fase 1.1 concluída
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
-- [ ] Fase 2.2 concluída
+- [x] Fase 2.2 concluída
 - [ ] Fase 3.1 concluída
 - [ ] Fase 3.2 concluída
 - [ ] Fase 4.1 concluída
