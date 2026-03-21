@@ -15,6 +15,7 @@
 | 1.8    | 21 de março de 2026 | Danilo Melin | Ampliação do smoke para incluir o fluxo real de login E2E                                         |
 | 1.9    | 21 de março de 2026 | Danilo Melin | Ajuste do smoke para manter apenas fluxos mais determinísticos no CI                              |
 | 2.0    | 21 de março de 2026 | Danilo Melin | Inclusão da política de custo x valor da suíte E2E no CI                                         |
+| 2.1    | 21 de março de 2026 | Danilo Melin | Registro da decisão de expansão com execução periódica dedicada no ciclo V7                      |
 
 ## Objetivo
 
@@ -124,6 +125,7 @@ Documento complementar:
 - `docs/E2E_CONSOLIDATION_V6.md`
 - `docs/E2E_SMOKE_V7.md`
 - `docs/E2E_CI_POLICY_V7.md`
+- `docs/E2E_EXPANSION_V7.md`
 
 ## Próximos passos
 
@@ -141,6 +143,10 @@ O projeto também possui um workflow smoke para PR:
 
 - arquivo: `.github/workflows/e2e-smoke.yml`
 
+O projeto também possui um workflow periódico da suíte completa:
+
+- arquivo: `.github/workflows/e2e-nightly.yml`
+
 ### Como disparar no CI
 
 Opção 1. Execução manual:
@@ -156,6 +162,11 @@ Smoke automático em PR:
 - executado automaticamente em toda PR para `main`
 - roda o comando `npm run test:e2e:smoke`
 
+Execução periódica dedicada:
+
+- executada diariamente no workflow `E2E Nightly`
+- também pode ser disparada manualmente
+
 ### Motivo do gatilho controlado
 
 - evitar bloquear toda PR desde o início do ciclo
@@ -165,6 +176,7 @@ Smoke automático em PR:
 Documento complementar da política atual:
 
 - `docs/E2E_CI_POLICY_V7.md`
+- `docs/E2E_EXPANSION_V7.md`
 
 ### Evidências geradas
 

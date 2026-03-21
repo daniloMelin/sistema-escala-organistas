@@ -12,6 +12,7 @@
 | 1.5    | 21 de março de 2026 | Danilo Melin | Ajuste do smoke para incluir o fluxo real de login E2E após revisão da PR |
 | 1.6    | 21 de março de 2026 | Danilo Melin | Refinamento do smoke para priorizar cenários determinísticos e manter seeded flows na suíte completa |
 | 1.7    | 21 de março de 2026 | Danilo Melin | Implementação da Fase 3.2 com política explícita de custo x valor da suíte E2E no CI |
+| 1.8    | 21 de março de 2026 | Danilo Melin | Implementação da Fase 3.1 com decisão por execução periódica dedicada em vez de segundo navegador no smoke |
 
 ## Objetivo
 
@@ -78,7 +79,7 @@ Evoluir a suíte E2E do projeto para um estágio mais confiável em recuperaçã
 
 #### 3.1 Avaliar segundo navegador para smoke ou execução periódica
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - medir custo adicional de execução
@@ -107,8 +108,7 @@ Evoluir a suíte E2E do projeto para um estágio mais confiável em recuperaçã
 
 ## Ordem de execução recomendada
 
-1. **Fase 3.1 - Avaliar segundo navegador**
-2. **Fase 4.1 - Fechamento do ciclo**
+1. **Fase 4.1 - Fechamento do ciclo**
 
 ## Registro de progresso
 
@@ -116,8 +116,8 @@ Evoluir a suíte E2E do projeto para um estágio mais confiável em recuperaçã
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
+- [x] Fase 3.1 concluída
 - [x] Fase 3.2 concluída
-- [ ] Fase 3.1 concluída
 - [ ] Fase 4.1 concluída
 
 ## Critério de Conclusão do V7
