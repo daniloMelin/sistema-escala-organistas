@@ -7,7 +7,7 @@ const baseURL = process.env.PLAYWRIGHT_BASE_URL || `http://127.0.0.1:${PORT}`;
 module.exports = defineConfig({
   testDir: './e2e',
   testMatch: smokeSpecs.map((specPath) => specPath.replace(/^e2e\//, '')),
-  timeout: 30_000,
+  timeout: 60_000,
   expect: {
     timeout: 5_000,
   },

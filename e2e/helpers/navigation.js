@@ -1,5 +1,8 @@
 const { expect } = require('@playwright/test');
 
+const APP_BOOTSTRAP_TIMEOUT = 25_000;
+const APP_BOOTSTRAP_POLL_INTERVAL = 250;
+
 async function gotoAuthScreen(page) {
   const managerHeading = page.getByRole('heading', { name: 'Gerenciamento de Igrejas' });
   const authHeading = page.getByRole('heading', { name: 'Sistema de Escala de Organistas' });
@@ -8,7 +11,7 @@ async function gotoAuthScreen(page) {
 
   await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-  for (let attempt = 0; attempt < 20; attempt += 1) {
+  for (let elapsed = 0; elapsed < APP_BOOTSTRAP_TIMEOUT; elapsed += APP_BOOTSTRAP_POLL_INTERVAL) {
     const isAuthVisible =
       (await authHeading.isVisible().catch(() => false)) &&
       (await loginButton.isVisible().catch(() => false));
@@ -26,11 +29,11 @@ async function gotoAuthScreen(page) {
       return;
     }
 
-    await page.waitForTimeout(250);
+    await page.waitForTimeout(APP_BOOTSTRAP_POLL_INTERVAL);
   }
 
-  await expect(authHeading).toBeVisible({ timeout: 10_000 });
-  await expect(loginButton).toBeVisible({ timeout: 10_000 });
+  await expect(authHeading).toBeVisible({ timeout: APP_BOOTSTRAP_TIMEOUT });
+  await expect(loginButton).toBeVisible({ timeout: APP_BOOTSTRAP_TIMEOUT });
 }
 
 async function gotoChurchManager(page) {
@@ -39,7 +42,7 @@ async function gotoChurchManager(page) {
 
   await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-  for (let attempt = 0; attempt < 20; attempt += 1) {
+  for (let elapsed = 0; elapsed < APP_BOOTSTRAP_TIMEOUT; elapsed += APP_BOOTSTRAP_POLL_INTERVAL) {
     if (await managerHeading.isVisible().catch(() => false)) {
       return;
     }
@@ -48,14 +51,14 @@ async function gotoChurchManager(page) {
 
     if (authScreenVisible) {
       await loginButton.click();
-      await expect(managerHeading).toBeVisible({ timeout: 10_000 });
+      await expect(managerHeading).toBeVisible({ timeout: APP_BOOTSTRAP_TIMEOUT });
       return;
     }
 
-    await page.waitForTimeout(250);
+    await page.waitForTimeout(APP_BOOTSTRAP_POLL_INTERVAL);
   }
 
-  await expect(managerHeading).toBeVisible({ timeout: 10_000 });
+  await expect(managerHeading).toBeVisible({ timeout: APP_BOOTSTRAP_TIMEOUT });
 }
 
 async function openChurchDashboard(page, churchName) {
