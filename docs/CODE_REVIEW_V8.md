@@ -2,33 +2,13 @@
 
 ## Histórico de Revisões
 
-- Versão: `1.0`
-  - Data: `21 de março de 2026`
-  - Autor(es): `Danilo Melin`
-  - Descrição: Criação do Code Review V8 com foco em saneamento
-    documental, aderência ao markdownlint e baseline de formatação.
-- Versão: `1.1`
-  - Data: `21 de março de 2026`
-  - Autor(es): `Danilo Melin`
-  - Descrição: Conclusão da Fase 1.1 com normalização dos documentos
-    E2E e do review V7.
-- Versão: `1.2`
-  - Data: `21 de março de 2026`
-  - Autor(es): `Danilo Melin`
-  - Descrição: Conclusão da Fase 1.2 com saneamento do `README.md`,
-    `CONTRIBUTING.md` e `CHANGELOG.md`.
-- Versão: `1.3`
-  - Data: `21 de março de 2026`
-  - Autor(es): `Danilo Melin`
-  - Descrição: Conclusão da Fase 2.1 com saneamento dos reviews
-    históricos `CODE_REVIEW.md`, `CODE_REVIEW_V2.md` e
-    `CODE_REVIEW_V3.md`.
-- Versão: `1.4`
-  - Data: `21 de março de 2026`
-  - Autor(es): `Danilo Melin`
-  - Descrição: Conclusão da Fase 2.2 com saneamento de
-    `FIRESTORE_SCHEMA.md`, `IMPLEMENTATION_GUIDE.md`,
-    `SCHEDULE_ALGORITHM.md` e `VITE_SPIKE_V4.md`.
+| Versão | Data | Autor(es) | Descrição da Revisão |
+| ------ | ---- | --------- | -------------------- |
+| 1.0 | 21 de março de 2026 | Danilo Melin | Criação do ciclo V8 |
+| 1.1 | 21 de março de 2026 | Danilo Melin | Fase 1.1 concluída |
+| 1.2 | 21 de março de 2026 | Danilo Melin | Fase 1.2 concluída |
+| 1.3 | 21 de março de 2026 | Danilo Melin | Fase 2.1 concluída |
+| 1.4 | 21 de março de 2026 | Danilo Melin | Fase 2.2 concluída |
 
 ## Objetivo
 

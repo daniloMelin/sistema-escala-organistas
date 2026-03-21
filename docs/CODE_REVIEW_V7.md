@@ -2,75 +2,18 @@
 
 ## Histórico de Revisões
 
-### Versão 1.0
-
-- Data: `13 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Criação do Code Review V7 com foco em recuperação após falhas,
-  smoke e evolução de CI.
-
-### Versão 1.1
-
-- Data: `13 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Implementação da Fase 1.1 com retry explícito após falha
-  transitória no carregamento de igrejas.
-
-### Versão 1.2
-
-- Data: `13 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Implementação da Fase 1.2 com retry explícito após falha
-  transitória no salvamento de organista.
-
-### Versão 1.3
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Implementação da Fase 2.1 com definição formal do subconjunto
-  smoke e seus critérios de seleção.
-
-### Versão 1.4
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Implementação da Fase 2.2 com integração do subconjunto smoke ao
-  GitHub Actions em PR.
-
-### Versão 1.5
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Ajuste do smoke para incluir o fluxo real de login E2E após
-  revisão da PR.
-
-### Versão 1.6
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Refinamento do smoke para priorizar cenários determinísticos e
-  manter seeded flows na suíte completa.
-
-### Versão 1.7
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Implementação da Fase 3.2 com política explícita de custo x valor
-  da suíte E2E no CI.
-
-### Versão 1.8
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Implementação da Fase 3.1 com decisão por execução periódica
-  dedicada em vez de segundo navegador no smoke.
-
-### Versão 1.9
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Fechamento formal do ciclo V7 com consolidação das decisões
-  operacionais do E2E.
+| Versão | Data | Autor(es) | Descrição da Revisão |
+| ------ | ---- | --------- | -------------------- |
+| 1.0 | 13 de março de 2026 | Danilo Melin | Criação do ciclo V7 |
+| 1.1 | 13 de março de 2026 | Danilo Melin | Fase 1.1 concluída |
+| 1.2 | 13 de março de 2026 | Danilo Melin | Fase 1.2 concluída |
+| 1.3 | 21 de março de 2026 | Danilo Melin | Fase 2.1 concluída |
+| 1.4 | 21 de março de 2026 | Danilo Melin | Fase 2.2 concluída |
+| 1.5 | 21 de março de 2026 | Danilo Melin | Ajuste do smoke |
+| 1.6 | 21 de março de 2026 | Danilo Melin | Refino do smoke |
+| 1.7 | 21 de março de 2026 | Danilo Melin | Fase 3.2 concluída |
+| 1.8 | 21 de março de 2026 | Danilo Melin | Fase 3.1 concluída |
+| 1.9 | 21 de março de 2026 | Danilo Melin | Fechamento do V7 |
 
 ## Objetivo
 

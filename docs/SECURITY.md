@@ -2,7 +2,8 @@
 
 ## Versões Suportadas
 
-Este projeto está em evolução contínua e, no momento, a versão suportada para correções de segurança é a versão ativa disponível no branch `main`.
+Este projeto está em evolução contínua e, no momento, a versão suportada para correções de segurança é a versão ativa
+disponível no branch `main`.
 
 | Versão             | Suporte |
 | ------------------ | ------- |

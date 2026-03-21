@@ -2,32 +2,12 @@
 
 ## Histórico de Revisões
 
-### Versão 1.0
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Definição inicial do subconjunto smoke para pull requests no
-  ciclo V7.
-
-### Versão 1.1
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Integração do subconjunto smoke ao Playwright e ao GitHub
-  Actions.
-
-### Versão 1.2
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Inclusão do fluxo real de login E2E no subconjunto smoke.
-
-### Versão 1.3
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Redução do smoke para fluxos mais determinísticos após
-  estabilização no CI.
+| Versão | Data | Autor(es) | Descrição da Revisão |
+| ------ | ---- | --------- | -------------------- |
+| 1.0 | 21 de março de 2026 | Danilo Melin | Definição do smoke |
+| 1.1 | 21 de março de 2026 | Danilo Melin | Smoke no Actions |
+| 1.2 | 21 de março de 2026 | Danilo Melin | Login E2E no smoke |
+| 1.3 | 21 de março de 2026 | Danilo Melin | Smoke reduzido |
 
 ## Objetivo
 

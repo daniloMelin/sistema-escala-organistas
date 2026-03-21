@@ -2,10 +2,9 @@
 
 ## Histórico de Revisões
 
-- Versão: `1.0`
-  - Data: `24 de fevereiro de 2026`
-  - Autor(es): `Danilo Melin`
-  - Descrição: Criação do contrato de schema para coleções principais.
+| Versão | Data | Autor(es) | Descrição da Revisão |
+| ------ | ---- | --------- | -------------------- |
+| 1.0 | 24 de fevereiro de 2026 | Danilo Melin | Criação do contrato |
 
 ## Objetivo
 

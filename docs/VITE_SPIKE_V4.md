@@ -2,11 +2,9 @@
 
 ## Histórico de Revisões
 
-- Versão: `1.0`
-  - Data: `25 de fevereiro de 2026`
-  - Autor(es): `Danilo Melin`
-  - Descrição: Criação do spike técnico da Fase 3.2 para avaliar
-    migração de CRA para Vite.
+| Versão | Data | Autor(es) | Descrição da Revisão |
+| ------ | ---- | --------- | -------------------- |
+| 1.0 | 25 de fevereiro de 2026 | Danilo Melin | Criação do spike |
 
 ## Objetivo
 

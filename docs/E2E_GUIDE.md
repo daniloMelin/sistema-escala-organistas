@@ -2,93 +2,21 @@
 
 ## Histórico de Revisões
 
-### Versão 1.0
-
-- Data: `1 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Criação do guia inicial de execução dos testes E2E com
-  Playwright.
-
-### Versão 1.1
-
-- Data: `2 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Atualização do guia com modo E2E controlado, autenticação local e
-  helper de sessão.
-
-### Versão 1.2
-
-- Data: `3 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Padronização dos comandos E2E e adoção de porta dedicada para
-  execução determinística.
-
-### Versão 1.3
-
-- Data: `3 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Documentação da execução E2E no GitHub Actions com gatilho
-  controlado por label e workflow manual.
-
-### Versão 1.4
-
-- Data: `3 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Referência da cobertura atual da suíte E2E e encaminhamento das
-  lacunas remanescentes.
-
-### Versão 1.5
-
-- Data: `5 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Consolidação da suíte com revisão de manutenção e recomendação de
-  smoke para próximo ciclo.
-
-### Versão 1.6
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Inclusão da referência ao subconjunto smoke definido no ciclo V7.
-
-### Versão 1.7
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Inclusão do comando smoke e da integração automática no GitHub
-  Actions.
-
-### Versão 1.8
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Ampliação do smoke para incluir o fluxo real de login E2E.
-
-### Versão 1.9
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Ajuste do smoke para manter apenas fluxos mais determinísticos no
-  CI.
-
-### Versão 2.0
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Inclusão da política de custo x valor da suíte E2E no CI.
-
-### Versão 2.1
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Registro da decisão de expansão com execução periódica dedicada no
-  ciclo V7.
-
-### Versão 2.2
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Fechamento operacional do ciclo V7 com consolidação do fluxo
-  smoke, completo e nightly.
+| Versão | Data | Autor(es) | Descrição da Revisão |
+| ------ | ---- | --------- | -------------------- |
+| 1.0 | 1 de março de 2026 | Danilo Melin | Criação do guia |
+| 1.1 | 2 de março de 2026 | Danilo Melin | Modo E2E controlado |
+| 1.2 | 3 de março de 2026 | Danilo Melin | Comandos E2E padronizados |
+| 1.3 | 3 de março de 2026 | Danilo Melin | E2E no GitHub Actions |
+| 1.4 | 3 de março de 2026 | Danilo Melin | Cobertura E2E referenciada |
+| 1.5 | 5 de março de 2026 | Danilo Melin | Consolidação da suíte |
+| 1.6 | 21 de março de 2026 | Danilo Melin | Referência ao smoke V7 |
+| 1.7 | 21 de março de 2026 | Danilo Melin | Comando smoke no CI |
+| 1.8 | 21 de março de 2026 | Danilo Melin | Login E2E no smoke |
+| 1.9 | 21 de março de 2026 | Danilo Melin | Smoke reduzido no CI |
+| 2.0 | 21 de março de 2026 | Danilo Melin | Política E2E no CI |
+| 2.1 | 21 de março de 2026 | Danilo Melin | Expansão periódica registrada |
+| 2.2 | 21 de março de 2026 | Danilo Melin | Fechamento operacional V7 |
 
 ## Objetivo
 

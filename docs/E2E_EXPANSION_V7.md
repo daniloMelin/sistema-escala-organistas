@@ -2,12 +2,9 @@
 
 ## Histórico de Revisões
 
-### Versão 1.0
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Avaliação entre segundo navegador no smoke e execução periódica
-  dedicada durante a Fase 3.1 do V7.
+| Versão | Data | Autor(es) | Descrição da Revisão |
+| ------ | ---- | --------- | -------------------- |
+| 1.0 | 21 de março de 2026 | Danilo Melin | Expansão de confiança V7 |
 
 ## Objetivo
 

@@ -2,12 +2,9 @@
 
 ## Histórico de Revisões
 
-### Versão 1.0
-
-- Data: `21 de março de 2026`
-- Autor(es): `Danilo Melin`
-- Descrição: Consolidação da política de custo x valor da suíte E2E no CI
-  durante o ciclo V7.
+| Versão | Data | Autor(es) | Descrição da Revisão |
+| ------ | ---- | --------- | -------------------- |
+| 1.0 | 21 de março de 2026 | Danilo Melin | Política de CI do V7 |
 
 ## Objetivo
 
