@@ -14,6 +14,7 @@
 | 1.7    | 21 de março de 2026 | Danilo Melin | Inclusão do comando smoke e da integração automática no GitHub Actions                             |
 | 1.8    | 21 de março de 2026 | Danilo Melin | Ampliação do smoke para incluir o fluxo real de login E2E                                         |
 | 1.9    | 21 de março de 2026 | Danilo Melin | Ajuste do smoke para manter apenas fluxos mais determinísticos no CI                              |
+| 2.0    | 21 de março de 2026 | Danilo Melin | Inclusão da política de custo x valor da suíte E2E no CI                                         |
 
 ## Objetivo
 
@@ -122,12 +123,13 @@ Documento complementar:
 - `docs/E2E_COVERAGE_V5.md`
 - `docs/E2E_CONSOLIDATION_V6.md`
 - `docs/E2E_SMOKE_V7.md`
+- `docs/E2E_CI_POLICY_V7.md`
 
 ## Próximos passos
 
-1. Integrar o subconjunto smoke ao CI de PR.
-2. Revisar periodicamente o conjunto de smoke conforme crescimento da suíte.
-3. Reavaliar execução em navegador adicional quando custo de CI permitir.
+1. Revisar periodicamente o conjunto de smoke conforme crescimento da suíte.
+2. Reavaliar execução em navegador adicional quando custo de CI permitir.
+3. Considerar execução periódica dedicada para cenários seeded de maior valor transversal.
 
 ## Execução no GitHub Actions
 
@@ -159,6 +161,10 @@ Smoke automático em PR:
 - evitar bloquear toda PR desde o início do ciclo
 - permitir uso seletivo enquanto a suíte E2E amadurece
 - manter o pipeline principal leve
+
+Documento complementar da política atual:
+
+- `docs/E2E_CI_POLICY_V7.md`
 
 ### Evidências geradas
 
