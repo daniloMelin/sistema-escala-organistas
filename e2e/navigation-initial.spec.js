@@ -44,8 +44,9 @@ test.describe('fluxo inicial de autenticacao e navegacao', () => {
   });
 
   test('encerra a sessao e retorna para a tela de autenticacao', async ({ page }) => {
-    await page.goto('/');
+    await gotoChurchManager(page);
 
+    await expect(page.getByRole('button', { name: 'Sair' })).toBeVisible();
     await page.getByRole('button', { name: 'Sair' }).click();
 
     await expect(

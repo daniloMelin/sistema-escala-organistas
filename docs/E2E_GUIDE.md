@@ -10,6 +10,10 @@
 | 1.3    | 3 de março de 2026 | Danilo Melin | Documentação da execução E2E no GitHub Actions com gatilho controlado por label e workflow manual |
 | 1.4    | 3 de março de 2026 | Danilo Melin | Referência da cobertura atual da suíte E2E e encaminhamento das lacunas remanescentes             |
 | 1.5    | 5 de março de 2026 | Danilo Melin | Consolidação da suíte com revisão de manutenção e recomendação de smoke para próximo ciclo          |
+| 1.6    | 21 de março de 2026 | Danilo Melin | Inclusão da referência ao subconjunto smoke definido no ciclo V7                                   |
+| 1.7    | 21 de março de 2026 | Danilo Melin | Inclusão do comando smoke e da integração automática no GitHub Actions                             |
+| 1.8    | 21 de março de 2026 | Danilo Melin | Ampliação do smoke para incluir o fluxo real de login E2E                                         |
+| 1.9    | 21 de março de 2026 | Danilo Melin | Ajuste do smoke para manter apenas fluxos mais determinísticos no CI                              |
 
 ## Objetivo
 
@@ -25,6 +29,7 @@ Documentar a base inicial de testes ponta a ponta do projeto.
 
 ```bash
 npm run test:e2e
+npm run test:e2e:smoke
 npm run test:e2e:ui
 npm run test:e2e:headed
 npm run test:e2e:report
@@ -47,6 +52,12 @@ Execução padrão:
 
 ```bash
 npm run test:e2e
+```
+
+Execução do subconjunto smoke:
+
+```bash
+npm run test:e2e:smoke
 ```
 
 Modo interativo do Playwright:
@@ -96,6 +107,13 @@ Teste adicional de login controlado:
 
 - `e2e/e2e-login.spec.js`
 
+O subconjunto smoke atual cobre:
+
+- `e2e/auth-smoke.spec.js`
+- `e2e/e2e-login.spec.js`
+
+Os cenários seeded de navegação inicial e estados vazios permanecem na suíte E2E completa.
+
 ## Estratégia de ambiente e dados
 
 Documento complementar:
@@ -103,11 +121,12 @@ Documento complementar:
 - `docs/E2E_STRATEGY.md`
 - `docs/E2E_COVERAGE_V5.md`
 - `docs/E2E_CONSOLIDATION_V6.md`
+- `docs/E2E_SMOKE_V7.md`
 
 ## Próximos passos
 
-1. Revisar periodicamente o conjunto de smoke conforme crescimento da suíte.
-2. Evoluir cobertura de fluxos com falhas operacionais mais complexas.
+1. Integrar o subconjunto smoke ao CI de PR.
+2. Revisar periodicamente o conjunto de smoke conforme crescimento da suíte.
 3. Reavaliar execução em navegador adicional quando custo de CI permitir.
 
 ## Execução no GitHub Actions
@@ -115,6 +134,10 @@ Documento complementar:
 O projeto possui um workflow E2E dedicado:
 
 - arquivo: `.github/workflows/e2e.yml`
+
+O projeto também possui um workflow smoke para PR:
+
+- arquivo: `.github/workflows/e2e-smoke.yml`
 
 ### Como disparar no CI
 
@@ -125,6 +148,11 @@ Opção 1. Execução manual:
 Opção 2. Pull request com gatilho controlado:
 
 - adicionar a label `run-e2e` na PR
+
+Smoke automático em PR:
+
+- executado automaticamente em toda PR para `main`
+- roda o comando `npm run test:e2e:smoke`
 
 ### Motivo do gatilho controlado
 
@@ -138,3 +166,5 @@ O workflow publica artefatos quando executado:
 
 - `playwright-report`
 - `playwright-test-results`
+- `playwright-smoke-report`
+- `playwright-smoke-test-results`

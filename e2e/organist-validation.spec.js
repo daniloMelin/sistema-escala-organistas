@@ -1,5 +1,6 @@
 const { test, expect } = require('@playwright/test');
 const { buildChurchDatabase, resetE2EState } = require('./helpers/session');
+const { gotoChurchManager } = require('./helpers/navigation');
 
 test.describe('validacoes negativas de organista', () => {
   test('bloqueia cadastro com nome invalido e nao persiste organista no painel', async ({ page }) => {
@@ -12,7 +13,7 @@ test.describe('validacoes negativas de organista', () => {
       })
     );
 
-    await page.goto('/');
+    await gotoChurchManager(page);
     await page.getByText('Igreja Validacao Organista').click();
 
     await expect(

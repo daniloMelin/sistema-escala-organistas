@@ -9,6 +9,8 @@ const E2E_TEST_USER = {
   email: 'e2e@example.com',
 };
 
+const { gotoAuthScreen } = require('./navigation');
+
 async function resetE2EState(page, database = { users: {} }, options = {}) {
   const failures = options.failures || {};
   await page.addInitScript(({ keys, user, db, failures }) => {
@@ -27,7 +29,7 @@ async function clearE2EState(page) {
 }
 
 async function loginAsE2EUser(page) {
-  await page.goto('/');
+  await gotoAuthScreen(page);
   await page.getByRole('button', { name: 'Entrar em modo E2E' }).click();
 }
 
