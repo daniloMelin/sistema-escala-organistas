@@ -8,6 +8,7 @@
 | 1.1    | 21 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
 | 1.2    | 21 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
 | 1.3    | 21 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
+| 1.4    | 21 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
 
 ## Objetivo
 
@@ -90,12 +91,16 @@ rotina explícita.
 
 #### 2.2 Avaliar automação local opcional
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - avaliar uso de `husky`/`lint-staged` ou alternativa equivalente
   - decidir se a automação entra agora ou fica registrada para depois
   - evitar sobrecarga desnecessária em commits pequenos
+  - resultado alcançado:
+    - automação local obrigatória adiada neste ciclo
+    - decisão registrada em `CONTRIBUTING.md`
+    - baseline operacional mantida em CI + rotina mínima local
 
 ### Fase 3 - Política de Manutenção
 
@@ -143,7 +148,7 @@ rotina explícita.
 - [x] Fase 1.1 concluída
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
-- [ ] Fase 2.2 pendente
+- [x] Fase 2.2 concluída
 - [ ] Fase 3.1 pendente
 - [ ] Fase 3.2 pendente
 - [ ] Fase 4.1 pendente

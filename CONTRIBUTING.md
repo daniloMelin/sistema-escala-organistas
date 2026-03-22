@@ -77,3 +77,18 @@ npm run test:e2e
 - Não abra PR com `format:check` ou `lint:md` quebrados.
 - Se a mudança mexer em workflow, documentação técnica ou comandos do
   projeto, trate a validação local como obrigatória.
+
+## 🔧 Automação Local
+
+Neste momento, o projeto **não adota `husky`/`lint-staged` como etapa
+obrigatória de commit**.
+
+Decisão atual:
+
+- manter a automação principal no CI
+- preservar o fluxo local leve para commits pequenos
+- usar a rotina mínima documentada acima como baseline operacional
+
+Essa decisão pode ser revista no futuro se o volume de contribuidores,
+o número de regressões de formatação ou o custo de revisão manual
+aumentarem.
