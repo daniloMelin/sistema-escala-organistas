@@ -9,6 +9,7 @@
 | 1.2    | 22 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
 | 1.3    | 22 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
 | 1.4    | 22 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
+| 1.5    | 22 de março de 2026 | Danilo Melin | Fase 3.1 concluída   |
 
 ## Objetivo
 
@@ -111,12 +112,16 @@ As oportunidades mais naturais neste momento são:
 
 #### 3.1 Revisar impacto da melhoria no uso real do sistema
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - confirmar o ganho prático do incremento funcional
   - revisar se o comportamento ficou claro para manutenção futura
   - registrar riscos remanescentes
+  - resultado alcançado:
+    - impacto funcional consolidado em documento próprio
+    - ganho operacional confirmado para leitura do histórico
+    - riscos remanescentes registrados para evolução futura
 
 #### 3.2 Consolidar cobertura e documentação do fluxo evoluído
 
@@ -153,7 +158,7 @@ As oportunidades mais naturais neste momento são:
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
-- [ ] Fase 3.1 pendente
+- [x] Fase 3.1 concluída
 - [ ] Fase 3.2 pendente
 - [ ] Fase 4.1 pendente
 
