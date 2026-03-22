@@ -4,10 +4,10 @@ import Button from './ui/Button';
 
 const formatSchedulePeriod = (schedule) => {
   const start = schedule.period?.start
-    ? new Date(`${schedule.period.start}T00:00:00`).toLocaleDateString()
+    ? new Date(`${schedule.period.start}T00:00:00`).toLocaleDateString('pt-BR')
     : 'N/A';
   const end = schedule.period?.end
-    ? new Date(`${schedule.period.end}T00:00:00`).toLocaleDateString()
+    ? new Date(`${schedule.period.end}T00:00:00`).toLocaleDateString('pt-BR')
     : 'N/A';
 
   return `${start} até ${end}`;
@@ -42,7 +42,7 @@ const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
               </div>
               <small className="history-item__date">
                 Atualizada em:{' '}
-                {sch.generatedAt ? new Date(sch.generatedAt).toLocaleString() : 'N/A'}
+                {sch.generatedAt ? new Date(sch.generatedAt).toLocaleString('pt-BR') : 'N/A'}
               </small>
               <p className="history-item__summary">
                 {getScheduleDaysLabel(sch)} • {getOrganistCountLabel(sch)}
