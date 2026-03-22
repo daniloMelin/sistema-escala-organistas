@@ -7,6 +7,7 @@
 | 1.0    | 21 de março de 2026 | Danilo Melin | Criação do ciclo V9  |
 | 1.1    | 21 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
 | 1.2    | 21 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
+| 1.3    | 21 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
 
 ## Objetivo
 
@@ -76,12 +77,16 @@ rotina explícita.
 
 #### 2.1 Definir rotina local mínima para contributors
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - documentar sequência local recomendada antes de PR
   - alinhar `lint`, `format:check` e `lint:md`
   - reduzir dependência de memória individual
+  - resultado alcançado:
+    - rotina mínima registrada no `CONTRIBUTING.md`
+    - ordem recomendada de validação local explicitada
+    - critérios objetivos definidos para quando rodar testes adicionais
 
 #### 2.2 Avaliar automação local opcional
 
@@ -137,7 +142,7 @@ rotina explícita.
 
 - [x] Fase 1.1 concluída
 - [x] Fase 1.2 concluída
-- [ ] Fase 2.1 pendente
+- [x] Fase 2.1 concluída
 - [ ] Fase 2.2 pendente
 - [ ] Fase 3.1 pendente
 - [ ] Fase 3.2 pendente

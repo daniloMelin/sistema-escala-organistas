@@ -41,3 +41,39 @@ git commit -m "feat: ✨ Adiciona login com Google"
 git commit -m "fix: 🐛 Corrige cálculo de distribuição de organistas"
 git commit -m "docs: 📚 Atualiza o Guia de Contribuição"
 ```
+
+## ✅ Rotina Local Mínima Antes de Abrir PR
+
+Antes de abrir uma PR, siga esta sequência mínima local:
+
+```bash
+npm run format:check
+npm run lint:md
+npm run lint
+```
+
+Se a alteração afetar comportamento da aplicação, execute também:
+
+```bash
+npm test -- --watchAll=false --runInBand
+```
+
+Se a alteração afetar a suíte E2E, o fluxo de autenticação ou o CI de
+testes ponta a ponta, execute também:
+
+```bash
+npm run test:e2e
+```
+
+### Ordem recomendada
+
+1. Corrija primeiro problemas de formatação com `Prettier`.
+2. Em seguida, resolva problemas de Markdown com `lint:md`.
+3. Depois, valide `lint` e os testes realmente impactados pela mudança.
+
+### Regra prática
+
+- Não rode a suíte completa sem necessidade se a alteração for apenas documental.
+- Não abra PR com `format:check` ou `lint:md` quebrados.
+- Se a mudança mexer em workflow, documentação técnica ou comandos do
+  projeto, trate a validação local como obrigatória.
