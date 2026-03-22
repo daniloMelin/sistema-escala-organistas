@@ -47,7 +47,9 @@ test.describe('edicao manual e exportacao da escala', () => {
 
     await expect(page.getByText('Alterações salvas com sucesso!')).toBeVisible();
     await expect(page.getByText('Visualização da Escala')).toBeVisible();
-    await expect(page.locator('.schedule-card__name').filter({ hasText: replacementName }).first()).toBeVisible();
+    await expect(
+      page.locator('.schedule-card__name').filter({ hasText: replacementName }).first()
+    ).toBeVisible();
 
     const downloadPromise = page.waitForEvent('download');
     await page.getByRole('button', { name: /Baixar PDF/i }).click();

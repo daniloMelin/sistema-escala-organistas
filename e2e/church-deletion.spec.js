@@ -3,7 +3,9 @@ const { buildChurchesDatabase, resetE2EState } = require('./helpers/session');
 const { gotoChurchManager, openChurchDashboard } = require('./helpers/navigation');
 
 test.describe('exclusao de igreja', () => {
-  test('confirma a exclusao, remove a igreja da lista e preserva a navegacao com as demais', async ({ page }) => {
+  test('confirma a exclusao, remove a igreja da lista e preserva a navegacao com as demais', async ({
+    page,
+  }) => {
     await resetE2EState(
       page,
       buildChurchesDatabase([
@@ -44,7 +46,9 @@ test.describe('exclusao de igreja', () => {
       page.getByText('Tem certeza que deseja excluir a igreja "Jardim da Granja"?')
     ).toBeVisible();
     await expect(
-      page.getByText('ATENÇÃO: Todas as organistas e escalas desta igreja serão perdidas para sempre.')
+      page.getByText(
+        'ATENÇÃO: Todas as organistas e escalas desta igreja serão perdidas para sempre.'
+      )
     ).toBeVisible();
 
     await page.getByRole('button', { name: 'Excluir' }).last().click();

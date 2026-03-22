@@ -3,7 +3,8 @@ const { buildChurchDatabase, resetE2EState } = require('./helpers/session');
 const { gotoChurchManager, openChurchDashboard } = require('./helpers/navigation');
 
 test.describe('falhas operacionais controladas', () => {
-  const loadErrorAlert = (page) => page.locator('.alert--danger').getByText('Falha ao carregar as igrejas.');
+  const loadErrorAlert = (page) =>
+    page.locator('.alert--danger').getByText('Falha ao carregar as igrejas.');
 
   test('exibe fallback de erro quando falha o carregamento de igrejas', async ({ page }) => {
     await resetE2EState(
@@ -72,7 +73,9 @@ test.describe('falhas operacionais controladas', () => {
     await expect(page.getByText('Marina', { exact: true })).toHaveCount(0);
   });
 
-  test('permite salvar organista apos nova tentativa quando a falha eh transitória', async ({ page }) => {
+  test('permite salvar organista apos nova tentativa quando a falha eh transitória', async ({
+    page,
+  }) => {
     await resetE2EState(
       page,
       buildChurchDatabase({

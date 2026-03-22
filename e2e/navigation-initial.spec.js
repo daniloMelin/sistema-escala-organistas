@@ -27,20 +27,14 @@ test.describe('fluxo inicial de autenticacao e navegacao', () => {
     await expect(page.getByText('Navegacao Central')).toBeVisible();
 
     await page.getByRole('button', { name: /Gerar Escala/i }).click();
-    await expect(
-      page.getByRole('heading', { name: /Gerador de Escala:/i })
-    ).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Gerador de Escala:/i })).toBeVisible();
     await expect(page.getByText('Navegacao Central')).toBeVisible();
 
     await page.getByRole('button', { name: /Voltar para Painel/i }).click();
-    await expect(
-      page.getByRole('heading', { name: 'Painel de Gerenciamento' })
-    ).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Painel de Gerenciamento' })).toBeVisible();
 
     await page.getByRole('button', { name: /Voltar para Igrejas/i }).click();
-    await expect(
-      page.getByRole('heading', { name: 'Gerenciamento de Igrejas' })
-    ).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Gerenciamento de Igrejas' })).toBeVisible();
   });
 
   test('encerra a sessao e retorna para a tela de autenticacao', async ({ page }) => {
@@ -52,8 +46,6 @@ test.describe('fluxo inicial de autenticacao e navegacao', () => {
     await expect(
       page.getByRole('heading', { name: 'Sistema de Escala de Organistas' })
     ).toBeVisible();
-    await expect(
-      page.getByRole('button', { name: 'Entrar em modo E2E' })
-    ).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Entrar em modo E2E' })).toBeVisible();
   });
 });
