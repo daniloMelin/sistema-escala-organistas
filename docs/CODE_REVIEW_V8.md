@@ -11,6 +11,7 @@
 | 1.4 | 21 de março de 2026 | Danilo Melin | Fase 2.2 concluída |
 | 1.5 | 21 de março de 2026 | Danilo Melin | Fase 3.1 concluída |
 | 1.6 | 21 de março de 2026 | Danilo Melin | Fase 3.2 concluída |
+| 1.7 | 21 de março de 2026 | Danilo Melin | Fase 4.1 concluída |
 
 ## Objetivo
 
@@ -20,8 +21,9 @@ mais sustentáveis para manutenção contínua.
 
 ## Status do Ciclo
 
-- Status geral: `EM ANDAMENTO`
+- Status geral: `CONCLUÍDO`
 - Data de início: `21 de março de 2026`
+- Data de encerramento: `21 de março de 2026`
 - Contexto: continuidade direta do fechamento do `CODE_REVIEW_V7` e da fase de
   padronização de tooling/documentação
 
@@ -70,7 +72,7 @@ Os arquivos mais afetados são:
   - manter o conteúdo funcionalmente idêntico
   - resultado alcançado:
     - documentos-alvo limpos no `markdownlint`
-    - tabelas históricas convertidas para listas mais sustentáveis
+    - tabelas históricas normalizadas
     - quebras de linha normalizadas sem alterar o conteúdo
 
 #### 1.2 Ajustar documentos institucionais de entrada
@@ -98,7 +100,7 @@ Os arquivos mais afetados são:
   - normalizar listas e tabelas
   - resultado alcançado:
     - documentos-alvo limpos no `markdownlint`
-    - históricos convertidos para listas
+    - históricos padronizados em tabela curta
     - tabelas de métricas convertidas para blocos mais sustentáveis
 
 #### 2.2 Sanear documentos técnicos extensos
@@ -111,7 +113,7 @@ Os arquivos mais afetados são:
   - revisar listas, blocos e largura de linha
   - resultado alcançado:
     - documentos-alvo limpos no `markdownlint`
-    - históricos convertidos para listas
+    - históricos padronizados em tabela curta
     - listas e blocos normalizados com foco em legibilidade
 
 ### Fase 3 - Baseline de Formatação do Repositório
@@ -145,12 +147,16 @@ Os arquivos mais afetados são:
 
 #### 4.1 Consolidar padrão documental do repositório
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - registrar a baseline alcançada
   - documentar critérios de continuidade
   - fechar formalmente o `CODE_REVIEW_V8`
+  - resultado alcançado:
+    - baseline documental consolidada
+    - passivo residual isolado em poucos arquivos
+    - fechamento formal do ciclo registrado
 
 ## Ordem de execução recomendada
 
@@ -170,10 +176,55 @@ Os arquivos mais afetados são:
 - [x] Fase 2.2 concluída
 - [x] Fase 3.1 concluída
 - [x] Fase 3.2 concluída
-- [ ] Fase 4.1 concluída
+- [x] Fase 4.1 concluída
 
 ## Critério de Conclusão do V8
 
 - documentos mais ativos sem passivo crítico de Markdown
 - baseline documental suficientemente limpa para uso real de `lint:md`
 - padrão de manutenção futura documentado
+
+## Resumo Executivo
+
+O ciclo V8 reorganizou a base documental do repositório e transformou o
+lint de Markdown em um diagnóstico utilizável de verdade.
+
+Principais resultados:
+
+- documentos ativos e técnicos normalizados
+- históricos de revisão padronizados em tabela curta
+- baseline do `format:check` documentada
+- baseline do `lint:md` documentada
+- passivo residual reduzido a um conjunto pequeno e explícito
+
+## Impacto Prático no Projeto
+
+- a documentação principal do projeto ficou mais consistente
+- o time passa a ter critério claro para evolução de Markdown e
+  formatação
+- `lint:md` deixou de apontar um passivo difuso e passou a mostrar um
+  backlog residual controlável
+- novas entregas podem seguir um padrão documental já estabelecido
+
+## Artefatos Consolidados do Ciclo
+
+- `docs/CODE_REVIEW_V8.md`
+- `docs/PRETTIER_BASELINE_V8.md`
+- `docs/MARKDOWNLINT_BASELINE_V8.md`
+
+## Passivo Residual Mapeado
+
+- `docs/CODE_REVIEW_V4.md`
+- `docs/CODE_REVIEW_V5.md`
+- `docs/CODE_REVIEW_V6.md`
+- `docs/E2E_CONSOLIDATION_V6.md`
+- `docs/E2E_COVERAGE_V5.md`
+- `docs/E2E_STRATEGY.md`
+
+## Próximos Passos Recomendados
+
+1. Tratar o passivo residual do `markdownlint` em uma PR curta e
+   dirigida.
+2. Revisar depois o recorte seguro de `Prettier` por grupos lógicos,
+   sem aplicar `--write` no repositório inteiro.
+3. Manter o padrão de histórico em tabela curta nos próximos ciclos.
