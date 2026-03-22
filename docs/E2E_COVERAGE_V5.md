@@ -2,9 +2,9 @@
 
 ## Histórico de Revisões
 
-| Versão | Data | Autor(es) | Descrição da Revisão |
-| ------ | ---- | --------- | -------------------- |
-| 1.0 | 3 de março de 2026 | Danilo Melin | Cobertura consolidada |
+| Versão | Data               | Autor(es)    | Descrição da Revisão  |
+| ------ | ------------------ | ------------ | --------------------- |
+| 1.0    | 3 de março de 2026 | Danilo Melin | Cobertura consolidada |
 
 ## Objetivo
 

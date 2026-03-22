@@ -2,9 +2,9 @@
 
 ## Histórico de Revisões
 
-| Versão | Data | Autor(es) | Descrição da Revisão |
-| ------ | ---- | --------- | -------------------- |
-| 1.0 | 21 de março de 2026 | Danilo Melin | Documento legado padronizado |
+| Versão | Data                | Autor(es)    | Descrição da Revisão         |
+| ------ | ------------------- | ------------ | ---------------------------- |
+| 1.0    | 21 de março de 2026 | Danilo Melin | Documento legado padronizado |
 
 ## Status
 

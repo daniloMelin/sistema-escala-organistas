@@ -2,9 +2,9 @@
 
 ## Histórico de Revisões
 
-| Versão | Data | Autor(es) | Descrição da Revisão |
-| ------ | ---- | --------- | -------------------- |
-| 1.0 | 24 de fevereiro de 2026 | Danilo Melin | Criação inicial |
+| Versão | Data                    | Autor(es)    | Descrição da Revisão |
+| ------ | ----------------------- | ------------ | -------------------- |
+| 1.0    | 24 de fevereiro de 2026 | Danilo Melin | Criação inicial      |
 
 ## 📋 Resumo
 
@@ -75,7 +75,7 @@ organists: [
     // Opção 1: fixedDays (novo)
     fixedDays: [6], // Só sábados
     blockedDates: ["2024-12-25"], // Datas bloqueadas
-    
+
     // Opção 2: availability (compatibilidade com estrutura antiga)
     availability: {
       sunday_rjm: false,
@@ -100,16 +100,16 @@ churchConfig: {
 ```javascript
 [
   {
-    date: "01/01/2024",
-    dayName: "Segunda",
+    date: '01/01/2024',
+    dayName: 'Segunda',
     assignments: {
-      "MeiaHoraCulto": "Maria",
-      "Culto": "João",
-      "RJM": "Ana"
-    }
+      MeiaHoraCulto: 'Maria',
+      Culto: 'João',
+      RJM: 'Ana',
+    },
   },
   // ...
-]
+];
 ```
 
 ## 🔄 Compatibilidade
@@ -148,29 +148,24 @@ churchConfig: {
 ```javascript
 const organists = [
   {
-    id: "1",
-    name: "Maria",
+    id: '1',
+    name: 'Maria',
     fixedDays: [6], // Só sábados
-    blockedDates: ["2024-01-06"] // Bloqueia sábado 06/01
+    blockedDates: ['2024-01-06'], // Bloqueia sábado 06/01
   },
   {
-    id: "2",
-    name: "João",
+    id: '2',
+    name: 'João',
     availability: {
       sunday_culto: true,
       monday: true,
       tuesday: true,
       // ... flexível
-    }
-  }
+    },
+  },
 ];
 
-const schedule = generateSchedule(
-  organists,
-  "2024-01-01",
-  "2024-01-31",
-  churchConfig
-);
+const schedule = generateSchedule(organists, '2024-01-01', '2024-01-31', churchConfig);
 ```
 
 ## ⚠️ Notas Importantes

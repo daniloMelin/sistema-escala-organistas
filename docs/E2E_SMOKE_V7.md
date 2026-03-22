@@ -2,12 +2,12 @@
 
 ## Histórico de Revisões
 
-| Versão | Data | Autor(es) | Descrição da Revisão |
-| ------ | ---- | --------- | -------------------- |
-| 1.0 | 21 de março de 2026 | Danilo Melin | Definição do smoke |
-| 1.1 | 21 de março de 2026 | Danilo Melin | Smoke no Actions |
-| 1.2 | 21 de março de 2026 | Danilo Melin | Login E2E no smoke |
-| 1.3 | 21 de março de 2026 | Danilo Melin | Smoke reduzido |
+| Versão | Data                | Autor(es)    | Descrição da Revisão |
+| ------ | ------------------- | ------------ | -------------------- |
+| 1.0    | 21 de março de 2026 | Danilo Melin | Definição do smoke   |
+| 1.1    | 21 de março de 2026 | Danilo Melin | Smoke no Actions     |
+| 1.2    | 21 de março de 2026 | Danilo Melin | Login E2E no smoke   |
+| 1.3    | 21 de março de 2026 | Danilo Melin | Smoke reduzido       |
 
 ## Objetivo
 

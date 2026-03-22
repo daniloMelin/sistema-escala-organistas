@@ -31,8 +31,8 @@ Sistemas.
   - [🛠️ Tecnologias Utilizadas](#️-tecnologias-utilizadas)
   - [✅ Pré-requisitos para Rodar Localmente](#-pré-requisitos-para-rodar-localmente)
   - [🚀 Instalação e Configuração](#-instalação-e-configuração)
-  - [☁️ *Deploy*](#️-deploy)
-  - [🤝 *Como Contribuir*](#-como-contribuir)
+  - [☁️ _Deploy_](#️-deploy)
+  - [🤝 _Como Contribuir_](#-como-contribuir)
   - [📄 Licença](#-licença)
 
 ---
@@ -135,8 +135,8 @@ npm install
 - Crie um arquivo `src/firebaseConfig.js` na raiz da pasta `src`.
   Exemplo: `src/firebaseConfig.example.js`
 - Cole suas credenciais do Firebase (API Key, Auth Domain, Project ID, etc.).
-- *Nota: Este arquivo deve permanecer em `.gitignore` por segurança,
-  não o comite.*
+- _Nota: Este arquivo deve permanecer em `.gitignore` por segurança,
+  não o comite._
 
 **Rodar o Projeto:**
 
@@ -148,7 +148,7 @@ npm start
 
 ---
 
-## ☁️ *Deploy*
+## ☁️ _Deploy_
 
 O projeto está configurado para o **Firebase Hosting**.
 
@@ -166,11 +166,11 @@ Isso cria uma pasta `build` otimizada na raiz do projeto.
 firebase deploy --only hosting
 ```
 
-*Certifique-se de ter o `firebase-tools` instalado e estar logado (`firebase login`).*
+_Certifique-se de ter o `firebase-tools` instalado e estar logado (`firebase login`)._
 
 ---
 
-## 🤝 *Como Contribuir*
+## 🤝 _Como Contribuir_
 
 Este projeto segue padrões rigorosos de desenvolvimento:
 
@@ -198,5 +198,5 @@ para mais detalhes.
 
 ---
 
-*Desenvolvido por **Danilo Gianini Melin** como requisito parcial para
-obtenção de grau no curso de Análise e Desenvolvimento de Sistemas.*
+_Desenvolvido por **Danilo Gianini Melin** como requisito parcial para
+obtenção de grau no curso de Análise e Desenvolvimento de Sistemas._

@@ -2,9 +2,9 @@
 
 ## Histórico de Revisões
 
-| Versão | Data | Autor(es) | Descrição da Revisão |
-| ------ | ---- | --------- | -------------------- |
-| 1.0 | 5 de março de 2026 | Danilo Melin | Consolidação da suíte |
+| Versão | Data               | Autor(es)    | Descrição da Revisão  |
+| ------ | ------------------ | ------------ | --------------------- |
+| 1.0    | 5 de março de 2026 | Danilo Melin | Consolidação da suíte |
 
 ## Objetivo
 

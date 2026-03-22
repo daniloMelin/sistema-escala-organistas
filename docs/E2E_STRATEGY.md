@@ -2,11 +2,11 @@
 
 ## Histórico de Revisões
 
-| Versão | Data | Autor(es) | Descrição da Revisão |
-| ------ | ---- | --------- | -------------------- |
-| 1.0 | 2 de março de 2026 | Danilo Melin | Estratégia inicial |
-| 1.1 | 3 de março de 2026 | Danilo Melin | Porta dedicada |
-| 1.2 | 4 de março de 2026 | Danilo Melin | Falhas controladas |
+| Versão | Data               | Autor(es)    | Descrição da Revisão |
+| ------ | ------------------ | ------------ | -------------------- |
+| 1.0    | 2 de março de 2026 | Danilo Melin | Estratégia inicial   |
+| 1.1    | 3 de março de 2026 | Danilo Melin | Porta dedicada       |
+| 1.2    | 4 de março de 2026 | Danilo Melin | Falhas controladas   |
 
 ## Objetivo
 
