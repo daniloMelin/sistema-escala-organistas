@@ -6,6 +6,7 @@
 | ------ | ------------------- | ------------ | -------------------- |
 | 1.0    | 21 de março de 2026 | Danilo Melin | Criação do ciclo V9  |
 | 1.1    | 21 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
+| 1.2    | 21 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
 
 ## Objetivo
 
@@ -60,12 +61,16 @@ rotina explícita.
 
 #### 1.2 Integrar `lint:md` ao fluxo de CI principal
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - promover `lint:md` para gate leve de documentação
   - validar impacto em tempo e ruído
   - manter o check isolado e fácil de diagnosticar
+  - resultado alcançado:
+    - `lint:md` integrado ao workflow principal de CI
+    - validação documental promovida a gate leve em PR
+    - comentários automáticos do CI atualizados para refletir a nova etapa
 
 ### Fase 2 - Fluxo Local e Ergonomia
 
@@ -131,7 +136,7 @@ rotina explícita.
 ## Registro de progresso
 
 - [x] Fase 1.1 concluída
-- [ ] Fase 1.2 pendente
+- [x] Fase 1.2 concluída
 - [ ] Fase 2.1 pendente
 - [ ] Fase 2.2 pendente
 - [ ] Fase 3.1 pendente
