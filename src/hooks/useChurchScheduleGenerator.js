@@ -142,7 +142,7 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
     } catch (err) {
       if (!isMountedRef.current) return;
       logger.error('Erro ao gerar/salvar escala:', err);
-      setError('Não foi possível gerar e salvar a escala. Verifique as datas e tente novamente.');
+      setError('Não foi possível gerar ou salvar a escala. Tente novamente.');
     } finally {
       if (isMountedRef.current) setIsGenerating(false);
     }
