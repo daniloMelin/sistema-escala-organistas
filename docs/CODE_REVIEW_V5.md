@@ -2,23 +2,24 @@
 
 ## Histórico de Revisões
 
-| Versão | Data               | Autor(es)    | Descrição da Revisão                                                                         |
-| ------ | ------------------ | ------------ | -------------------------------------------------------------------------------------------- |
-| 1.0    | 1 de março de 2026 | Danilo Melin | Criação do Code Review V5 com foco em testes E2E e robustez dos fluxos principais            |
-| 1.1    | 1 de março de 2026 | Danilo Melin | Implementação da Fase 1.1 com adoção de Playwright, configuração inicial e documentação base |
-| 1.2    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 1.2 com estratégia local controlada de autenticação e dados para E2E   |
-| 1.3    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.1 com cenários E2E de autenticação e navegação inicial               |
-| 1.4    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.2 com cenários E2E de cadastro e edição de igreja                    |
-| 1.5    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.3 com cenários E2E de cadastro e edição de organista                 |
-| 1.6    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.4 com cenário E2E de geração de escala e validação do histórico      |
-| 1.7    | 2 de março de 2026 | Danilo Melin | Implementação da Fase 2.5 com cenário E2E de edição manual e exportação de PDF               |
-| 1.8    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 3.1 com padronização de comandos E2E e execução local determinística   |
-| 1.9    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 3.2 com workflow E2E dedicado no GitHub Actions e gatilho controlado   |
-| 1.10   | 3 de março de 2026 | Danilo Melin | Implementação da Fase 3.3 com revisão da cobertura funcional, lacunas remanescentes e fechamento do ciclo |
+| Versão | Data | Autor(es) | Descrição da Revisão |
+| ------ | ---- | --------- | -------------------- |
+| 1.0 | 1 de março de 2026 | Danilo Melin | Criação do ciclo V5 |
+| 1.1 | 1 de março de 2026 | Danilo Melin | Fase 1.1 concluída |
+| 1.2 | 2 de março de 2026 | Danilo Melin | Fase 1.2 concluída |
+| 1.3 | 2 de março de 2026 | Danilo Melin | Fase 2.1 concluída |
+| 1.4 | 2 de março de 2026 | Danilo Melin | Fase 2.2 concluída |
+| 1.5 | 2 de março de 2026 | Danilo Melin | Fase 2.3 concluída |
+| 1.6 | 2 de março de 2026 | Danilo Melin | Fase 2.4 concluída |
+| 1.7 | 2 de março de 2026 | Danilo Melin | Fase 2.5 concluída |
+| 1.8 | 3 de março de 2026 | Danilo Melin | Fase 3.1 concluída |
+| 1.9 | 3 de março de 2026 | Danilo Melin | Fase 3.2 concluída |
+| 1.10 | 3 de março de 2026 | Danilo Melin | Fechamento do V5 |
 
 ## Objetivo
 
-Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos fluxos principais e preparação do projeto para evolução segura.
+Elevar a confiabilidade do sistema com foco em validação ponta a ponta
+dos fluxos principais e preparação do projeto para evolução segura.
 
 ## Status do Ciclo
 
@@ -174,7 +175,10 @@ Elevar a confiabilidade do sistema com foco em validação ponta a ponta dos flu
 
 ### Resumo Executivo
 
-O V5 consolidou a primeira suíte E2E do projeto com `Playwright`, execução local reproduzível e integração controlada ao GitHub Actions. O ciclo reduziu o risco sobre os fluxos mais críticos sem ampliar desnecessariamente a complexidade operacional do pipeline.
+O V5 consolidou a primeira suíte E2E do projeto com `Playwright`,
+execução local reproduzível e integração controlada ao GitHub Actions.
+O ciclo reduziu o risco sobre os fluxos mais críticos sem ampliar
+desnecessariamente a complexidade operacional do pipeline.
 
 ### Evidências do Ciclo
 
@@ -186,4 +190,6 @@ O V5 consolidou a primeira suíte E2E do projeto com `Playwright`, execução lo
 
 ### Próximo Passo Recomendado
 
-O próximo ciclo deve priorizar cobertura de exclusões, cenários negativos e erros operacionais antes de expandir a suíte para navegadores adicionais ou tornar a execução obrigatória em toda PR.
+O próximo ciclo deve priorizar cobertura de exclusões, cenários
+negativos e erros operacionais antes de expandir a suíte para
+navegadores adicionais ou tornar a execução obrigatória em toda PR.

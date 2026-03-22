@@ -2,15 +2,17 @@
 
 ## Histórico de Revisões
 
-| Versão | Data               | Autor(es)    | Descrição da Revisão                                                                 |
-| ------ | ------------------ | ------------ | ------------------------------------------------------------------------------------ |
-| 1.0    | 2 de março de 2026 | Danilo Melin | Definição da estratégia inicial de autenticação e dados para testes E2E              |
-| 1.1    | 3 de março de 2026 | Danilo Melin | Atualização da estratégia com porta dedicada e eliminação de reuso de servidor local |
-| 1.2    | 4 de março de 2026 | Danilo Melin | Inclusão de injeção de falhas operacionais controladas no modo E2E                   |
+| Versão | Data | Autor(es) | Descrição da Revisão |
+| ------ | ---- | --------- | -------------------- |
+| 1.0 | 2 de março de 2026 | Danilo Melin | Estratégia inicial |
+| 1.1 | 3 de março de 2026 | Danilo Melin | Porta dedicada |
+| 1.2 | 4 de março de 2026 | Danilo Melin | Falhas controladas |
 
 ## Objetivo
 
-Definir uma estratégia de execução E2E reproduzível, isolada e independente de autenticação Google real e de massa manual no Firestore.
+Definir uma estratégia de execução E2E reproduzível, isolada e
+independente de autenticação Google real e de massa manual no
+Firestore.
 
 ## Estratégia adotada
 
@@ -115,6 +117,9 @@ Na Fase 2, os cenários devem reutilizar esta base para cobrir:
 
 ## Decisão de engenharia
 
-Para este projeto, a estratégia local controlada oferece o melhor custo-benefício no início do ciclo V5.
+Para este projeto, a estratégia local controlada oferece o melhor
+custo-benefício no início do ciclo V5.
 
-Se no futuro houver necessidade de validar integração real com backend, isso deve entrar como uma camada complementar, não como substituição desta base E2E.
+Se no futuro houver necessidade de validar integração real com backend,
+isso deve entrar como uma camada complementar, não como substituição
+desta base E2E.
