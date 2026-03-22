@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5", // Compila para uma versão de JS compatível com navegadores mais antigos
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true, // Permite que arquivos .js e .ts coexistam no projeto (essencial para migração gradual)
     "skipLibCheck": true,
     "esModuleInterop": true,

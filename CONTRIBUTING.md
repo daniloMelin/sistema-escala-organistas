@@ -15,23 +15,23 @@ A estrutura de um commit semântico é: `<tipo>[escopo opcional]: <descrição>`
 
 ### Tipos de Commit
 
-* **`feat` ✨:** Para a inclusão de um **novo recurso** (feature).
-* **`fix` 🐛:** Para a **correção de um bug**.
-* **`refactor` ♻️:** Para refatoração de código que não altera a
+- **`feat` ✨:** Para a inclusão de um **novo recurso** (feature).
+- **`fix` 🐛:** Para a **correção de um bug**.
+- **`refactor` ♻️:** Para refatoração de código que não altera a
   funcionalidade final.
-* **`docs` 📚:** Para alterações na **documentação** (como este arquivo).
-* **`style` 💄:** Para alterações de **formatação de código**
+- **`docs` 📚:** Para alterações na **documentação** (como este arquivo).
+- **`style` 💄:** Para alterações de **formatação de código**
   (espaçamento, ponto e vírgula, etc.).
-* **`build` 📦:** Para modificações em arquivos de **build ou dependências**.
-* **`perf` ⚡:** Para alterações de código que melhoram a **performance**.
-* **`test` 🧪:** Para adicionar ou modificar **testes**.
-* **`chore` 🔧:** Para atualizações de tarefas de build, configurações,
+- **`build` 📦:** Para modificações em arquivos de **build ou dependências**.
+- **`perf` ⚡:** Para alterações de código que melhoram a **performance**.
+- **`test` 🧪:** Para adicionar ou modificar **testes**.
+- **`chore` 🔧:** Para atualizações de tarefas de build, configurações,
   etc. (ex: `.gitignore`).
-* **`ci` 🧱:** Para mudanças relacionadas à **integração contínua** (CI).
-* **`cleanup` 🧹:** Para **limpeza de código** (remover código
+- **`ci` 🧱:** Para mudanças relacionadas à **integração contínua** (CI).
+- **`cleanup` 🧹:** Para **limpeza de código** (remover código
   comentado, arquivos não utilizados).
-* **`remove` 🗑️:** Para **exclusão** de arquivos, diretórios ou funcionalidades.
-* **`raw` 🗃️:** Para mudanças relacionadas a arquivos de configurações,
+- **`remove` 🗑️:** Para **exclusão** de arquivos, diretórios ou funcionalidades.
+- **`raw` 🗃️:** Para mudanças relacionadas a arquivos de configurações,
   dados, features, parâmetros.
 
 ### Exemplos de Mensagens de Commit
@@ -40,3 +40,4 @@ A estrutura de um commit semântico é: `<tipo>[escopo opcional]: <descrição>`
 git commit -m "feat: ✨ Adiciona login com Google"
 git commit -m "fix: 🐛 Corrige cálculo de distribuição de organistas"
 git commit -m "docs: 📚 Atualiza o Guia de Contribuição"
+```

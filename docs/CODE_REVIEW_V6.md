@@ -2,16 +2,16 @@
 
 ## Histórico de Revisões
 
-| Versão | Data | Autor(es) | Descrição da Revisão |
-| ------ | ---- | --------- | -------------------- |
-| 1.0 | 3 de março de 2026 | Danilo Melin | Criação do ciclo V6 |
-| 1.1 | 3 de março de 2026 | Danilo Melin | Fase 1.1 concluída |
-| 1.2 | 3 de março de 2026 | Danilo Melin | Fase 1.2 concluída |
-| 1.3 | 3 de março de 2026 | Danilo Melin | Fase 2.1 concluída |
-| 1.4 | 3 de março de 2026 | Danilo Melin | Fase 2.2 concluída |
-| 1.5 | 4 de março de 2026 | Danilo Melin | Fase 3.2 concluída |
-| 1.6 | 4 de março de 2026 | Danilo Melin | Fase 3.1 concluída |
-| 1.7 | 5 de março de 2026 | Danilo Melin | Fechamento do V6 |
+| Versão | Data               | Autor(es)    | Descrição da Revisão |
+| ------ | ------------------ | ------------ | -------------------- |
+| 1.0    | 3 de março de 2026 | Danilo Melin | Criação do ciclo V6  |
+| 1.1    | 3 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
+| 1.2    | 3 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
+| 1.3    | 3 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
+| 1.4    | 3 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
+| 1.5    | 4 de março de 2026 | Danilo Melin | Fase 3.2 concluída   |
+| 1.6    | 4 de março de 2026 | Danilo Melin | Fase 3.1 concluída   |
+| 1.7    | 5 de março de 2026 | Danilo Melin | Fechamento do V6     |
 
 ## Objetivo
 

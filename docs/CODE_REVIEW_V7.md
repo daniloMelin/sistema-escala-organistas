@@ -2,18 +2,18 @@
 
 ## Histórico de Revisões
 
-| Versão | Data | Autor(es) | Descrição da Revisão |
-| ------ | ---- | --------- | -------------------- |
-| 1.0 | 13 de março de 2026 | Danilo Melin | Criação do ciclo V7 |
-| 1.1 | 13 de março de 2026 | Danilo Melin | Fase 1.1 concluída |
-| 1.2 | 13 de março de 2026 | Danilo Melin | Fase 1.2 concluída |
-| 1.3 | 21 de março de 2026 | Danilo Melin | Fase 2.1 concluída |
-| 1.4 | 21 de março de 2026 | Danilo Melin | Fase 2.2 concluída |
-| 1.5 | 21 de março de 2026 | Danilo Melin | Ajuste do smoke |
-| 1.6 | 21 de março de 2026 | Danilo Melin | Refino do smoke |
-| 1.7 | 21 de março de 2026 | Danilo Melin | Fase 3.2 concluída |
-| 1.8 | 21 de março de 2026 | Danilo Melin | Fase 3.1 concluída |
-| 1.9 | 21 de março de 2026 | Danilo Melin | Fechamento do V7 |
+| Versão | Data                | Autor(es)    | Descrição da Revisão |
+| ------ | ------------------- | ------------ | -------------------- |
+| 1.0    | 13 de março de 2026 | Danilo Melin | Criação do ciclo V7  |
+| 1.1    | 13 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
+| 1.2    | 13 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
+| 1.3    | 21 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
+| 1.4    | 21 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
+| 1.5    | 21 de março de 2026 | Danilo Melin | Ajuste do smoke      |
+| 1.6    | 21 de março de 2026 | Danilo Melin | Refino do smoke      |
+| 1.7    | 21 de março de 2026 | Danilo Melin | Fase 3.2 concluída   |
+| 1.8    | 21 de março de 2026 | Danilo Melin | Fase 3.1 concluída   |
+| 1.9    | 21 de março de 2026 | Danilo Melin | Fechamento do V7     |
 
 ## Objetivo
 

@@ -2,21 +2,21 @@
 
 ## Histórico de Revisões
 
-| Versão | Data | Autor(es) | Descrição da Revisão |
-| ------ | ---- | --------- | -------------------- |
-| 1.0 | 1 de março de 2026 | Danilo Melin | Criação do guia |
-| 1.1 | 2 de março de 2026 | Danilo Melin | Modo E2E controlado |
-| 1.2 | 3 de março de 2026 | Danilo Melin | Comandos E2E padronizados |
-| 1.3 | 3 de março de 2026 | Danilo Melin | E2E no GitHub Actions |
-| 1.4 | 3 de março de 2026 | Danilo Melin | Cobertura E2E referenciada |
-| 1.5 | 5 de março de 2026 | Danilo Melin | Consolidação da suíte |
-| 1.6 | 21 de março de 2026 | Danilo Melin | Referência ao smoke V7 |
-| 1.7 | 21 de março de 2026 | Danilo Melin | Comando smoke no CI |
-| 1.8 | 21 de março de 2026 | Danilo Melin | Login E2E no smoke |
-| 1.9 | 21 de março de 2026 | Danilo Melin | Smoke reduzido no CI |
-| 2.0 | 21 de março de 2026 | Danilo Melin | Política E2E no CI |
-| 2.1 | 21 de março de 2026 | Danilo Melin | Expansão periódica registrada |
-| 2.2 | 21 de março de 2026 | Danilo Melin | Fechamento operacional V7 |
+| Versão | Data                | Autor(es)    | Descrição da Revisão          |
+| ------ | ------------------- | ------------ | ----------------------------- |
+| 1.0    | 1 de março de 2026  | Danilo Melin | Criação do guia               |
+| 1.1    | 2 de março de 2026  | Danilo Melin | Modo E2E controlado           |
+| 1.2    | 3 de março de 2026  | Danilo Melin | Comandos E2E padronizados     |
+| 1.3    | 3 de março de 2026  | Danilo Melin | E2E no GitHub Actions         |
+| 1.4    | 3 de março de 2026  | Danilo Melin | Cobertura E2E referenciada    |
+| 1.5    | 5 de março de 2026  | Danilo Melin | Consolidação da suíte         |
+| 1.6    | 21 de março de 2026 | Danilo Melin | Referência ao smoke V7        |
+| 1.7    | 21 de março de 2026 | Danilo Melin | Comando smoke no CI           |
+| 1.8    | 21 de março de 2026 | Danilo Melin | Login E2E no smoke            |
+| 1.9    | 21 de março de 2026 | Danilo Melin | Smoke reduzido no CI          |
+| 2.0    | 21 de março de 2026 | Danilo Melin | Política E2E no CI            |
+| 2.1    | 21 de março de 2026 | Danilo Melin | Expansão periódica registrada |
+| 2.2    | 21 de março de 2026 | Danilo Melin | Fechamento operacional V7     |
 
 ## Objetivo
 

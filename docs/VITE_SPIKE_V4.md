@@ -2,9 +2,9 @@
 
 ## Histórico de Revisões
 
-| Versão | Data | Autor(es) | Descrição da Revisão |
-| ------ | ---- | --------- | -------------------- |
-| 1.0 | 25 de fevereiro de 2026 | Danilo Melin | Criação do spike |
+| Versão | Data                    | Autor(es)    | Descrição da Revisão |
+| ------ | ----------------------- | ------------ | -------------------- |
+| 1.0    | 25 de fevereiro de 2026 | Danilo Melin | Criação do spike     |
 
 ## Objetivo
 

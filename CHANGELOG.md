@@ -79,7 +79,7 @@
    ```bash
    # Criar arquivo .env.local na raiz do projeto
    touch .env.local
-   
+
    # Adicionar credenciais do Firebase (ver IMPLEMENTATION_GUIDE.md)
    # Depois fazer deploy das regras:
    firebase deploy --only firestore:rules
