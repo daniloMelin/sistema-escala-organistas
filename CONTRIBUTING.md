@@ -92,3 +92,7 @@ Decisão atual:
 Essa decisão pode ser revista no futuro se o volume de contribuidores,
 o número de regressões de formatação ou o custo de revisão manual
 aumentarem.
+
+Documento complementar da política atual:
+
+- `docs/STATIC_QUALITY_POLICY_V9.md`

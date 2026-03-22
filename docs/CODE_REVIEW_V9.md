@@ -9,6 +9,9 @@
 | 1.2    | 21 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
 | 1.3    | 21 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
 | 1.4    | 21 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
+| 1.5    | 22 de março de 2026 | Danilo Melin | Fase 3.1 concluída   |
+| 1.6    | 22 de março de 2026 | Danilo Melin | Fase 3.2 concluída   |
+| 1.7    | 22 de março de 2026 | Danilo Melin | Fase 4.1 concluída   |
 
 ## Objetivo
 
@@ -18,9 +21,9 @@ gates de qualidade mais previsíveis no fluxo diário e no CI.
 
 ## Status do Ciclo
 
-- Status geral: `EM ANDAMENTO`
+- Status geral: `CONCLUÍDO`
 - Data de início: `21 de março de 2026`
-- Data de encerramento: `A definir`
+- Data de encerramento: `22 de março de 2026`
 - Contexto: continuidade direta do fechamento do `CODE_REVIEW_V8` e da
   limpeza final de `Prettier` e `markdownlint` no repositório
 
@@ -106,32 +109,44 @@ rotina explícita.
 
 #### 3.1 Consolidar política de qualidade estática do repositório
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - documentar quando um novo check deve virar gate
   - registrar critérios para exceções e rollout gradual
   - consolidar a relação entre local, PR e execução periódica
+  - resultado alcançado:
+    - política estática consolidada em documento próprio
+    - critérios de promoção e exceção registrados
+    - relação entre rotina local e CI principal documentada
 
 #### 3.2 Revisar sinal x ruído dos checks após integração
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - revisar utilidade real dos novos gates
   - identificar atrito desnecessário ou redundância
   - ajustar a política antes do fechamento do ciclo
+  - resultado alcançado:
+    - revisão de sinal x ruído consolidada em documento próprio
+    - sequência atual dos gates validada como adequada
+    - critérios objetivos de reavaliação registrados
 
 ### Fase 4 - Fechamento do Ciclo
 
 #### 4.1 Consolidar baseline operacional e próximos passos
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - registrar o estado final dos gates
   - consolidar a decisão sobre automação local
   - fechar formalmente o `CODE_REVIEW_V9`
+  - resultado alcançado:
+    - baseline operacional consolidada em documentação do ciclo
+    - decisões sobre gates e automação local fechadas
+    - próximos passos do repositório registrados
 
 ## Ordem de execução recomendada
 
@@ -149,9 +164,9 @@ rotina explícita.
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
-- [ ] Fase 3.1 pendente
-- [ ] Fase 3.2 pendente
-- [ ] Fase 4.1 pendente
+- [x] Fase 3.1 concluída
+- [x] Fase 3.2 concluída
+- [x] Fase 4.1 concluída
 
 ## Critério de Conclusão do V9
 
@@ -159,3 +174,44 @@ rotina explícita.
 - rotina local mínima documentada de forma objetiva
 - política de manutenção dos gates registrada
 - feedback dos checks considerado útil e sustentável para o time
+
+## Resumo Executivo
+
+O ciclo V9 transformou a baseline limpa de formatação e lint documental
+em prática operacional do repositório.
+
+Principais resultados:
+
+- `format:check` promovido a gate no CI principal
+- `lint:md` promovido a gate no CI principal
+- rotina local mínima registrada para contributors
+- decisão explícita de não adotar hooks obrigatórios neste ciclo
+- política de qualidade estática consolidada
+- revisão de sinal x ruído registrada para os gates atuais
+
+## Impacto Prático no Projeto
+
+- regressões simples de formatação e documentação passam a falhar cedo
+  em PR
+- o fluxo local fica mais previsível para quem contribui
+- novas discussões sobre checks e gates deixam de depender apenas de
+  preferência individual
+- o repositório ganha uma baseline operacional clara para qualidade
+  estática
+
+## Artefatos Consolidados do Ciclo
+
+- `docs/CODE_REVIEW_V9.md`
+- `docs/STATIC_QUALITY_POLICY_V9.md`
+- `docs/STATIC_QUALITY_SIGNAL_V9.md`
+- `CONTRIBUTING.md`
+- `.github/workflows/ci.yml`
+
+## Próximos Passos Recomendados
+
+1. Acompanhar algumas PRs reais para confirmar que o custo adicional dos
+   novos gates permanece baixo.
+2. Revisar no próximo ciclo se vale promover algum check adicional ou
+   separar jobs do CI por categoria.
+3. Reavaliar automação local obrigatória apenas se o volume de
+   contribuições ou o ruído operacional crescerem.
