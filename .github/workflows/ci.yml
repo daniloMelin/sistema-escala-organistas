@@ -20,6 +20,10 @@ jobs:
           node-version: '20'
       - name: Install dependencies
         run: npm ci
+      - name: Format check
+        run: npm run format:check
+      - name: Markdown lint
+        run: npm run lint:md
       - name: Lint
         run: npm run lint
       - name: Critical coverage gate (V3)
@@ -36,7 +40,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.payload.pull_request.number,
-              body: `CI ✅ Lint, cobertura crítica e build passaram para o commit ${context.sha} — [ver run](${runUrl})`
+              body: `CI ✅ Formatação, lint Markdown, lint, cobertura crítica e build passaram para o commit ${context.sha} — [ver run](${runUrl})`
             })
       - name: Comment PR - failure
         if: ${{ github.event_name == 'pull_request' && failure() }}
@@ -50,5 +54,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.payload.pull_request.number,
-              body: `${mention} CI ❌ Falha em lint/cobertura/build para o commit ${context.sha}. Detalhes: [ver run](${runUrl}).`
+              body: `${mention} CI ❌ Falha em formatação/lint Markdown/lint/cobertura/build para o commit ${context.sha}. Detalhes: [ver run](${runUrl}).`
             })
