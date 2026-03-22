@@ -2,13 +2,15 @@
 
 ## Histórico de Revisões
 
-| Versão | Data               | Autor(es)    | Descrição da Revisão                                                           |
-| ------ | ------------------ | ------------ | ------------------------------------------------------------------------------ |
-| 1.0    | 5 de março de 2026 | Danilo Melin | Consolidação da suíte E2E com redução de redundância e revisão de estratégia CI |
+| Versão | Data | Autor(es) | Descrição da Revisão |
+| ------ | ---- | --------- | -------------------- |
+| 1.0 | 5 de março de 2026 | Danilo Melin | Consolidação da suíte |
 
 ## Objetivo
 
-Registrar as ações de consolidação executadas na Fase 4.1 do V6, com foco em estabilidade, reaproveitamento de helpers e política de execução no CI.
+Registrar as ações de consolidação executadas na Fase 4.1 do V6, com
+foco em estabilidade, reaproveitamento de helpers e política de
+execução no CI.
 
 ## Consolidações Aplicadas
 

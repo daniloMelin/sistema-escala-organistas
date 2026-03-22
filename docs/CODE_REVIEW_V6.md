@@ -2,20 +2,22 @@
 
 ## Histórico de Revisões
 
-| Versão | Data               | Autor(es)    | Descrição da Revisão                                                                     |
-| ------ | ------------------ | ------------ | ---------------------------------------------------------------------------------------- |
-| 1.0    | 3 de março de 2026 | Danilo Melin | Criação do Code Review V6 com foco em exclusões, cenários negativos e erros operacionais |
-| 1.1    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 1.1 com cenário E2E de exclusão de igreja                          |
-| 1.2    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 1.2 com cenário E2E de exclusão de organista                       |
-| 1.3    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 2.1 com cenário E2E de validação negativa no cadastro de igreja    |
-| 1.4    | 3 de março de 2026 | Danilo Melin | Implementação da Fase 2.2 com cenário E2E de validação negativa no cadastro de organista |
-| 1.5    | 4 de março de 2026 | Danilo Melin | Implementação da Fase 3.2 com cenários E2E de falhas operacionais controladas            |
-| 1.6    | 4 de março de 2026 | Danilo Melin | Implementação da Fase 3.1 com cenários E2E de estados vazios e mensagens orientativas    |
-| 1.7    | 5 de março de 2026 | Danilo Melin | Implementação da Fase 4.1 com consolidação da suíte E2E e recomendação de smoke no CI    |
+| Versão | Data | Autor(es) | Descrição da Revisão |
+| ------ | ---- | --------- | -------------------- |
+| 1.0 | 3 de março de 2026 | Danilo Melin | Criação do ciclo V6 |
+| 1.1 | 3 de março de 2026 | Danilo Melin | Fase 1.1 concluída |
+| 1.2 | 3 de março de 2026 | Danilo Melin | Fase 1.2 concluída |
+| 1.3 | 3 de março de 2026 | Danilo Melin | Fase 2.1 concluída |
+| 1.4 | 3 de março de 2026 | Danilo Melin | Fase 2.2 concluída |
+| 1.5 | 4 de março de 2026 | Danilo Melin | Fase 3.2 concluída |
+| 1.6 | 4 de março de 2026 | Danilo Melin | Fase 3.1 concluída |
+| 1.7 | 5 de março de 2026 | Danilo Melin | Fechamento do V6 |
 
 ## Objetivo
 
-Expandir a confiabilidade da aplicação sobre os cenários ainda não cobertos pelo ciclo V5, priorizando comportamentos destrutivos, validações negativas e tratamento de falhas operacionais.
+Expandir a confiabilidade da aplicação sobre os cenários ainda não
+cobertos pelo ciclo V5, priorizando comportamentos destrutivos,
+validações negativas e tratamento de falhas operacionais.
 
 ## Status do Ciclo
 
@@ -137,7 +139,9 @@ Expandir a confiabilidade da aplicação sobre os cenários ainda não cobertos 
 
 ### Resumo Executivo
 
-O V6 consolidou a suíte E2E em três dimensões: cobertura funcional de cenários críticos, validação de falhas operacionais e melhoria de sustentabilidade da própria suíte.
+O V6 consolidou a suíte E2E em três dimensões: cobertura funcional de
+cenários críticos, validação de falhas operacionais e melhoria de
+sustentabilidade da própria suíte.
 
 ### Evidências do Ciclo
 

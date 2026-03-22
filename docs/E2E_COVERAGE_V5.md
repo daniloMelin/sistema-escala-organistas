@@ -2,13 +2,14 @@
 
 ## Histórico de Revisões
 
-| Versão | Data               | Autor(es)    | Descrição da Revisão                                                               |
-| ------ | ------------------ | ------------ | ---------------------------------------------------------------------------------- |
-| 1.0    | 3 de março de 2026 | Danilo Melin | Consolidação da cobertura atual de testes E2E e registro das lacunas remanescentes |
+| Versão | Data | Autor(es) | Descrição da Revisão |
+| ------ | ---- | --------- | -------------------- |
+| 1.0 | 3 de março de 2026 | Danilo Melin | Cobertura consolidada |
 
 ## Objetivo
 
-Registrar o que a suíte E2E do ciclo V5 cobre hoje, quais riscos foram reduzidos e quais cenários ainda permanecem fora da automação.
+Registrar o que a suíte E2E do ciclo V5 cobre hoje, quais riscos foram
+reduzidos e quais cenários ainda permanecem fora da automação.
 
 ## Cobertura Implementada
 
@@ -61,4 +62,7 @@ Registrar o que a suíte E2E do ciclo V5 cobre hoje, quais riscos foram reduzido
 
 ## Conclusão
 
-O ciclo V5 atingiu o objetivo principal de criar uma base E2E útil, reproduzível e integrada ao CI de forma controlada. A cobertura ainda não é exaustiva, mas já protege os fluxos mais sensíveis do sistema e reduz o risco de regressão em mudanças futuras.
+O ciclo V5 atingiu o objetivo principal de criar uma base E2E útil,
+reproduzível e integrada ao CI de forma controlada. A cobertura ainda
+não é exaustiva, mas já protege os fluxos mais sensíveis do sistema e
+reduz o risco de regressão em mudanças futuras.

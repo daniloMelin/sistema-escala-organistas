@@ -2,27 +2,29 @@
 
 ## Histórico de Revisões
 
-| Versão | Data                    | Autor(es)    | Descrição da Revisão                                                                                         |
-| ------ | ----------------------- | ------------ | ------------------------------------------------------------------------------------------------------------ |
-| 1.0    | 24 de fevereiro de 2026 | Danilo Melin | Criação do Code Review V4 com avaliação técnica em padrão sênior e definição das fases de implementação      |
-| 1.1    | 24 de fevereiro de 2026 | Danilo Melin | Implementação inicial da Fase 1: schema validation em Firestore Rules e documentação de contrato             |
-| 1.2    | 24 de fevereiro de 2026 | Danilo Melin | Conclusão da Fase 1 após deploy das Firestore Rules em produção                                              |
-| 1.3    | 25 de fevereiro de 2026 | Danilo Melin | Implementação da Fase 2.1: correção do fluxo de feedback de sucesso em `useChurchManager`                    |
-| 1.4    | 25 de fevereiro de 2026 | Danilo Melin | Implementação da Fase 2.2: proteção de hooks assíncronos contra `setState` após unmount                      |
-| 1.5    | 25 de fevereiro de 2026 | Danilo Melin | Implementação da Fase 2.3: guard explícito no `useChurch` context e teste unitário dedicado                  |
-| 1.6    | 25 de fevereiro de 2026 | Danilo Melin | Implementação da Fase 3.1: modularização do CSS por domínio/componente                                       |
-| 1.7    | 25 de fevereiro de 2026 | Danilo Melin | Conclusão da Fase 3.2 com spike técnico de migração CRA -> Vite e recomendação de execução em ciclo dedicado |
-| 1.8    | 25 de fevereiro de 2026 | Danilo Melin | Fechamento formal do ciclo Code Review V4 com consolidação dos resultados e próximos passos                  |
+| Versão | Data | Autor(es) | Descrição da Revisão |
+| ------ | ---- | --------- | -------------------- |
+| 1.0 | 24 de fevereiro de 2026 | Danilo Melin | Criação do ciclo V4 |
+| 1.1 | 24 de fevereiro de 2026 | Danilo Melin | Fase 1 iniciada |
+| 1.2 | 24 de fevereiro de 2026 | Danilo Melin | Fase 1 concluída |
+| 1.3 | 25 de fevereiro de 2026 | Danilo Melin | Fase 2.1 concluída |
+| 1.4 | 25 de fevereiro de 2026 | Danilo Melin | Fase 2.2 concluída |
+| 1.5 | 25 de fevereiro de 2026 | Danilo Melin | Fase 2.3 concluída |
+| 1.6 | 25 de fevereiro de 2026 | Danilo Melin | Fase 3.1 concluída |
+| 1.7 | 25 de fevereiro de 2026 | Danilo Melin | Fase 3.2 concluída |
+| 1.8 | 25 de fevereiro de 2026 | Danilo Melin | Fechamento do V4 |
 
 ## Objetivo
 
-Elevar robustez de produção com foco em segurança de dados, confiabilidade de fluxo e manutenção.
+Elevar robustez de produção com foco em segurança de dados,
+confiabilidade de fluxo e manutenção.
 
 ## Status do Ciclo
 
 - Status geral: `CONCLUÍDO`
 - Data de encerramento: `25 de fevereiro de 2026`
-- Resultado: todas as fases planejadas para o ciclo V4 foram executadas e validadas
+- Resultado: todas as fases planejadas para o ciclo V4 foram executadas
+  e validadas
 
 - Escopo: continuação após `CODE_REVIEW_V2` e `CODE_REVIEW_V3`.
 - Critério de avaliação: recomendações e priorização com visão de engenharia sênior.
@@ -120,7 +122,9 @@ Elevar robustez de produção com foco em segurança de dados, confiabilidade de
 
 ## Resumo Executivo
 
-O ciclo `CODE_REVIEW_V4` foi concluído com foco em três pilares: segurança de dados, estabilidade de aplicação e sustentabilidade técnica.
+O ciclo `CODE_REVIEW_V4` foi concluído com foco em três pilares:
+segurança de dados, estabilidade de aplicação e sustentabilidade
+técnica.
 
 ### Entregas consolidadas
 
