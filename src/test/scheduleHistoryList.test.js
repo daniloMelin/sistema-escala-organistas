@@ -15,6 +15,8 @@ describe('ScheduleHistoryList', () => {
       id: 's1',
       generatedAt: '2026-03-01T10:00:00.000Z',
       period: { start: '2026-03-01', end: '2026-03-31' },
+      organistCount: 2,
+      data: [{ date: '2026-03-01' }],
     };
 
     render(
@@ -24,6 +26,9 @@ describe('ScheduleHistoryList', () => {
         onViewSaved={onViewSaved}
       />
     );
+
+    expect(screen.getByText('Mais recente')).toBeInTheDocument();
+    expect(screen.getByText('1 dia na escala • 2 organistas consideradas')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Visualizar' }));
     expect(onViewSaved).toHaveBeenCalledWith(schedule);

@@ -34,8 +34,38 @@
   background: #ffffff;
 }
 
+.history-item--latest {
+  border-color: #c7d8ff;
+  background: #f8fbff;
+}
+
+.history-item__header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.history-item__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #e6efff;
+  color: #2455b8;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
 .history-item__date {
   color: #999999;
+}
+
+.history-item__summary {
+  margin: 6px 0 0;
+  color: #555555;
+  font-size: 0.9rem;
 }
 
 .schedule-grid {

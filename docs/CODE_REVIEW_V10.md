@@ -6,6 +6,7 @@
 | ------ | ------------------- | ------------ | -------------------- |
 | 1.0    | 22 de março de 2026 | Danilo Melin | Criação do ciclo V10 |
 | 1.1    | 22 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
+| 1.2    | 22 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
 
 ## Objetivo
 
@@ -66,12 +67,16 @@ As oportunidades mais naturais neste momento são:
 
 #### 1.2 Implementar melhoria prioritária no histórico
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - aplicar a melhoria escolhida na Fase 1.1
   - preservar consistência com geração e edição manual de escala
   - cobrir a evolução com testes adequados
+  - resultado alcançado:
+    - histórico enriquecido com resumo contextual por item
+    - item mais recente destacado visualmente
+    - cobertura unitária e E2E atualizada para o fluxo
 
 ### Fase 2 - Robustez de Fluxos do Usuário
 
@@ -135,7 +140,7 @@ As oportunidades mais naturais neste momento são:
 ## Registro de progresso
 
 - [x] Fase 1.1 concluída
-- [ ] Fase 1.2 pendente
+- [x] Fase 1.2 concluída
 - [ ] Fase 2.1 pendente
 - [ ] Fase 2.2 pendente
 - [ ] Fase 3.1 pendente

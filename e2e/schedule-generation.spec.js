@@ -39,6 +39,8 @@ test.describe('geracao de escala', () => {
     await expect(page.getByText('Visualização da Escala')).toBeVisible();
     await expect(page.getByText('Domingo, 01/03/2026')).toBeVisible();
     await expect(page.getByText('Histórico de Escalas')).toBeVisible();
+    await expect(page.getByText('Mais recente')).toBeVisible();
+    await expect(page.getByText('1 dia na escala • 2 organistas consideradas')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Visualizar' })).toBeVisible();
   });
 });
