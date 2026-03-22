@@ -5,6 +5,7 @@
 | Versão | Data                | Autor(es)    | Descrição da Revisão |
 | ------ | ------------------- | ------------ | -------------------- |
 | 1.0    | 22 de março de 2026 | Danilo Melin | Criação do ciclo V10 |
+| 1.1    | 22 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
 
 ## Objetivo
 
@@ -52,12 +53,16 @@ As oportunidades mais naturais neste momento são:
 
 #### 1.1 Revisar experiência do histórico de escalas
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - revisar utilidade atual da lista de histórico
   - identificar lacunas de leitura, navegação ou contexto
   - definir melhoria funcional de maior valor imediato
+  - resultado alcançado:
+    - revisão funcional consolidada em documento próprio
+    - lacuna principal identificada como baixo contexto por item
+    - melhoria priorizada definida para a Fase 1.2
 
 #### 1.2 Implementar melhoria prioritária no histórico
 
@@ -129,7 +134,7 @@ As oportunidades mais naturais neste momento são:
 
 ## Registro de progresso
 
-- [ ] Fase 1.1 pendente
+- [x] Fase 1.1 concluída
 - [ ] Fase 1.2 pendente
 - [ ] Fase 2.1 pendente
 - [ ] Fase 2.2 pendente
