@@ -7,13 +7,13 @@ test.describe('estados vazios', () => {
     await resetE2EState(page, { users: {} });
     await gotoChurchManager(page);
     await expect(page.getByText('Nenhuma igreja cadastrada.')).toBeVisible();
-    await expect(
-      page.getByRole('heading', { name: 'Cadastrar Nova Igreja' })
-    ).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Cadastrar Nova Igreja' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Sair' })).toBeVisible();
   });
 
-  test('exibe estado vazio de organistas e mantem navegacao disponivel no painel', async ({ page }) => {
+  test('exibe estado vazio de organistas e mantem navegacao disponivel no painel', async ({
+    page,
+  }) => {
     await resetE2EState(
       page,
       buildChurchDatabase({
@@ -31,8 +31,6 @@ test.describe('estados vazios', () => {
     await expect(page.getByRole('button', { name: /Gerar Escala/i })).toBeVisible();
 
     await page.getByRole('button', { name: /Voltar para Igrejas/i }).click();
-    await expect(
-      page.getByRole('heading', { name: 'Gerenciamento de Igrejas' })
-    ).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Gerenciamento de Igrejas' })).toBeVisible();
   });
 });

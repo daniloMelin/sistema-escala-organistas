@@ -3,7 +3,9 @@ const { buildChurchDatabase, resetE2EState } = require('./helpers/session');
 const { gotoChurchManager } = require('./helpers/navigation');
 
 test.describe('validacoes negativas de organista', () => {
-  test('bloqueia cadastro com nome invalido e nao persiste organista no painel', async ({ page }) => {
+  test('bloqueia cadastro com nome invalido e nao persiste organista no painel', async ({
+    page,
+  }) => {
     await resetE2EState(
       page,
       buildChurchDatabase({
@@ -16,9 +18,7 @@ test.describe('validacoes negativas de organista', () => {
     await gotoChurchManager(page);
     await page.getByText('Igreja Validacao Organista').click();
 
-    await expect(
-      page.getByRole('heading', { name: 'Painel de Gerenciamento' })
-    ).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Painel de Gerenciamento' })).toBeVisible();
 
     await page.getByRole('textbox', { name: 'Nome da Organista:' }).fill('A');
     await page.getByRole('button', { name: 'Cadastrar Organista' }).click();

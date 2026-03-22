@@ -13,19 +13,25 @@ const { gotoAuthScreen } = require('./navigation');
 
 async function resetE2EState(page, database = { users: {} }, options = {}) {
   const failures = options.failures || {};
-  await page.addInitScript(({ keys, user, db, failures }) => {
-    window.localStorage.setItem(keys.session, JSON.stringify(user));
-    window.localStorage.setItem(keys.database, JSON.stringify(db));
-    window.localStorage.setItem(keys.failures, JSON.stringify(failures || {}));
-  }, { keys: E2E_STORAGE_KEYS, user: E2E_TEST_USER, db: database, failures });
+  await page.addInitScript(
+    ({ keys, user, db, failures }) => {
+      window.localStorage.setItem(keys.session, JSON.stringify(user));
+      window.localStorage.setItem(keys.database, JSON.stringify(db));
+      window.localStorage.setItem(keys.failures, JSON.stringify(failures || {}));
+    },
+    { keys: E2E_STORAGE_KEYS, user: E2E_TEST_USER, db: database, failures }
+  );
 }
 
 async function clearE2EState(page) {
-  await page.addInitScript(({ keys }) => {
-    window.localStorage.removeItem(keys.session);
-    window.localStorage.removeItem(keys.database);
-    window.localStorage.removeItem(keys.failures);
-  }, { keys: E2E_STORAGE_KEYS });
+  await page.addInitScript(
+    ({ keys }) => {
+      window.localStorage.removeItem(keys.session);
+      window.localStorage.removeItem(keys.database);
+      window.localStorage.removeItem(keys.failures);
+    },
+    { keys: E2E_STORAGE_KEYS }
+  );
 }
 
 async function loginAsE2EUser(page) {

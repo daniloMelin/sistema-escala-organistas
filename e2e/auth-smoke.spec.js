@@ -8,11 +8,7 @@ test('exibe a tela inicial de autenticacao', async ({ page }) => {
     page.getByRole('heading', { name: 'Sistema de Escala de Organistas' })
   ).toBeVisible();
 
-  await expect(
-    page.getByRole('button', { name: 'Entrar com o Google' })
-  ).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Entrar com o Google' })).toBeVisible();
 
-  await expect(
-    page.getByRole('button', { name: 'Entrar em modo E2E' })
-  ).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Entrar em modo E2E' })).toBeVisible();
 });

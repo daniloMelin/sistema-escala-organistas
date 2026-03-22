@@ -29,9 +29,7 @@ test.describe('geracao de escala', () => {
     await page.getByText('Igreja Escala').click();
     await page.getByRole('button', { name: /Gerar Escala/i }).click();
 
-    await expect(
-      page.getByRole('heading', { name: /Gerador de Escala:/i })
-    ).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Gerador de Escala:/i })).toBeVisible();
 
     await page.getByLabel('Data Início:').fill('2026-03-01');
     await page.getByLabel('Data Fim:').fill('2026-03-01');
