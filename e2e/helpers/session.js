@@ -90,7 +90,12 @@ function buildChurchesDatabase(churches = []) {
         generatedAt: schedule.generatedAt || new Date('2026-03-02T00:00:00.000Z').toISOString(),
         generatedMonth: schedule.generatedMonth || 3,
         generatedYear: schedule.generatedYear || 2026,
-        assignments: schedule.assignments || [],
+        period: schedule.period || {
+          start: '2026-03-01',
+          end: '2026-03-01',
+        },
+        data: schedule.data || schedule.assignments || [],
+        organistCount: schedule.organistCount || 0,
       };
       return scheduleAcc;
     }, {});

@@ -7,6 +7,8 @@
 | 1.0    | 22 de março de 2026 | Danilo Melin | Criação do ciclo V10 |
 | 1.1    | 22 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
 | 1.2    | 22 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
+| 1.3    | 22 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
+| 1.4    | 22 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
 
 ## Objetivo
 
@@ -82,20 +84,28 @@ As oportunidades mais naturais neste momento são:
 
 #### 2.1 Refinar mensagens e feedback de ações críticas
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - revisar mensagens de sucesso, erro e vazio mais sensíveis
   - reduzir ambiguidade em ações destrutivas ou operacionais
   - manter consistência de tom e clareza
+  - resultado alcançado:
+    - mensagens do gerador de escala ficaram mais específicas
+    - feedback de sucesso passou a indicar claramente o período afetado
+    - mensagens de erro ficaram mais acionáveis no fluxo operacional
 
 #### 2.2 Validar comportamento ponta a ponta do fluxo refinado
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - atualizar ou criar cenário E2E para o fluxo melhorado
   - garantir que a experiência continue consistente em uso real
+  - resultado alcançado:
+    - seed E2E ajustado para representar escalas salvas com mais fidelidade
+    - fluxo de visualização de histórico validado ponta a ponta
+    - feedback contextual do histórico confirmado no uso real
 
 ### Fase 3 - Consolidação Funcional do Ciclo
 
@@ -141,8 +151,8 @@ As oportunidades mais naturais neste momento são:
 
 - [x] Fase 1.1 concluída
 - [x] Fase 1.2 concluída
-- [ ] Fase 2.1 pendente
-- [ ] Fase 2.2 pendente
+- [x] Fase 2.1 concluída
+- [x] Fase 2.2 concluída
 - [ ] Fase 3.1 pendente
 - [ ] Fase 3.2 pendente
 - [ ] Fase 4.1 pendente

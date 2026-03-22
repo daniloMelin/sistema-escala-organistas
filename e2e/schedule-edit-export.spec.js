@@ -33,7 +33,9 @@ test.describe('edicao manual e exportacao da escala', () => {
     await page.getByLabel('Data Fim:').fill('2026-03-01');
     await page.getByRole('button', { name: 'Gerar Nova Escala' }).click();
 
-    await expect(page.getByText('Escala gerada e salva com sucesso!')).toBeVisible();
+    await expect(
+      page.getByText('Escala de 01/03/2026 até 01/03/2026 gerada e salva com sucesso.')
+    ).toBeVisible();
     await expect(page.getByText('Visualização da Escala')).toBeVisible();
 
     const beforeNames = await page.locator('.schedule-card__name').allTextContents();
@@ -45,7 +47,9 @@ test.describe('edicao manual e exportacao da escala', () => {
     await page.locator('.schedule-card__select').first().selectOption(replacementName);
     await page.getByRole('button', { name: 'Salvar Alterações' }).click();
 
-    await expect(page.getByText('Alterações salvas com sucesso!')).toBeVisible();
+    await expect(
+      page.getByText('Alterações da escala de 01/03/2026 até 01/03/2026 salvas com sucesso.')
+    ).toBeVisible();
     await expect(page.getByText('Visualização da Escala')).toBeVisible();
     await expect(
       page.locator('.schedule-card__name').filter({ hasText: replacementName }).first()
