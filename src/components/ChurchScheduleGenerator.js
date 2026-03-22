@@ -36,19 +36,20 @@ const ChurchScheduleGenerator = ({ user }) => {
     handleSaveChanges,
   } = useChurchScheduleGenerator(user, selectedChurch);
 
-
   return (
     <div className="page-container page-container--xl">
-      <Button onClick={() => navigate(`/igreja/${id}`)} variant="secondary" size="sm" className="mb-20">
+      <Button
+        onClick={() => navigate(`/igreja/${id}`)}
+        variant="secondary"
+        size="sm"
+        className="mb-20"
+      >
         &larr; Voltar para Painel
       </Button>
-      {isLoading && (
-        <div className="alert alert--warning">
-          Carregando dados da igreja...
-        </div>
-      )}
+      {isLoading && <div className="alert alert--warning">Carregando dados da igreja...</div>}
       <h2 className="section-title">
-        Gerador de Escala: <span className="section-title__highlight">{selectedChurch?.name || 'Igreja'}</span>
+        Gerador de Escala:{' '}
+        <span className="section-title__highlight">{selectedChurch?.name || 'Igreja'}</span>
       </h2>
 
       {!isEditing && (
@@ -78,7 +79,11 @@ const ChurchScheduleGenerator = ({ user }) => {
         />
       )}
 
-      <ScheduleHistoryList isEditing={isEditing} savedSchedules={savedSchedules} onViewSaved={handleViewSaved} />
+      <ScheduleHistoryList
+        isEditing={isEditing}
+        savedSchedules={savedSchedules}
+        onViewSaved={handleViewSaved}
+      />
     </div>
   );
 };

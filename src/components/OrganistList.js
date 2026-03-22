@@ -2,7 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from './ui/Button';
 
-const OrganistList = ({ loading, organists, formatOrganistAvailability, onStartEdit, onRequestDeleteOrganist }) => {
+const OrganistList = ({
+  loading,
+  organists,
+  formatOrganistAvailability,
+  onStartEdit,
+  onRequestDeleteOrganist,
+}) => {
   return (
     <>
       <h3>Organistas Cadastradas</h3>

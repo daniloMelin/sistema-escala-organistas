@@ -38,11 +38,7 @@ const ChurchManager = ({ user }) => {
   return (
     <div className="page-container page-container--md">
       <h2>Gerenciamento de Igrejas</h2>
-      {isLoading && (
-        <div className="alert alert--warning">
-          Carregando dados da igreja...
-        </div>
-      )}
+      {isLoading && <div className="alert alert--warning">Carregando dados da igreja...</div>}
       {hasLoadError && !isLoading && (
         <div className="alert alert--danger">
           <p>{loadError}</p>

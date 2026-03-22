@@ -2,16 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Button.css';
 
-const Button = ({ 
-  children, 
-  variant = 'primary', 
+const Button = ({
+  children,
+  variant = 'primary',
   size = 'md',
   fullWidth = false,
   disabled = false,
   type = 'button',
   onClick,
   className,
-  ...props 
+  ...props
 }) => {
   return (
     <button
@@ -24,7 +24,9 @@ const Button = ({
         `btn--${size}`,
         fullWidth ? 'btn--full' : '',
         className || '',
-      ].join(' ').trim()}
+      ]
+        .join(' ')
+        .trim()}
       {...props}
     >
       {children}

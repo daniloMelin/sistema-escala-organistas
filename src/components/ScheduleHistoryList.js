@@ -14,19 +14,21 @@ const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
           <li key={sch.id} className="history-item">
             <div>
               <strong>
-                {sch.period?.start ? new Date(`${sch.period.start}T00:00:00`).toLocaleDateString() : 'N/A'} até{' '}
-                {sch.period?.end ? new Date(`${sch.period.end}T00:00:00`).toLocaleDateString() : 'N/A'}
+                {sch.period?.start
+                  ? new Date(`${sch.period.start}T00:00:00`).toLocaleDateString()
+                  : 'N/A'}{' '}
+                até{' '}
+                {sch.period?.end
+                  ? new Date(`${sch.period.end}T00:00:00`).toLocaleDateString()
+                  : 'N/A'}
               </strong>
               <br />
               <small className="history-item__date">
-                Atualizada em: {sch.generatedAt ? new Date(sch.generatedAt).toLocaleString() : 'N/A'}
+                Atualizada em:{' '}
+                {sch.generatedAt ? new Date(sch.generatedAt).toLocaleString() : 'N/A'}
               </small>
             </div>
-            <Button
-              onClick={() => onViewSaved(sch)}
-              variant="secondary"
-              size="sm"
-            >
+            <Button onClick={() => onViewSaved(sch)} variant="secondary" size="sm">
               Visualizar
             </Button>
           </li>

@@ -52,7 +52,8 @@ describe('validation utils', () => {
     test('rejeita padrao de codigo invalido', () => {
       expect(validateChurchCode('ABC 123')).toEqual({
         isValid: false,
-        error: 'Código contém caracteres inválidos. Use apenas letras, números, hífen e underscore.',
+        error:
+          'Código contém caracteres inválidos. Use apenas letras, números, hífen e underscore.',
       });
     });
 

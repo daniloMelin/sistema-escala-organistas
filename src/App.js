@@ -38,7 +38,7 @@ const Layout = ({ children, user, onLogout }) => {
       await onLogout();
       navigate('/');
     } catch (error) {
-      logger.error("Erro ao fazer logout:", error);
+      logger.error('Erro ao fazer logout:', error);
     }
   };
 
@@ -50,7 +50,9 @@ const Layout = ({ children, user, onLogout }) => {
             <li>
               <NavLink
                 to="/"
-                className={({ isActive }) => (isActive ? 'app-nav-link app-nav-link-active' : 'app-nav-link')}
+                className={({ isActive }) =>
+                  isActive ? 'app-nav-link app-nav-link-active' : 'app-nav-link'
+                }
                 end
               >
                 🏠 Minhas Igrejas
@@ -67,9 +69,7 @@ const Layout = ({ children, user, onLogout }) => {
           )}
         </nav>
       </header>
-      <main className="app-main">
-        {children}
-      </main>
+      <main className="app-main">{children}</main>
       <footer className="app-footer">
         <p>&copy; {new Date().getFullYear()} Gerenciador de Escalas.</p>
       </footer>
@@ -100,10 +100,7 @@ function App() {
   useEffect(() => {
     setLoggerReporter(firestoreReporter);
     setLoggerContextProvider(() => ({
-      route:
-        typeof window !== 'undefined' && window.location
-          ? window.location.pathname
-          : '',
+      route: typeof window !== 'undefined' && window.location ? window.location.pathname : '',
     }));
 
     return () => {
@@ -159,9 +156,12 @@ function App() {
 
                   {/* Rota do Painel da Igreja */}
                   <Route path="/igreja/:id" element={<ChurchDashboard user={user} />} />
-                  
+
                   {/* Rota do Gerador de Escala */}
-                  <Route path="/igreja/:id/escala" element={<ChurchScheduleGenerator user={user} />} />
+                  <Route
+                    path="/igreja/:id/escala"
+                    element={<ChurchScheduleGenerator user={user} />}
+                  />
 
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>

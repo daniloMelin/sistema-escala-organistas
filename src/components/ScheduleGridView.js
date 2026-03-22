@@ -17,41 +17,26 @@ const ScheduleGridView = ({
   return (
     <div className="schedule-grid">
       <div className="schedule-grid__toolbar">
-        <h3 className="schedule-grid__title">{isEditing ? '✏️ Editando Escala' : 'Visualização da Escala'}</h3>
+        <h3 className="schedule-grid__title">
+          {isEditing ? '✏️ Editando Escala' : 'Visualização da Escala'}
+        </h3>
 
         <div className="actions-row">
           {isEditing ? (
             <>
-              <Button
-                onClick={() => onToggleEditing(false)}
-                variant="secondary"
-                size="sm"
-              >
+              <Button onClick={() => onToggleEditing(false)} variant="secondary" size="sm">
                 Cancelar
               </Button>
-              <Button
-                onClick={onSaveChanges}
-                disabled={isGenerating}
-                variant="success"
-                size="sm"
-              >
+              <Button onClick={onSaveChanges} disabled={isGenerating} variant="success" size="sm">
                 {isGenerating ? 'Salvando...' : 'Salvar Alterações'}
               </Button>
             </>
           ) : (
             <>
-              <Button
-                onClick={() => onToggleEditing(true)}
-                variant="warning"
-                size="sm"
-              >
+              <Button onClick={() => onToggleEditing(true)} variant="warning" size="sm">
                 ✏️ Editar Manualmente
               </Button>
-              <Button
-                onClick={onExportClick}
-                variant="info"
-                size="sm"
-              >
+              <Button onClick={onExportClick} variant="info" size="sm">
                 📥 Baixar PDF
               </Button>
             </>
@@ -61,9 +46,7 @@ const ScheduleGridView = ({
 
       {Object.entries(groupedSchedule).map(([monthLabel, days]) => (
         <div key={monthLabel} className="schedule-grid__month">
-          <div className="schedule-grid__month-header">
-            {monthLabel.toUpperCase()}
-          </div>
+          <div className="schedule-grid__month-header">{monthLabel.toUpperCase()}</div>
 
           <div className="schedule-grid__cards">
             {days.map((day) => {
@@ -85,7 +68,9 @@ const ScheduleGridView = ({
                           {isEditing ? (
                             <select
                               value={nome}
-                              onChange={(e) => onAssignmentChange(day.originalIndex, culto, e.target.value)}
+                              onChange={(e) =>
+                                onAssignmentChange(day.originalIndex, culto, e.target.value)
+                              }
                               className="schedule-card__select"
                             >
                               <option value="VAGO">VAGO</option>
@@ -96,7 +81,13 @@ const ScheduleGridView = ({
                               ))}
                             </select>
                           ) : (
-                            <span className={nome === 'VAGO' ? 'schedule-card__name schedule-card__name--empty' : 'schedule-card__name'}>
+                            <span
+                              className={
+                                nome === 'VAGO'
+                                  ? 'schedule-card__name schedule-card__name--empty'
+                                  : 'schedule-card__name'
+                              }
+                            >
                               {nome}
                             </span>
                           )}

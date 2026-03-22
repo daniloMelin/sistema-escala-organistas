@@ -4,37 +4,37 @@ import logger from './logger';
 
 // Cores padrão (RGB)
 const COLORS = {
-  headerBg: [41, 128, 185],   // Azul forte (Cabeçalho Página)
-  headerText: [255, 255, 255],// Branco
+  headerBg: [41, 128, 185], // Azul forte (Cabeçalho Página)
+  headerText: [255, 255, 255], // Branco
 
-  monthBg: [230, 230, 230],   // Cinza (Barra do Mês)
-  monthText: [60, 60, 60],    // Cinza escuro
+  monthBg: [230, 230, 230], // Cinza (Barra do Mês)
+  monthText: [60, 60, 60], // Cinza escuro
 
-  cardBorder: [200, 200, 200],// Cinza borda
-  cardHeader: [245, 245, 245],// Cinza bem claro (Topo do Card)
+  cardBorder: [200, 200, 200], // Cinza borda
+  cardHeader: [245, 245, 245], // Cinza bem claro (Topo do Card)
 
-  textDate: [0, 0, 0],        // Preto
+  textDate: [0, 0, 0], // Preto
   textLabel: [100, 100, 100], // Cinza
-  textValue: [40, 40, 40]     // Cinza escuro
+  textValue: [40, 40, 40], // Cinza escuro
 };
 
 const hasValidAssignments = (assignments) => {
   if (!assignments || Object.keys(assignments).length === 0) {
     return false;
   }
-  return Object.values(assignments).some(value => value && value.toUpperCase() !== 'VAGO');
+  return Object.values(assignments).some((value) => value && value.toUpperCase() !== 'VAGO');
 };
 
 export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName) => {
   try {
     if (!scheduleData || scheduleData.length === 0) {
-      throw new Error("Não há dados na escala para gerar o PDF.");
+      throw new Error('Não há dados na escala para gerar o PDF.');
     }
 
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
-      format: 'a4'
+      format: 'a4',
     });
 
     // --- CONFIGURAÇÕES DE LAYOUT ---
@@ -44,8 +44,8 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
     const gap = 4;
     const columns = 3;
 
-    const contentWidth = pageWidth - (margin * 2);
-    const cardWidth = (contentWidth - (gap * (columns - 1))) / columns;
+    const contentWidth = pageWidth - margin * 2;
+    const cardWidth = (contentWidth - gap * (columns - 1)) / columns;
     const cardHeight = 28;
 
     let yPos = 50; // Começa em 50 na primeira página (por causa do cabeçalho)
@@ -71,10 +71,10 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
     // Desenha o cabeçalho APENAS na primeira página
     drawHeader();
 
-    const validItems = scheduleData.filter(item => hasValidAssignments(item.assignments));
+    const validItems = scheduleData.filter((item) => hasValidAssignments(item.assignments));
     const itemsByMonth = {};
 
-    validItems.forEach(item => {
+    validItems.forEach((item) => {
       const monthKey = getMonthYearLabel(item.date);
       if (!itemsByMonth[monthKey]) {
         itemsByMonth[monthKey] = [];
@@ -119,7 +119,7 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
           yPos = 20; // Reinicia no topo (margem simples)
         }
 
-        const xPos = margin + (columnIndex * (cardWidth + gap));
+        const xPos = margin + columnIndex * (cardWidth + gap);
 
         // --- DESENHAR O CARTÃO ---
         doc.setDrawColor(...COLORS.cardBorder);
@@ -133,7 +133,9 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
         doc.setFontSize(9);
         doc.setFont(undefined, 'bold');
         doc.setTextColor(...COLORS.textDate);
-        doc.text(`${item.dayName}, ${item.date}`, xPos + (cardWidth / 2), yPos + 5, { align: 'center' });
+        doc.text(`${item.dayName}, ${item.date}`, xPos + cardWidth / 2, yPos + 5, {
+          align: 'center',
+        });
 
         let lineY = yPos + 13;
         doc.setFontSize(9);
@@ -161,13 +163,13 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
         };
 
         if (item.assignments.RJM && item.assignments.RJM !== 'VAGO') {
-          drawRow("RJM:", item.assignments.RJM);
+          drawRow('RJM:', item.assignments.RJM);
         }
         if (item.assignments.MeiaHoraCulto && item.assignments.MeiaHoraCulto !== 'VAGO') {
-          drawRow("M. Hora:", item.assignments.MeiaHoraCulto);
+          drawRow('M. Hora:', item.assignments.MeiaHoraCulto);
         }
         if (item.assignments.Culto && item.assignments.Culto !== 'VAGO') {
-          drawRow("Culto:", item.assignments.Culto);
+          drawRow('Culto:', item.assignments.Culto);
         }
       });
 
@@ -180,23 +182,24 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
       doc.setPage(i);
       doc.setFontSize(8);
       doc.setTextColor(150);
-      doc.text(`Página ${i} de ${pageCount}`, pageWidth - margin, pageHeight - 5, { align: 'right' });
+      doc.text(`Página ${i} de ${pageCount}`, pageWidth - margin, pageHeight - 5, {
+        align: 'right',
+      });
     }
 
     // --- SALVAR ---
     const safeChurchName = (churchName || 'escala')
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-zA-Z0-9 ]/g, "")
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-zA-Z0-9 ]/g, '')
       .trim()
       .replace(/\s+/g, '_')
       .toLowerCase();
 
     const fileDate = startDate || 'period';
     doc.save(`${safeChurchName}_${fileDate}.pdf`);
-
   } catch (error) {
-    logger.error("Erro ao gerar PDF:", error);
+    logger.error('Erro ao gerar PDF:', error);
     throw error;
   }
 };

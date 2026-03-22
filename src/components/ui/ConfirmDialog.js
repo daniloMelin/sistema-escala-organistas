@@ -16,28 +16,13 @@ const ConfirmDialog = ({
   if (!isOpen) return null;
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      className="confirm-dialog__backdrop"
-      onClick={onCancel}
-    >
-      <div
-        className="confirm-dialog__card"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div role="dialog" aria-modal="true" className="confirm-dialog__backdrop" onClick={onCancel}>
+      <div className="confirm-dialog__card" onClick={(e) => e.stopPropagation()}>
         <h4 className="confirm-dialog__title">{title}</h4>
-        <p className="confirm-dialog__message">
-          {message}
-        </p>
+        <p className="confirm-dialog__message">{message}</p>
 
         <div className="confirm-dialog__actions">
-          <Button
-            type="button"
-            onClick={onCancel}
-            variant="secondary"
-            size="sm"
-          >
+          <Button type="button" onClick={onCancel} variant="secondary" size="sm">
             {cancelText}
           </Button>
           <Button

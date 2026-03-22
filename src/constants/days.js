@@ -29,7 +29,7 @@ export const INITIAL_AVAILABILITY = {
  * Mapeia a chave do dia para o label formatado
  */
 export const getDayLabel = (dayKey) => {
-  const day = ALL_WEEK_DAYS.find(d => d.key === dayKey);
+  const day = ALL_WEEK_DAYS.find((d) => d.key === dayKey);
   return day ? day.label : dayKey;
 };
 
@@ -37,18 +37,19 @@ export const getDayLabel = (dayKey) => {
  * Formata disponibilidade para exibição
  */
 export const formatAvailability = (availability) => {
-  if (!availability) return "Sem disponibilidade";
-  
-  const activeDays = ALL_WEEK_DAYS.filter(day => {
+  if (!availability) return 'Sem disponibilidade';
+
+  const activeDays = ALL_WEEK_DAYS.filter((day) => {
     return availability[day.key] || (day.key === 'sunday_culto' && availability['sunday']);
   });
 
-  if (activeDays.length === 0) return "Nenhum dia";
+  if (activeDays.length === 0) return 'Nenhum dia';
 
-  return activeDays.map(d => {
-    if (d.key === 'sunday_rjm') return 'Dom(RJM)';
-    if (d.key === 'sunday_culto') return 'Dom(Culto)';
-    return d.label.substring(0, 3);
-  }).join(', ');
+  return activeDays
+    .map((d) => {
+      if (d.key === 'sunday_rjm') return 'Dom(RJM)';
+      if (d.key === 'sunday_culto') return 'Dom(Culto)';
+      return d.label.substring(0, 3);
+    })
+    .join(', ');
 };
-

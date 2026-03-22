@@ -7,11 +7,7 @@ import {
   updateOrganistInChurch,
   getChurch,
 } from '../services/firebaseService';
-import {
-  ALL_WEEK_DAYS,
-  INITIAL_AVAILABILITY,
-  formatAvailability,
-} from '../constants/days';
+import { ALL_WEEK_DAYS, INITIAL_AVAILABILITY, formatAvailability } from '../constants/days';
 import { validateOrganistName, sanitizeString } from '../utils/validation';
 import logger from '../utils/logger';
 
@@ -140,9 +136,7 @@ export const useChurchDashboard = (user) => {
       await fetchData();
       if (!isMountedRef.current) return;
       setSuccessMessage(
-        editingId
-          ? 'Organista atualizada com sucesso.'
-          : 'Organista cadastrada com sucesso.'
+        editingId ? 'Organista atualizada com sucesso.' : 'Organista cadastrada com sucesso.'
       );
     } catch (saveError) {
       if (!isMountedRef.current) return;
