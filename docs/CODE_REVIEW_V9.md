@@ -10,6 +10,7 @@
 | 1.3    | 21 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
 | 1.4    | 21 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
 | 1.5    | 22 de março de 2026 | Danilo Melin | Fase 3.1 concluída   |
+| 1.6    | 22 de março de 2026 | Danilo Melin | Fase 3.2 concluída   |
 
 ## Objetivo
 
@@ -120,12 +121,16 @@ rotina explícita.
 
 #### 3.2 Revisar sinal x ruído dos checks após integração
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - revisar utilidade real dos novos gates
   - identificar atrito desnecessário ou redundância
   - ajustar a política antes do fechamento do ciclo
+  - resultado alcançado:
+    - revisão de sinal x ruído consolidada em documento próprio
+    - sequência atual dos gates validada como adequada
+    - critérios objetivos de reavaliação registrados
 
 ### Fase 4 - Fechamento do Ciclo
 
@@ -155,7 +160,7 @@ rotina explícita.
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
 - [x] Fase 3.1 concluída
-- [ ] Fase 3.2 pendente
+- [x] Fase 3.2 concluída
 - [ ] Fase 4.1 pendente
 
 ## Critério de Conclusão do V9
