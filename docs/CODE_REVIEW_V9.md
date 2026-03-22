@@ -5,6 +5,7 @@
 | Versão | Data                | Autor(es)    | Descrição da Revisão |
 | ------ | ------------------- | ------------ | -------------------- |
 | 1.0    | 21 de março de 2026 | Danilo Melin | Criação do ciclo V9  |
+| 1.1    | 21 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
 
 ## Objetivo
 
@@ -14,7 +15,7 @@ gates de qualidade mais previsíveis no fluxo diário e no CI.
 
 ## Status do Ciclo
 
-- Status geral: `PLANEJADO`
+- Status geral: `EM ANDAMENTO`
 - Data de início: `21 de março de 2026`
 - Data de encerramento: `A definir`
 - Contexto: continuidade direta do fechamento do `CODE_REVIEW_V8` e da
@@ -46,12 +47,16 @@ rotina explícita.
 
 #### 1.1 Integrar `format:check` ao fluxo de CI principal
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - avaliar o melhor ponto do pipeline para `format:check`
   - evitar duplicação desnecessária com outros workflows
   - garantir feedback rápido e objetivo em PR
+  - resultado alcançado:
+    - `format:check` integrado ao workflow principal de CI
+    - gate posicionado antes de lint, cobertura e build
+    - comentários automáticos do CI atualizados para refletir a nova etapa
 
 #### 1.2 Integrar `lint:md` ao fluxo de CI principal
 
@@ -125,7 +130,7 @@ rotina explícita.
 
 ## Registro de progresso
 
-- [ ] Fase 1.1 pendente
+- [x] Fase 1.1 concluída
 - [ ] Fase 1.2 pendente
 - [ ] Fase 2.1 pendente
 - [ ] Fase 2.2 pendente
