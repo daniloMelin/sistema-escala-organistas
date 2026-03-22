@@ -10,6 +10,7 @@
 | 1.3    | 22 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
 | 1.4    | 22 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
 | 1.5    | 22 de março de 2026 | Danilo Melin | Fase 3.1 concluída   |
+| 1.6    | 22 de março de 2026 | Danilo Melin | Fase 3.2 concluída   |
 
 ## Objetivo
 
@@ -125,11 +126,15 @@ As oportunidades mais naturais neste momento são:
 
 #### 3.2 Consolidar cobertura e documentação do fluxo evoluído
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - atualizar documentação e/ou review com a decisão funcional
   - consolidar a cobertura relacionada ao fluxo alterado
+  - resultado alcançado:
+    - cobertura do fluxo evoluído consolidada em documento próprio
+    - camadas de teste registradas de forma explícita
+    - itens fora do escopo documentados para evolução futura
 
 ### Fase 4 - Fechamento do Ciclo
 
@@ -159,7 +164,7 @@ As oportunidades mais naturais neste momento são:
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
 - [x] Fase 3.1 concluída
-- [ ] Fase 3.2 pendente
+- [x] Fase 3.2 concluída
 - [ ] Fase 4.1 pendente
 
 ## Critério de Conclusão do V10
