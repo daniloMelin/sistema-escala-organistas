@@ -22,7 +22,10 @@ const buildProps = (overrides = {}) => ({
   groupedSchedule,
   isEditing: false,
   isGenerating: false,
-  organists: [{ id: '1', name: 'Ana' }, { id: '2', name: 'Bia' }],
+  organists: [
+    { id: '1', name: 'Ana' },
+    { id: '2', name: 'Bia' },
+  ],
   onToggleEditing: jest.fn(),
   onSaveChanges: jest.fn(),
   onExportClick: jest.fn(),

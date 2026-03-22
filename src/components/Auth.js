@@ -4,10 +4,7 @@ import PropTypes from 'prop-types';
 import { auth, db } from '../firebaseConfig';
 import { doc, setDoc, Timestamp } from 'firebase/firestore';
 
-import {
-  signInWithPopup,
-  GoogleAuthProvider
-} from 'firebase/auth';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import logger from '../utils/logger';
 import Button from './ui/Button';
 import './Auth.css';
@@ -35,16 +32,19 @@ const Auth = ({ onE2ELogin }) => {
         // Usamos setDoc para criar ou atualizar o documento.
         // A opção { merge: true } é importante: ela cria o documento se ele não existir,
         // e se já existir, apenas atualiza os campos, sem apagar outros dados (como as subcoleções).
-        await setDoc(userDocRef, {
-          email: user.email,
-          lastLogin: Timestamp.now(), // Armazena a data do último login
-        }, { merge: true });
+        await setDoc(
+          userDocRef,
+          {
+            email: user.email,
+            lastLogin: Timestamp.now(), // Armazena a data do último login
+          },
+          { merge: true }
+        );
       }
       // Após isso, o onAuthStateChanged no App.js vai assumir e renderizar o app.
-
     } catch (err) {
       setError('Falha ao autenticar com o Google. Tente novamente.');
-      logger.error("Erro com Google Sign-In:", err);
+      logger.error('Erro com Google Sign-In:', err);
       setIsLoading(false);
     }
   };
@@ -70,12 +70,7 @@ const Auth = ({ onE2ELogin }) => {
         </Button>
 
         {isE2EMode && (
-          <Button
-            onClick={onE2ELogin}
-            variant="secondary"
-            size="lg"
-            fullWidth
-          >
+          <Button onClick={onE2ELogin} variant="secondary" size="lg" fullWidth>
             Entrar em modo E2E
           </Button>
         )}

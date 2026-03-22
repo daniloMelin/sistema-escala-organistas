@@ -9,11 +9,7 @@ import {
 } from '../services/firebaseService';
 import { SERVICE_TEMPLATES } from '../utils/scheduleLogic';
 import { INITIAL_AVAILABILITY } from '../constants/days';
-import {
-  validateChurchName,
-  validateChurchCode,
-  sanitizeString,
-} from '../utils/validation';
+import { validateChurchName, validateChurchCode, sanitizeString } from '../utils/validation';
 import logger from '../utils/logger';
 
 export const useChurchManager = (user) => {

@@ -94,9 +94,7 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
     }
 
     if (!churchConfig || Object.keys(churchConfig).length === 0) {
-      setError(
-        'A igreja não tem dias de culto configurados. Volte e configure os dias de culto.'
-      );
+      setError('A igreja não tem dias de culto configurados. Volte e configure os dias de culto.');
       return;
     }
 

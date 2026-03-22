@@ -2,7 +2,8 @@ import { db } from '../firebaseConfig';
 import {
   collection,
   addDoc,
-  getDocs, getDoc,
+  getDocs,
+  getDoc,
   doc,
   setDoc,
   query,
@@ -11,7 +12,7 @@ import {
   updateDoc,
   Timestamp,
   writeBatch,
-  limit
+  limit,
 } from 'firebase/firestore';
 import logger from '../utils/logger';
 import { isE2EMode } from '../utils/e2eMode';
@@ -32,13 +33,13 @@ import {
 // --- IGREJAS ---
 
 export const addChurch = async (userId, churchData) => {
-  if (!userId) throw new Error("ID do usuário é necessário.");
+  if (!userId) throw new Error('ID do usuário é necessário.');
   if (isE2EMode) return addChurchLocal(userId, churchData);
   try {
     const churchesCollectionRef = collection(db, 'users', userId, 'churches');
     await addDoc(churchesCollectionRef, { ...churchData, createdAt: Timestamp.now() });
   } catch (e) {
-    logger.error("Erro ao adicionar igreja:", e);
+    logger.error('Erro ao adicionar igreja:', e);
     throw e;
   }
 };
@@ -48,23 +49,23 @@ export const getChurches = async (userId) => {
   if (isE2EMode) return getChurchesLocal(userId);
   try {
     const churchesCollectionRef = collection(db, 'users', userId, 'churches');
-    const q = query(churchesCollectionRef, orderBy("name"));
+    const q = query(churchesCollectionRef, orderBy('name'));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   } catch (e) {
-    logger.error("Erro ao buscar igrejas:", e);
+    logger.error('Erro ao buscar igrejas:', e);
     throw e;
   }
 };
 
 export const deleteChurch = async (userId, churchId) => {
-  if (!userId || !churchId) throw new Error("ID inválido.");
+  if (!userId || !churchId) throw new Error('ID inválido.');
   if (isE2EMode) return deleteChurchLocal(userId, churchId);
   try {
     const churchDocRef = doc(db, 'users', userId, 'churches', churchId);
     await deleteDoc(churchDocRef);
   } catch (e) {
-    logger.error("Erro ao deletar igreja:", e);
+    logger.error('Erro ao deletar igreja:', e);
     throw e;
   }
 };
@@ -72,7 +73,7 @@ export const deleteChurch = async (userId, churchId) => {
 // Remove igreja e documentos nas subcollections especificadas (organists, schedules).
 // Usa batches de escrita para evitar exceder limites; para grandes volumes considere Cloud Functions.
 export const deleteChurchWithSubcollections = async (userId, churchId) => {
-  if (!userId || !churchId) throw new Error("ID inválido.");
+  if (!userId || !churchId) throw new Error('ID inválido.');
   if (isE2EMode) return deleteChurchLocal(userId, churchId);
   try {
     const subCollections = ['organists', 'schedules'];
@@ -101,7 +102,7 @@ export const deleteChurchWithSubcollections = async (userId, churchId) => {
     const churchDocRef = doc(db, 'users', userId, 'churches', churchId);
     await deleteDoc(churchDocRef);
   } catch (e) {
-    logger.error("Erro ao deletar igreja com subcollections:", e);
+    logger.error('Erro ao deletar igreja com subcollections:', e);
     throw e;
   }
 };
@@ -111,54 +112,54 @@ export const deleteChurchWithSubcollections = async (userId, churchId) => {
 export const getOrganistsByChurch = async (userId, churchId) => {
   if (isE2EMode) return getOrganistsLocal(userId, churchId);
   try {
-    const organistsRef = collection(db, "users", userId, "churches", churchId, "organists");
+    const organistsRef = collection(db, 'users', userId, 'churches', churchId, 'organists');
     const snapshot = await getDocs(organistsRef);
     return snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
   } catch (error) {
-    logger.error("Erro ao buscar organistas:", error);
+    logger.error('Erro ao buscar organistas:', error);
     throw error;
   }
 };
 
 export const addOrganistToChurch = async (userId, churchId, organistData) => {
-  if (!userId || !churchId) throw new Error("ID do usuário e da Igreja são necessários.");
+  if (!userId || !churchId) throw new Error('ID do usuário e da Igreja são necessários.');
   if (isE2EMode) return addOrganistLocal(userId, churchId, organistData);
   try {
-    const organistsRef = collection(db, "users", userId, "churches", churchId, "organists");
+    const organistsRef = collection(db, 'users', userId, 'churches', churchId, 'organists');
     const docRef = await addDoc(organistsRef, {
       ...organistData,
-      createdAt: Timestamp.now()
+      createdAt: Timestamp.now(),
     });
     return { id: docRef.id, ...organistData };
   } catch (error) {
-    logger.error("Erro ao adicionar organista na igreja:", error);
+    logger.error('Erro ao adicionar organista na igreja:', error);
     throw error;
   }
 };
 
 export const updateOrganistInChurch = async (userId, churchId, organistId, dataToUpdate) => {
-  if (!userId || !churchId || !organistId) throw new Error("Dados insuficientes.");
+  if (!userId || !churchId || !organistId) throw new Error('Dados insuficientes.');
   if (isE2EMode) return updateOrganistLocal(userId, churchId, organistId, dataToUpdate);
   try {
-    const organistDocRef = doc(db, "users", userId, "churches", churchId, "organists", organistId);
+    const organistDocRef = doc(db, 'users', userId, 'churches', churchId, 'organists', organistId);
     await updateDoc(organistDocRef, dataToUpdate);
   } catch (error) {
-    logger.error("Erro ao atualizar organista:", error);
+    logger.error('Erro ao atualizar organista:', error);
     throw error;
   }
 };
 
 export const deleteOrganistFromChurch = async (userId, churchId, organistId) => {
-  if (!userId || !churchId || !organistId) throw new Error("Dados insuficientes.");
+  if (!userId || !churchId || !organistId) throw new Error('Dados insuficientes.');
   if (isE2EMode) return deleteOrganistLocal(userId, churchId, organistId);
   try {
-    const organistDocRef = doc(db, "users", userId, "churches", churchId, "organists", organistId);
+    const organistDocRef = doc(db, 'users', userId, 'churches', churchId, 'organists', organistId);
     await deleteDoc(organistDocRef);
   } catch (error) {
-    logger.error("Erro ao deletar organista:", error);
+    logger.error('Erro ao deletar organista:', error);
     throw error;
   }
 };
@@ -166,17 +167,19 @@ export const deleteOrganistFromChurch = async (userId, churchId, organistId) => 
 // --- ESCALAS (POR IGREJA) ---
 
 export const saveScheduleToChurch = async (userId, churchId, scheduleId, scheduleData) => {
-  if (!userId || !churchId) throw new Error("ID do usuário e da Igreja são necessários.");
+  if (!userId || !churchId) throw new Error('ID do usuário e da Igreja são necessários.');
   if (isE2EMode) return saveScheduleLocal(userId, churchId, scheduleId, scheduleData);
   try {
     const scheduleDocRef = doc(db, 'users', userId, 'churches', churchId, 'schedules', scheduleId);
     const dataToSave = {
       ...scheduleData,
-      generatedAt: scheduleData.generatedAt ? Timestamp.fromDate(new Date(scheduleData.generatedAt)) : Timestamp.now(),
+      generatedAt: scheduleData.generatedAt
+        ? Timestamp.fromDate(new Date(scheduleData.generatedAt))
+        : Timestamp.now(),
     };
     await setDoc(scheduleDocRef, dataToSave);
   } catch (e) {
-    logger.error("Erro ao salvar escala da igreja:", e);
+    logger.error('Erro ao salvar escala da igreja:', e);
     throw e;
   }
 };
@@ -186,7 +189,7 @@ export const getChurchSchedules = async (userId, churchId, count = 3) => {
   if (isE2EMode) return getSchedulesLocal(userId, churchId, count);
   try {
     const schedulesRef = collection(db, 'users', userId, 'churches', churchId, 'schedules');
-    const q = query(schedulesRef, orderBy("generatedAt", "desc"), limit(count));
+    const q = query(schedulesRef, orderBy('generatedAt', 'desc'), limit(count));
 
     const querySnapshot = await getDocs(q);
     const schedules = [];
@@ -201,20 +204,20 @@ export const getChurchSchedules = async (userId, churchId, count = 3) => {
     });
     return schedules;
   } catch (e) {
-    logger.error("Erro ao buscar escalas da igreja:", e);
+    logger.error('Erro ao buscar escalas da igreja:', e);
     throw e;
   }
 };
 
 // Atualizar dados de uma Igreja
 export const updateChurch = async (userId, churchId, dataToUpdate) => {
-  if (!userId || !churchId) throw new Error("Dados insuficientes.");
+  if (!userId || !churchId) throw new Error('Dados insuficientes.');
   if (isE2EMode) return updateChurchLocal(userId, churchId, dataToUpdate);
   try {
     const churchDocRef = doc(db, 'users', userId, 'churches', churchId);
     await updateDoc(churchDocRef, dataToUpdate);
   } catch (e) {
-    logger.error("Erro ao atualizar igreja:", e);
+    logger.error('Erro ao atualizar igreja:', e);
     throw e;
   }
 };
@@ -229,7 +232,7 @@ export const getChurch = async (userId, churchId) => {
     }
     return null;
   } catch (e) {
-    logger.error("Erro ao buscar igreja:", e);
+    logger.error('Erro ao buscar igreja:', e);
     throw e;
   }
 };

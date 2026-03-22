@@ -1,8 +1,4 @@
-import {
-  getMonthYearLabel,
-  isValidDate,
-  formatDateForDisplay,
-} from '../utils/dateUtils';
+import { getMonthYearLabel, isValidDate, formatDateForDisplay } from '../utils/dateUtils';
 
 describe('dateUtils', () => {
   test('formata o rotulo de mes e ano a partir de DD/MM/YYYY', () => {

@@ -1,7 +1,7 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-import logger from "./utils/logger";
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import logger from './utils/logger';
 
 const isE2EMode = process.env.REACT_APP_E2E_MODE === 'true';
 
@@ -11,7 +11,7 @@ const firebaseConfig = {
   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 const fallbackE2EConfig = {
@@ -31,9 +31,11 @@ const effectiveFirebaseConfig =
 // Validação básica
 if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
   if (isE2EMode) {
-    logger.warn("Configuração do Firebase ausente no modo E2E. Usando configuração dummy para bootstrap local.");
+    logger.warn(
+      'Configuração do Firebase ausente no modo E2E. Usando configuração dummy para bootstrap local.'
+    );
   } else {
-    logger.error("Configuração do Firebase incompleta. Verifique as variáveis de ambiente.");
+    logger.error('Configuração do Firebase incompleta. Verifique as variáveis de ambiente.');
   }
 }
 

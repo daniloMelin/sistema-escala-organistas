@@ -18,7 +18,7 @@ class ErrorBoundary extends React.Component {
     logger.error('Error caught by boundary:', { error, errorInfo });
     this.setState({
       error,
-      errorInfo
+      errorInfo,
     });
   }
 
@@ -30,9 +30,7 @@ class ErrorBoundary extends React.Component {
     if (this.state.hasError) {
       return (
         <div className="error-boundary">
-          <h2 className="error-boundary__title">
-            ⚠️ Algo deu errado
-          </h2>
+          <h2 className="error-boundary__title">⚠️ Algo deu errado</h2>
           <p className="error-boundary__text">
             Ocorreu um erro inesperado. Por favor, recarregue a página.
           </p>
@@ -47,10 +45,7 @@ class ErrorBoundary extends React.Component {
               </pre>
             </details>
           )}
-          <Button
-            onClick={this.handleReload}
-            variant="primary"
-          >
+          <Button onClick={this.handleReload} variant="primary">
             Recarregar Página
           </Button>
         </div>

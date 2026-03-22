@@ -21,7 +21,9 @@ const ChurchForm = ({
 }) => {
   return (
     <div className={`church-form ${editingId ? 'church-form--editing' : ''}`}>
-      <h3 className="church-form__title">{editingId ? 'Editar Igreja' : 'Cadastrar Nova Igreja'}</h3>
+      <h3 className="church-form__title">
+        {editingId ? 'Editar Igreja' : 'Cadastrar Nova Igreja'}
+      </h3>
 
       <form onSubmit={onSubmit}>
         <Input
@@ -39,9 +41,7 @@ const ChurchForm = ({
         />
 
         <div className="church-form__days">
-          <label className="church-form__days-label">
-            Dias de Culto:
-          </label>
+          <label className="church-form__days-label">Dias de Culto:</label>
 
           <div className="church-form__days-grid">
             {ALL_WEEK_DAYS.map((day) => (
@@ -53,10 +53,7 @@ const ChurchForm = ({
                   onChange={() => onDayChange(day.key)}
                   className="church-form__day-checkbox"
                 />
-                <label
-                  htmlFor={`day-${day.key}`}
-                  className="church-form__day-label"
-                >
+                <label htmlFor={`day-${day.key}`} className="church-form__day-label">
                   {day.label}
                 </label>
               </div>

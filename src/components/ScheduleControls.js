@@ -43,15 +43,9 @@ const ScheduleControls = ({
         </Button>
       </div>
 
-      {error && (
-        <p className="feedback feedback--error feedback--box">
-          {error}
-        </p>
-      )}
+      {error && <p className="feedback feedback--error feedback--box">{error}</p>}
       {successMessage && (
-        <p className="feedback feedback--success feedback--box">
-          {successMessage}
-        </p>
+        <p className="feedback feedback--success feedback--box">{successMessage}</p>
       )}
     </div>
   );

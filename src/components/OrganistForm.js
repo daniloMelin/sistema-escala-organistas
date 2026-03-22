@@ -68,12 +68,27 @@ const OrganistForm = ({
         </div>
 
         <div className="organist-form__actions">
-          <Button type="submit" disabled={isSubmitting} variant={editingId ? 'warning' : 'success'} className="organist-form__submit">
-            {isSubmitting ? 'Salvando...' : editingId ? 'Atualizar Organista' : 'Cadastrar Organista'}
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            variant={editingId ? 'warning' : 'success'}
+            className="organist-form__submit"
+          >
+            {isSubmitting
+              ? 'Salvando...'
+              : editingId
+                ? 'Atualizar Organista'
+                : 'Cadastrar Organista'}
           </Button>
 
           {editingId && (
-            <Button type="button" onClick={onCancelEdit} disabled={isSubmitting} variant="secondary" size="sm">
+            <Button
+              type="button"
+              onClick={onCancelEdit}
+              disabled={isSubmitting}
+              variant="secondary"
+              size="sm"
+            >
               Cancelar
             </Button>
           )}

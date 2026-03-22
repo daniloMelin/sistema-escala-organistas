@@ -2,14 +2,7 @@ import React, { useId } from 'react';
 import PropTypes from 'prop-types';
 import './Input.css';
 
-const Input = ({ 
-  label, 
-  error, 
-  required = false,
-  size = 'md',
-  id,
-  ...props 
-}) => {
+const Input = ({ label, error, required = false, size = 'md', id, ...props }) => {
   const generatedId = useId();
   const inputId = id || `input-${generatedId}`;
 
@@ -27,14 +20,12 @@ const Input = ({
           'input-field__control',
           size === 'sm' ? 'input-field__control--sm' : '',
           error ? 'input-field__control--error' : '',
-        ].join(' ').trim()}
+        ]
+          .join(' ')
+          .trim()}
         {...props}
       />
-      {error && (
-        <p className="input-field__error">
-          {error}
-        </p>
-      )}
+      {error && <p className="input-field__error">{error}</p>}
     </div>
   );
 };

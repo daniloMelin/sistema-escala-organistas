@@ -79,15 +79,10 @@ export const createFirestoreLoggerReporter = ({ getUser } = {}) => {
       context: serializeValue(entry.context),
       clientTimestamp: entry.timestamp,
       createdAt: serverTimestamp(),
-      route:
-        typeof window !== 'undefined' && window.location
-          ? window.location.pathname
-          : null,
-      userAgent:
-        typeof navigator !== 'undefined' ? truncate(navigator.userAgent) : null,
+      route: typeof window !== 'undefined' && window.location ? window.location.pathname : null,
+      userAgent: typeof navigator !== 'undefined' ? truncate(navigator.userAgent) : null,
     };
 
     await addDoc(collection(db, 'users', user.uid, 'appLogs'), payload);
   };
 };
-

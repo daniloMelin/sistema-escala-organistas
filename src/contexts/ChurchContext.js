@@ -11,11 +11,7 @@ export const ChurchProvider = ({ children }) => {
   // O valor que será compartilhado com todos os componentes filhos.
   const value = { selectedChurch, setSelectedChurch };
 
-  return (
-    <ChurchContext.Provider value={value}>
-      {children}
-    </ChurchContext.Provider>
-  );
+  return <ChurchContext.Provider value={value}>{children}</ChurchContext.Provider>;
 };
 
 // 3. Cria um "hook" personalizado para facilitar o uso do Contexto.

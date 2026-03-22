@@ -124,12 +124,7 @@ describe('generateSchedule', () => {
       },
     ];
 
-    const result = generateSchedule(
-      organists,
-      '2026-03-01',
-      '2026-03-01',
-      SUNDAY_WITH_RJM_CONFIG
-    );
+    const result = generateSchedule(organists, '2026-03-01', '2026-03-01', SUNDAY_WITH_RJM_CONFIG);
     expect(result).toHaveLength(1);
 
     const assignments = result[0].assignments;

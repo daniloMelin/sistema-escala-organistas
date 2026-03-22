@@ -10,20 +10,30 @@
  */
 export const getMonthYearLabel = (dateStr) => {
   if (!dateStr) return '';
-  
+
   const parts = dateStr.split('/');
   if (parts.length < 3) return dateStr;
 
   const monthIndex = parseInt(parts[1], 10) - 1;
   const year = parts[2];
-  
+
   const months = [
-    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+    'Janeiro',
+    'Fevereiro',
+    'Março',
+    'Abril',
+    'Maio',
+    'Junho',
+    'Julho',
+    'Agosto',
+    'Setembro',
+    'Outubro',
+    'Novembro',
+    'Dezembro',
   ];
 
   if (monthIndex < 0 || monthIndex > 11) return dateStr;
-  
+
   return `${months[monthIndex]} de ${year}`;
 };
 
@@ -47,11 +57,10 @@ export const formatDateForDisplay = (dateStr) => {
   if (!dateStr) return '';
   const date = new Date(dateStr + 'T00:00:00');
   if (isNaN(date.getTime())) return dateStr;
-  
+
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
-  
+
   return `${day}/${month}/${year}`;
 };
-

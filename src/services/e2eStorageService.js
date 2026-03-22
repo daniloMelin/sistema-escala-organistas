@@ -114,7 +114,9 @@ export const getChurchesLocal = async (userId) => {
   throwIfOperationConfiguredToFail('getChurchesLocal', 'Falha E2E simulada ao carregar igrejas.');
   const database = getStorage();
   const userData = ensureUser(database, userId);
-  return sortByName(Object.values(userData.churches).map(({ organists, schedules, ...church }) => church));
+  return sortByName(
+    Object.values(userData.churches).map(({ organists, schedules, ...church }) => church)
+  );
 };
 
 export const updateChurchLocal = async (userId, churchId, dataToUpdate) => {
@@ -142,7 +144,10 @@ export const deleteChurchLocal = async (userId, churchId) => {
 };
 
 export const addOrganistLocal = async (userId, churchId, organistData) => {
-  throwIfOperationConfiguredToFail('addOrganistLocal', 'Falha E2E simulada ao adicionar organista.');
+  throwIfOperationConfiguredToFail(
+    'addOrganistLocal',
+    'Falha E2E simulada ao adicionar organista.'
+  );
   const database = getStorage();
   const church = ensureChurch(database, userId, churchId);
   const id = createId('organist');
@@ -158,14 +163,20 @@ export const addOrganistLocal = async (userId, churchId, organistData) => {
 };
 
 export const getOrganistsLocal = async (userId, churchId) => {
-  throwIfOperationConfiguredToFail('getOrganistsLocal', 'Falha E2E simulada ao carregar organistas.');
+  throwIfOperationConfiguredToFail(
+    'getOrganistsLocal',
+    'Falha E2E simulada ao carregar organistas.'
+  );
   const database = getStorage();
   const church = ensureChurch(database, userId, churchId);
   return sortByName(Object.values(church.organists));
 };
 
 export const updateOrganistLocal = async (userId, churchId, organistId, dataToUpdate) => {
-  throwIfOperationConfiguredToFail('updateOrganistLocal', 'Falha E2E simulada ao atualizar organista.');
+  throwIfOperationConfiguredToFail(
+    'updateOrganistLocal',
+    'Falha E2E simulada ao atualizar organista.'
+  );
   const database = getStorage();
   const church = ensureChurch(database, userId, churchId);
   if (!church.organists[organistId]) throw new Error('Organista não encontrada no modo E2E.');
@@ -174,7 +185,10 @@ export const updateOrganistLocal = async (userId, churchId, organistId, dataToUp
 };
 
 export const deleteOrganistLocal = async (userId, churchId, organistId) => {
-  throwIfOperationConfiguredToFail('deleteOrganistLocal', 'Falha E2E simulada ao excluir organista.');
+  throwIfOperationConfiguredToFail(
+    'deleteOrganistLocal',
+    'Falha E2E simulada ao excluir organista.'
+  );
   const database = getStorage();
   const church = ensureChurch(database, userId, churchId);
   delete church.organists[organistId];

@@ -6,50 +6,42 @@ import {
   format,
   isValid,
   getDay as getDayFn,
-} from "date-fns";
-import logger from "./logger";
+} from 'date-fns';
+import logger from './logger';
 
 export const SERVICE_TEMPLATES = {
-  RJM: { id: "RJM", label: "RJM", needs: 1 },
-  MeiaHora: { id: "MeiaHoraCulto", label: "Meia Hora", needs: 1 },
-  Culto: { id: "Culto", label: "Culto", needs: 1 },
+  RJM: { id: 'RJM', label: 'RJM', needs: 1 },
+  MeiaHora: { id: 'MeiaHoraCulto', label: 'Meia Hora', needs: 1 },
+  Culto: { id: 'Culto', label: 'Culto', needs: 1 },
 };
 
 // Mapa do dia da semana (getDay) para a chave de configuração da igreja
 // getDay: 0 = Domingo, 1 = Segunda, 2 = Terça, ... 6 = Sábado
 const DAY_INDEX_TO_CONFIG_KEY = {
-  0: "sunday", // Domingo
-  1: "monday", // Segunda
-  2: "tuesday", // Terça
-  3: "wednesday", // Quarta
-  4: "thursday", // Quinta
-  5: "friday", // Sexta
-  6: "saturday", // Sábado
+  0: 'sunday', // Domingo
+  1: 'monday', // Segunda
+  2: 'tuesday', // Terça
+  3: 'wednesday', // Quarta
+  4: 'thursday', // Quinta
+  5: 'friday', // Sexta
+  6: 'saturday', // Sábado
 };
 
 const formatDate = (dateObj) => {
-  if (!dateObj || !isValid(dateObj)) return "Data inválida";
-  return format(dateObj, "dd/MM/yyyy");
+  if (!dateObj || !isValid(dateObj)) return 'Data inválida';
+  return format(dateObj, 'dd/MM/yyyy');
 };
 
 const getDayName = (dateObj) => {
-  if (!dateObj || !isValid(dateObj)) return "Dia inválido";
-  const days = [
-    "Domingo",
-    "Segunda",
-    "Terça",
-    "Quarta",
-    "Quinta",
-    "Sexta",
-    "Sábado",
-  ];
+  if (!dateObj || !isValid(dateObj)) return 'Dia inválido';
+  const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
   return days[getDayFn(dateObj)];
 };
 
 // Mapeia qual chave de disponibilidade verificar para cada culto em cada dia
 const getAvailabilityKey = (dayKey, cultoId) => {
-  if (dayKey === "sunday") {
-    return cultoId === "RJM" ? "sunday_rjm" : "sunday_culto";
+  if (dayKey === 'sunday') {
+    return cultoId === 'RJM' ? 'sunday_rjm' : 'sunday_culto';
   }
   // Para os outros dias, a chave é o nome do dia em inglês
   return dayKey;
@@ -82,14 +74,14 @@ const canOrganistPlayOnDay = (organist, dayOfWeek, dayKey, cultoId, churchConfig
 
   // Verifica se a igreja tem este culto configurado para este dia
   const cultosForThisDay = churchConfig && churchConfig[dayKey] ? churchConfig[dayKey] : [];
-  return cultosForThisDay.some(c => c.id === cultoId);
+  return cultosForThisDay.some((c) => c.id === cultoId);
 };
 
 /**
  * PASSO A: Calcula o Availability Score para cada organista
  * Score baixo = organista restrita (ex: só sábados)
  * Score alto = organista livre (curinga)
- * 
+ *
  * @param {Array} organists - Lista de organistas
  * @param {Array} periodDates - Array de objetos representando os dias do período
  * @param {Object} churchConfig - Configuração da igreja
@@ -98,14 +90,14 @@ const canOrganistPlayOnDay = (organist, dayOfWeek, dayKey, cultoId, churchConfig
 const calculateAvailabilityScores = (organists, periodDates, churchConfig) => {
   const scores = {};
 
-  organists.forEach(organist => {
+  organists.forEach((organist) => {
     let score = 0;
 
-    periodDates.forEach(dayInfo => {
+    periodDates.forEach((dayInfo) => {
       const { dayOfWeek, dayKey, cultos } = dayInfo;
-      
+
       // Conta quantos cultos ela poderia tocar neste dia
-      cultos.forEach(culto => {
+      cultos.forEach((culto) => {
         if (canOrganistPlayOnDay(organist, dayOfWeek, dayKey, culto.id, churchConfig)) {
           score++;
         }
@@ -125,8 +117,8 @@ const SERVICE_PRIORITY = {
 };
 
 const getRoleCountForCulto = (stats, cultoId) => {
-  if (cultoId === "MeiaHoraCulto") return stats.meiaHora || 0;
-  if (cultoId === "Culto") return stats.culto || 0;
+  if (cultoId === 'MeiaHoraCulto') return stats.meiaHora || 0;
+  if (cultoId === 'Culto') return stats.culto || 0;
   return stats.total || 0;
 };
 
@@ -137,8 +129,8 @@ const incrementStatsForCulto = (stats, cultoId) => {
     total: (stats.total || 0) + 1,
   };
 
-  if (cultoId === "MeiaHoraCulto") next.meiaHora += 1;
-  if (cultoId === "Culto") next.culto += 1;
+  if (cultoId === 'MeiaHoraCulto') next.meiaHora += 1;
+  if (cultoId === 'Culto') next.culto += 1;
 
   return next;
 };
@@ -201,7 +193,7 @@ const runPrimaryAllocation = ({
 }) => {
   periodDates.forEach((dayInfo, dayIndex) => {
     const { date, dayOfWeek, dayKey, cultos } = dayInfo;
-    const dateStr = format(date, "yyyy-MM-dd");
+    const dateStr = format(date, 'yyyy-MM-dd');
     const currentDayAssignments = schedule[dayIndex].assignments || {};
 
     const orderedCultos = [...cultos].sort(
@@ -232,7 +224,7 @@ const runPrimaryAllocation = ({
             getRoleCountForCulto(statsA, culto.id) - getRoleCountForCulto(statsB, culto.id);
           if (roleDiff !== 0) return roleDiff;
 
-          return (a.name || "").localeCompare(b.name || "");
+          return (a.name || '').localeCompare(b.name || '');
         });
 
       const selected = candidates[0];
@@ -249,13 +241,7 @@ const runPrimaryAllocation = ({
   });
 };
 
-const applyDoubleDutyRule = ({
-  periodDates,
-  schedule,
-  organists,
-  organistStats,
-  churchConfig,
-}) => {
+const applyDoubleDutyRule = ({ periodDates, schedule, organists, organistStats, churchConfig }) => {
   periodDates.forEach((dayInfo, dayIndex) => {
     const { dayOfWeek, dayKey, cultos } = dayInfo;
     const dayAssignments = schedule[dayIndex].assignments || {};
@@ -285,7 +271,7 @@ const applyDoubleDutyRule = ({
         schedule[dayIndex].assignments[meiaHoraCulto.id] = organistName;
 
         const stats = organistStats[organist.id] || { meiaHora: 0, culto: 0, total: 0 };
-        organistStats[organist.id] = incrementStatsForCulto(stats, "MeiaHoraCulto");
+        organistStats[organist.id] = incrementStatsForCulto(stats, 'MeiaHoraCulto');
       }
     }
 
@@ -295,19 +281,13 @@ const applyDoubleDutyRule = ({
       const organist = organists.find((org) => org.name === organistName);
       if (!organist) return;
 
-      const canPlayCulto = canOrganistPlayOnDay(
-        organist,
-        dayOfWeek,
-        dayKey,
-        'Culto',
-        churchConfig
-      );
+      const canPlayCulto = canOrganistPlayOnDay(organist, dayOfWeek, dayKey, 'Culto', churchConfig);
 
       if (canPlayCulto) {
         schedule[dayIndex].assignments[cultoCulto.id] = organistName;
 
         const stats = organistStats[organist.id] || { meiaHora: 0, culto: 0, total: 0 };
-        organistStats[organist.id] = incrementStatsForCulto(stats, "Culto");
+        organistStats[organist.id] = incrementStatsForCulto(stats, 'Culto');
       }
     }
   });
@@ -315,40 +295,35 @@ const applyDoubleDutyRule = ({
 
 /**
  * Função principal: Gera escala inicial justa baseada em fixedDays
- * 
+ *
  * Algoritmo:
  * 1. Calcula availabilityScore (organistas restritas têm score baixo)
  * 2. Aloca por dia/culto, escolhendo menor carga total primeiro
  * 3. Em empates, prioriza equilíbrio por função e escassez (availabilityScore)
  * 4. Slots não preenchidos ficam como null/undefined (não "VAGO")
- * 
+ *
  * @param {Array} organists - Array de organistas { id, name, fixedDays, stats }
  * @param {string} startDateStr - Data inicial (ISO string)
  * @param {string} endDateStr - Data final (ISO string)
  * @param {Object} churchConfig - Configuração da igreja com dias de culto
  * @returns {Array} Array de objetos { date, dayName, assignments: { cultoId: organistName } }
  */
-export const generateSchedule = (
-  organists,
-  startDateStr,
-  endDateStr,
-  churchConfig = null
-) => {
+export const generateSchedule = (organists, startDateStr, endDateStr, churchConfig = null) => {
   // Validações iniciais
   if (!organists || organists.length === 0) {
-    logger.warn("Nenhum organista cadastrado para gerar escala.");
+    logger.warn('Nenhum organista cadastrado para gerar escala.');
     return [];
   }
 
   if (!startDateStr || !endDateStr) {
-    logger.error("Datas de início ou término inválidas.");
+    logger.error('Datas de início ou término inválidas.');
     return [];
   }
 
   const parsedStart = parseISO(startDateStr);
   const parsedEnd = parseISO(endDateStr);
   if (!isValid(parsedStart) || !isValid(parsedEnd) || parsedStart > parsedEnd) {
-    logger.error("Datas de início ou término inválidas.");
+    logger.error('Datas de início ou término inválidas.');
     return [];
   }
 
@@ -356,14 +331,17 @@ export const generateSchedule = (
   const periodDates = buildPeriodDates(parsedStart, parsedEnd, churchConfig);
 
   if (periodDates.length === 0) {
-    logger.warn("Nenhum dia de culto configurado no período.");
+    logger.warn('Nenhum dia de culto configurado no período.');
     return [];
   }
 
   // PASSO A: Calcula Availability Score para cada organista
   const availabilityScores = calculateAvailabilityScores(organists, periodDates, churchConfig);
 
-  const { organistStats, assignedDates, schedule } = initializeAllocationState(organists, periodDates);
+  const { organistStats, assignedDates, schedule } = initializeAllocationState(
+    organists,
+    periodDates
+  );
 
   // PASSO C: Alocação e Equilíbrio (Loop Principal)
   runPrimaryAllocation({
