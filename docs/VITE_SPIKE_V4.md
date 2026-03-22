@@ -2,13 +2,14 @@
 
 ## Histórico de Revisões
 
-| Versão | Data                    | Autor(es)    | Descrição da Revisão                                                        |
-| ------ | ----------------------- | ------------ | --------------------------------------------------------------------------- |
-| 1.0    | 25 de fevereiro de 2026 | Danilo Melin | Criação do spike técnico da Fase 3.2 para avaliar migração de CRA para Vite |
+| Versão | Data | Autor(es) | Descrição da Revisão |
+| ------ | ---- | --------- | -------------------- |
+| 1.0 | 25 de fevereiro de 2026 | Danilo Melin | Criação do spike |
 
 ## Objetivo
 
-Avaliar a viabilidade técnica de migrar o projeto de `Create React App (CRA)` para `Vite`, com foco em:
+Avaliar a viabilidade técnica de migrar o projeto de `Create React App
+(CRA)` para `Vite`, com foco em:
 
 - impacto real no projeto atual
 - riscos de compatibilidade
@@ -183,7 +184,8 @@ Os seguintes pontos não apresentam risco alto para a migração:
 
 ### Risco 1. Variáveis de ambiente quebrarem a inicialização do Firebase
 
-Se a troca de `REACT_APP_*` para `VITE_*` não for feita corretamente, o app pode subir sem configuração válida.
+Se a troca de `REACT_APP_*` para `VITE_*` não for feita corretamente, o
+app pode subir sem configuração válida.
 
 Mitigação:
 
@@ -307,7 +309,8 @@ Rollback operacional:
 
 ### Conclusão
 
-A migração de CRA para Vite é **viável e recomendada**, mas **não deve ser feita junto com mudanças funcionais**.
+A migração de CRA para Vite é **viável e recomendada**, mas **não deve
+ser feita junto com mudanças funcionais**.
 
 ### Decisão recomendada
 
@@ -318,13 +321,16 @@ A migração de CRA para Vite é **viável e recomendada**, mas **não deve ser 
 ### Justificativa
 
 - o projeto está estável hoje
-- a migração traz ganho de sustentabilidade e velocidade de desenvolvimento
+- a migração traz ganho de sustentabilidade e velocidade de
+  desenvolvimento
 - o risco não está na regra de negócio, e sim em tooling, env vars e deploy
-- portanto, o melhor custo-benefício é migrar em um ciclo separado e controlado
+- portanto, o melhor custo-benefício é migrar em um ciclo separado e
+  controlado
 
 ## Próximo Passo Recomendado
 
-Criar um ciclo exclusivo para a migração técnica quando a prioridade não estiver em entrega funcional.
+Criar um ciclo exclusivo para a migração técnica quando a prioridade
+não estiver em entrega funcional.
 
 Sugestão de branch futura:
 

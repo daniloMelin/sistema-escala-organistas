@@ -68,7 +68,8 @@
 - `src/App.js` - Adicionado ErrorBoundary e lazy loading
 - `src/components/ChurchManager.js` - Validações, constantes centralizadas, memoização
 - `src/components/ChurchDashboard.js` - Validações, constantes centralizadas, memoização
-- `src/components/ChurchScheduleGenerator.js` - Validações, constantes centralizadas, memoização
+- `src/components/ChurchScheduleGenerator.js` - Validações, constantes
+  centralizadas, memoização
 - `src/utils/pdfGenerator.js` - Usa `getMonthYearLabel` de `dateUtils.js`
 
 ### ⚠️ Ações Necessárias do Usuário

@@ -2,16 +2,18 @@
 
 ## Histórico de Revisões
 
-| Versão | Data                | Autor(es)    | Descrição da Revisão                                                       |
-| ------ | ------------------- | ------------ | -------------------------------------------------------------------------- |
-| 1.0    | 21 de março de 2026 | Danilo Melin | Definição inicial do subconjunto smoke para pull requests no ciclo V7      |
-| 1.1    | 21 de março de 2026 | Danilo Melin | Integração do subconjunto smoke ao Playwright e ao GitHub Actions          |
-| 1.2    | 21 de março de 2026 | Danilo Melin | Inclusão do fluxo real de login E2E no subconjunto smoke                   |
-| 1.3    | 21 de março de 2026 | Danilo Melin | Redução do smoke para fluxos mais determinísticos após estabilização no CI |
+| Versão | Data | Autor(es) | Descrição da Revisão |
+| ------ | ---- | --------- | -------------------- |
+| 1.0 | 21 de março de 2026 | Danilo Melin | Definição do smoke |
+| 1.1 | 21 de março de 2026 | Danilo Melin | Smoke no Actions |
+| 1.2 | 21 de março de 2026 | Danilo Melin | Login E2E no smoke |
+| 1.3 | 21 de março de 2026 | Danilo Melin | Smoke reduzido |
 
 ## Objetivo
 
-Definir o subconjunto mínimo de testes E2E com melhor custo x valor para rodar com frequência alta em pull requests, sem substituir a suíte completa.
+Definir o subconjunto mínimo de testes E2E com melhor custo x valor
+para rodar com frequência alta em pull requests, sem substituir a suíte
+completa.
 
 ## Critérios de Seleção
 
@@ -49,7 +51,8 @@ Um cenário fica fora do smoke quando:
 
 ## Ajuste de Estabilidade Aplicado no CI
 
-Após a primeira execução do smoke em PR, os cenários abaixo foram retirados do subconjunto automático:
+Após a primeira execução do smoke em PR, os cenários abaixo foram retirados do subconjunto
+automático:
 
 - `e2e/navigation-initial.spec.js`
 - `e2e/empty-states.spec.js`
@@ -77,7 +80,8 @@ Motivo:
 
 ## Validação Local do Subconjunto
 
-No ciclo V7, a validação local foi feita com base na estabilidade comprovada desses cenários dentro da suíte E2E completa:
+No ciclo V7, a validação local foi feita com base na estabilidade
+comprovada desses cenários dentro da suíte E2E completa:
 
 - `e2e/auth-smoke.spec.js`
 - `e2e/e2e-login.spec.js`
