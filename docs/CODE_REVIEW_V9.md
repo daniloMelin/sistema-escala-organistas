@@ -9,6 +9,7 @@
 | 1.2    | 21 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
 | 1.3    | 21 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
 | 1.4    | 21 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
+| 1.5    | 22 de março de 2026 | Danilo Melin | Fase 3.1 concluída   |
 
 ## Objetivo
 
@@ -106,12 +107,16 @@ rotina explícita.
 
 #### 3.1 Consolidar política de qualidade estática do repositório
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - documentar quando um novo check deve virar gate
   - registrar critérios para exceções e rollout gradual
   - consolidar a relação entre local, PR e execução periódica
+  - resultado alcançado:
+    - política estática consolidada em documento próprio
+    - critérios de promoção e exceção registrados
+    - relação entre rotina local e CI principal documentada
 
 #### 3.2 Revisar sinal x ruído dos checks após integração
 
@@ -149,7 +154,7 @@ rotina explícita.
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
-- [ ] Fase 3.1 pendente
+- [x] Fase 3.1 concluída
 - [ ] Fase 3.2 pendente
 - [ ] Fase 4.1 pendente
 
