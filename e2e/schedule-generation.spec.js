@@ -35,7 +35,9 @@ test.describe('geracao de escala', () => {
     await page.getByLabel('Data Fim:').fill('2026-03-01');
     await page.getByRole('button', { name: 'Gerar Nova Escala' }).click();
 
-    await expect(page.getByText('Escala gerada e salva com sucesso!')).toBeVisible();
+    await expect(
+      page.getByText('Escala de 01/03/2026 até 01/03/2026 gerada e salva com sucesso.')
+    ).toBeVisible();
     await expect(page.getByText('Visualização da Escala')).toBeVisible();
     await expect(page.getByText('Domingo, 01/03/2026')).toBeVisible();
     await expect(page.getByText('Histórico de Escalas')).toBeVisible();

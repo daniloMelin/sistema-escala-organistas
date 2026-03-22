@@ -62,6 +62,17 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
     }
   }, [id, user]);
 
+  const formatPeriodLabel = useCallback((periodStart, periodEnd) => {
+    const startLabel = periodStart
+      ? new Date(`${periodStart}T00:00:00`).toLocaleDateString('pt-BR')
+      : 'N/A';
+    const endLabel = periodEnd
+      ? new Date(`${periodEnd}T00:00:00`).toLocaleDateString('pt-BR')
+      : 'N/A';
+
+    return `${startLabel} até ${endLabel}`;
+  }, []);
+
   useEffect(() => {
     loadData();
   }, [loadData]);
@@ -72,7 +83,7 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
       exportScheduleToPDF(generatedSchedule, startDate, endDate, churchName);
     } catch (err) {
       logger.error('Erro ao exportar PDF:', err);
-      setError(`Erro ao exportar PDF: ${err.message || err}`);
+      setError('Não foi possível exportar o PDF. Tente novamente.');
     }
   };
 
@@ -122,14 +133,16 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
       if (!isMountedRef.current) return;
 
       setCurrentScheduleId(scheduleId);
-      setSuccessMessage('Escala gerada e salva com sucesso!');
+      setSuccessMessage(
+        `Escala de ${formatPeriodLabel(startDate, endDate)} gerada e salva com sucesso.`
+      );
       const updatedSchedules = await getChurchSchedules(user.uid, id);
       if (!isMountedRef.current) return;
       setSavedSchedules(updatedSchedules);
     } catch (err) {
       if (!isMountedRef.current) return;
       logger.error('Erro ao gerar/salvar escala:', err);
-      setError('Erro ao gerar/salvar escala.');
+      setError('Não foi possível gerar e salvar a escala. Verifique as datas e tente novamente.');
     } finally {
       if (isMountedRef.current) setIsGenerating(false);
     }
@@ -145,7 +158,12 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
       setEndDate(scheduleData.period.end);
     }
     setCurrentScheduleId(scheduleData.id);
-    setSuccessMessage('Visualizando escala do histórico.');
+    setSuccessMessage(
+      `Visualizando escala salva de ${formatPeriodLabel(
+        scheduleData.period?.start,
+        scheduleData.period?.end
+      )}.`
+    );
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -167,7 +185,9 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
       };
       await saveScheduleToChurch(user.uid, id, currentScheduleId, scheduleData);
       if (!isMountedRef.current) return;
-      setSuccessMessage('Alterações salvas com sucesso!');
+      setSuccessMessage(
+        `Alterações da escala de ${formatPeriodLabel(startDate, endDate)} salvas com sucesso.`
+      );
       setIsEditing(false);
       const updatedSchedules = await getChurchSchedules(user.uid, id);
       if (!isMountedRef.current) return;
@@ -175,7 +195,7 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
     } catch (err) {
       if (!isMountedRef.current) return;
       logger.error('Erro ao salvar alterações da escala:', err);
-      setError('Erro ao salvar as alterações.');
+      setError('Não foi possível salvar as alterações da escala. Tente novamente.');
     } finally {
       if (isMountedRef.current) setIsGenerating(false);
     }
