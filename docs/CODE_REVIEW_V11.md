@@ -6,6 +6,7 @@
 | ------ | ------------------- | ------------ | -------------------- |
 | 1.0    | 24 de março de 2026 | Danilo Melin | Criação do ciclo V11 |
 | 1.1    | 24 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
+| 1.2    | 24 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
 
 ## Objetivo
 
@@ -62,12 +63,16 @@ Os riscos remanescentes mais relevantes agora são:
 
 #### 1.2 Implementar melhoria prioritária de localização
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - aplicar a melhoria escolhida na Fase 1.1
   - preservar a simplicidade do fluxo atual
   - cobrir a evolução com testes adequados
+  - resultado alcançado:
+    - busca textual adicionada ao histórico
+    - estado vazio específico criado para busca sem resultado
+    - cobertura do componente atualizada para o novo comportamento
 
 ### Fase 2 - Experiência Operacional do Histórico
 
@@ -131,7 +136,7 @@ Os riscos remanescentes mais relevantes agora são:
 ## Registro de progresso
 
 - [x] Fase 1.1 concluída
-- [ ] Fase 1.2 pendente
+- [x] Fase 1.2 concluída
 - [ ] Fase 2.1 pendente
 - [ ] Fase 2.2 pendente
 - [ ] Fase 3.1 pendente

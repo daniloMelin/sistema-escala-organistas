@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from './ui/Button';
+import Input from './ui/Input';
 
 const formatSchedulePeriod = (schedule) => {
   const start = schedule.period?.start
@@ -26,14 +27,50 @@ const getOrganistCountLabel = (schedule) => {
 };
 
 const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+
   if (isEditing) return null;
+
+  const normalizedSearchTerm = searchTerm.trim().toLocaleLowerCase('pt-BR');
+  const filteredSchedules = useMemo(() => {
+    if (!normalizedSearchTerm) return savedSchedules;
+
+    return savedSchedules.filter((schedule) => {
+      const searchIndex = [
+        formatSchedulePeriod(schedule),
+        schedule.generatedAt ? new Date(schedule.generatedAt).toLocaleString('pt-BR') : '',
+        getScheduleDaysLabel(schedule),
+        getOrganistCountLabel(schedule),
+      ]
+        .join(' ')
+        .toLocaleLowerCase('pt-BR');
+
+      return searchIndex.includes(normalizedSearchTerm);
+    });
+  }, [normalizedSearchTerm, savedSchedules]);
 
   return (
     <>
       <h3 className="history-title">Histórico de Escalas</h3>
       {savedSchedules.length === 0 && <p className="muted-text">Nenhuma escala salva ainda.</p>}
+      {savedSchedules.length > 0 && (
+        <div className="history-search">
+          <Input
+            id="schedule-history-search"
+            label="Buscar no histórico:"
+            type="search"
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            placeholder="Ex.: 02/03/2026, 2 dias, organistas"
+            size="sm"
+          />
+        </div>
+      )}
+      {savedSchedules.length > 0 && filteredSchedules.length === 0 && (
+        <p className="muted-text">Nenhuma escala encontrada para a busca informada.</p>
+      )}
       <ul className="list-reset">
-        {savedSchedules.map((sch, index) => (
+        {filteredSchedules.map((sch, index) => (
           <li key={sch.id} className={`history-item ${index === 0 ? 'history-item--latest' : ''}`}>
             <div>
               <div className="history-item__header">
