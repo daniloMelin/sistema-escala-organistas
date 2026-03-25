@@ -5,6 +5,7 @@
 | Versão | Data                | Autor(es)    | Descrição da Revisão |
 | ------ | ------------------- | ------------ | -------------------- |
 | 1.0    | 24 de março de 2026 | Danilo Melin | Criação do ciclo V11 |
+| 1.1    | 24 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
 
 ## Objetivo
 
@@ -48,12 +49,16 @@ Os riscos remanescentes mais relevantes agora são:
 
 #### 1.1 Revisar estratégia de busca e filtro do histórico
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - revisar como o histórico deve evoluir para consulta rápida
   - comparar opções como filtro por período, busca textual e agrupamento
   - escolher a melhoria de maior valor imediato
+  - resultado alcançado:
+    - opções de localização comparadas em documento próprio
+    - busca textual simples escolhida como melhoria prioritária
+    - escopo funcional da Fase 1.2 definido
 
 #### 1.2 Implementar melhoria prioritária de localização
 
@@ -125,7 +130,7 @@ Os riscos remanescentes mais relevantes agora são:
 
 ## Registro de progresso
 
-- [ ] Fase 1.1 pendente
+- [x] Fase 1.1 concluída
 - [ ] Fase 1.2 pendente
 - [ ] Fase 2.1 pendente
 - [ ] Fase 2.2 pendente
