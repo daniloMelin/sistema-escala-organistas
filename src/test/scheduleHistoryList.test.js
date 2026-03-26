@@ -33,4 +33,43 @@ describe('ScheduleHistoryList', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Visualizar' }));
     expect(onViewSaved).toHaveBeenCalledWith(schedule);
   });
+
+  test('filtra o historico por texto e exibe estado vazio quando nao houver resultado', () => {
+    const schedules = [
+      {
+        id: 's1',
+        generatedAt: '2026-03-03T10:00:00.000Z',
+        period: { start: '2026-03-02', end: '2026-03-02' },
+        organistCount: 2,
+        data: [{ date: '2026-03-02' }],
+      },
+      {
+        id: 's2',
+        generatedAt: '2026-02-02T10:00:00.000Z',
+        period: { start: '2026-02-01', end: '2026-02-02' },
+        organistCount: 3,
+        data: [{ date: '2026-02-01' }, { date: '2026-02-02' }],
+      },
+    ];
+
+    render(
+      <ScheduleHistoryList isEditing={false} savedSchedules={schedules} onViewSaved={jest.fn()} />
+    );
+
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Buscar no histórico:' }), {
+      target: { value: '2 dias na escala' },
+    });
+
+    expect(screen.getByText('01/02/2026 até 02/02/2026')).toBeInTheDocument();
+    expect(screen.queryByText('02/03/2026 até 02/03/2026')).not.toBeInTheDocument();
+    expect(screen.getByText('Mais recente')).toBeInTheDocument();
+
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Buscar no histórico:' }), {
+      target: { value: 'sem resultado' },
+    });
+
+    expect(
+      screen.getByText('Nenhuma escala encontrada para a busca informada.')
+    ).toBeInTheDocument();
+  });
 });

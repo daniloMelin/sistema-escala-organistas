@@ -23,6 +23,11 @@
   padding-top: 20px;
 }
 
+.history-search {
+  margin-bottom: 15px;
+  max-width: 420px;
+}
+
 .history-item {
   border: 1px solid #eeeeee;
   padding: 15px;
