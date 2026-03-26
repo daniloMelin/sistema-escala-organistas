@@ -28,9 +28,6 @@ const getOrganistCountLabel = (schedule) => {
 
 const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
   const [searchTerm, setSearchTerm] = useState('');
-
-  if (isEditing) return null;
-
   const normalizedSearchTerm = searchTerm.trim().toLocaleLowerCase('pt-BR');
   const filteredSchedules = useMemo(() => {
     if (!normalizedSearchTerm) return savedSchedules;
@@ -48,6 +45,8 @@ const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
       return searchIndex.includes(normalizedSearchTerm);
     });
   }, [normalizedSearchTerm, savedSchedules]);
+
+  if (isEditing) return null;
 
   return (
     <>

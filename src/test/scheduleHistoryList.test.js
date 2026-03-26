@@ -9,6 +9,30 @@ describe('ScheduleHistoryList', () => {
     expect(container).toBeEmptyDOMElement();
   });
 
+  test('mantem a ordem dos hooks ao alternar entre edicao e visualizacao', () => {
+    const schedule = {
+      id: 's1',
+      generatedAt: '2026-03-01T10:00:00.000Z',
+      period: { start: '2026-03-01', end: '2026-03-31' },
+      organistCount: 2,
+      data: [{ date: '2026-03-01' }],
+    };
+
+    const { rerender } = render(
+      <ScheduleHistoryList isEditing={false} savedSchedules={[schedule]} onViewSaved={jest.fn()} />
+    );
+
+    expect(screen.getByText('Histórico de Escalas')).toBeInTheDocument();
+
+    rerender(<ScheduleHistoryList isEditing savedSchedules={[schedule]} onViewSaved={jest.fn()} />);
+    expect(screen.queryByText('Histórico de Escalas')).not.toBeInTheDocument();
+
+    rerender(
+      <ScheduleHistoryList isEditing={false} savedSchedules={[schedule]} onViewSaved={jest.fn()} />
+    );
+    expect(screen.getByText('Histórico de Escalas')).toBeInTheDocument();
+  });
+
   test('renderiza itens e dispara a acao de visualizacao', () => {
     const onViewSaved = jest.fn();
     const schedule = {
