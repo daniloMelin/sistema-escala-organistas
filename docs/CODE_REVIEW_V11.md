@@ -10,6 +10,7 @@
 | 1.3    | 26 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
 | 1.4    | 26 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
 | 1.5    | 26 de março de 2026 | Danilo Melin | Fase 3.1 concluída   |
+| 1.6    | 26 de março de 2026 | Danilo Melin | Fase 3.2 concluída   |
 
 ## Objetivo
 
@@ -121,11 +122,15 @@ Os riscos remanescentes mais relevantes agora são:
 
 #### 3.2 Consolidar cobertura e documentação do fluxo
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - documentar a cobertura da melhoria entregue
   - consolidar artefatos e decisão funcional do ciclo
+  - resultado alcançado:
+    - cobertura do V11 registrada em documento próprio
+    - escopo coberto em componente e E2E consolidado
+    - itens fora do escopo atual explicitamente listados
 
 ### Fase 4 - Fechamento do Ciclo
 
@@ -155,7 +160,7 @@ Os riscos remanescentes mais relevantes agora são:
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
 - [x] Fase 3.1 concluída
-- [ ] Fase 3.2 pendente
+- [x] Fase 3.2 concluída
 - [ ] Fase 4.1 pendente
 
 ## Critério de Conclusão do V11
