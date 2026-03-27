@@ -11,6 +11,7 @@
 | 1.4    | 26 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
 | 1.5    | 27 de março de 2026 | Danilo Melin | Fase 3.1 concluída   |
 | 1.6    | 27 de março de 2026 | Danilo Melin | Fase 3.2 concluída   |
+| 1.7    | 27 de março de 2026 | Danilo Melin | Fase 4.1 concluída   |
 
 ## Objetivo
 
@@ -21,9 +22,9 @@ escalas salvas.
 
 ## Status do Ciclo
 
-- Status geral: `EM ANDAMENTO`
+- Status geral: `CONCLUÍDO`
 - Data de início: `26 de março de 2026`
-- Data de encerramento: `A definir`
+- Data de encerramento: `27 de março de 2026`
 - Contexto: continuidade direta do `CODE_REVIEW_V11`, aproveitando a
   base já consolidada de busca textual, cobertura e documentação do
   histórico
@@ -139,12 +140,16 @@ Os riscos remanescentes mais relevantes agora são:
 
 #### 4.1 Encerrar formalmente o V12
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - registrar o resultado do ciclo
   - consolidar próximos passos recomendados
   - fechar formalmente o `CODE_REVIEW_V12`
+  - resultado alcançado:
+    - ciclo encerrado com resumo funcional consolidado
+    - impacto prático do filtro por período documentado
+    - próximos passos registrados para evolução futura
 
 ## Ordem de execução recomendada
 
@@ -164,7 +169,7 @@ Os riscos remanescentes mais relevantes agora são:
 - [x] Fase 2.2 concluída
 - [x] Fase 3.1 concluída
 - [x] Fase 3.2 concluída
-- [ ] Fase 4.1 pendente
+- [x] Fase 4.1 concluída
 
 ## Critério de Conclusão do V12
 
@@ -172,3 +177,48 @@ Os riscos remanescentes mais relevantes agora são:
   histórico entregue
 - cobertura adequada do comportamento evoluído
 - documentação do ciclo atualizada com impacto prático e próximos passos
+
+## Resumo Executivo
+
+O ciclo V12 aprofundou a evolução funcional do histórico de escalas com
+uma melhoria de consulta mais estruturada: a lista passou a permitir
+recorte por período, ficou mais orientada durante o uso combinado com a
+busca textual e manteve consistência no fluxo real de visualização.
+
+Principais resultados:
+
+- filtro por data inicial e data final adicionado ao histórico
+- indicação explícita do período ativo
+- ação `Limpar período` para retorno rápido ao estado completo
+- uso combinado de período e busca textual validado
+- cobertura unitária e E2E consolidada do fluxo evoluído
+
+## Impacto Prático no Projeto
+
+- o usuário precisa de menos tentativa e erro para localizar escalas por
+  intervalo conhecido
+- o histórico deixa mais claro qual recorte temporal está ativo
+- o fluxo de visualização continua íntegro mesmo após aplicar múltiplos
+  filtros
+- a base do histórico ficou pronta para futuros atalhos ou agrupamentos
+  temporais
+
+## Artefatos Consolidados do Ciclo
+
+- `docs/CODE_REVIEW_V12.md`
+- `docs/SCHEDULE_HISTORY_PERIOD_FILTER_REVIEW_V12.md`
+- `docs/SCHEDULE_HISTORY_PERIOD_IMPACT_V12.md`
+- `docs/SCHEDULE_HISTORY_PERIOD_COVERAGE_V12.md`
+- `src/components/ScheduleHistoryList.js`
+- `src/components/ChurchScheduleGenerator.css`
+- `src/test/scheduleHistoryList.test.js`
+- `e2e/schedule-generation.spec.js`
+
+## Próximos Passos Recomendados
+
+1. Avaliar no próximo ciclo se o histórico já pede atalhos rápidos de
+   período.
+2. Revisar se agrupamento por mês pode reduzir ainda mais o esforço de
+   leitura em históricos maiores.
+3. Priorizar o próximo incremento funcional mantendo o mesmo padrão:
+   escopo controlado, ganho operacional real e cobertura consolidada.
