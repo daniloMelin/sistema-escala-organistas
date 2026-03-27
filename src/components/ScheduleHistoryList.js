@@ -28,9 +28,6 @@ const getOrganistCountLabel = (schedule) => {
 
 const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
   const [searchTerm, setSearchTerm] = useState('');
-
-  if (isEditing) return null;
-
   const normalizedSearchTerm = searchTerm.trim().toLocaleLowerCase('pt-BR');
   const filteredSchedules = useMemo(() => {
     if (!normalizedSearchTerm) return savedSchedules;
@@ -49,6 +46,8 @@ const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
     });
   }, [normalizedSearchTerm, savedSchedules]);
 
+  if (isEditing) return null;
+
   return (
     <>
       <h3 className="history-title">Histórico de Escalas</h3>
@@ -64,10 +63,20 @@ const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
             placeholder="Ex.: 02/03/2026, 2 dias, organistas"
             size="sm"
           />
+          {normalizedSearchTerm && (
+            <div className="history-search__meta">
+              <small className="history-search__count">
+                Exibindo {filteredSchedules.length} de {savedSchedules.length} escalas
+              </small>
+              <Button onClick={() => setSearchTerm('')} variant="secondary" size="sm">
+                Limpar busca
+              </Button>
+            </div>
+          )}
         </div>
       )}
       {savedSchedules.length > 0 && filteredSchedules.length === 0 && (
-        <p className="muted-text">Nenhuma escala encontrada para a busca informada.</p>
+        <p className="muted-text">Nenhuma escala encontrada para a busca "{searchTerm.trim()}".</p>
       )}
       <ul className="list-reset">
         {filteredSchedules.map((sch, index) => (

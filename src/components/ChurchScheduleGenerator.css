@@ -28,6 +28,17 @@
   max-width: 420px;
 }
 
+.history-search__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.history-search__count {
+  color: #666666;
+}
+
 .history-item {
   border: 1px solid #eeeeee;
   padding: 15px;
