@@ -9,7 +9,7 @@
 | 1.2    | 24 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
 | 1.3    | 26 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
 | 1.4    | 26 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
-| 1.3    | 26 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
+| 1.5    | 26 de março de 2026 | Danilo Melin | Fase 3.1 concluída   |
 
 ## Objetivo
 
@@ -19,7 +19,7 @@ mais eficientes para uso operacional recorrente.
 
 ## Status do Ciclo
 
-- Status geral: `PLANEJADO`
+- Status geral: `EM ANDAMENTO`
 - Data de início: `24 de março de 2026`
 - Data de encerramento: `A definir`
 - Contexto: continuidade direta do `CODE_REVIEW_V10`, aproveitando a
@@ -108,12 +108,16 @@ Os riscos remanescentes mais relevantes agora são:
 
 #### 3.1 Revisar impacto operacional da nova capacidade
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - confirmar se a melhoria reduziu atrito de consulta
   - registrar limitações remanescentes
   - avaliar o próximo passo funcional mais natural
+  - resultado alcançado:
+    - impacto operacional da busca registrado em documento próprio
+    - ganho funcional consolidado para uso com múltiplas escalas
+    - limitações remanescentes e próximo passo natural mapeados
 
 #### 3.2 Consolidar cobertura e documentação do fluxo
 
@@ -150,7 +154,7 @@ Os riscos remanescentes mais relevantes agora são:
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
-- [ ] Fase 3.1 pendente
+- [x] Fase 3.1 concluída
 - [ ] Fase 3.2 pendente
 - [ ] Fase 4.1 pendente
 
