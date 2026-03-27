@@ -115,11 +115,25 @@ test.describe('geracao de escala', () => {
         .getByText(/Atualizada em:/)
     ).toBeVisible();
 
+    await page.getByLabel('Data inicial do período:').fill('2026-02-01');
+    await page.getByLabel('Data final do período:').fill('2026-02-02');
+
+    await expect(page.getByText('Exibindo 1 de 2 escalas')).toBeVisible();
+    await expect(page.getByText('Período ativo: 01/02/2026 até 02/02/2026')).toBeVisible();
+    await expect(
+      page.locator('.history-item').filter({ hasText: '01/02/2026 até 02/02/2026' })
+    ).toBeVisible();
+    await expect(
+      page.locator('.history-item').filter({ hasText: '02/03/2026 até 02/03/2026' })
+    ).not.toBeVisible();
+
     const searchBox = page.getByRole('searchbox', { name: 'Buscar no histórico:' });
     await searchBox.fill('2 dias na escala');
 
     await expect(page.getByText('Exibindo 1 de 2 escalas')).toBeVisible();
-    await expect(page.getByText('01/02/2026 até 02/02/2026')).toBeVisible();
+    await expect(
+      page.locator('.history-item').filter({ hasText: '01/02/2026 até 02/02/2026' })
+    ).toBeVisible();
     await expect(page.getByText('Mais recente')).toBeVisible();
 
     const olderScheduleItem = page
@@ -137,10 +151,12 @@ test.describe('geracao de escala', () => {
     await searchBox.fill('sem resultado');
     await expect(page.getByText('Exibindo 0 de 2 escalas')).toBeVisible();
     await expect(
-      page.getByText('Nenhuma escala encontrada para a busca "sem resultado".')
+      page.getByText('Nenhuma escala encontrada para os filtros informados.')
     ).toBeVisible();
 
     await page.getByRole('button', { name: 'Limpar busca' }).click();
+    await page.getByRole('button', { name: 'Limpar período' }).click();
+    await expect(page.getByText(/Período ativo:/)).not.toBeVisible();
     await expect(
       page.locator('.history-item').filter({ hasText: '02/03/2026 até 02/03/2026' })
     ).toBeVisible();

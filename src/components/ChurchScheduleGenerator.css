@@ -41,13 +41,31 @@
 
 .history-search__meta {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
 }
 
+.history-search__status {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .history-search__count {
   color: #666666;
+}
+
+.history-search__period {
+  color: #2455b8;
+  font-weight: 600;
+}
+
+.history-search__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .history-item {

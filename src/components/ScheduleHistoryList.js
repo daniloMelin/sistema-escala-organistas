@@ -26,6 +26,9 @@ const getOrganistCountLabel = (schedule) => {
   return `${organistCount} organistas consideradas`;
 };
 
+const formatFilterDate = (date) =>
+  date ? new Date(`${date}T00:00:00`).toLocaleDateString('pt-BR') : null;
+
 const isScheduleWithinPeriod = (schedule, startDateFilter, endDateFilter) => {
   const scheduleStart = schedule.period?.start;
   const scheduleEnd = schedule.period?.end;
@@ -44,6 +47,14 @@ const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
   const normalizedSearchTerm = searchTerm.trim().toLocaleLowerCase('pt-BR');
   const isPeriodFilterActive = Boolean(startDateFilter || endDateFilter);
   const isAnyFilterActive = Boolean(normalizedSearchTerm || isPeriodFilterActive);
+  const activePeriodLabel = useMemo(() => {
+    if (!isPeriodFilterActive) return null;
+
+    const formattedStartDate = formatFilterDate(startDateFilter) || '...';
+    const formattedEndDate = formatFilterDate(endDateFilter) || '...';
+
+    return `Período ativo: ${formattedStartDate} até ${formattedEndDate}`;
+  }, [endDateFilter, isPeriodFilterActive, startDateFilter]);
   const filteredSchedules = useMemo(() => {
     return savedSchedules.filter((schedule) => {
       if (
@@ -121,14 +132,33 @@ const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
           </div>
           {isAnyFilterActive && (
             <div className="history-search__meta">
-              <small className="history-search__count">
-                Exibindo {filteredSchedules.length} de {savedSchedules.length} escalas
-              </small>
-              {normalizedSearchTerm && (
-                <Button onClick={() => setSearchTerm('')} variant="secondary" size="sm">
-                  Limpar busca
-                </Button>
-              )}
+              <div className="history-search__status">
+                <small className="history-search__count">
+                  Exibindo {filteredSchedules.length} de {savedSchedules.length} escalas
+                </small>
+                {activePeriodLabel && (
+                  <small className="history-search__period">{activePeriodLabel}</small>
+                )}
+              </div>
+              <div className="history-search__actions">
+                {isPeriodFilterActive && (
+                  <Button
+                    onClick={() => {
+                      setStartDateFilter('');
+                      setEndDateFilter('');
+                    }}
+                    variant="secondary"
+                    size="sm"
+                  >
+                    Limpar período
+                  </Button>
+                )}
+                {normalizedSearchTerm && (
+                  <Button onClick={() => setSearchTerm('')} variant="secondary" size="sm">
+                    Limpar busca
+                  </Button>
+                )}
+              </div>
             </div>
           )}
         </div>
