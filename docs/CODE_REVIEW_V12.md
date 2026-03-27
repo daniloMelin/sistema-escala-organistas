@@ -6,6 +6,7 @@
 | ------ | ------------------- | ------------ | -------------------- |
 | 1.0    | 26 de março de 2026 | Danilo Melin | Criação do ciclo V12 |
 | 1.1    | 26 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
+| 1.2    | 26 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
 
 ## Objetivo
 
@@ -65,12 +66,16 @@ Os riscos remanescentes mais relevantes agora são:
 
 #### 1.2 Implementar filtro estruturado prioritário
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - adicionar o filtro temporal definido na Fase 1.1
   - manter a experiência atual de busca simples e legível
   - atualizar cobertura de componente para o novo comportamento
+  - resultado alcançado:
+    - filtro por data inicial e data final adicionado ao histórico
+    - compatibilidade com a busca textual preservada
+    - cobertura do componente atualizada para o comportamento combinado
 
 ### Fase 2 - Experiência Operacional do Histórico
 
@@ -134,7 +139,7 @@ Os riscos remanescentes mais relevantes agora são:
 ## Registro de progresso
 
 - [x] Fase 1.1 concluída
-- [ ] Fase 1.2 pendente
+- [x] Fase 1.2 concluída
 - [ ] Fase 2.1 pendente
 - [ ] Fase 2.2 pendente
 - [ ] Fase 3.1 pendente

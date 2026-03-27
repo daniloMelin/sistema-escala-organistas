@@ -23,8 +23,19 @@
   padding-top: 20px;
 }
 
-.history-search {
+.history-filters {
   margin-bottom: 15px;
+}
+
+.history-filters__period {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  max-width: 420px;
+}
+
+.history-search {
   max-width: 420px;
 }
 
