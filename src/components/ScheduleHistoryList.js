@@ -26,13 +26,35 @@ const getOrganistCountLabel = (schedule) => {
   return `${organistCount} organistas consideradas`;
 };
 
+const isScheduleWithinPeriod = (schedule, startDateFilter, endDateFilter) => {
+  const scheduleStart = schedule.period?.start;
+  const scheduleEnd = schedule.period?.end;
+
+  if (!scheduleStart || !scheduleEnd) return false;
+  if (startDateFilter && scheduleStart < startDateFilter) return false;
+  if (endDateFilter && scheduleEnd > endDateFilter) return false;
+
+  return true;
+};
+
 const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [startDateFilter, setStartDateFilter] = useState('');
+  const [endDateFilter, setEndDateFilter] = useState('');
   const normalizedSearchTerm = searchTerm.trim().toLocaleLowerCase('pt-BR');
+  const isPeriodFilterActive = Boolean(startDateFilter || endDateFilter);
+  const isAnyFilterActive = Boolean(normalizedSearchTerm || isPeriodFilterActive);
   const filteredSchedules = useMemo(() => {
-    if (!normalizedSearchTerm) return savedSchedules;
-
     return savedSchedules.filter((schedule) => {
+      if (
+        !isScheduleWithinPeriod(schedule, startDateFilter, endDateFilter) &&
+        isPeriodFilterActive
+      ) {
+        return false;
+      }
+
+      if (!normalizedSearchTerm) return true;
+
       const searchIndex = [
         formatSchedulePeriod(schedule),
         schedule.generatedAt ? new Date(schedule.generatedAt).toLocaleString('pt-BR') : '',
@@ -44,7 +66,21 @@ const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
 
       return searchIndex.includes(normalizedSearchTerm);
     });
-  }, [normalizedSearchTerm, savedSchedules]);
+  }, [endDateFilter, isPeriodFilterActive, normalizedSearchTerm, savedSchedules, startDateFilter]);
+
+  const emptyStateMessage = useMemo(() => {
+    if (!isAnyFilterActive) return null;
+
+    if (normalizedSearchTerm && isPeriodFilterActive) {
+      return 'Nenhuma escala encontrada para os filtros informados.';
+    }
+
+    if (normalizedSearchTerm) {
+      return `Nenhuma escala encontrada para a busca "${searchTerm.trim()}".`;
+    }
+
+    return 'Nenhuma escala encontrada para o período informado.';
+  }, [isAnyFilterActive, isPeriodFilterActive, normalizedSearchTerm, searchTerm]);
 
   if (isEditing) return null;
 
@@ -53,30 +89,52 @@ const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
       <h3 className="history-title">Histórico de Escalas</h3>
       {savedSchedules.length === 0 && <p className="muted-text">Nenhuma escala salva ainda.</p>}
       {savedSchedules.length > 0 && (
-        <div className="history-search">
-          <Input
-            id="schedule-history-search"
-            label="Buscar no histórico:"
-            type="search"
-            value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
-            placeholder="Ex.: 02/03/2026, 2 dias, organistas"
-            size="sm"
-          />
-          {normalizedSearchTerm && (
+        <div className="history-filters">
+          <div className="history-filters__period">
+            <Input
+              id="schedule-history-start-date"
+              label="Data inicial do período:"
+              type="date"
+              value={startDateFilter}
+              onChange={(event) => setStartDateFilter(event.target.value)}
+              size="sm"
+            />
+            <Input
+              id="schedule-history-end-date"
+              label="Data final do período:"
+              type="date"
+              value={endDateFilter}
+              onChange={(event) => setEndDateFilter(event.target.value)}
+              size="sm"
+            />
+          </div>
+          <div className="history-search">
+            <Input
+              id="schedule-history-search"
+              label="Buscar no histórico:"
+              type="search"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder="Ex.: 02/03/2026, 2 dias, organistas"
+              size="sm"
+            />
+          </div>
+          {isAnyFilterActive && (
             <div className="history-search__meta">
               <small className="history-search__count">
                 Exibindo {filteredSchedules.length} de {savedSchedules.length} escalas
               </small>
-              <Button onClick={() => setSearchTerm('')} variant="secondary" size="sm">
-                Limpar busca
-              </Button>
+              {normalizedSearchTerm && (
+                <Button onClick={() => setSearchTerm('')} variant="secondary" size="sm">
+                  Limpar busca
+                </Button>
+              )}
             </div>
           )}
         </div>
       )}
-      {savedSchedules.length > 0 && filteredSchedules.length === 0 && (
-        <p className="muted-text">Nenhuma escala encontrada para a busca "{searchTerm.trim()}".</p>
+      {savedSchedules.length > 0 && filteredSchedules.length === 0 && emptyStateMessage && (
+        <p className="muted-text">{emptyStateMessage}</p>
       )}
       <ul className="list-reset">
         {filteredSchedules.map((sch, index) => (
