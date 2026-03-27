@@ -11,6 +11,7 @@
 | 1.4    | 26 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
 | 1.5    | 26 de março de 2026 | Danilo Melin | Fase 3.1 concluída   |
 | 1.6    | 26 de março de 2026 | Danilo Melin | Fase 3.2 concluída   |
+| 1.7    | 26 de março de 2026 | Danilo Melin | Fase 4.1 concluída   |
 
 ## Objetivo
 
@@ -20,9 +21,9 @@ mais eficientes para uso operacional recorrente.
 
 ## Status do Ciclo
 
-- Status geral: `EM ANDAMENTO`
+- Status geral: `CONCLUÍDO`
 - Data de início: `24 de março de 2026`
-- Data de encerramento: `A definir`
+- Data de encerramento: `26 de março de 2026`
 - Contexto: continuidade direta do `CODE_REVIEW_V10`, aproveitando a
   base funcional já refinada para o histórico de escalas
 
@@ -136,12 +137,16 @@ Os riscos remanescentes mais relevantes agora são:
 
 #### 4.1 Encerrar formalmente o V11
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - registrar o resultado do ciclo
   - consolidar próximos passos recomendados
   - fechar formalmente o `CODE_REVIEW_V11`
+  - resultado alcançado:
+    - ciclo encerrado com resumo funcional consolidado
+    - impacto prático da busca documentado
+    - próximos passos registrados para evolução futura
 
 ## Ordem de execução recomendada
 
@@ -161,7 +166,7 @@ Os riscos remanescentes mais relevantes agora são:
 - [x] Fase 2.2 concluída
 - [x] Fase 3.1 concluída
 - [x] Fase 3.2 concluída
-- [ ] Fase 4.1 pendente
+- [x] Fase 4.1 concluída
 
 ## Critério de Conclusão do V11
 
@@ -169,3 +174,47 @@ Os riscos remanescentes mais relevantes agora são:
   consulta do histórico entregue
 - cobertura adequada do comportamento evoluído
 - documentação do ciclo atualizada com impacto prático e próximos passos
+
+## Resumo Executivo
+
+O ciclo V11 aprofundou a evolução funcional do histórico de escalas com
+uma melhoria de consulta simples, mas de valor operacional direto: a
+lista passou a permitir localização textual, ficou mais orientada
+durante a busca e manteve consistência no fluxo real de visualização.
+
+Principais resultados:
+
+- busca textual adicionada ao histórico
+- contagem explícita de resultados durante filtragem
+- ação de `Limpar busca` para retorno rápido ao estado completo
+- estado vazio mais informativo com termo pesquisado
+- validação unitária e E2E do fluxo evoluído
+
+## Impacto Prático no Projeto
+
+- o usuário precisa de menos leitura linear para localizar escalas
+  salvas
+- a busca deixa mais claro o que foi filtrado e o que restou visível
+- o fluxo de visualização continua íntegro mesmo após aplicar filtro
+- a base do histórico ficou pronta para futuros filtros mais
+  estruturados
+
+## Artefatos Consolidados do Ciclo
+
+- `docs/CODE_REVIEW_V11.md`
+- `docs/SCHEDULE_HISTORY_SEARCH_REVIEW_V11.md`
+- `docs/SCHEDULE_HISTORY_IMPACT_V11.md`
+- `docs/SCHEDULE_HISTORY_COVERAGE_V11.md`
+- `src/components/ScheduleHistoryList.js`
+- `src/components/ChurchScheduleGenerator.css`
+- `src/test/scheduleHistoryList.test.js`
+- `e2e/schedule-generation.spec.js`
+
+## Próximos Passos Recomendados
+
+1. Avaliar no próximo ciclo se a busca textual já pede filtro
+   estruturado por período.
+2. Revisar se agrupamento por mês pode reduzir ainda mais o esforço de
+   leitura em históricos maiores.
+3. Priorizar o próximo incremento funcional mantendo o mesmo padrão:
+   escopo controlado, ganho operacional real e cobertura consolidada.
