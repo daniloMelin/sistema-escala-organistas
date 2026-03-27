@@ -84,16 +84,21 @@ describe('ScheduleHistoryList', () => {
       target: { value: '2 dias na escala' },
     });
 
+    expect(screen.getByText('Exibindo 1 de 2 escalas')).toBeInTheDocument();
     expect(screen.getByText('01/02/2026 até 02/02/2026')).toBeInTheDocument();
     expect(screen.queryByText('02/03/2026 até 02/03/2026')).not.toBeInTheDocument();
     expect(screen.getByText('Mais recente')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Limpar busca' }));
+    expect(screen.getByText('02/03/2026 até 02/03/2026')).toBeInTheDocument();
 
     fireEvent.change(screen.getByRole('searchbox', { name: 'Buscar no histórico:' }), {
       target: { value: 'sem resultado' },
     });
 
+    expect(screen.getByText('Exibindo 0 de 2 escalas')).toBeInTheDocument();
     expect(
-      screen.getByText('Nenhuma escala encontrada para a busca informada.')
+      screen.getByText('Nenhuma escala encontrada para a busca "sem resultado".')
     ).toBeInTheDocument();
   });
 });

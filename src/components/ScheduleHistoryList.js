@@ -63,10 +63,20 @@ const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
             placeholder="Ex.: 02/03/2026, 2 dias, organistas"
             size="sm"
           />
+          {normalizedSearchTerm && (
+            <div className="history-search__meta">
+              <small className="history-search__count">
+                Exibindo {filteredSchedules.length} de {savedSchedules.length} escalas
+              </small>
+              <Button onClick={() => setSearchTerm('')} variant="secondary" size="sm">
+                Limpar busca
+              </Button>
+            </div>
+          )}
         </div>
       )}
       {savedSchedules.length > 0 && filteredSchedules.length === 0 && (
-        <p className="muted-text">Nenhuma escala encontrada para a busca informada.</p>
+        <p className="muted-text">Nenhuma escala encontrada para a busca "{searchTerm.trim()}".</p>
       )}
       <ul className="list-reset">
         {filteredSchedules.map((sch, index) => (

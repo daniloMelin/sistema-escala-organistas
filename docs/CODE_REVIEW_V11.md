@@ -7,6 +7,7 @@
 | 1.0    | 24 de março de 2026 | Danilo Melin | Criação do ciclo V11 |
 | 1.1    | 24 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
 | 1.2    | 24 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
+| 1.3    | 26 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
 
 ## Objetivo
 
@@ -78,12 +79,16 @@ Os riscos remanescentes mais relevantes agora são:
 
 #### 2.1 Refinar interação com o histórico evoluído
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - revisar clareza da interação após a nova capacidade de consulta
   - ajustar textos, vazio ou feedback quando necessário
   - manter consistência com a experiência definida no V10
+  - resultado alcançado:
+    - busca ganhou contagem de resultados exibidos
+    - ação de limpar busca adicionada ao fluxo
+    - estado vazio passou a refletir o termo pesquisado
 
 #### 2.2 Validar o novo fluxo ponta a ponta
 
@@ -137,7 +142,7 @@ Os riscos remanescentes mais relevantes agora são:
 
 - [x] Fase 1.1 concluída
 - [x] Fase 1.2 concluída
-- [ ] Fase 2.1 pendente
+- [x] Fase 2.1 concluída
 - [ ] Fase 2.2 pendente
 - [ ] Fase 3.1 pendente
 - [ ] Fase 3.2 pendente
