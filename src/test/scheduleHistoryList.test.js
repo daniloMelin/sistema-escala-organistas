@@ -134,6 +134,7 @@ describe('ScheduleHistoryList', () => {
     expect(screen.getByText('Exibindo 1 de 2 escalas')).toBeInTheDocument();
     expect(screen.getByText('02/03/2026 até 02/03/2026')).toBeInTheDocument();
     expect(screen.queryByText('01/02/2026 até 02/02/2026')).not.toBeInTheDocument();
+    expect(screen.getByText('Período ativo: 01/03/2026 até 31/03/2026')).toBeInTheDocument();
 
     fireEvent.change(screen.getByRole('searchbox', { name: 'Buscar no histórico:' }), {
       target: { value: '2 dias na escala' },
@@ -152,6 +153,11 @@ describe('ScheduleHistoryList', () => {
     });
 
     expect(screen.getByText('Exibindo 1 de 2 escalas')).toBeInTheDocument();
+    expect(screen.getByText('01/02/2026 até 02/02/2026')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Limpar período' }));
+    expect(screen.getByText('Exibindo 1 de 2 escalas')).toBeInTheDocument();
+    expect(screen.queryByText(/Período ativo:/)).not.toBeInTheDocument();
     expect(screen.getByText('01/02/2026 até 02/02/2026')).toBeInTheDocument();
   });
 });
