@@ -8,6 +8,7 @@
 | 1.1    | 26 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
 | 1.2    | 26 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
 | 1.3    | 26 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
+| 1.4    | 26 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
 
 ## Objetivo
 
@@ -95,11 +96,15 @@ Os riscos remanescentes mais relevantes agora são:
 
 #### 2.2 Validar o fluxo ponta a ponta com histórico filtrado
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - expandir cenário E2E para contemplar filtro temporal
   - garantir visualização estável após aplicar recortes no histórico
+  - resultado alcançado:
+    - cenário E2E expandido para cobrir filtro por período
+    - combinação entre período e busca validada no uso real
+    - restauração da lista confirmada após limpar os filtros
 
 ### Fase 3 - Consolidação Funcional
 
@@ -146,7 +151,7 @@ Os riscos remanescentes mais relevantes agora são:
 - [x] Fase 1.1 concluída
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
-- [ ] Fase 2.2 pendente
+- [x] Fase 2.2 concluída
 - [ ] Fase 3.1 pendente
 - [ ] Fase 3.2 pendente
 - [ ] Fase 4.1 pendente
