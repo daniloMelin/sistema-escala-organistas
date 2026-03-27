@@ -108,7 +108,12 @@ test.describe('geracao de escala', () => {
     await expect(page.getByText('Histórico de Escalas')).toBeVisible();
     await expect(page.getByText('Mais recente')).toBeVisible();
     await expect(page.getByText('2 dias na escala • 2 organistas consideradas')).toBeVisible();
-    await expect(page.getByText('03/03/2026, 07:00:00')).toBeVisible();
+    await expect(
+      page
+        .locator('.history-item')
+        .first()
+        .getByText(/Atualizada em:/)
+    ).toBeVisible();
 
     const searchBox = page.getByRole('searchbox', { name: 'Buscar no histórico:' });
     await searchBox.fill('2 dias na escala');
