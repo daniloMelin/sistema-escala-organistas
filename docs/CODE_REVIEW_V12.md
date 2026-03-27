@@ -5,6 +5,7 @@
 | Versão | Data                | Autor(es)    | Descrição da Revisão |
 | ------ | ------------------- | ------------ | -------------------- |
 | 1.0    | 26 de março de 2026 | Danilo Melin | Criação do ciclo V12 |
+| 1.1    | 26 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
 
 ## Objetivo
 
@@ -15,7 +16,7 @@ escalas salvas.
 
 ## Status do Ciclo
 
-- Status geral: `PLANEJADO`
+- Status geral: `EM ANDAMENTO`
 - Data de início: `26 de março de 2026`
 - Data de encerramento: `A definir`
 - Contexto: continuidade direta do `CODE_REVIEW_V11`, aproveitando a
@@ -51,12 +52,16 @@ Os riscos remanescentes mais relevantes agora são:
 
 #### 1.1 Revisar estratégia de filtro temporal no histórico
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - comparar opções de filtro por período para o histórico
   - definir o recorte de maior valor imediato
   - decidir como o filtro coexistirá com a busca textual
+  - resultado alcançado:
+    - opções de filtro temporal comparadas em documento próprio
+    - filtro por data inicial e data final escolhido como prioridade
+    - coexistência com a busca textual definida para a Fase 1.2
 
 #### 1.2 Implementar filtro estruturado prioritário
 
@@ -128,7 +133,7 @@ Os riscos remanescentes mais relevantes agora são:
 
 ## Registro de progresso
 
-- [ ] Fase 1.1 pendente
+- [x] Fase 1.1 concluída
 - [ ] Fase 1.2 pendente
 - [ ] Fase 2.1 pendente
 - [ ] Fase 2.2 pendente
