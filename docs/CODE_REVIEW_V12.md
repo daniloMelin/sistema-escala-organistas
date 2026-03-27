@@ -9,6 +9,7 @@
 | 1.2    | 26 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
 | 1.3    | 26 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
 | 1.4    | 26 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
+| 1.5    | 27 de março de 2026 | Danilo Melin | Fase 3.1 concluída   |
 
 ## Objetivo
 
@@ -110,12 +111,16 @@ Os riscos remanescentes mais relevantes agora são:
 
 #### 3.1 Revisar impacto operacional do filtro por período
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - consolidar o ganho prático do filtro temporal
   - registrar limitações remanescentes
   - identificar o próximo passo mais natural para o histórico
+  - resultado alcançado:
+    - impacto operacional do filtro temporal registrado em documento próprio
+    - ganho funcional consolidado para consulta por intervalo conhecido
+    - limitações remanescentes e próximo passo natural mapeados
 
 #### 3.2 Consolidar cobertura e documentação do fluxo evoluído
 
@@ -152,7 +157,7 @@ Os riscos remanescentes mais relevantes agora são:
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
-- [ ] Fase 3.1 pendente
+- [x] Fase 3.1 concluída
 - [ ] Fase 3.2 pendente
 - [ ] Fase 4.1 pendente
 
