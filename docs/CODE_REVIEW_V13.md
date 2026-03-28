@@ -9,6 +9,7 @@
 | 1.2    | 27 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
 | 1.3    | 27 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
 | 1.4    | 27 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
+| 1.5    | 27 de março de 2026 | Danilo Melin | Fase 3.1 concluída   |
 
 ## Objetivo
 
@@ -125,12 +126,17 @@ Premissas adicionais:
 
 #### 3.1 Revisar impacto operacional da nova configuração
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - consolidar o ganho prático da configuração por igreja
   - registrar limitações remanescentes
   - avaliar o próximo passo funcional mais natural
+  - resultado alcançado:
+    - impacto operacional consolidado em documento próprio
+    - ganho prático no cadastro, geração e exportação explicitado
+    - limitações remanescentes registradas
+    - próximo passo funcional natural identificado
 
 #### 3.2 Consolidar cobertura e documentação do fluxo evoluído
 
@@ -167,7 +173,7 @@ Premissas adicionais:
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
-- [ ] Fase 3.1 pendente
+- [x] Fase 3.1 concluída
 - [ ] Fase 3.2 pendente
 - [ ] Fase 4.1 pendente
 
