@@ -30,7 +30,15 @@ service cloud.firestore {
     }
 
     function isAllowedServiceId(serviceId) {
-      return serviceId in ['RJM', 'MeiaHoraCulto', 'Culto'];
+      return serviceId in ['RJM', 'MeiaHoraCulto', 'Culto', 'Reserva', 'Parte1', 'Parte2'];
+    }
+
+    function isAllowedCultModel(cultoModel) {
+      return cultoModel in [
+        'culto_unico_com_reserva',
+        'meia_hora_e_culto',
+        'meia_hora_parte1_parte2'
+      ];
     }
 
     function isValidService(svc) {
@@ -104,13 +112,16 @@ service cloud.firestore {
 
     function isValidChurchDoc(data) {
       return data is map
-        && data.keys().hasOnly(['name', 'code', 'config', 'createdAt'])
+        && data.keys().hasOnly(['name', 'code', 'config', 'cultoModel', 'createdAt'])
         && data.name is string
         && data.name.size() >= 3
         && data.name.size() <= 100
         && optionalString(data, 'code', 50)
         && ('config' in data)
         && isValidChurchConfig(data.config)
+        && ('cultoModel' in data)
+        && data.cultoModel is string
+        && isAllowedCultModel(data.cultoModel)
         && optionalTimestamp(data, 'createdAt');
     }
 
