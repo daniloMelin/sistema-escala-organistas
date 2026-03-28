@@ -22,6 +22,14 @@ const TUESDAY_CONFIG = {
   tuesday: [SERVICE_TEMPLATES.MeiaHora, SERVICE_TEMPLATES.Culto],
 };
 
+const SUNDAY_WITH_RESERVE_CONFIG = {
+  sunday: [SERVICE_TEMPLATES.Culto, SERVICE_TEMPLATES.Reserva],
+};
+
+const SUNDAY_WITH_THREE_SLOTS_CONFIG = {
+  sunday: [SERVICE_TEMPLATES.MeiaHora, SERVICE_TEMPLATES.Parte1, SERVICE_TEMPLATES.Parte2],
+};
+
 describe('generateSchedule', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -66,6 +74,48 @@ describe('generateSchedule', () => {
     const result = generateSchedule(organists, '2026-03-01', '2026-03-01', SUNDAY_CONFIG); // domingo
     expect(result).toHaveLength(1);
     expect(result[0].assignments).toEqual({});
+  });
+
+  test('preenche culto e reserva como slots independentes no modelo com reserva', () => {
+    const organists = [
+      { id: '1', name: 'Ana', fixedDays: [0] },
+      { id: '2', name: 'Bia', fixedDays: [0] },
+    ];
+
+    const result = generateSchedule(
+      organists,
+      '2026-03-01',
+      '2026-03-01',
+      SUNDAY_WITH_RESERVE_CONFIG
+    );
+
+    expect(result).toHaveLength(1);
+    expect(result[0].assignments.Culto).toBeTruthy();
+    expect(result[0].assignments.Reserva).toBeTruthy();
+    expect(result[0].assignments.Culto).not.toBe(result[0].assignments.Reserva);
+  });
+
+  test('preenche os tres slots do modelo meia hora parte 1 e parte 2', () => {
+    const organists = [
+      { id: '1', name: 'Ana', fixedDays: [0] },
+      { id: '2', name: 'Bia', fixedDays: [0] },
+      { id: '3', name: 'Clara', fixedDays: [0] },
+    ];
+
+    const result = generateSchedule(
+      organists,
+      '2026-03-01',
+      '2026-03-01',
+      SUNDAY_WITH_THREE_SLOTS_CONFIG
+    );
+
+    expect(result).toHaveLength(1);
+    expect(result[0].assignments.MeiaHoraCulto).toBeTruthy();
+    expect(result[0].assignments.Parte1).toBeTruthy();
+    expect(result[0].assignments.Parte2).toBeTruthy();
+
+    const assignedNames = Object.values(result[0].assignments);
+    expect(new Set(assignedNames).size).toBe(3);
   });
 
   test('aplica atribuicao dupla quando Culto e definido primeiro', () => {

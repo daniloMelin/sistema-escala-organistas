@@ -11,6 +11,22 @@ const E2E_TEST_USER = {
 
 const { gotoAuthScreen } = require('./navigation');
 
+const DEFAULT_CONFIG_BY_MODEL = {
+  culto_unico_com_reserva: [
+    { id: 'Culto', label: 'Culto' },
+    { id: 'Reserva', label: 'Reserva' },
+  ],
+  meia_hora_e_culto: [
+    { id: 'MeiaHoraCulto', label: 'Meia Hora' },
+    { id: 'Culto', label: 'Culto' },
+  ],
+  meia_hora_parte1_parte2: [
+    { id: 'MeiaHoraCulto', label: 'Meia Hora' },
+    { id: 'Parte1', label: 'Parte 1' },
+    { id: 'Parte2', label: 'Parte 2' },
+  ],
+};
+
 async function resetE2EState(page, database = { users: {} }, options = {}) {
   const failures = options.failures || {};
   await page.addInitScript(
@@ -65,13 +81,9 @@ function buildChurchesDatabase(churches = []) {
   const churchesMap = churches.reduce((acc, church, index) => {
     const id = church.id || `church-seed-${index + 1}`;
     const includeSundayCulto = church.includeSundayCulto !== false;
+    const cultoModel = church.cultoModel || 'meia_hora_e_culto';
     const config = church.config || {
-      sunday: includeSundayCulto
-        ? [
-            { id: 'MeiaHoraCulto', label: 'Meia Hora' },
-            { id: 'Culto', label: 'Culto' },
-          ]
-        : [],
+      sunday: includeSundayCulto ? DEFAULT_CONFIG_BY_MODEL[cultoModel] || [] : [],
     };
 
     const organistsMap = (church.organists || []).reduce((orgAcc, organist, orgIndex) => {
@@ -106,7 +118,7 @@ function buildChurchesDatabase(churches = []) {
       id,
       name: church.name || `Igreja Seed ${index + 1}`,
       code: church.code || `SEED${index + 1}`,
-      cultoModel: church.cultoModel || 'meia_hora_e_culto',
+      cultoModel,
       config,
       createdAt: church.createdAt || new Date('2026-03-02T00:00:00.000Z').toISOString(),
       organists: organistsMap,

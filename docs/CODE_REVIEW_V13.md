@@ -7,6 +7,7 @@
 | 1.0    | 27 de março de 2026 | Danilo Melin | Criação do ciclo V13 |
 | 1.1    | 27 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
 | 1.2    | 27 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
+| 1.3    | 27 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
 
 ## Objetivo
 
@@ -91,7 +92,7 @@ Premissas adicionais:
 
 #### 2.1 Adaptar a geração de escala ao modelo da igreja
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - fazer o algoritmo preencher os slots corretos conforme o modelo
@@ -99,6 +100,11 @@ Premissas adicionais:
     - `Culto + Reserva`
     - `Meia Hora + Culto`
     - `Meia Hora + Parte 1 + Parte 2`
+  - resultado alcançado:
+    - algoritmo passou a suportar `Reserva`, `Parte 1` e `Parte 2`
+    - regra de dobradinha foi preservada apenas para `Meia Hora + Culto`
+    - helper E2E passou a respeitar o `cultoModel` da igreja
+    - cobertura unitária e E2E atualizada para os novos modelos
 
 #### 2.2 Adaptar visualização e PDF ao modelo configurado
 
@@ -153,7 +159,7 @@ Premissas adicionais:
 
 - [x] Fase 1.1 concluída
 - [x] Fase 1.2 concluída
-- [ ] Fase 2.1 pendente
+- [x] Fase 2.1 concluída
 - [ ] Fase 2.2 pendente
 - [ ] Fase 3.1 pendente
 - [ ] Fase 3.2 pendente
