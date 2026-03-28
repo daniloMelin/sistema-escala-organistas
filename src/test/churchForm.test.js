@@ -37,7 +37,7 @@ describe('ChurchForm', () => {
       target: { value: 'culto_unico_com_reserva' },
     });
     fireEvent.click(screen.getByLabelText('Domingo (RJM)'));
-    fireEvent.click(screen.getByRole('button', { name: 'Cadastrar' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Cadastrar Igreja' }));
 
     expect(props.onChurchNameChange).toHaveBeenCalledWith('Nova Igreja');
     expect(props.onChurchCodeChange).toHaveBeenCalledWith('NEW');
