@@ -1,3 +1,5 @@
+import { exportScheduleToPDF } from '../utils/pdfGenerator';
+
 const mockDoc = {
   internal: {
     pageSize: {
@@ -40,8 +42,6 @@ jest.mock('../utils/logger', () => ({
     info: jest.fn(),
   },
 }));
-
-import { exportScheduleToPDF } from '../utils/pdfGenerator';
 
 describe('exportScheduleToPDF', () => {
   beforeEach(() => {

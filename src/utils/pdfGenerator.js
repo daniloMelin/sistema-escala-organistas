@@ -34,6 +34,28 @@ const getRenderableAssignments = (assignments) =>
         getServiceSortPriority(serviceA) - getServiceSortPriority(serviceB)
     );
 
+const drawPdfRow = (doc, xPos, cardWidth, lineY, label, name) => {
+  doc.setFont(undefined, 'bold');
+  doc.setTextColor(...COLORS.textLabel);
+  doc.text(label, xPos + 2, lineY);
+
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(...COLORS.textValue);
+
+  const nameX = xPos + 20;
+  const maxWidth = cardWidth - 22;
+
+  if (doc.getTextWidth(name) > maxWidth) {
+    doc.setFontSize(8);
+    doc.text(name, nameX, lineY);
+    doc.setFontSize(9);
+  } else {
+    doc.text(name, nameX, lineY);
+  }
+
+  return lineY + 6;
+};
+
 export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName) => {
   try {
     if (!scheduleData || scheduleData.length === 0) {
@@ -129,7 +151,8 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
           yPos = 20;
         }
 
-        rowItems.forEach((item, columnIndex) => {
+        for (let columnIndex = 0; columnIndex < rowItems.length; columnIndex += 1) {
+          const item = rowItems[columnIndex];
           const renderableAssignments = getRenderableAssignments(item.assignments);
           const cardHeight = rowHeights[columnIndex];
           const xPos = margin + columnIndex * (cardWidth + gap);
@@ -152,32 +175,17 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
           let lineY = yPos + 13;
           doc.setFontSize(9);
 
-          const drawRow = (label, name) => {
-            doc.setFont(undefined, 'bold');
-            doc.setTextColor(...COLORS.textLabel);
-            doc.text(label, xPos + 2, lineY);
-
-            doc.setFont(undefined, 'normal');
-            doc.setTextColor(...COLORS.textValue);
-
-            const nameX = xPos + 20;
-            const maxWidth = cardWidth - 22;
-
-            if (doc.getTextWidth(name) > maxWidth) {
-              doc.setFontSize(8);
-              doc.text(name, nameX, lineY);
-              doc.setFontSize(9);
-            } else {
-              doc.text(name, nameX, lineY);
-            }
-
-            lineY += 6;
-          };
-
           renderableAssignments.forEach(([serviceId, assignedName]) => {
-            drawRow(`${getServiceDisplayLabel(serviceId)}:`, assignedName);
+            lineY = drawPdfRow(
+              doc,
+              xPos,
+              cardWidth,
+              lineY,
+              `${getServiceDisplayLabel(serviceId)}:`,
+              assignedName
+            );
           });
-        });
+        }
 
         yPos += rowMaxHeight + gap;
       }
