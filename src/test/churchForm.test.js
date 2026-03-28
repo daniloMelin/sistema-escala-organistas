@@ -7,12 +7,14 @@ const buildProps = (overrides = {}) => ({
   churchName: 'Central',
   churchCode: 'ABC',
   selectedDays: { ...INITIAL_AVAILABILITY, sunday_culto: true },
+  cultoModel: 'meia_hora_e_culto',
   isSubmitting: false,
   isLoading: false,
   error: '',
   successMessage: '',
   onChurchNameChange: jest.fn(),
   onChurchCodeChange: jest.fn(),
+  onCultoModelChange: jest.fn(),
   onDayChange: jest.fn(),
   onSubmit: jest.fn((e) => e.preventDefault()),
   onCancelEdit: jest.fn(),
@@ -31,11 +33,15 @@ describe('ChurchForm', () => {
     fireEvent.change(textInputs[1], {
       target: { value: 'NEW' },
     });
+    fireEvent.change(screen.getByLabelText('Modelo de culto:'), {
+      target: { value: 'culto_unico_com_reserva' },
+    });
     fireEvent.click(screen.getByLabelText('Domingo (RJM)'));
     fireEvent.click(screen.getByRole('button', { name: 'Cadastrar' }));
 
     expect(props.onChurchNameChange).toHaveBeenCalledWith('Nova Igreja');
     expect(props.onChurchCodeChange).toHaveBeenCalledWith('NEW');
+    expect(props.onCultoModelChange).toHaveBeenCalledWith('culto_unico_com_reserva');
     expect(props.onDayChange).toHaveBeenCalledWith('sunday_rjm');
     expect(props.onSubmit).toHaveBeenCalled();
   });
@@ -50,5 +56,19 @@ describe('ChurchForm', () => {
 
     expect(screen.getByRole('button', { name: 'Cancelar' })).toBeInTheDocument();
     expect(props.onCancelEdit).toHaveBeenCalled();
+  });
+
+  test('exibe a descricao do modelo de culto selecionado', () => {
+    const { rerender } = render(
+      <ChurchForm {...buildProps({ cultoModel: 'meia_hora_e_culto' })} />
+    );
+
+    expect(screen.getByText('2 organistas por culto: meia hora e culto.')).toBeInTheDocument();
+
+    rerender(<ChurchForm {...buildProps({ cultoModel: 'culto_unico_com_reserva' })} />);
+
+    expect(
+      screen.getByText('1 organista no culto e 1 reserva por dia de culto.')
+    ).toBeInTheDocument();
   });
 });

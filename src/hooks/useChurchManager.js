@@ -7,9 +7,14 @@ import {
   deleteChurchWithSubcollections,
   updateChurch,
 } from '../services/firebaseService';
-import { SERVICE_TEMPLATES } from '../utils/scheduleLogic';
 import { INITIAL_AVAILABILITY } from '../constants/days';
 import { validateChurchName, validateChurchCode, sanitizeString } from '../utils/validation';
+import {
+  DEFAULT_CULT_MODEL,
+  buildChurchConfig,
+  inferCultModelFromConfig,
+  inferSelectedDaysFromConfig,
+} from '../utils/churchCultModel';
 import logger from '../utils/logger';
 
 export const useChurchManager = (user) => {
@@ -18,6 +23,7 @@ export const useChurchManager = (user) => {
   const [churchName, setChurchName] = useState('');
   const [churchCode, setChurchCode] = useState('');
   const [selectedDays, setSelectedDays] = useState(INITIAL_AVAILABILITY);
+  const [cultoModel, setCultoModel] = useState(DEFAULT_CULT_MODEL);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [error, setError] = useState('');
@@ -61,25 +67,8 @@ export const useChurchManager = (user) => {
   }, [fetchChurches]);
 
   const buildConfig = useMemo(() => {
-    const config = {};
-    const addServicesToDay = (dayKey, servicesToAdd) => {
-      if (!config[dayKey]) config[dayKey] = [];
-      config[dayKey].push(...servicesToAdd);
-    };
-
-    if (selectedDays.sunday_rjm) addServicesToDay('sunday', [SERVICE_TEMPLATES.RJM]);
-    if (selectedDays.sunday_culto) {
-      addServicesToDay('sunday', [SERVICE_TEMPLATES.MeiaHora, SERVICE_TEMPLATES.Culto]);
-    }
-
-    ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'].forEach((day) => {
-      if (selectedDays[day]) {
-        addServicesToDay(day, [SERVICE_TEMPLATES.MeiaHora, SERVICE_TEMPLATES.Culto]);
-      }
-    });
-
-    return config;
-  }, [selectedDays]);
+    return buildChurchConfig(selectedDays, cultoModel);
+  }, [cultoModel, selectedDays]);
 
   const handleStartEdit = (e, church) => {
     e.stopPropagation();
@@ -88,18 +77,9 @@ export const useChurchManager = (user) => {
     setEditingId(church.id);
 
     if (church.config) {
-      const newSelection = { ...INITIAL_AVAILABILITY };
-      Object.keys(church.config).forEach((dayKey) => {
-        const services = church.config[dayKey];
-        if (dayKey === 'sunday') {
-          if (services.some((s) => s.id === 'RJM')) newSelection.sunday_rjm = true;
-          if (services.some((s) => s.id === 'Culto')) newSelection.sunday_culto = true;
-        } else if (Object.prototype.hasOwnProperty.call(newSelection, dayKey)) {
-          newSelection[dayKey] = true;
-        }
-      });
-      setSelectedDays(newSelection);
+      setSelectedDays(inferSelectedDaysFromConfig(church.config));
     }
+    setCultoModel(church.cultoModel || inferCultModelFromConfig(church.config));
 
     setError('');
     setLoadError('');
@@ -112,6 +92,7 @@ export const useChurchManager = (user) => {
     setChurchCode('');
     setEditingId(null);
     setSelectedDays(INITIAL_AVAILABILITY);
+    setCultoModel(DEFAULT_CULT_MODEL);
     setError('');
     setLoadError('');
   };
@@ -145,6 +126,7 @@ export const useChurchManager = (user) => {
         name: sanitizeString(churchName),
         code: churchCode ? sanitizeString(churchCode) : '',
         config: buildConfig,
+        cultoModel,
       };
 
       if (editingId) {
@@ -204,6 +186,7 @@ export const useChurchManager = (user) => {
     churchName,
     churchCode,
     selectedDays,
+    cultoModel,
     isSubmitting,
     editingId,
     error,
@@ -212,6 +195,7 @@ export const useChurchManager = (user) => {
     pendingDeleteChurch,
     setChurchName,
     setChurchCode,
+    setCultoModel,
     setPendingDeleteChurch,
     handleStartEdit,
     handleCancelEdit,

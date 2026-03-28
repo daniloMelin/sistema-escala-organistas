@@ -44,8 +44,8 @@ describe('useChurchDashboard', () => {
     ]);
     mockGetChurch.mockResolvedValue({
       config: {
-        sunday: [{ id: 'RJM' }, { id: 'Culto' }],
-        tuesday: [{ id: 'MeiaHoraCulto' }, { id: 'Culto' }],
+        sunday: [{ id: 'RJM' }, { id: 'Culto' }, { id: 'Reserva' }],
+        tuesday: [{ id: 'MeiaHoraCulto' }, { id: 'Parte1' }, { id: 'Parte2' }],
       },
     });
   });

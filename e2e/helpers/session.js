@@ -44,6 +44,7 @@ function buildChurchDatabase({
   churchName = 'Igreja Seed',
   churchCode = 'SEED',
   includeSundayCulto = true,
+  cultoModel = 'meia_hora_e_culto',
   organists = [],
   schedules = [],
 } = {}) {
@@ -53,6 +54,7 @@ function buildChurchDatabase({
       name: churchName,
       code: churchCode,
       includeSundayCulto,
+      cultoModel,
       organists,
       schedules,
     },
@@ -104,6 +106,7 @@ function buildChurchesDatabase(churches = []) {
       id,
       name: church.name || `Igreja Seed ${index + 1}`,
       code: church.code || `SEED${index + 1}`,
+      cultoModel: church.cultoModel || 'meia_hora_e_culto',
       config,
       createdAt: church.createdAt || new Date('2026-03-02T00:00:00.000Z').toISOString(),
       organists: organistsMap,

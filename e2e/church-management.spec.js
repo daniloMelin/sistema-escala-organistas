@@ -10,6 +10,7 @@ test.describe('cadastro e edicao de igreja', () => {
     const textboxes = page.getByRole('textbox');
     await textboxes.nth(0).fill('Congregacao Nova');
     await textboxes.nth(1).fill('CNV');
+    await page.getByLabel('Modelo de culto:').selectOption('culto_unico_com_reserva');
     await page.getByLabel('Domingo (Culto)').check();
     await page.getByRole('button', { name: 'Cadastrar' }).click();
 
@@ -35,6 +36,7 @@ test.describe('cadastro e edicao de igreja', () => {
     const textboxes = page.getByRole('textbox');
     await textboxes.nth(0).fill('Igreja Atualizada');
     await textboxes.nth(1).fill('NEW');
+    await page.getByLabel('Modelo de culto:').selectOption('meia_hora_parte1_parte2');
     await page.getByRole('button', { name: 'Atualizar' }).click();
 
     await expect(page.getByText('Igreja atualizada!')).toBeVisible();

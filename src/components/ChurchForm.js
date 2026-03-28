@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ALL_WEEK_DAYS } from '../constants/days';
+import { CULT_MODEL_OPTIONS } from '../utils/churchCultModel';
 import Button from './ui/Button';
 import Input from './ui/Input';
 
@@ -9,12 +10,14 @@ const ChurchForm = ({
   churchName,
   churchCode,
   selectedDays,
+  cultoModel,
   isSubmitting,
   isLoading,
   error,
   successMessage,
   onChurchNameChange,
   onChurchCodeChange,
+  onCultoModelChange,
   onDayChange,
   onSubmit,
   onCancelEdit,
@@ -39,6 +42,29 @@ const ChurchForm = ({
           value={churchCode}
           onChange={(e) => onChurchCodeChange(e.target.value)}
         />
+
+        <div className="church-form__model">
+          <label htmlFor="church-cult-model" className="church-form__days-label">
+            Modelo de culto:
+          </label>
+
+          <select
+            id="church-cult-model"
+            value={cultoModel}
+            onChange={(e) => onCultoModelChange(e.target.value)}
+            className="church-form__model-select"
+          >
+            {CULT_MODEL_OPTIONS.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+
+          <p className="church-form__model-help">
+            {CULT_MODEL_OPTIONS.find((option) => option.id === cultoModel)?.description}
+          </p>
+        </div>
 
         <div className="church-form__days">
           <label className="church-form__days-label">Dias de Culto:</label>
@@ -88,12 +114,14 @@ ChurchForm.propTypes = {
   churchName: PropTypes.string.isRequired,
   churchCode: PropTypes.string.isRequired,
   selectedDays: PropTypes.object.isRequired,
+  cultoModel: PropTypes.string.isRequired,
   isSubmitting: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   error: PropTypes.string.isRequired,
   successMessage: PropTypes.string.isRequired,
   onChurchNameChange: PropTypes.func.isRequired,
   onChurchCodeChange: PropTypes.func.isRequired,
+  onCultoModelChange: PropTypes.func.isRequired,
   onDayChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onCancelEdit: PropTypes.func.isRequired,
