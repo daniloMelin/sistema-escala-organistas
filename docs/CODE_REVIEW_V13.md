@@ -10,6 +10,7 @@
 | 1.3    | 27 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
 | 1.4    | 27 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
 | 1.5    | 27 de março de 2026 | Danilo Melin | Fase 3.1 concluída   |
+| 1.6    | 27 de março de 2026 | Danilo Melin | Fase 3.2 concluída   |
 
 ## Objetivo
 
@@ -140,11 +141,15 @@ Premissas adicionais:
 
 #### 3.2 Consolidar cobertura e documentação do fluxo evoluído
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - documentar a cobertura do novo comportamento
   - consolidar artefatos e decisão funcional do ciclo
+  - resultado alcançado:
+    - cobertura consolidada em documento próprio
+    - fluxo documentado em camadas de utilitário, componente e E2E
+    - itens ainda fora do escopo atual explicitados
 
 ### Fase 4 - Fechamento do Ciclo
 
@@ -174,7 +179,7 @@ Premissas adicionais:
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
 - [x] Fase 3.1 concluída
-- [ ] Fase 3.2 pendente
+- [x] Fase 3.2 concluída
 - [ ] Fase 4.1 pendente
 
 ## Critério de Conclusão do V13
