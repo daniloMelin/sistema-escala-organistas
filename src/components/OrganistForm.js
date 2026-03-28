@@ -72,6 +72,7 @@ const OrganistForm = ({
             type="submit"
             disabled={isSubmitting}
             variant={editingId ? 'warning' : 'success'}
+            size="sm"
             className="organist-form__submit"
           >
             {isSubmitting

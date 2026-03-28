@@ -53,7 +53,7 @@
 }
 
 .organist-form__submit {
-  flex: 1;
+  flex: 0 0 auto;
 }
 
 .organist-list__item {

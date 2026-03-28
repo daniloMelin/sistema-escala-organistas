@@ -94,7 +94,7 @@ const ChurchForm = ({
             variant={editingId ? 'warning' : 'primary'}
             size="sm"
           >
-            {isSubmitting ? 'Salvando...' : editingId ? 'Atualizar' : 'Cadastrar'}
+            {isSubmitting ? 'Salvando...' : editingId ? 'Atualizar' : 'Cadastrar Igreja'}
           </Button>
           {editingId && (
             <Button type="button" onClick={onCancelEdit} variant="secondary" size="sm">
