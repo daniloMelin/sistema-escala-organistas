@@ -6,6 +6,7 @@
 | ------ | ------------------- | ------------ | -------------------- |
 | 1.0    | 27 de março de 2026 | Danilo Melin | Criação do ciclo V13 |
 | 1.1    | 27 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
+| 1.2    | 27 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
 
 ## Objetivo
 
@@ -74,12 +75,17 @@ Premissas adicionais:
 
 #### 1.2 Implementar configuração do modelo no cadastro da igreja
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - permitir escolher o modelo do culto no cadastro/edição da igreja
   - preservar a lógica atual de `RJM`
   - ajustar a persistência da configuração
+  - resultado alcançado:
+    - cadastro e edição da igreja passaram a permitir escolha do modelo
+    - persistência de `cultoModel` adicionada aos dados da igreja
+    - montagem da configuração ficou centralizada em util próprio
+    - leitura da configuração existente passou a inferir modelo e dias
 
 ### Fase 2 - Geração e Visualização da Escala
 
@@ -146,7 +152,7 @@ Premissas adicionais:
 ## Registro de progresso
 
 - [x] Fase 1.1 concluída
-- [ ] Fase 1.2 pendente
+- [x] Fase 1.2 concluída
 - [ ] Fase 2.1 pendente
 - [ ] Fase 2.2 pendente
 - [ ] Fase 3.1 pendente
