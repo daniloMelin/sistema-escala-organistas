@@ -200,4 +200,34 @@ describe('generateSchedule', () => {
     expect(assignments.MeiaHoraCulto).toBe('Flexible');
     expect(assignments.Culto).toBe('Flexible');
   });
+
+  test('evita repetir a mesma funcao em domingos consecutivos quando ha alternativa viavel', () => {
+    const organists = [
+      {
+        id: '1',
+        name: 'Vera',
+        fixedDays: [0],
+        stats: { meiaHora: 0, culto: 0, total: 0 },
+      },
+      {
+        id: '2',
+        name: 'Jaki',
+        fixedDays: [0],
+        stats: { meiaHora: 0, culto: 2, total: 2 },
+      },
+      {
+        id: '3',
+        name: 'Thais',
+        fixedDays: [0],
+        stats: { meiaHora: 2, culto: 0, total: 2 },
+      },
+    ];
+
+    const result = generateSchedule(organists, '2026-03-01', '2026-03-08', SUNDAY_CONFIG);
+
+    expect(result).toHaveLength(2);
+    expect(result[0].assignments.MeiaHoraCulto).toBe('Vera');
+    expect(result[1].assignments.MeiaHoraCulto).not.toBe('Vera');
+    expect(result[1].assignments.Culto).toBe('Vera');
+  });
 });

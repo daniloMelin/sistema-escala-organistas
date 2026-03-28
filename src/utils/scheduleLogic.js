@@ -156,6 +156,11 @@ const incrementStatsForCulto = (stats, cultoId) => {
   return next;
 };
 
+const getRepeatedRolePenalty = (lastAssignedRoleByDayKey, organistId, dayKey, cultoId) => {
+  if (cultoId === 'RJM') return 0;
+  return lastAssignedRoleByDayKey[organistId]?.[dayKey] === cultoId ? 1 : 0;
+};
+
 const buildPeriodDates = (parsedStart, parsedEnd, churchConfig) => {
   let currentDate = startOfDay(parsedStart);
   const endDate = endOfDay(parsedEnd);
@@ -190,8 +195,10 @@ const initializeAllocationState = (organists, periodDates) => {
   });
 
   const assignedDates = {};
+  const lastAssignedRoleByDayKey = {};
   organists.forEach((org) => {
     assignedDates[org.id] = new Set();
+    lastAssignedRoleByDayKey[org.id] = {};
   });
 
   const schedule = periodDates.map((dayInfo) => ({
@@ -200,7 +207,7 @@ const initializeAllocationState = (organists, periodDates) => {
     assignments: Object.fromEntries(dayInfo.cultos.map((culto) => [culto.id, undefined])),
   }));
 
-  return { organistStats, assignedDates, schedule };
+  return { organistStats, assignedDates, lastAssignedRoleByDayKey, schedule };
 };
 
 const runPrimaryAllocation = ({
@@ -209,6 +216,7 @@ const runPrimaryAllocation = ({
   periodDates,
   schedule,
   assignedDates,
+  lastAssignedRoleByDayKey,
   organistStats,
   churchConfig,
 }) => {
@@ -238,12 +246,17 @@ const runPrimaryAllocation = ({
           const scarcityDiff = (availabilityScores[a.id] || 0) - (availabilityScores[b.id] || 0);
           if (scarcityDiff !== 0) return scarcityDiff;
 
-          const totalDiff = (statsA.total || 0) - (statsB.total || 0);
-          if (totalDiff !== 0) return totalDiff;
+          const repeatPenaltyDiff =
+            getRepeatedRolePenalty(lastAssignedRoleByDayKey, a.id, dayKey, culto.id) -
+            getRepeatedRolePenalty(lastAssignedRoleByDayKey, b.id, dayKey, culto.id);
+          if (repeatPenaltyDiff !== 0) return repeatPenaltyDiff;
 
           const roleDiff =
             getRoleCountForCulto(statsA, culto.id) - getRoleCountForCulto(statsB, culto.id);
           if (roleDiff !== 0) return roleDiff;
+
+          const totalDiff = (statsA.total || 0) - (statsB.total || 0);
+          if (totalDiff !== 0) return totalDiff;
 
           return (a.name || '').localeCompare(b.name || '');
         });
@@ -258,6 +271,7 @@ const runPrimaryAllocation = ({
         organistStats[selected.id] ||
         (selected.stats ? { ...selected.stats } : { meiaHora: 0, culto: 0, total: 0 });
       organistStats[selected.id] = incrementStatsForCulto(currentStats, culto.id);
+      lastAssignedRoleByDayKey[selected.id][dayKey] = culto.id;
     });
   });
 };
@@ -359,10 +373,8 @@ export const generateSchedule = (organists, startDateStr, endDateStr, churchConf
   // PASSO A: Calcula Availability Score para cada organista
   const availabilityScores = calculateAvailabilityScores(organists, periodDates, churchConfig);
 
-  const { organistStats, assignedDates, schedule } = initializeAllocationState(
-    organists,
-    periodDates
-  );
+  const { organistStats, assignedDates, lastAssignedRoleByDayKey, schedule } =
+    initializeAllocationState(organists, periodDates);
 
   // PASSO C: Alocação e Equilíbrio (Loop Principal)
   runPrimaryAllocation({
@@ -371,6 +383,7 @@ export const generateSchedule = (organists, startDateStr, endDateStr, churchConf
     periodDates,
     schedule,
     assignedDates,
+    lastAssignedRoleByDayKey,
     organistStats,
     churchConfig,
   });
