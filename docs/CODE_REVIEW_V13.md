@@ -8,6 +8,7 @@
 | 1.1    | 27 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
 | 1.2    | 27 de março de 2026 | Danilo Melin | Fase 1.2 concluída   |
 | 1.3    | 27 de março de 2026 | Danilo Melin | Fase 2.1 concluída   |
+| 1.4    | 27 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
 
 ## Objetivo
 
@@ -108,12 +109,17 @@ Premissas adicionais:
 
 #### 2.2 Adaptar visualização e PDF ao modelo configurado
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - refletir os slots corretos na tela
   - refletir os slots corretos no PDF
   - manter clareza operacional da escala exportada
+  - resultado alcançado:
+    - grade passou a exibir labels amigáveis para todos os slots
+    - PDF passou a renderizar `Reserva`, `Parte 1` e `Parte 2`
+    - exportação ficou compatível com cartões de altura variável
+    - cobertura unitária e E2E atualizada para a visualização evoluída
 
 ### Fase 3 - Consolidação Funcional
 
@@ -160,7 +166,7 @@ Premissas adicionais:
 - [x] Fase 1.1 concluída
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
-- [ ] Fase 2.2 pendente
+- [x] Fase 2.2 concluída
 - [ ] Fase 3.1 pendente
 - [ ] Fase 3.2 pendente
 - [ ] Fase 4.1 pendente

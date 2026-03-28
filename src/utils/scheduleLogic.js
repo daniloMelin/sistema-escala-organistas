@@ -122,6 +122,21 @@ const SERVICE_PRIORITY = {
   Reserva: 4,
 };
 
+export const getServiceDisplayLabel = (serviceId) => {
+  const labels = {
+    RJM: 'RJM',
+    MeiaHoraCulto: 'Meia Hora',
+    Culto: 'Culto',
+    Parte1: 'Parte 1',
+    Parte2: 'Parte 2',
+    Reserva: 'Reserva',
+  };
+
+  return labels[serviceId] || serviceId;
+};
+
+export const getServiceSortPriority = (serviceId) => SERVICE_PRIORITY[serviceId] ?? 99;
+
 const getRoleCountForCulto = (stats, cultoId) => {
   if (cultoId === 'MeiaHoraCulto') return stats.meiaHora || 0;
   if (cultoId === 'Culto') return stats.culto || 0;

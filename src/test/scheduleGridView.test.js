@@ -7,13 +7,13 @@ const groupedSchedule = {
       originalIndex: 0,
       date: '01/03/2026',
       dayName: 'Domingo',
-      assignments: { Culto: 'Ana', MeiaHoraCulto: 'Bia' },
+      assignments: { Culto: 'Ana', MeiaHoraCulto: 'Bia', Reserva: 'Clara' },
     },
     {
       originalIndex: 1,
       date: '08/03/2026',
       dayName: 'Domingo',
-      assignments: { Culto: undefined, MeiaHoraCulto: undefined },
+      assignments: { Culto: undefined, MeiaHoraCulto: undefined, Parte1: undefined },
     },
   ],
 };
@@ -25,6 +25,7 @@ const buildProps = (overrides = {}) => ({
   organists: [
     { id: '1', name: 'Ana' },
     { id: '2', name: 'Bia' },
+    { id: '3', name: 'Clara' },
   ],
   onToggleEditing: jest.fn(),
   onSaveChanges: jest.fn(),
@@ -37,6 +38,9 @@ describe('ScheduleGridView', () => {
   test('exibe apenas cards de dias com escala quando nao esta em edicao', () => {
     render(<ScheduleGridView {...buildProps()} />);
     expect(screen.getByText('Domingo, 01/03/2026')).toBeInTheDocument();
+    expect(screen.getByText('Meia Hora:')).toBeInTheDocument();
+    expect(screen.getByText('Culto:')).toBeInTheDocument();
+    expect(screen.getByText('Reserva:')).toBeInTheDocument();
     expect(screen.queryByText('Domingo, 08/03/2026')).not.toBeInTheDocument();
   });
 
