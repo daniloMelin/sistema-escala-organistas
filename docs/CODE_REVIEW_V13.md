@@ -11,6 +11,7 @@
 | 1.4    | 27 de março de 2026 | Danilo Melin | Fase 2.2 concluída   |
 | 1.5    | 27 de março de 2026 | Danilo Melin | Fase 3.1 concluída   |
 | 1.6    | 27 de março de 2026 | Danilo Melin | Fase 3.2 concluída   |
+| 1.7    | 27 de março de 2026 | Danilo Melin | Fase 4.1 concluída   |
 
 ## Objetivo
 
@@ -20,9 +21,9 @@ ocupam slots principais do culto e quando existe slot de reserva.
 
 ## Status do Ciclo
 
-- Status geral: `EM ANDAMENTO`
+- Status geral: `CONCLUÍDO`
 - Data de início: `27 de março de 2026`
-- Data de encerramento: `A definir`
+- Data de encerramento: `27 de março de 2026`
 - Contexto: continuidade direta do `CODE_REVIEW_V12`, priorizando agora
   a regra central de configuração do culto antes de novos refinamentos
   administrativos
@@ -155,12 +156,16 @@ Premissas adicionais:
 
 #### 4.1 Encerrar formalmente o V13
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - registrar o resultado do ciclo
   - consolidar próximos passos recomendados
   - fechar formalmente o `CODE_REVIEW_V13`
+  - resultado alcançado:
+    - ciclo encerrado com resumo funcional consolidado
+    - impacto prático do modelo configurável documentado
+    - próximos passos registrados para evolução futura
 
 ## Ordem de execução recomendada
 
@@ -180,7 +185,7 @@ Premissas adicionais:
 - [x] Fase 2.2 concluída
 - [x] Fase 3.1 concluída
 - [x] Fase 3.2 concluída
-- [ ] Fase 4.1 pendente
+- [x] Fase 4.1 concluída
 
 ## Critério de Conclusão do V13
 
@@ -188,3 +193,54 @@ Premissas adicionais:
   ponta a ponta
 - geração, visualização e PDF alinhados ao modelo escolhido
 - documentação do ciclo atualizada com impacto prático e próximos passos
+
+## Resumo Executivo
+
+O ciclo V13 evoluiu o núcleo funcional da aplicação ao permitir que
+cada igreja passe a definir seu próprio modelo de culto, refletindo a
+operação real de escalas com `Reserva`, `Parte 1` e `Parte 2` quando
+necessário.
+
+Principais resultados:
+
+- escolha do modelo de culto no cadastro e edição da igreja
+- persistência do `cultoModel` junto à configuração da igreja
+- geração da escala adaptada aos novos slots
+- visualização e PDF coerentes com o modelo configurado
+- documentação consolidada do impacto e da cobertura do fluxo
+
+## Impacto Prático no Projeto
+
+- a configuração da igreja ficou mais fiel à realidade operacional
+- a escala gerada passou a exigir menos interpretação manual posterior
+- o PDF exportado ficou mais claro para compartilhamento fora do sistema
+- a base atual ficou pronta para futuros refinamentos no nível da
+  igreja, sem reabrir a regra central do culto
+
+## Artefatos Consolidados do Ciclo
+
+- `docs/CODE_REVIEW_V13.md`
+- `docs/CULT_MODEL_REVIEW_V13.md`
+- `docs/CULT_MODEL_IMPACT_V13.md`
+- `docs/CULT_MODEL_COVERAGE_V13.md`
+- `docs/PANEL_IMPROVEMENTS_BACKLOG.md`
+- `src/utils/churchCultModel.js`
+- `src/hooks/useChurchManager.js`
+- `src/utils/scheduleLogic.js`
+- `src/utils/pdfGenerator.js`
+- `src/components/ChurchForm.js`
+- `src/components/ScheduleGridView.js`
+- `src/test/churchCultModel.test.js`
+- `src/test/scheduleLogic.test.js`
+- `src/test/pdfGenerator.test.js`
+- `e2e/church-management.spec.js`
+- `e2e/schedule-generation.spec.js`
+
+## Próximos Passos Recomendados
+
+1. Avaliar se o próximo ciclo deve priorizar resumo operacional por
+   igreja na lista principal.
+2. Revisar se já faz sentido introduzir indicador de prontidão da igreja
+   para gerar escala.
+3. Deixar a possibilidade de slots livres por igreja apenas para um
+   ciclo futuro, se o domínio real realmente pedir essa flexibilidade.
