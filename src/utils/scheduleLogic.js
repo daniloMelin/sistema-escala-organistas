@@ -197,7 +197,7 @@ const initializeAllocationState = (organists, periodDates) => {
   const schedule = periodDates.map((dayInfo) => ({
     date: dayInfo.dateStr,
     dayName: dayInfo.dayName,
-    assignments: {},
+    assignments: Object.fromEntries(dayInfo.cultos.map((culto) => [culto.id, undefined])),
   }));
 
   return { organistStats, assignedDates, schedule };

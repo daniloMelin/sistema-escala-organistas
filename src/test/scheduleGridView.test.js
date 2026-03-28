@@ -59,4 +59,34 @@ describe('ScheduleGridView', () => {
     });
     expect(props.onAssignmentChange).toHaveBeenCalled();
   });
+
+  test('mantem slot vazio editavel como VAGO durante a edicao', () => {
+    render(
+      <ScheduleGridView
+        {...buildProps({
+          isEditing: true,
+          groupedSchedule: {
+            'Março 2026': [
+              {
+                originalIndex: 0,
+                date: '15/03/2026',
+                dayName: 'Domingo',
+                assignments: {
+                  MeiaHoraCulto: 'Ana',
+                  Parte1: undefined,
+                  Parte2: undefined,
+                },
+              },
+            ],
+          },
+        })}
+      />
+    );
+
+    expect(screen.getByText('Parte 1:')).toBeInTheDocument();
+    expect(screen.getByText('Parte 2:')).toBeInTheDocument();
+    expect(screen.getAllByRole('combobox')).toHaveLength(3);
+    expect(screen.getAllByRole('combobox')[1]).toHaveValue('VAGO');
+    expect(screen.getAllByRole('combobox')[2]).toHaveValue('VAGO');
+  });
 });

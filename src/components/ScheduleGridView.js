@@ -75,7 +75,7 @@ const ScheduleGridView = ({
 
                             {isEditing ? (
                               <select
-                                value={nome}
+                                value={nome || 'VAGO'}
                                 onChange={(e) =>
                                   onAssignmentChange(day.originalIndex, culto, e.target.value)
                                 }
@@ -91,12 +91,12 @@ const ScheduleGridView = ({
                             ) : (
                               <span
                                 className={
-                                  nome === 'VAGO'
+                                  !nome || nome === 'VAGO'
                                     ? 'schedule-card__name schedule-card__name--empty'
                                     : 'schedule-card__name'
                                 }
                               >
-                                {nome}
+                                {nome || 'VAGO'}
                               </span>
                             )}
                           </li>

@@ -73,7 +73,25 @@ describe('generateSchedule', () => {
 
     const result = generateSchedule(organists, '2026-03-01', '2026-03-01', SUNDAY_CONFIG); // domingo
     expect(result).toHaveLength(1);
-    expect(result[0].assignments).toEqual({});
+    expect(result[0].assignments).toEqual({
+      MeiaHoraCulto: undefined,
+      Culto: undefined,
+    });
+  });
+
+  test('mantem slots nao preenchidos no resultado para permitir edicao manual', () => {
+    const organists = [{ id: '1', name: 'Ana', fixedDays: [0] }];
+
+    const result = generateSchedule(
+      organists,
+      '2026-03-01',
+      '2026-03-01',
+      SUNDAY_WITH_THREE_SLOTS_CONFIG
+    );
+
+    expect(result).toHaveLength(1);
+    expect(Object.keys(result[0].assignments)).toEqual(['MeiaHoraCulto', 'Parte1', 'Parte2']);
+    expect(Object.values(result[0].assignments).filter(Boolean)).toHaveLength(1);
   });
 
   test('preenche culto e reserva como slots independentes no modelo com reserva', () => {
