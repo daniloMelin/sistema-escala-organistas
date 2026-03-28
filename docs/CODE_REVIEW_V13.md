@@ -5,6 +5,7 @@
 | Versão | Data                | Autor(es)    | Descrição da Revisão |
 | ------ | ------------------- | ------------ | -------------------- |
 | 1.0    | 27 de março de 2026 | Danilo Melin | Criação do ciclo V13 |
+| 1.1    | 27 de março de 2026 | Danilo Melin | Fase 1.1 concluída   |
 
 ## Objetivo
 
@@ -14,7 +15,7 @@ ocupam slots principais do culto e quando existe slot de reserva.
 
 ## Status do Ciclo
 
-- Status geral: `PLANEJADO`
+- Status geral: `EM ANDAMENTO`
 - Data de início: `27 de março de 2026`
 - Data de encerramento: `A definir`
 - Contexto: continuidade direta do `CODE_REVIEW_V12`, priorizando agora
@@ -60,12 +61,16 @@ Premissas adicionais:
 
 #### 1.1 Revisar e formalizar o modelo configurável por igreja
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - definir como o modelo será representado nos dados da igreja
   - formalizar os modelos suportados no primeiro ciclo
   - decidir a relação entre modelo do culto e dias configurados
+  - resultado alcançado:
+    - modelo configurável formalizado em documento próprio
+    - modelos suportados do primeiro ciclo definidos
+    - relação entre dias configurados, slots e `RJM` explicitada
 
 #### 1.2 Implementar configuração do modelo no cadastro da igreja
 
@@ -140,7 +145,7 @@ Premissas adicionais:
 
 ## Registro de progresso
 
-- [ ] Fase 1.1 pendente
+- [x] Fase 1.1 concluída
 - [ ] Fase 1.2 pendente
 - [ ] Fase 2.1 pendente
 - [ ] Fase 2.2 pendente
