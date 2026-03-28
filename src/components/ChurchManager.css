@@ -14,6 +14,25 @@
   margin-top: 0;
 }
 
+.church-form__model {
+  margin-bottom: 20px;
+}
+
+.church-form__model-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  background: #ffffff;
+  font: inherit;
+}
+
+.church-form__model-help {
+  margin: 8px 0 0;
+  color: #555555;
+  font-size: 0.95rem;
+}
+
 .church-form__days {
   margin-bottom: 20px;
   background: #f9f9f9;

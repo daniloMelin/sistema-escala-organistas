@@ -1,6 +1,7 @@
 import jsPDF from 'jspdf';
 import { getMonthYearLabel } from './dateUtils';
 import logger from './logger';
+import { getServiceDisplayLabel, getServiceSortPriority } from './scheduleLogic';
 
 // Cores padrão (RGB)
 const COLORS = {
@@ -25,6 +26,36 @@ const hasValidAssignments = (assignments) => {
   return Object.values(assignments).some((value) => value && value.toUpperCase() !== 'VAGO');
 };
 
+const getRenderableAssignments = (assignments) =>
+  Object.entries(assignments || {})
+    .filter(([, value]) => value && value !== 'VAGO')
+    .sort(
+      ([serviceA], [serviceB]) =>
+        getServiceSortPriority(serviceA) - getServiceSortPriority(serviceB)
+    );
+
+const drawPdfRow = (doc, xPos, cardWidth, lineY, label, name) => {
+  doc.setFont(undefined, 'bold');
+  doc.setTextColor(...COLORS.textLabel);
+  doc.text(label, xPos + 2, lineY);
+
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(...COLORS.textValue);
+
+  const nameX = xPos + 20;
+  const maxWidth = cardWidth - 22;
+
+  if (doc.getTextWidth(name) > maxWidth) {
+    doc.setFontSize(8);
+    doc.text(name, nameX, lineY);
+    doc.setFontSize(9);
+  } else {
+    doc.text(name, nameX, lineY);
+  }
+
+  return lineY + 6;
+};
+
 export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName) => {
   try {
     if (!scheduleData || scheduleData.length === 0) {
@@ -46,8 +77,6 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
 
     const contentWidth = pageWidth - margin * 2;
     const cardWidth = (contentWidth - gap * (columns - 1)) / columns;
-    const cardHeight = 28;
-
     let yPos = 50; // Começa em 50 na primeira página (por causa do cabeçalho)
 
     // --- 1. FUNÇÃO DE CABEÇALHO (Só desenha quando chamado) ---
@@ -87,7 +116,12 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
       const items = itemsByMonth[monthLabel];
 
       // Verificar espaço para a barra do mês
-      if (yPos + 15 + cardHeight > pageHeight - margin) {
+      const tallestCardInMonth = Math.max(
+        ...items.map((item) => 16 + getRenderableAssignments(item.assignments).length * 6),
+        28
+      );
+
+      if (yPos + 15 + tallestCardInMonth > pageHeight - margin) {
         doc.addPage();
         // NÃO chamamos drawHeader() aqui
         yPos = 20; // Reinicia no topo (margem simples)
@@ -105,75 +139,58 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
       yPos += 12;
 
       // --- LOOP PELOS ITENS ---
-      items.forEach((item, index) => {
-        const columnIndex = index % columns;
+      for (let rowStart = 0; rowStart < items.length; rowStart += columns) {
+        const rowItems = items.slice(rowStart, rowStart + columns);
+        const rowHeights = rowItems.map((item) =>
+          Math.max(28, 16 + getRenderableAssignments(item.assignments).length * 6)
+        );
+        const rowMaxHeight = Math.max(...rowHeights);
 
-        if (index > 0 && columnIndex === 0) {
-          yPos += cardHeight + gap;
-        }
-
-        // Verifica Quebra de Página (dentro do mês)
-        if (columnIndex === 0 && yPos + cardHeight > pageHeight - margin) {
+        if (yPos + rowMaxHeight > pageHeight - margin) {
           doc.addPage();
-          // NÃO chamamos drawHeader() aqui
-          yPos = 20; // Reinicia no topo (margem simples)
+          yPos = 20;
         }
 
-        const xPos = margin + columnIndex * (cardWidth + gap);
+        for (let columnIndex = 0; columnIndex < rowItems.length; columnIndex += 1) {
+          const item = rowItems[columnIndex];
+          const renderableAssignments = getRenderableAssignments(item.assignments);
+          const cardHeight = rowHeights[columnIndex];
+          const xPos = margin + columnIndex * (cardWidth + gap);
 
-        // --- DESENHAR O CARTÃO ---
-        doc.setDrawColor(...COLORS.cardBorder);
-        doc.setLineWidth(0.1);
-        doc.setFillColor(255, 255, 255);
-        doc.roundedRect(xPos, yPos, cardWidth, cardHeight, 2, 2, 'FD');
+          doc.setDrawColor(...COLORS.cardBorder);
+          doc.setLineWidth(0.1);
+          doc.setFillColor(255, 255, 255);
+          doc.roundedRect(xPos, yPos, cardWidth, cardHeight, 2, 2, 'FD');
 
-        doc.setFillColor(...COLORS.cardHeader);
-        doc.rect(xPos + 0.1, yPos + 0.1, cardWidth - 0.2, 7, 'F');
+          doc.setFillColor(...COLORS.cardHeader);
+          doc.rect(xPos + 0.1, yPos + 0.1, cardWidth - 0.2, 7, 'F');
 
-        doc.setFontSize(9);
-        doc.setFont(undefined, 'bold');
-        doc.setTextColor(...COLORS.textDate);
-        doc.text(`${item.dayName}, ${item.date}`, xPos + cardWidth / 2, yPos + 5, {
-          align: 'center',
-        });
-
-        let lineY = yPos + 13;
-        doc.setFontSize(9);
-
-        const drawRow = (label, name) => {
+          doc.setFontSize(9);
           doc.setFont(undefined, 'bold');
-          doc.setTextColor(...COLORS.textLabel);
-          doc.text(label, xPos + 2, lineY);
+          doc.setTextColor(...COLORS.textDate);
+          doc.text(`${item.dayName}, ${item.date}`, xPos + cardWidth / 2, yPos + 5, {
+            align: 'center',
+          });
 
-          doc.setFont(undefined, 'normal');
-          doc.setTextColor(...COLORS.textValue);
+          let lineY = yPos + 13;
+          doc.setFontSize(9);
 
-          const nameX = xPos + 20;
-          const maxWidth = cardWidth - 22;
-
-          if (doc.getTextWidth(name) > maxWidth) {
-            doc.setFontSize(8);
-            doc.text(name, nameX, lineY);
-            doc.setFontSize(9);
-          } else {
-            doc.text(name, nameX, lineY);
-          }
-
-          lineY += 6;
-        };
-
-        if (item.assignments.RJM && item.assignments.RJM !== 'VAGO') {
-          drawRow('RJM:', item.assignments.RJM);
+          renderableAssignments.forEach(([serviceId, assignedName]) => {
+            lineY = drawPdfRow(
+              doc,
+              xPos,
+              cardWidth,
+              lineY,
+              `${getServiceDisplayLabel(serviceId)}:`,
+              assignedName
+            );
+          });
         }
-        if (item.assignments.MeiaHoraCulto && item.assignments.MeiaHoraCulto !== 'VAGO') {
-          drawRow('M. Hora:', item.assignments.MeiaHoraCulto);
-        }
-        if (item.assignments.Culto && item.assignments.Culto !== 'VAGO') {
-          drawRow('Culto:', item.assignments.Culto);
-        }
-      });
 
-      yPos += cardHeight + gap + 5;
+        yPos += rowMaxHeight + gap;
+      }
+
+      yPos += 5;
     });
 
     // --- RODAPÉ ---

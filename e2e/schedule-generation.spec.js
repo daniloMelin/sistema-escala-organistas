@@ -46,6 +46,38 @@ test.describe('geracao de escala', () => {
     await expect(page.getByRole('button', { name: 'Visualizar' })).toBeVisible();
   });
 
+  test('gera escala com culto e reserva para igreja com modelo de culto unico', async ({
+    page,
+  }) => {
+    await resetE2EState(
+      page,
+      buildChurchDatabase({
+        churchId: 'church-schedule-reserve-1',
+        churchName: 'Igreja Reserva',
+        churchCode: 'RES',
+        cultoModel: 'culto_unico_com_reserva',
+        organists: [
+          { id: 'organist-r1', name: 'Ana', availability: { sunday_culto: true } },
+          { id: 'organist-r2', name: 'Bia', availability: { sunday_culto: true } },
+        ],
+      })
+    );
+
+    await gotoChurchManager(page);
+    await page.getByText('Igreja Reserva').click();
+    await page.getByRole('button', { name: /Gerar Escala/i }).click();
+
+    await page.getByLabel('Data Início:').fill('2026-03-01');
+    await page.getByLabel('Data Fim:').fill('2026-03-01');
+    await page.getByRole('button', { name: 'Gerar Nova Escala' }).click();
+
+    await expect(
+      page.getByText('Escala de 01/03/2026 até 01/03/2026 gerada e salva com sucesso.')
+    ).toBeVisible();
+    await expect(page.getByText('Culto:')).toBeVisible();
+    await expect(page.getByText('Reserva:')).toBeVisible();
+  });
+
   test('visualiza uma escala salva do historico com feedback contextual', async ({ page }) => {
     await resetE2EState(
       page,

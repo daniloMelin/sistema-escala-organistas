@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from './ui/Button';
+import { getServiceDisplayLabel, getServiceSortPriority } from '../utils/scheduleLogic';
 
 const ScheduleGridView = ({
   groupedSchedule,
@@ -61,38 +62,45 @@ const ScheduleGridView = ({
 
                   <div className="schedule-card__body">
                     <ul className="list-reset">
-                      {Object.entries(day.assignments).map(([culto, nome]) => (
-                        <li key={culto} className="schedule-card__row">
-                          <span className="schedule-card__role">{culto}:</span>
-
-                          {isEditing ? (
-                            <select
-                              value={nome}
-                              onChange={(e) =>
-                                onAssignmentChange(day.originalIndex, culto, e.target.value)
-                              }
-                              className="schedule-card__select"
-                            >
-                              <option value="VAGO">VAGO</option>
-                              {organists.map((org) => (
-                                <option key={org.id} value={org.name}>
-                                  {org.name}
-                                </option>
-                              ))}
-                            </select>
-                          ) : (
-                            <span
-                              className={
-                                nome === 'VAGO'
-                                  ? 'schedule-card__name schedule-card__name--empty'
-                                  : 'schedule-card__name'
-                              }
-                            >
-                              {nome}
+                      {Object.entries(day.assignments)
+                        .sort(
+                          ([cultoA], [cultoB]) =>
+                            getServiceSortPriority(cultoA) - getServiceSortPriority(cultoB)
+                        )
+                        .map(([culto, nome]) => (
+                          <li key={culto} className="schedule-card__row">
+                            <span className="schedule-card__role">
+                              {getServiceDisplayLabel(culto)}:
                             </span>
-                          )}
-                        </li>
-                      ))}
+
+                            {isEditing ? (
+                              <select
+                                value={nome || 'VAGO'}
+                                onChange={(e) =>
+                                  onAssignmentChange(day.originalIndex, culto, e.target.value)
+                                }
+                                className="schedule-card__select"
+                              >
+                                <option value="VAGO">VAGO</option>
+                                {organists.map((org) => (
+                                  <option key={org.id} value={org.name}>
+                                    {org.name}
+                                  </option>
+                                ))}
+                              </select>
+                            ) : (
+                              <span
+                                className={
+                                  !nome || nome === 'VAGO'
+                                    ? 'schedule-card__name schedule-card__name--empty'
+                                    : 'schedule-card__name'
+                                }
+                              >
+                                {nome || 'VAGO'}
+                              </span>
+                            )}
+                          </li>
+                        ))}
                     </ul>
                   </div>
                 </div>

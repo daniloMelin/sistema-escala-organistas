@@ -8,6 +8,7 @@ import {
   getChurch,
 } from '../services/firebaseService';
 import { ALL_WEEK_DAYS, INITIAL_AVAILABILITY, formatAvailability } from '../constants/days';
+import { getVisibleDaysFromConfig } from '../utils/churchCultModel';
 import { validateOrganistName, sanitizeString } from '../utils/validation';
 import logger from '../utils/logger';
 
@@ -47,17 +48,7 @@ export const useChurchDashboard = (user) => {
       const churchData = await getChurch(user.uid, id);
       if (!isMountedRef.current) return;
       if (churchData && churchData.config) {
-        const config = churchData.config;
-        const filteredDays = ALL_WEEK_DAYS.filter((dayObj) => {
-          if (dayObj.key === 'sunday_rjm') {
-            return config.sunday && config.sunday.some((s) => s.id === 'RJM');
-          }
-          if (dayObj.key === 'sunday_culto') {
-            return config.sunday && config.sunday.some((s) => s.id === 'Culto');
-          }
-          return Object.prototype.hasOwnProperty.call(config, dayObj.key);
-        });
-        setVisibleDays(filteredDays);
+        setVisibleDays(getVisibleDaysFromConfig(churchData.config, ALL_WEEK_DAYS));
       } else {
         setVisibleDays(ALL_WEEK_DAYS);
       }

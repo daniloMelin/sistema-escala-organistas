@@ -13,6 +13,9 @@ export const SERVICE_TEMPLATES = {
   RJM: { id: 'RJM', label: 'RJM', needs: 1 },
   MeiaHora: { id: 'MeiaHoraCulto', label: 'Meia Hora', needs: 1 },
   Culto: { id: 'Culto', label: 'Culto', needs: 1 },
+  Reserva: { id: 'Reserva', label: 'Reserva', needs: 1 },
+  Parte1: { id: 'Parte1', label: 'Parte 1', needs: 1 },
+  Parte2: { id: 'Parte2', label: 'Parte 2', needs: 1 },
 };
 
 // Mapa do dia da semana (getDay) para a chave de configuração da igreja
@@ -114,7 +117,25 @@ const SERVICE_PRIORITY = {
   RJM: 0,
   MeiaHoraCulto: 1,
   Culto: 2,
+  Parte1: 2,
+  Parte2: 3,
+  Reserva: 4,
 };
+
+export const getServiceDisplayLabel = (serviceId) => {
+  const labels = {
+    RJM: 'RJM',
+    MeiaHoraCulto: 'Meia Hora',
+    Culto: 'Culto',
+    Parte1: 'Parte 1',
+    Parte2: 'Parte 2',
+    Reserva: 'Reserva',
+  };
+
+  return labels[serviceId] || serviceId;
+};
+
+export const getServiceSortPriority = (serviceId) => SERVICE_PRIORITY[serviceId] ?? 99;
 
 const getRoleCountForCulto = (stats, cultoId) => {
   if (cultoId === 'MeiaHoraCulto') return stats.meiaHora || 0;
@@ -176,7 +197,7 @@ const initializeAllocationState = (organists, periodDates) => {
   const schedule = periodDates.map((dayInfo) => ({
     date: dayInfo.dateStr,
     dayName: dayInfo.dayName,
-    assignments: {},
+    assignments: Object.fromEntries(dayInfo.cultos.map((culto) => [culto.id, undefined])),
   }));
 
   return { organistStats, assignedDates, schedule };
