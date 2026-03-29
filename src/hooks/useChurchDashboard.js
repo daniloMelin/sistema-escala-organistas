@@ -93,6 +93,18 @@ export const useChurchDashboard = (user) => {
     setError('');
   };
 
+  const hasDuplicateOrganistName = useCallback(
+    (sanitizedName) => {
+      const normalizedName = sanitizedName.toLocaleLowerCase('pt-BR');
+
+      return organists.some((organist) => {
+        if (editingId && organist.id === editingId) return false;
+        return organist.name?.toLocaleLowerCase('pt-BR') === normalizedName;
+      });
+    },
+    [editingId, organists]
+  );
+
   const handleSaveOrganist = async (e) => {
     e.preventDefault();
 
@@ -107,12 +119,18 @@ export const useChurchDashboard = (user) => {
       return;
     }
 
+    const sanitizedName = sanitizeString(newOrganistName);
+    if (hasDuplicateOrganistName(sanitizedName)) {
+      setError('Já existe uma organista com este nome nesta igreja.');
+      return;
+    }
+
     setIsSubmitting(true);
     setError('');
     setSuccessMessage('');
     try {
       const organistData = {
-        name: sanitizeString(newOrganistName),
+        name: sanitizedName,
         availability,
       };
 

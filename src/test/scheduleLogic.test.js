@@ -22,6 +22,10 @@ const TUESDAY_CONFIG = {
   tuesday: [SERVICE_TEMPLATES.MeiaHora, SERVICE_TEMPLATES.Culto],
 };
 
+const FRIDAY_WITH_RESERVE_CONFIG = {
+  friday: [SERVICE_TEMPLATES.Culto, SERVICE_TEMPLATES.Reserva],
+};
+
 const SUNDAY_WITH_RESERVE_CONFIG = {
   sunday: [SERVICE_TEMPLATES.Culto, SERVICE_TEMPLATES.Reserva],
 };
@@ -111,6 +115,75 @@ describe('generateSchedule', () => {
     expect(result[0].assignments.Culto).toBeTruthy();
     expect(result[0].assignments.Reserva).toBeTruthy();
     expect(result[0].assignments.Culto).not.toBe(result[0].assignments.Reserva);
+  });
+
+  test('aloca culto e reserva como dupla valida e alterna as funcoes quando ha alternativa', () => {
+    const organists = [
+      {
+        id: '1',
+        name: 'Aline',
+        fixedDays: [5],
+        stats: { meiaHora: 0, culto: 0, total: 0 },
+      },
+      {
+        id: '2',
+        name: 'Cristiana',
+        fixedDays: [5],
+        stats: { meiaHora: 0, culto: 0, total: 0 },
+      },
+    ];
+
+    const result = generateSchedule(
+      organists,
+      '2026-04-03',
+      '2026-04-10',
+      FRIDAY_WITH_RESERVE_CONFIG
+    );
+
+    expect(result).toHaveLength(2);
+    expect(result[0].assignments.Culto).not.toBe(result[0].assignments.Reserva);
+    expect(result[1].assignments.Culto).not.toBe(result[1].assignments.Reserva);
+    expect(result[0].assignments.Culto).not.toBe(result[1].assignments.Culto);
+    expect(result[0].assignments.Reserva).not.toBe(result[1].assignments.Reserva);
+  });
+
+  test('evita fixar a mesma organista no culto com reserva quando ha varias alternativas no mesmo dia', () => {
+    const organists = [
+      {
+        id: '1',
+        name: 'Aline',
+        fixedDays: [5],
+        stats: { meiaHora: 0, culto: 0, total: 0 },
+      },
+      {
+        id: '2',
+        name: 'Hosana',
+        fixedDays: [0, 3, 5],
+        stats: { meiaHora: 0, culto: 0, total: 0 },
+      },
+      {
+        id: '3',
+        name: 'Rosa',
+        fixedDays: [0, 3, 5],
+        stats: { meiaHora: 0, culto: 0, total: 0 },
+      },
+      {
+        id: '4',
+        name: 'Silva',
+        fixedDays: [0, 3, 5],
+        stats: { meiaHora: 0, culto: 0, total: 0 },
+      },
+    ];
+
+    const result = generateSchedule(
+      organists,
+      '2026-04-03',
+      '2026-04-24',
+      FRIDAY_WITH_RESERVE_CONFIG
+    );
+
+    const fridayCultoAssignments = result.map((day) => day.assignments.Culto);
+    expect(new Set(fridayCultoAssignments).size).toBeGreaterThan(1);
   });
 
   test('preenche os tres slots do modelo meia hora parte 1 e parte 2', () => {
