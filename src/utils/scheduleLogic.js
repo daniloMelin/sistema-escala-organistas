@@ -210,25 +210,6 @@ const initializeAllocationState = (organists, periodDates) => {
   return { organistStats, assignedDates, lastAssignedRoleByDayKey, schedule };
 };
 
-const scoreCandidateForCulto = ({
-  organist,
-  cultoId,
-  dayKey,
-  availabilityScores,
-  organistStats,
-  lastAssignedRoleByDayKey,
-}) => {
-  const stats = organistStats[organist.id] || { meiaHora: 0, culto: 0, total: 0 };
-
-  return [
-    availabilityScores[organist.id] || 0,
-    getRepeatedRolePenalty(lastAssignedRoleByDayKey, organist.id, dayKey, cultoId),
-    getRoleCountForCulto(stats, cultoId),
-    stats.total || 0,
-    organist.name || '',
-  ];
-};
-
 const scoreCandidateForReservePair = ({
   organist,
   cultoId,
