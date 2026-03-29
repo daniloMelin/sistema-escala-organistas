@@ -229,6 +229,25 @@ const scoreCandidateForCulto = ({
   ];
 };
 
+const scoreCandidateForReservePair = ({
+  organist,
+  cultoId,
+  dayKey,
+  availabilityScores,
+  organistStats,
+  lastAssignedRoleByDayKey,
+}) => {
+  const stats = organistStats[organist.id] || { meiaHora: 0, culto: 0, total: 0 };
+
+  return [
+    getRepeatedRolePenalty(lastAssignedRoleByDayKey, organist.id, dayKey, cultoId),
+    getRoleCountForCulto(stats, cultoId),
+    stats.total || 0,
+    availabilityScores[organist.id] || 0,
+    organist.name || '',
+  ];
+};
+
 const compareScoreTuples = (scoreA, scoreB) => {
   for (let index = 0; index < Math.max(scoreA.length, scoreB.length); index += 1) {
     const valueA = scoreA[index];
@@ -269,7 +288,7 @@ const assignCultoWithReservePair = ({
 
     reserveCandidates.forEach((reserveOrganist) => {
       const pairScore = [
-        ...scoreCandidateForCulto({
+        ...scoreCandidateForReservePair({
           organist: cultoOrganist,
           cultoId: 'Culto',
           dayKey,
@@ -277,7 +296,7 @@ const assignCultoWithReservePair = ({
           organistStats,
           lastAssignedRoleByDayKey,
         }),
-        ...scoreCandidateForCulto({
+        ...scoreCandidateForReservePair({
           organist: reserveOrganist,
           cultoId: 'Reserva',
           dayKey,
