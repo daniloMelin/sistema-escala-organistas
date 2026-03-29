@@ -93,6 +93,50 @@ describe('useChurchDashboard', () => {
     expect(result.current.availability).toEqual(INITIAL_AVAILABILITY);
   });
 
+  test('impede cadastrar organista com nome duplicado na mesma igreja', async () => {
+    const { result } = renderHook(() => useChurchDashboard(user));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    act(() => {
+      result.current.setNewOrganistName(' ana ');
+    });
+
+    await act(async () => {
+      await result.current.handleSaveOrganist({ preventDefault: jest.fn() });
+    });
+
+    expect(mockAddOrganistToChurch).not.toHaveBeenCalled();
+    expect(result.current.error).toBe('Já existe uma organista com este nome nesta igreja.');
+  });
+
+  test('permite editar a mesma organista sem bloquear pelo proprio nome', async () => {
+    const { result } = renderHook(() => useChurchDashboard(user));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    act(() => {
+      result.current.handleStartEdit({
+        id: 'org-1',
+        name: 'Ana',
+        availability: { sunday_culto: true },
+      });
+      result.current.setNewOrganistName(' Ana ');
+    });
+
+    await act(async () => {
+      await result.current.handleSaveOrganist({ preventDefault: jest.fn() });
+    });
+
+    expect(mockUpdateOrganistInChurch).toHaveBeenCalledWith(
+      'user-1',
+      'church-1',
+      'org-1',
+      expect.objectContaining({ name: 'Ana' })
+    );
+    expect(result.current.error).toBe('');
+  });
+
   test('solicita e confirma a exclusao de organista', async () => {
     const { result } = renderHook(() => useChurchDashboard(user));
 
