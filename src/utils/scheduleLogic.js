@@ -210,6 +210,120 @@ const initializeAllocationState = (organists, periodDates) => {
   return { organistStats, assignedDates, lastAssignedRoleByDayKey, schedule };
 };
 
+const scoreCandidateForCulto = ({
+  organist,
+  cultoId,
+  dayKey,
+  availabilityScores,
+  organistStats,
+  lastAssignedRoleByDayKey,
+}) => {
+  const stats = organistStats[organist.id] || { meiaHora: 0, culto: 0, total: 0 };
+
+  return [
+    availabilityScores[organist.id] || 0,
+    getRepeatedRolePenalty(lastAssignedRoleByDayKey, organist.id, dayKey, cultoId),
+    getRoleCountForCulto(stats, cultoId),
+    stats.total || 0,
+    organist.name || '',
+  ];
+};
+
+const compareScoreTuples = (scoreA, scoreB) => {
+  for (let index = 0; index < Math.max(scoreA.length, scoreB.length); index += 1) {
+    const valueA = scoreA[index];
+    const valueB = scoreB[index];
+
+    if (valueA < valueB) return -1;
+    if (valueA > valueB) return 1;
+  }
+
+  return 0;
+};
+
+const assignCultoWithReservePair = ({
+  organists,
+  availabilityScores,
+  dayOfWeek,
+  dayKey,
+  dateStr,
+  currentDayAssignments,
+  assignedDates,
+  lastAssignedRoleByDayKey,
+  organistStats,
+  churchConfig,
+}) => {
+  const cultoCandidates = organists.filter((organist) => {
+    if (assignedDates[organist.id].has(dateStr)) return false;
+    return canOrganistPlayOnDay(organist, dayOfWeek, dayKey, 'Culto', churchConfig);
+  });
+
+  let bestPair = null;
+
+  cultoCandidates.forEach((cultoOrganist) => {
+    const reserveCandidates = organists.filter((organist) => {
+      if (organist.id === cultoOrganist.id) return false;
+      if (assignedDates[organist.id].has(dateStr)) return false;
+      return canOrganistPlayOnDay(organist, dayOfWeek, dayKey, 'Reserva', churchConfig);
+    });
+
+    reserveCandidates.forEach((reserveOrganist) => {
+      const pairScore = [
+        ...scoreCandidateForCulto({
+          organist: cultoOrganist,
+          cultoId: 'Culto',
+          dayKey,
+          availabilityScores,
+          organistStats,
+          lastAssignedRoleByDayKey,
+        }),
+        ...scoreCandidateForCulto({
+          organist: reserveOrganist,
+          cultoId: 'Reserva',
+          dayKey,
+          availabilityScores,
+          organistStats,
+          lastAssignedRoleByDayKey,
+        }),
+      ];
+
+      if (!bestPair || compareScoreTuples(pairScore, bestPair.score) < 0) {
+        bestPair = {
+          cultoOrganist,
+          reserveOrganist,
+          score: pairScore,
+        };
+      }
+    });
+  });
+
+  if (!bestPair) return false;
+
+  currentDayAssignments.Culto = bestPair.cultoOrganist.name;
+  currentDayAssignments.Reserva = bestPair.reserveOrganist.name;
+
+  assignedDates[bestPair.cultoOrganist.id].add(dateStr);
+  assignedDates[bestPair.reserveOrganist.id].add(dateStr);
+
+  const cultoStats =
+    organistStats[bestPair.cultoOrganist.id] ||
+    (bestPair.cultoOrganist.stats
+      ? { ...bestPair.cultoOrganist.stats }
+      : { meiaHora: 0, culto: 0, total: 0 });
+  organistStats[bestPair.cultoOrganist.id] = incrementStatsForCulto(cultoStats, 'Culto');
+  lastAssignedRoleByDayKey[bestPair.cultoOrganist.id][dayKey] = 'Culto';
+
+  const reserveStats =
+    organistStats[bestPair.reserveOrganist.id] ||
+    (bestPair.reserveOrganist.stats
+      ? { ...bestPair.reserveOrganist.stats }
+      : { meiaHora: 0, culto: 0, total: 0 });
+  organistStats[bestPair.reserveOrganist.id] = incrementStatsForCulto(reserveStats, 'Reserva');
+  lastAssignedRoleByDayKey[bestPair.reserveOrganist.id][dayKey] = 'Reserva';
+
+  return true;
+};
+
 const runPrimaryAllocation = ({
   organists,
   availabilityScores,
@@ -224,6 +338,24 @@ const runPrimaryAllocation = ({
     const { date, dayOfWeek, dayKey, cultos } = dayInfo;
     const dateStr = format(date, 'yyyy-MM-dd');
     const currentDayAssignments = schedule[dayIndex].assignments || {};
+
+    const hasCultoWithReserve =
+      cultos.some((culto) => culto.id === 'Culto') && cultos.some((culto) => culto.id === 'Reserva');
+
+    if (hasCultoWithReserve) {
+      assignCultoWithReservePair({
+        organists,
+        availabilityScores,
+        dayOfWeek,
+        dayKey,
+        dateStr,
+        currentDayAssignments,
+        assignedDates,
+        lastAssignedRoleByDayKey,
+        organistStats,
+        churchConfig,
+      });
+    }
 
     const orderedCultos = [...cultos].sort(
       (a, b) => (SERVICE_PRIORITY[a.id] ?? 99) - (SERVICE_PRIORITY[b.id] ?? 99)
