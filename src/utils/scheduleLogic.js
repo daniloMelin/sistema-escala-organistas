@@ -208,6 +208,7 @@ const initializeAllocationState = (organists, periodDates) => {
   }));
 
   return { organistStats, assignedDates, lastAssignedRoleByDayKey, schedule };
+<<<<<<< HEAD
 };
 
 const scoreCandidateForCulto = ({
@@ -341,6 +342,8 @@ const assignCultoWithReservePair = ({
   lastAssignedRoleByDayKey[bestPair.reserveOrganist.id][dayKey] = 'Reserva';
 
   return true;
+=======
+>>>>>>> origin/main
 };
 
 const runPrimaryAllocation = ({
