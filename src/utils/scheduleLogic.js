@@ -208,7 +208,6 @@ const initializeAllocationState = (organists, periodDates) => {
   }));
 
   return { organistStats, assignedDates, lastAssignedRoleByDayKey, schedule };
-<<<<<<< HEAD
 };
 
 const scoreCandidateForCulto = ({
@@ -342,8 +341,6 @@ const assignCultoWithReservePair = ({
   lastAssignedRoleByDayKey[bestPair.reserveOrganist.id][dayKey] = 'Reserva';
 
   return true;
-=======
->>>>>>> origin/main
 };
 
 const runPrimaryAllocation = ({
@@ -362,7 +359,8 @@ const runPrimaryAllocation = ({
     const currentDayAssignments = schedule[dayIndex].assignments || {};
 
     const hasCultoWithReserve =
-      cultos.some((culto) => culto.id === 'Culto') && cultos.some((culto) => culto.id === 'Reserva');
+      cultos.some((culto) => culto.id === 'Culto') &&
+      cultos.some((culto) => culto.id === 'Reserva');
 
     if (hasCultoWithReserve) {
       assignCultoWithReservePair({
