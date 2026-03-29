@@ -517,7 +517,7 @@ componentes UI criados.
 
 ## 📚 Arquivos de Referência
 
-- `docs/CODE_REVIEW.md` - Referência legada do V2
+- `docs/reviews/CODE_REVIEW.md` - Referência legada do V2
 - `CHANGELOG.md` - Histórico de mudanças
 - `IMPLEMENTATION_GUIDE.md` - Guia de implementação
 - `SCHEDULE_ALGORITHM.md` - Documentação do algoritmo

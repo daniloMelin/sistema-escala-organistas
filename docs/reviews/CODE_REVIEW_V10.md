@@ -204,10 +204,10 @@ Principais resultados:
 
 ## Artefatos Consolidados do Ciclo
 
-- `docs/CODE_REVIEW_V10.md`
-- `docs/SCHEDULE_HISTORY_REVIEW_V10.md`
-- `docs/SCHEDULE_HISTORY_IMPACT_V10.md`
-- `docs/SCHEDULE_HISTORY_COVERAGE_V10.md`
+- `docs/reviews/CODE_REVIEW_V10.md`
+- `docs/reviews/artifacts/v10/SCHEDULE_HISTORY_REVIEW_V10.md`
+- `docs/reviews/artifacts/v10/SCHEDULE_HISTORY_IMPACT_V10.md`
+- `docs/reviews/artifacts/v10/SCHEDULE_HISTORY_COVERAGE_V10.md`
 - `src/components/ScheduleHistoryList.js`
 - `src/hooks/useChurchScheduleGenerator.js`
 - `e2e/schedule-generation.spec.js`

@@ -15,22 +15,22 @@
 
 O conteúdo oficial do ciclo V2 está em:
 
-- `docs/CODE_REVIEW_V2.md`
+- `docs/reviews/CODE_REVIEW_V2.md`
 
 ## Decisão de Organização
 
 Para remover a ambiguidade entre dois arquivos muito parecidos:
 
-- `docs/CODE_REVIEW_V2.md` passa a ser a fonte canônica do V2
-- `docs/CODE_REVIEW.md` permanece apenas como ponte documental
+- `docs/reviews/CODE_REVIEW_V2.md` passa a ser a fonte canônica do V2
+- `docs/reviews/CODE_REVIEW.md` permanece apenas como ponte documental
 
 ## Quando Usar Este Arquivo
 
 Use este arquivo apenas quando:
 
-- um link antigo ainda apontar para `docs/CODE_REVIEW.md`
+- um link antigo ainda apontar para `docs/reviews/CODE_REVIEW.md`
 - for necessário entender o redirecionamento histórico do acervo
 
 Para leitura, manutenção e futuras referências, use:
 
-- `docs/CODE_REVIEW_V2.md`
+- `docs/reviews/CODE_REVIEW_V2.md`

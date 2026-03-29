@@ -48,14 +48,14 @@ Os arquivos mais afetados são:
 
 - `README.md`
 - `CONTRIBUTING.md`
-- `docs/CODE_REVIEW.md`
-- `docs/CODE_REVIEW_V2.md`
-- `docs/CODE_REVIEW_V4.md`
-- `docs/CODE_REVIEW_V5.md`
-- `docs/CODE_REVIEW_V6.md`
-- `docs/CODE_REVIEW_V7.md`
-- `docs/E2E_GUIDE.md`
-- `docs/FIRESTORE_SCHEMA.md`
+- `docs/reviews/CODE_REVIEW.md`
+- `docs/reviews/CODE_REVIEW_V2.md`
+- `docs/reviews/CODE_REVIEW_V4.md`
+- `docs/reviews/CODE_REVIEW_V5.md`
+- `docs/reviews/CODE_REVIEW_V6.md`
+- `docs/reviews/CODE_REVIEW_V7.md`
+- `docs/testing/E2E_GUIDE.md`
+- `docs/architecture/FIRESTORE_SCHEMA.md`
 
 ## Plano de Implementação
 
@@ -94,8 +94,8 @@ Os arquivos mais afetados são:
 - Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
-  - corrigir `docs/CODE_REVIEW.md`, `docs/CODE_REVIEW_V2.md` e
-    `docs/CODE_REVIEW_V3.md`
+  - corrigir `docs/reviews/CODE_REVIEW.md`, `docs/reviews/CODE_REVIEW_V2.md` e
+    `docs/reviews/CODE_REVIEW_V3.md`
   - remover múltiplas linhas em branco
   - normalizar listas e tabelas
   - resultado alcançado:
@@ -108,8 +108,8 @@ Os arquivos mais afetados são:
 - Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
-  - corrigir `docs/FIRESTORE_SCHEMA.md`, `docs/IMPLEMENTATION_GUIDE.md`,
-    `docs/SCHEDULE_ALGORITHM.md` e `docs/VITE_SPIKE_V4.md`
+  - corrigir `docs/architecture/FIRESTORE_SCHEMA.md`, `docs/architecture/IMPLEMENTATION_GUIDE.md`,
+    `docs/architecture/SCHEDULE_ALGORITHM.md` e `docs/planning/VITE_SPIKE_V4.md`
   - revisar listas, blocos e largura de linha
   - resultado alcançado:
     - documentos-alvo limpos no `markdownlint`
@@ -208,18 +208,18 @@ Principais resultados:
 
 ## Artefatos Consolidados do Ciclo
 
-- `docs/CODE_REVIEW_V8.md`
-- `docs/PRETTIER_BASELINE_V8.md`
-- `docs/MARKDOWNLINT_BASELINE_V8.md`
+- `docs/reviews/CODE_REVIEW_V8.md`
+- `docs/quality/PRETTIER_BASELINE_V8.md`
+- `docs/quality/MARKDOWNLINT_BASELINE_V8.md`
 
 ## Passivo Residual Mapeado
 
-- `docs/CODE_REVIEW_V4.md`
-- `docs/CODE_REVIEW_V5.md`
-- `docs/CODE_REVIEW_V6.md`
-- `docs/E2E_CONSOLIDATION_V6.md`
-- `docs/E2E_COVERAGE_V5.md`
-- `docs/E2E_STRATEGY.md`
+- `docs/reviews/CODE_REVIEW_V4.md`
+- `docs/reviews/CODE_REVIEW_V5.md`
+- `docs/reviews/CODE_REVIEW_V6.md`
+- `docs/testing/E2E_CONSOLIDATION_V6.md`
+- `docs/testing/E2E_COVERAGE_V5.md`
+- `docs/testing/E2E_STRATEGY.md`
 
 ## Próximos Passos Recomendados
 

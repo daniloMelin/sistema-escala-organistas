@@ -24,19 +24,19 @@ Documentos já estabilizados no ciclo:
 - `README.md`
 - `CONTRIBUTING.md`
 - `CHANGELOG.md`
-- `docs/CODE_REVIEW.md`
-- `docs/CODE_REVIEW_V2.md`
-- `docs/CODE_REVIEW_V3.md`
-- `docs/CODE_REVIEW_V7.md`
-- `docs/CODE_REVIEW_V8.md`
-- `docs/E2E_GUIDE.md`
-- `docs/E2E_SMOKE_V7.md`
-- `docs/E2E_CI_POLICY_V7.md`
-- `docs/E2E_EXPANSION_V7.md`
-- `docs/FIRESTORE_SCHEMA.md`
-- `docs/IMPLEMENTATION_GUIDE.md`
-- `docs/SCHEDULE_ALGORITHM.md`
-- `docs/VITE_SPIKE_V4.md`
+- `docs/reviews/CODE_REVIEW.md`
+- `docs/reviews/CODE_REVIEW_V2.md`
+- `docs/reviews/CODE_REVIEW_V3.md`
+- `docs/reviews/CODE_REVIEW_V7.md`
+- `docs/reviews/CODE_REVIEW_V8.md`
+- `docs/testing/E2E_GUIDE.md`
+- `docs/testing/E2E_SMOKE_V7.md`
+- `docs/testing/E2E_CI_POLICY_V7.md`
+- `docs/testing/E2E_EXPANSION_V7.md`
+- `docs/architecture/FIRESTORE_SCHEMA.md`
+- `docs/architecture/IMPLEMENTATION_GUIDE.md`
+- `docs/architecture/SCHEDULE_ALGORITHM.md`
+- `docs/planning/VITE_SPIKE_V4.md`
 
 Resultado:
 
@@ -47,12 +47,12 @@ Resultado:
 
 O `lint:md` ainda acusa problemas concentrados em:
 
-- `docs/CODE_REVIEW_V4.md`
-- `docs/CODE_REVIEW_V5.md`
-- `docs/CODE_REVIEW_V6.md`
-- `docs/E2E_CONSOLIDATION_V6.md`
-- `docs/E2E_COVERAGE_V5.md`
-- `docs/E2E_STRATEGY.md`
+- `docs/reviews/CODE_REVIEW_V4.md`
+- `docs/reviews/CODE_REVIEW_V5.md`
+- `docs/reviews/CODE_REVIEW_V6.md`
+- `docs/testing/E2E_CONSOLIDATION_V6.md`
+- `docs/testing/E2E_COVERAGE_V5.md`
+- `docs/testing/E2E_STRATEGY.md`
 
 ## Perfil do Passivo Residual
 
@@ -80,12 +80,12 @@ No fechamento desta fase:
 
 Ordem sugerida para continuidade:
 
-1. `docs/CODE_REVIEW_V4.md`
-2. `docs/CODE_REVIEW_V5.md`
-3. `docs/CODE_REVIEW_V6.md`
-4. `docs/E2E_CONSOLIDATION_V6.md`
-5. `docs/E2E_COVERAGE_V5.md`
-6. `docs/E2E_STRATEGY.md`
+1. `docs/reviews/CODE_REVIEW_V4.md`
+2. `docs/reviews/CODE_REVIEW_V5.md`
+3. `docs/reviews/CODE_REVIEW_V6.md`
+4. `docs/testing/E2E_CONSOLIDATION_V6.md`
+5. `docs/testing/E2E_COVERAGE_V5.md`
+6. `docs/testing/E2E_STRATEGY.md`
 
 ## Resultado Esperado
 

@@ -201,9 +201,9 @@ Principais resultados:
 
 ## Artefatos Consolidados do Ciclo
 
-- `docs/CODE_REVIEW_V9.md`
-- `docs/STATIC_QUALITY_POLICY_V9.md`
-- `docs/STATIC_QUALITY_SIGNAL_V9.md`
+- `docs/reviews/CODE_REVIEW_V9.md`
+- `docs/reviews/artifacts/v9/STATIC_QUALITY_POLICY_V9.md`
+- `docs/reviews/artifacts/v9/STATIC_QUALITY_SIGNAL_V9.md`
 - `CONTRIBUTING.md`
 - `.github/workflows/ci.yml`
 

@@ -219,11 +219,11 @@ Principais resultados:
 
 ## Artefatos Consolidados do Ciclo
 
-- `docs/CODE_REVIEW_V13.md`
-- `docs/CULT_MODEL_REVIEW_V13.md`
-- `docs/CULT_MODEL_IMPACT_V13.md`
-- `docs/CULT_MODEL_COVERAGE_V13.md`
-- `docs/PANEL_IMPROVEMENTS_BACKLOG.md`
+- `docs/reviews/CODE_REVIEW_V13.md`
+- `docs/reviews/artifacts/v13/CULT_MODEL_REVIEW_V13.md`
+- `docs/reviews/artifacts/v13/CULT_MODEL_IMPACT_V13.md`
+- `docs/reviews/artifacts/v13/CULT_MODEL_COVERAGE_V13.md`
+- `docs/planning/PANEL_IMPROVEMENTS_BACKLOG.md`
 - `src/utils/churchCultModel.js`
 - `src/hooks/useChurchManager.js`
 - `src/utils/scheduleLogic.js`

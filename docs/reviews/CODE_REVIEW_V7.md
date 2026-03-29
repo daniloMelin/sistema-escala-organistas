@@ -158,10 +158,10 @@ Principais resultados:
 
 ## Artefatos Consolidados do Ciclo
 
-- `docs/E2E_SMOKE_V7.md`
-- `docs/E2E_CI_POLICY_V7.md`
-- `docs/E2E_EXPANSION_V7.md`
-- `docs/E2E_GUIDE.md`
+- `docs/testing/E2E_SMOKE_V7.md`
+- `docs/testing/E2E_CI_POLICY_V7.md`
+- `docs/testing/E2E_EXPANSION_V7.md`
+- `docs/testing/E2E_GUIDE.md`
 - `.github/workflows/e2e-smoke.yml`
 - `.github/workflows/e2e-nightly.yml`
 

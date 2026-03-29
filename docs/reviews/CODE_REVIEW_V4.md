@@ -66,7 +66,7 @@ confiabilidade de fluxo e manutenção.
 - Status: `IMPLEMENTADO`
 - Prioridade: `ALTA`
 - Entregáveis:
-  - documento curto de schema esperado por coleção (`docs/FIRESTORE_SCHEMA.md`)
+  - documento curto de schema esperado por coleção (`docs/architecture/FIRESTORE_SCHEMA.md`)
   - mapeamento de compatibilidade com dados legados
 
 ### Fase 2 - Estabilidade de Aplicação
@@ -108,7 +108,7 @@ confiabilidade de fluxo e manutenção.
   - riscos de compatibilidade
   - plano de rollback
 - Entregável:
-  - `docs/VITE_SPIKE_V4.md`
+  - `docs/planning/VITE_SPIKE_V4.md`
 
 ## Registro de progresso
 
@@ -129,12 +129,12 @@ técnica.
 ### Entregas consolidadas
 
 - schema validation adicionada nas Firestore Rules
-- contrato de payload documentado em `docs/FIRESTORE_SCHEMA.md`
+- contrato de payload documentado em `docs/architecture/FIRESTORE_SCHEMA.md`
 - correção do fluxo de feedback de sucesso em `useChurchManager`
 - proteção de hooks assíncronos contra `setState` após unmount
 - guard explícito no `useChurch` context com teste unitário
 - modularização do CSS por domínio/componente
-- spike técnico documentado para migração futura de CRA para Vite em `docs/VITE_SPIKE_V4.md`
+- spike técnico documentado para migração futura de CRA para Vite em `docs/planning/VITE_SPIKE_V4.md`
 
 ### Impacto prático no projeto
 

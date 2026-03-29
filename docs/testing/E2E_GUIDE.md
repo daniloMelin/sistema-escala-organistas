@@ -123,12 +123,12 @@ suíte E2E completa.
 
 Documento complementar:
 
-- `docs/E2E_STRATEGY.md`
-- `docs/E2E_COVERAGE_V5.md`
-- `docs/E2E_CONSOLIDATION_V6.md`
-- `docs/E2E_SMOKE_V7.md`
-- `docs/E2E_CI_POLICY_V7.md`
-- `docs/E2E_EXPANSION_V7.md`
+- `docs/testing/E2E_STRATEGY.md`
+- `docs/testing/E2E_COVERAGE_V5.md`
+- `docs/testing/E2E_CONSOLIDATION_V6.md`
+- `docs/testing/E2E_SMOKE_V7.md`
+- `docs/testing/E2E_CI_POLICY_V7.md`
+- `docs/testing/E2E_EXPANSION_V7.md`
 
 ## Estado Operacional Atual
 
@@ -186,8 +186,8 @@ Execução periódica dedicada:
 
 Documento complementar da política atual:
 
-- `docs/E2E_CI_POLICY_V7.md`
-- `docs/E2E_EXPANSION_V7.md`
+- `docs/testing/E2E_CI_POLICY_V7.md`
+- `docs/testing/E2E_EXPANSION_V7.md`
 
 ### Evidências geradas
 

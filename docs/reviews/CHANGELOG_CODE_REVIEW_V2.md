@@ -8,7 +8,7 @@
 
 ## Contexto
 
-- Documento base: `docs/CODE_REVIEW_V2.md`
+- Documento base: `docs/reviews/CODE_REVIEW_V2.md`
 - Data de fechamento: **24 de fevereiro de 2026**
 - Status: **Concluído**
 
