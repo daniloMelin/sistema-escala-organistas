@@ -95,4 +95,4 @@ aumentarem.
 
 Documento complementar da política atual:
 
-- `docs/STATIC_QUALITY_POLICY_V9.md`
+- `docs/reviews/artifacts/v9/STATIC_QUALITY_POLICY_V9.md`

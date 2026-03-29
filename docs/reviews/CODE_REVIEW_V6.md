@@ -23,7 +23,7 @@ validações negativas e tratamento de falhas operacionais.
 
 - Status geral: `CONCLUÍDO`
 - Data de início: `3 de março de 2026`
-- Contexto: continuidade direta do `CODE_REVIEW_V5`, a partir das lacunas registradas em `docs/E2E_COVERAGE_V5.md`
+- Contexto: continuidade direta do `CODE_REVIEW_V5`, a partir das lacunas registradas em `docs/testing/E2E_COVERAGE_V5.md`
 
 ## Diretriz de Prioridade
 
@@ -111,7 +111,7 @@ validações negativas e tratamento de falhas operacionais.
 - Entregáveis executados:
   - helper de navegação reutilizável em `e2e/helpers/navigation.js`
   - helper de seed de múltiplas igrejas em `e2e/helpers/session.js`
-  - documentação de consolidação em `docs/E2E_CONSOLIDATION_V6.md`
+  - documentação de consolidação em `docs/testing/E2E_CONSOLIDATION_V6.md`
   - recomendação formal de smoke E2E para próximo ciclo
 
 ## Ordem de execução recomendada

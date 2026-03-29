@@ -186,7 +186,7 @@ desnecessariamente a complexidade operacional do pipeline.
 - fluxo local controlado com autenticação e dados isolados
 - cobertura dos principais fluxos de igreja, organista e escala
 - workflow dedicado de CI com gatilho manual ou por label
-- revisão formal das lacunas restantes em `docs/E2E_COVERAGE_V5.md`
+- revisão formal das lacunas restantes em `docs/testing/E2E_COVERAGE_V5.md`
 
 ### Próximo Passo Recomendado
 

@@ -205,10 +205,10 @@ Principais resultados:
 
 ## Artefatos Consolidados do Ciclo
 
-- `docs/CODE_REVIEW_V12.md`
-- `docs/SCHEDULE_HISTORY_PERIOD_FILTER_REVIEW_V12.md`
-- `docs/SCHEDULE_HISTORY_PERIOD_IMPACT_V12.md`
-- `docs/SCHEDULE_HISTORY_PERIOD_COVERAGE_V12.md`
+- `docs/reviews/CODE_REVIEW_V12.md`
+- `docs/reviews/artifacts/v12/SCHEDULE_HISTORY_PERIOD_FILTER_REVIEW_V12.md`
+- `docs/reviews/artifacts/v12/SCHEDULE_HISTORY_PERIOD_IMPACT_V12.md`
+- `docs/reviews/artifacts/v12/SCHEDULE_HISTORY_PERIOD_COVERAGE_V12.md`
 - `src/components/ScheduleHistoryList.js`
 - `src/components/ChurchScheduleGenerator.css`
 - `src/test/scheduleHistoryList.test.js`

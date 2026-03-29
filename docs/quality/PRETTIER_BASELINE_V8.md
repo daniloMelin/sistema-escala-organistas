@@ -57,10 +57,10 @@ Prioridade:
 - `CHANGELOG.md`
 - `docs/CODE_REVIEW*.md`
 - `docs/E2E*.md`
-- `docs/FIRESTORE_SCHEMA.md`
-- `docs/IMPLEMENTATION_GUIDE.md`
-- `docs/SCHEDULE_ALGORITHM.md`
-- `docs/VITE_SPIKE_V4.md`
+- `docs/architecture/FIRESTORE_SCHEMA.md`
+- `docs/architecture/IMPLEMENTATION_GUIDE.md`
+- `docs/architecture/SCHEDULE_ALGORITHM.md`
+- `docs/planning/VITE_SPIKE_V4.md`
 
 Motivo:
 
