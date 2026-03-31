@@ -2,9 +2,10 @@
 
 ## Histórico de Revisões
 
-| Versão | Data                | Autor(es)    | Descrição da Revisão |
-| ------ | ------------------- | ------------ | -------------------- |
-| 1.0    | 28 de março de 2026 | Danilo Melin | Criação do ciclo V14 |
+| Versão | Data                | Autor(es)    | Descrição da Revisão                                  |
+| ------ | ------------------- | ------------ | ----------------------------------------------------- |
+| 1.0    | 28 de março de 2026 | Danilo Melin | Criação do ciclo V14                                  |
+| 1.1    | 31 de março de 2026 | Codex        | Revisão dos sinais operacionais mais úteis por igreja |
 
 ## Objetivo
 
@@ -15,7 +16,7 @@ escala.
 
 ## Status do Ciclo
 
-- Status geral: `PLANEJADO`
+- Status geral: `EM ANDAMENTO`
 - Data de início: `28 de março de 2026`
 - Data de encerramento: `A definir`
 - Contexto: continuidade funcional após o `CODE_REVIEW_V13`, agora com
@@ -55,7 +56,7 @@ Os sinais mais promissores para esta etapa são:
 
 #### 1.1 Revisar sinais operacionais mais úteis por igreja
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - revisar quais sinais resumidos mais ajudam na lista de igrejas
@@ -132,7 +133,7 @@ Os sinais mais promissores para esta etapa são:
 
 ## Registro de progresso
 
-- [ ] Fase 1.1 pendente
+- [x] Fase 1.1 concluída
 - [ ] Fase 1.2 pendente
 - [ ] Fase 2.1 pendente
 - [ ] Fase 2.2 pendente
@@ -146,3 +147,7 @@ Os sinais mais promissores para esta etapa são:
   lista principal
 - leitura da lista melhorada sem aumentar complexidade de navegação
 - documentação do ciclo atualizada com impacto prático e próximos passos
+
+## Artefatos da Fase 1
+
+- `docs/reviews/artifacts/v14/CHURCH_OPERATIONAL_SUMMARY_REVIEW_V14.md`
