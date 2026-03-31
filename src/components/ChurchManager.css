@@ -101,6 +101,7 @@
 .church-list__header {
   display: flex;
   align-items: flex-start;
+  justify-content: space-between;
   gap: 10px;
   flex-wrap: wrap;
 }
@@ -110,6 +111,13 @@
   color: var(--app-primary-dark);
 }
 
+.church-list__status-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
 .church-list__status {
   display: inline-flex;
   align-items: center;
@@ -117,12 +125,6 @@
   border-radius: 999px;
   font-size: 0.8rem;
   font-weight: 700;
-}
-
-.church-list__status-block {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
 }
 
 .church-list__status-detail {
