@@ -215,3 +215,13 @@ export const getSchedulesLocal = async (userId, churchId, count = 3) => {
     .sort((a, b) => new Date(b.generatedAt).getTime() - new Date(a.generatedAt).getTime())
     .slice(0, count);
 };
+
+export const getScheduleCountLocal = async (userId, churchId) => {
+  throwIfOperationConfiguredToFail(
+    'getScheduleCountLocal',
+    'Falha E2E simulada ao contar escalas.'
+  );
+  const database = getStorage();
+  const church = ensureChurch(database, userId, churchId);
+  return Object.keys(church.schedules).length;
+};

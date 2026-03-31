@@ -13,6 +13,7 @@ import {
   Timestamp,
   writeBatch,
   limit,
+  getCountFromServer,
 } from 'firebase/firestore';
 import logger from '../utils/logger';
 import { isE2EMode } from '../utils/e2eMode';
@@ -28,6 +29,7 @@ import {
   deleteOrganistLocal,
   saveScheduleLocal,
   getSchedulesLocal,
+  getScheduleCountLocal,
 } from './e2eStorageService';
 
 // --- IGREJAS ---
@@ -205,6 +207,19 @@ export const getChurchSchedules = async (userId, churchId, count = 3) => {
     return schedules;
   } catch (e) {
     logger.error('Erro ao buscar escalas da igreja:', e);
+    throw e;
+  }
+};
+
+export const getChurchScheduleCount = async (userId, churchId) => {
+  if (!userId || !churchId) return 0;
+  if (isE2EMode) return getScheduleCountLocal(userId, churchId);
+  try {
+    const schedulesRef = collection(db, 'users', userId, 'churches', churchId, 'schedules');
+    const snapshot = await getCountFromServer(schedulesRef);
+    return snapshot.data().count;
+  } catch (e) {
+    logger.error('Erro ao contar escalas da igreja:', e);
     throw e;
   }
 };
