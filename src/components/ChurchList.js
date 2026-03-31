@@ -27,19 +27,30 @@ const ChurchList = ({
                 <div className="church-list__header">
                   <strong className="church-list__name">{church.name}</strong>
                   {church.operationalSummary && (
-                    <span
-                      className={`church-list__status church-list__status--${church.operationalSummary.readiness.tone}`}
-                    >
-                      {church.operationalSummary.readiness.label}
-                    </span>
+                    <div className="church-list__status-block">
+                      <span
+                        className={`church-list__status church-list__status--${church.operationalSummary.readiness.tone}`}
+                      >
+                        {church.operationalSummary.readiness.label}
+                      </span>
+                      <span className="church-list__status-detail">
+                        {church.operationalSummary.readiness.detail}
+                      </span>
+                    </div>
                   )}
                 </div>
                 {church.code && <small className="muted-text">Código: {church.code}</small>}
                 {church.operationalSummary && (
                   <div className="church-list__summary">
-                    <span>Modelo: {church.operationalSummary.cultoModelLabel}</span>
-                    <span>Organistas: {church.operationalSummary.organistCount}</span>
-                    <span>Escalas: {church.operationalSummary.scheduleCount}</span>
+                    <span className="church-list__summary-item">
+                      <strong>Modelo:</strong> {church.operationalSummary.cultoModelLabel}
+                    </span>
+                    <span className="church-list__summary-item">
+                      <strong>Organistas:</strong> {church.operationalSummary.organistCount}
+                    </span>
+                    <span className="church-list__summary-item">
+                      <strong>Escalas:</strong> {church.operationalSummary.scheduleCount}
+                    </span>
                   </div>
                 )}
               </div>
@@ -83,6 +94,7 @@ ChurchList.propTypes = {
         readiness: PropTypes.shape({
           label: PropTypes.string.isRequired,
           tone: PropTypes.string.isRequired,
+          detail: PropTypes.string.isRequired,
         }).isRequired,
       }),
     })

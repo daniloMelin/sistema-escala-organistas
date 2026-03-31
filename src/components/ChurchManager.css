@@ -100,7 +100,7 @@
 
 .church-list__header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   flex-wrap: wrap;
 }
@@ -117,6 +117,18 @@
   border-radius: 999px;
   font-size: 0.8rem;
   font-weight: 700;
+}
+
+.church-list__status-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.church-list__status-detail {
+  font-size: 0.82rem;
+  color: #666666;
+  line-height: 1.35;
 }
 
 .church-list__status--ready {
@@ -140,4 +152,8 @@
   gap: 8px 14px;
   font-size: 0.92rem;
   color: #555555;
+}
+
+.church-list__summary-item {
+  white-space: nowrap;
 }

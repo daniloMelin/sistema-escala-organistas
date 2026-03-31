@@ -16,6 +16,7 @@ describe('ChurchList', () => {
             readiness: {
               label: 'Pronta',
               tone: 'ready',
+              detail: 'Base mínima atendida e histórico disponível.',
             },
           },
         },
@@ -53,6 +54,7 @@ describe('ChurchList', () => {
               readiness: {
                 label: 'Atenção',
                 tone: 'warning',
+                detail: 'Ainda não possui escala salva.',
               },
             },
           },
@@ -65,9 +67,16 @@ describe('ChurchList', () => {
     );
 
     expect(screen.getByText('Atenção')).toBeInTheDocument();
-    expect(screen.getByText('Modelo: Culto único com reserva')).toBeInTheDocument();
-    expect(screen.getByText('Organistas: 7')).toBeInTheDocument();
-    expect(screen.getByText('Escalas: 3')).toBeInTheDocument();
+    expect(screen.getByText('Ainda não possui escala salva.')).toBeInTheDocument();
+    expect(
+      screen.getByText((_, element) => element?.textContent === 'Modelo: Culto único com reserva')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText((_, element) => element?.textContent === 'Organistas: 7')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText((_, element) => element?.textContent === 'Escalas: 3')
+    ).toBeInTheDocument();
   });
 
   test('exibe mensagem quando nao ha igrejas cadastradas', () => {

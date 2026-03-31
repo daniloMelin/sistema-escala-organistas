@@ -29,6 +29,9 @@ const getChurchReadiness = ({ config, organistCount, scheduleCount, cultoModel }
     return {
       label: 'Incompleta',
       tone: 'incomplete',
+      detail: !hasUsefulChurchConfig(config)
+        ? 'Sem configuração útil para operar.'
+        : 'Nenhuma organista cadastrada.',
     };
   }
 
@@ -37,12 +40,17 @@ const getChurchReadiness = ({ config, organistCount, scheduleCount, cultoModel }
     return {
       label: 'Atenção',
       tone: 'warning',
+      detail:
+        organistCount < minimumOrganists
+          ? `Base abaixo do mínimo para ${getCultModelLabel(cultoModel || DEFAULT_CULT_MODEL)}.`
+          : 'Ainda não possui escala salva.',
     };
   }
 
   return {
     label: 'Pronta',
     tone: 'ready',
+    detail: 'Base mínima atendida e histórico disponível.',
   };
 };
 
