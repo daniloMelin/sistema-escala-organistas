@@ -2,11 +2,12 @@
 
 ## Histórico de Revisões
 
-| Versão | Data                | Autor(es)    | Descrição da Revisão            |
-| ------ | ------------------- | ------------ | ------------------------------- |
-| 1.0    | 27 de março de 2026 | Danilo Melin | Criação do backlog priorizado   |
-| 1.1    | 27 de março de 2026 | Danilo Melin | Repriorização conforme uso real |
-| 1.2    | 27 de março de 2026 | Danilo Melin | Priorização do modelo de culto  |
+| Versão | Data                | Autor(es)    | Descrição da Revisão                                    |
+| ------ | ------------------- | ------------ | ------------------------------------------------------- |
+| 1.0    | 27 de março de 2026 | Danilo Melin | Criação do backlog priorizado                           |
+| 1.1    | 27 de março de 2026 | Danilo Melin | Repriorização conforme uso real                         |
+| 1.2    | 27 de março de 2026 | Danilo Melin | Priorização do modelo de culto                          |
+| 1.3    | 31 de março de 2026 | Codex        | Registro de ideia para resumo de distribuição da escala |
 
 ## Objetivo
 
@@ -148,6 +149,11 @@ Nova premissa funcional relevante:
     Esforço: `Alto`
     Risco: `Alto`
     Recomendação: só em ciclo dedicado de regra e persistência
+16. Resumo de distribuição por organista após gerar escala
+    Impacto: `Alto`
+    Esforço: `Médio`
+    Risco: `Baixo`
+    Recomendação: ciclo específico do fluxo de geração, separado do resumo operacional por igreja
 
 ## Detalhamento das Prioridades Mais Altas
 
@@ -299,3 +305,28 @@ Com isso, a trilha mais segura é começar por:
 1. configuração do modelo de culto por igreja
 2. adaptação da geração e do PDF
 3. visibilidade operacional por igreja
+
+### 16. Resumo de distribuição por organista após gerar escala
+
+Ideia:
+
+- mostrar, após a geração da escala, quantas vezes cada organista foi escalada no período
+- manter a leitura simples e diretamente ligada ao resultado gerado
+- usar esse resumo para apoiar conferência de equilíbrio e justiça da distribuição
+
+Exemplos de leitura:
+
+- Ana: 5 vezes
+- Joana: 4 vezes
+- Cristiana: 4 vezes
+
+Possível evolução futura:
+
+- detalhar por função, como `RJM`, `Culto`, `Reserva`, `Meia Hora`, `Parte 1` e `Parte 2`
+
+Por que entrou no backlog:
+
+- ajuda a validar se a escala ficou realmente equilibrada
+- conversa diretamente com o uso real do sistema
+- faz mais sentido no fluxo da escala gerada do que na lista de igrejas
+- não deve ser misturado com o V14, que está focado em visão operacional da lista principal

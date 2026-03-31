@@ -38,6 +38,12 @@ export const CULT_MODEL_OPTIONS = Object.values(CULT_MODELS);
 export const getCultModelServices = (cultoModel = DEFAULT_CULT_MODEL) =>
   CULT_MODELS[cultoModel]?.serviceTemplates || CULT_MODELS[DEFAULT_CULT_MODEL].serviceTemplates;
 
+export const getCultModelLabel = (cultoModel = DEFAULT_CULT_MODEL) =>
+  CULT_MODELS[cultoModel]?.label || CULT_MODELS[DEFAULT_CULT_MODEL].label;
+
+export const getCultModelMinimumOrganists = (cultoModel = DEFAULT_CULT_MODEL) =>
+  getCultModelServices(cultoModel).length;
+
 export const buildChurchConfig = (selectedDays, cultoModel = DEFAULT_CULT_MODEL) => {
   const config = {};
 

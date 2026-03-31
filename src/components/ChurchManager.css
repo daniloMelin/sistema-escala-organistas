@@ -85,12 +85,59 @@
   cursor: pointer;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 14px;
   background: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.church-list__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.church-list__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .church-list__name {
   font-size: 1.1em;
   color: var(--app-primary-dark);
+}
+
+.church-list__status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.church-list__status--ready {
+  background: #e9f8ee;
+  color: #1f7a36;
+}
+
+.church-list__status--warning {
+  background: #fff4dd;
+  color: #9a6700;
+}
+
+.church-list__status--incomplete {
+  background: #fdebec;
+  color: #b42318;
+}
+
+.church-list__summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  font-size: 0.92rem;
+  color: #555555;
 }
