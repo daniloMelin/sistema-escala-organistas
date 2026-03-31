@@ -23,10 +23,25 @@ const ChurchList = ({
               onClick={() => onChurchSelect(church)}
               className="church-list__item"
             >
-              <div>
-                <strong className="church-list__name">{church.name}</strong>
-                <br />
+              <div className="church-list__content">
+                <div className="church-list__header">
+                  <strong className="church-list__name">{church.name}</strong>
+                  {church.operationalSummary && (
+                    <span
+                      className={`church-list__status church-list__status--${church.operationalSummary.readiness.tone}`}
+                    >
+                      {church.operationalSummary.readiness.label}
+                    </span>
+                  )}
+                </div>
                 {church.code && <small className="muted-text">Código: {church.code}</small>}
+                {church.operationalSummary && (
+                  <div className="church-list__summary">
+                    <span>Modelo: {church.operationalSummary.cultoModelLabel}</span>
+                    <span>Organistas: {church.operationalSummary.organistCount}</span>
+                    <span>Escalas: {church.operationalSummary.scheduleCount}</span>
+                  </div>
+                )}
               </div>
               <div className="actions-row">
                 <Button
@@ -61,6 +76,15 @@ ChurchList.propTypes = {
       name: PropTypes.string.isRequired,
       code: PropTypes.string,
       config: PropTypes.object,
+      operationalSummary: PropTypes.shape({
+        cultoModelLabel: PropTypes.string.isRequired,
+        organistCount: PropTypes.number.isRequired,
+        scheduleCount: PropTypes.number.isRequired,
+        readiness: PropTypes.shape({
+          label: PropTypes.string.isRequired,
+          tone: PropTypes.string.isRequired,
+        }).isRequired,
+      }),
     })
   ).isRequired,
   isLoading: PropTypes.bool.isRequired,

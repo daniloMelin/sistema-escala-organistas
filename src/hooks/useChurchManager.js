@@ -6,6 +6,8 @@ import {
   addChurch,
   deleteChurchWithSubcollections,
   updateChurch,
+  getOrganistsByChurch,
+  getChurchSchedules,
 } from '../services/firebaseService';
 import { INITIAL_AVAILABILITY } from '../constants/days';
 import { validateChurchName, validateChurchCode, sanitizeString } from '../utils/validation';
@@ -14,8 +16,35 @@ import {
   buildChurchConfig,
   inferCultModelFromConfig,
   inferSelectedDaysFromConfig,
+  getCultModelLabel,
+  getCultModelMinimumOrganists,
 } from '../utils/churchCultModel';
 import logger from '../utils/logger';
+
+const hasUsefulChurchConfig = (config) =>
+  Boolean(config && typeof config === 'object' && Object.values(config).some(Array.isArray));
+
+const getChurchReadiness = ({ config, organistCount, scheduleCount, cultoModel }) => {
+  if (!hasUsefulChurchConfig(config) || organistCount === 0) {
+    return {
+      label: 'Incompleta',
+      tone: 'incomplete',
+    };
+  }
+
+  const minimumOrganists = getCultModelMinimumOrganists(cultoModel || DEFAULT_CULT_MODEL);
+  if (organistCount < minimumOrganists || scheduleCount === 0) {
+    return {
+      label: 'Atenção',
+      tone: 'warning',
+    };
+  }
+
+  return {
+    label: 'Pronta',
+    tone: 'ready',
+  };
+};
 
 export const useChurchManager = (user) => {
   const [churches, setChurches] = useState([]);
@@ -51,7 +80,34 @@ export const useChurchManager = (user) => {
     try {
       const userChurches = await getChurches(user.uid);
       if (!isMountedRef.current) return;
-      setChurches(userChurches);
+
+      const churchesWithSummary = await Promise.all(
+        userChurches.map(async (church) => {
+          const organists = await getOrganistsByChurch(user.uid, church.id);
+          const schedules = await getChurchSchedules(user.uid, church.id, 1000);
+          const effectiveCultoModel =
+            church.cultoModel || inferCultModelFromConfig(church.config) || DEFAULT_CULT_MODEL;
+          const readiness = getChurchReadiness({
+            config: church.config,
+            organistCount: organists.length,
+            scheduleCount: schedules.length,
+            cultoModel: effectiveCultoModel,
+          });
+
+          return {
+            ...church,
+            cultoModel: effectiveCultoModel,
+            operationalSummary: {
+              cultoModelLabel: getCultModelLabel(effectiveCultoModel),
+              organistCount: organists.length,
+              scheduleCount: schedules.length,
+              readiness,
+            },
+          };
+        })
+      );
+
+      setChurches(churchesWithSummary);
       setLoadError('');
     } catch (err) {
       if (!isMountedRef.current) return;

@@ -2,10 +2,11 @@
 
 ## Histórico de Revisões
 
-| Versão | Data                | Autor(es)    | Descrição da Revisão                                  |
-| ------ | ------------------- | ------------ | ----------------------------------------------------- |
-| 1.0    | 28 de março de 2026 | Danilo Melin | Criação do ciclo V14                                  |
-| 1.1    | 31 de março de 2026 | Codex        | Revisão dos sinais operacionais mais úteis por igreja |
+| Versão | Data                | Autor(es)    | Descrição da Revisão                                    |
+| ------ | ------------------- | ------------ | ------------------------------------------------------- |
+| 1.0    | 28 de março de 2026 | Danilo Melin | Criação do ciclo V14                                    |
+| 1.1    | 31 de março de 2026 | Codex        | Revisão dos sinais operacionais mais úteis por igreja   |
+| 1.2    | 31 de março de 2026 | Codex        | Implementação do resumo operacional na lista de igrejas |
 
 ## Objetivo
 
@@ -65,7 +66,7 @@ Os sinais mais promissores para esta etapa são:
 
 #### 1.2 Implementar resumo operacional prioritário na lista de igrejas
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - enriquecer cada item da lista de igrejas com resumo operacional
@@ -134,7 +135,7 @@ Os sinais mais promissores para esta etapa são:
 ## Registro de progresso
 
 - [x] Fase 1.1 concluída
-- [ ] Fase 1.2 pendente
+- [x] Fase 1.2 concluída
 - [ ] Fase 2.1 pendente
 - [ ] Fase 2.2 pendente
 - [ ] Fase 3.1 pendente
