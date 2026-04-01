@@ -7,7 +7,7 @@ import {
   deleteChurchWithSubcollections,
   updateChurch,
   getOrganistsByChurch,
-  getChurchSchedules,
+  getChurchScheduleCount,
 } from '../services/firebaseService';
 import { INITIAL_AVAILABILITY } from '../constants/days';
 import { validateChurchName, validateChurchCode, sanitizeString } from '../utils/validation';
@@ -29,6 +29,9 @@ const getChurchReadiness = ({ config, organistCount, scheduleCount, cultoModel }
     return {
       label: 'Incompleta',
       tone: 'incomplete',
+      detail: !hasUsefulChurchConfig(config)
+        ? 'Sem configuração útil para operar.'
+        : 'Nenhuma organista cadastrada.',
     };
   }
 
@@ -37,12 +40,27 @@ const getChurchReadiness = ({ config, organistCount, scheduleCount, cultoModel }
     return {
       label: 'Atenção',
       tone: 'warning',
+      detail:
+        organistCount < minimumOrganists
+          ? `Base abaixo do mínimo para ${getCultModelLabel(cultoModel || DEFAULT_CULT_MODEL)}.`
+          : 'Ainda não possui escala salva.',
     };
   }
 
   return {
     label: 'Pronta',
     tone: 'ready',
+    detail: 'Base mínima atendida e histórico disponível.',
+  };
+};
+
+const buildFallbackChurchSummary = (church) => {
+  const effectiveCultoModel =
+    church.cultoModel || inferCultModelFromConfig(church.config) || DEFAULT_CULT_MODEL;
+
+  return {
+    ...church,
+    cultoModel: effectiveCultoModel,
   };
 };
 
@@ -83,27 +101,32 @@ export const useChurchManager = (user) => {
 
       const churchesWithSummary = await Promise.all(
         userChurches.map(async (church) => {
-          const organists = await getOrganistsByChurch(user.uid, church.id);
-          const schedules = await getChurchSchedules(user.uid, church.id, 1000);
-          const effectiveCultoModel =
-            church.cultoModel || inferCultModelFromConfig(church.config) || DEFAULT_CULT_MODEL;
-          const readiness = getChurchReadiness({
-            config: church.config,
-            organistCount: organists.length,
-            scheduleCount: schedules.length,
-            cultoModel: effectiveCultoModel,
-          });
-
-          return {
-            ...church,
-            cultoModel: effectiveCultoModel,
-            operationalSummary: {
-              cultoModelLabel: getCultModelLabel(effectiveCultoModel),
+          try {
+            const organists = await getOrganistsByChurch(user.uid, church.id);
+            const scheduleCount = await getChurchScheduleCount(user.uid, church.id);
+            const effectiveCultoModel =
+              church.cultoModel || inferCultModelFromConfig(church.config) || DEFAULT_CULT_MODEL;
+            const readiness = getChurchReadiness({
+              config: church.config,
               organistCount: organists.length,
-              scheduleCount: schedules.length,
-              readiness,
-            },
-          };
+              scheduleCount,
+              cultoModel: effectiveCultoModel,
+            });
+
+            return {
+              ...church,
+              cultoModel: effectiveCultoModel,
+              operationalSummary: {
+                cultoModelLabel: getCultModelLabel(effectiveCultoModel),
+                organistCount: organists.length,
+                scheduleCount,
+                readiness,
+              },
+            };
+          } catch (summaryError) {
+            logger.error(`Falha ao enriquecer resumo da igreja ${church.id}:`, summaryError);
+            return buildFallbackChurchSummary(church);
+          }
         })
       );
 

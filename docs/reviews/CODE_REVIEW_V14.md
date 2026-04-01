@@ -7,6 +7,8 @@
 | 1.0    | 28 de março de 2026 | Danilo Melin | Criação do ciclo V14                                    |
 | 1.1    | 31 de março de 2026 | Codex        | Revisão dos sinais operacionais mais úteis por igreja   |
 | 1.2    | 31 de março de 2026 | Codex        | Implementação do resumo operacional na lista de igrejas |
+| 1.3    | 31 de março de 2026 | Codex        | Refino da clareza e leitura do resumo por igreja        |
+| 1.4    | 31 de março de 2026 | Codex        | Validação E2E da leitura operacional da lista           |
 
 ## Objetivo
 
@@ -77,7 +79,7 @@ Os sinais mais promissores para esta etapa são:
 
 #### 2.1 Refinar clareza e leitura do resumo por igreja
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - revisar labels, hierarquia visual e legibilidade do resumo
@@ -86,7 +88,7 @@ Os sinais mais promissores para esta etapa são:
 
 #### 2.2 Validar o novo fluxo ponta a ponta
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - criar ou atualizar cenário E2E da lista de igrejas
@@ -136,8 +138,8 @@ Os sinais mais promissores para esta etapa são:
 
 - [x] Fase 1.1 concluída
 - [x] Fase 1.2 concluída
-- [ ] Fase 2.1 pendente
-- [ ] Fase 2.2 pendente
+- [x] Fase 2.1 concluída
+- [x] Fase 2.2 concluída
 - [ ] Fase 3.1 pendente
 - [ ] Fase 3.2 pendente
 - [ ] Fase 4.1 pendente
