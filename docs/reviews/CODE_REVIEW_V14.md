@@ -9,6 +9,7 @@
 | 1.2    | 31 de março de 2026 | Codex        | Implementação do resumo operacional na lista de igrejas |
 | 1.3    | 31 de março de 2026 | Codex        | Refino da clareza e leitura do resumo por igreja        |
 | 1.4    | 31 de março de 2026 | Codex        | Validação E2E da leitura operacional da lista           |
+| 1.5    | 2 de abril de 2026  | Codex        | Consolidação do impacto operacional da visão por igreja |
 
 ## Objetivo
 
@@ -98,7 +99,7 @@ Os sinais mais promissores para esta etapa são:
 
 #### 3.1 Revisar impacto operacional da visão por igreja
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - consolidar o ganho prático da nova leitura por igreja
@@ -140,7 +141,7 @@ Os sinais mais promissores para esta etapa são:
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
-- [ ] Fase 3.1 pendente
+- [x] Fase 3.1 concluída
 - [ ] Fase 3.2 pendente
 - [ ] Fase 4.1 pendente
 
@@ -154,3 +155,7 @@ Os sinais mais promissores para esta etapa são:
 ## Artefatos da Fase 1
 
 - `docs/reviews/artifacts/v14/CHURCH_OPERATIONAL_SUMMARY_REVIEW_V14.md`
+
+## Artefatos da Fase 3
+
+- `docs/reviews/artifacts/v14/CHURCH_OPERATIONAL_SUMMARY_IMPACT_V14.md`
