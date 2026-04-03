@@ -9,6 +9,9 @@
 | 1.2    | 31 de março de 2026 | Codex        | Implementação do resumo operacional na lista de igrejas |
 | 1.3    | 31 de março de 2026 | Codex        | Refino da clareza e leitura do resumo por igreja        |
 | 1.4    | 31 de março de 2026 | Codex        | Validação E2E da leitura operacional da lista           |
+| 1.5    | 2 de abril de 2026  | Codex        | Consolidação do impacto operacional da visão por igreja |
+| 1.6    | 2 de abril de 2026  | Codex        | Consolidação da cobertura da visão por igreja           |
+| 1.7    | 2 de abril de 2026  | Codex        | Fechamento formal do ciclo V14                          |
 
 ## Objetivo
 
@@ -19,9 +22,9 @@ escala.
 
 ## Status do Ciclo
 
-- Status geral: `EM ANDAMENTO`
+- Status geral: `CONCLUÍDO`
 - Data de início: `28 de março de 2026`
-- Data de encerramento: `A definir`
+- Data de encerramento: `2 de abril de 2026`
 - Contexto: continuidade funcional após o `CODE_REVIEW_V13`, agora com
   foco em leitura operacional no nível da igreja
 
@@ -98,7 +101,7 @@ Os sinais mais promissores para esta etapa são:
 
 #### 3.1 Revisar impacto operacional da visão por igreja
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - consolidar o ganho prático da nova leitura por igreja
@@ -107,7 +110,7 @@ Os sinais mais promissores para esta etapa são:
 
 #### 3.2 Consolidar cobertura e documentação do fluxo evoluído
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - documentar a cobertura da melhoria entregue
@@ -117,12 +120,16 @@ Os sinais mais promissores para esta etapa são:
 
 #### 4.1 Encerrar formalmente o V14
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - registrar o resultado do ciclo
   - consolidar próximos passos recomendados
   - fechar formalmente o `CODE_REVIEW_V14`
+  - resultado alcançado:
+    - ciclo encerrado com resumo funcional consolidado
+    - impacto prático da visão por igreja documentado
+    - próximos passos registrados para evolução futura
 
 ## Ordem de execução recomendada
 
@@ -140,9 +147,9 @@ Os sinais mais promissores para esta etapa são:
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
-- [ ] Fase 3.1 pendente
-- [ ] Fase 3.2 pendente
-- [ ] Fase 4.1 pendente
+- [x] Fase 3.1 concluída
+- [x] Fase 3.2 concluída
+- [x] Fase 4.1 concluída
 
 ## Critério de Conclusão do V14
 
@@ -154,3 +161,58 @@ Os sinais mais promissores para esta etapa são:
 ## Artefatos da Fase 1
 
 - `docs/reviews/artifacts/v14/CHURCH_OPERATIONAL_SUMMARY_REVIEW_V14.md`
+
+## Artefatos da Fase 3
+
+- `docs/reviews/artifacts/v14/CHURCH_OPERATIONAL_SUMMARY_IMPACT_V14.md`
+- `docs/reviews/artifacts/v14/CHURCH_OPERATIONAL_SUMMARY_COVERAGE_V14.md`
+
+## Resumo Executivo
+
+O ciclo V14 evoluiu a tela inicial de gerenciamento para oferecer uma
+visão operacional mais útil por igreja, sem transformar a lista em um
+painel pesado. A aplicação passou a mostrar prontidão, contexto curto
+do status e sinais operacionais básicos antes mesmo da entrada no
+painel da igreja.
+
+Principais resultados:
+
+- resumo operacional por igreja na lista principal
+- status `Pronta`, `Atenção` e `Incompleta` com detalhe textual
+- exibição de modelo de culto, quantidade de organistas e escalas
+- fluxo da lista validado ponta a ponta
+- robustez maior diante de falhas localizadas no enriquecimento
+
+## Impacto Prático no Projeto
+
+- reduz a necessidade de entrar em cada igreja só para entender o
+  básico
+- melhora a priorização de qual igreja precisa atenção primeiro
+- torna a lista principal mais útil para quem administra mais de uma
+  igreja
+- mantém a navegação simples e coerente com o uso real do sistema
+
+## Artefatos Consolidados do Ciclo
+
+- `docs/reviews/CODE_REVIEW_V14.md`
+- `docs/reviews/artifacts/v14/CHURCH_OPERATIONAL_SUMMARY_REVIEW_V14.md`
+- `docs/reviews/artifacts/v14/CHURCH_OPERATIONAL_SUMMARY_IMPACT_V14.md`
+- `docs/reviews/artifacts/v14/CHURCH_OPERATIONAL_SUMMARY_COVERAGE_V14.md`
+- `docs/planning/PANEL_IMPROVEMENTS_BACKLOG.md`
+- `src/components/ChurchList.js`
+- `src/components/ChurchManager.css`
+- `src/hooks/useChurchManager.js`
+- `src/services/firebaseService.js`
+- `src/services/e2eStorageService.js`
+- `src/test/churchList.test.js`
+- `src/test/useChurchManager.test.js`
+- `e2e/church-management.spec.js`
+
+## Próximos Passos Recomendados
+
+1. Avaliar se o próximo ciclo deve priorizar busca e filtro por igreja
+   na lista principal.
+2. Revisar se o resumo de distribuição por organista após gerar a escala
+   já merece um ciclo dedicado.
+3. Considerar sinais operacionais adicionais, como última atividade ou
+   alertas mais ricos, apenas se o uso real pedir esse aprofundamento.
