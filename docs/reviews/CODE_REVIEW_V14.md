@@ -10,6 +10,7 @@
 | 1.3    | 31 de março de 2026 | Codex        | Refino da clareza e leitura do resumo por igreja        |
 | 1.4    | 31 de março de 2026 | Codex        | Validação E2E da leitura operacional da lista           |
 | 1.5    | 2 de abril de 2026  | Codex        | Consolidação do impacto operacional da visão por igreja |
+| 1.6    | 2 de abril de 2026  | Codex        | Consolidação da cobertura da visão por igreja           |
 
 ## Objetivo
 
@@ -108,7 +109,7 @@ Os sinais mais promissores para esta etapa são:
 
 #### 3.2 Consolidar cobertura e documentação do fluxo evoluído
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - documentar a cobertura da melhoria entregue
@@ -142,7 +143,7 @@ Os sinais mais promissores para esta etapa são:
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
 - [x] Fase 3.1 concluída
-- [ ] Fase 3.2 pendente
+- [x] Fase 3.2 concluída
 - [ ] Fase 4.1 pendente
 
 ## Critério de Conclusão do V14
@@ -159,3 +160,4 @@ Os sinais mais promissores para esta etapa são:
 ## Artefatos da Fase 3
 
 - `docs/reviews/artifacts/v14/CHURCH_OPERATIONAL_SUMMARY_IMPACT_V14.md`
+- `docs/reviews/artifacts/v14/CHURCH_OPERATIONAL_SUMMARY_COVERAGE_V14.md`
