@@ -120,4 +120,81 @@ describe('useChurchManager', () => {
     expect(readyChurch.operationalSummary.scheduleCount).toBe(1205);
     expect(readyChurch.operationalSummary.readiness.label).toBe('Pronta');
   });
+
+  test('ordena as igrejas por prioridade operacional e depois por nome', async () => {
+    mockGetChurches.mockResolvedValue([
+      {
+        id: 'church-ready-b',
+        name: 'Beta',
+        code: 'BET',
+        config: {
+          sunday: [{ id: 'MeiaHoraCulto' }, { id: 'Culto' }],
+        },
+        cultoModel: 'meia_hora_e_culto',
+      },
+      {
+        id: 'church-incomplete',
+        name: 'Alfa',
+        code: 'ALF',
+        config: {},
+        cultoModel: 'culto_unico_com_reserva',
+      },
+      {
+        id: 'church-warning',
+        name: 'Gama',
+        code: 'GAM',
+        config: {
+          sunday: [{ id: 'Culto' }, { id: 'Reserva' }],
+        },
+        cultoModel: 'culto_unico_com_reserva',
+      },
+      {
+        id: 'church-ready-a',
+        name: 'Aquarela',
+        code: 'AQU',
+        config: {
+          sunday: [{ id: 'MeiaHoraCulto' }, { id: 'Culto' }],
+        },
+        cultoModel: 'meia_hora_e_culto',
+      },
+    ]);
+
+    mockGetOrganistsByChurch.mockImplementation(async (_, churchId) => {
+      if (churchId === 'church-incomplete') {
+        return [];
+      }
+
+      if (churchId === 'church-warning') {
+        return [
+          { id: 'org-1', name: 'Ana' },
+          { id: 'org-2', name: 'Bia' },
+        ];
+      }
+
+      return [
+        { id: 'org-1', name: 'Ana' },
+        { id: 'org-2', name: 'Bia' },
+        { id: 'org-3', name: 'Carla' },
+      ];
+    });
+
+    mockGetChurchScheduleCount.mockImplementation(async (_, churchId) => {
+      if (churchId === 'church-warning' || churchId === 'church-incomplete') {
+        return 0;
+      }
+
+      return 2;
+    });
+
+    const { result } = renderHook(() => useChurchManager(user));
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    expect(result.current.churches.map((church) => church.name)).toEqual([
+      'Alfa',
+      'Gama',
+      'Aquarela',
+      'Beta',
+    ]);
+  });
 });

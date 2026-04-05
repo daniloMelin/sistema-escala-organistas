@@ -91,6 +91,18 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
+.church-list__item--incomplete {
+  border-left: 4px solid #b42318;
+}
+
+.church-list__item--warning {
+  border-left: 4px solid #9a6700;
+}
+
+.church-list__item--ready {
+  border-left: 4px solid #1f7a36;
+}
+
 .church-list__content {
   display: flex;
   flex: 1;

@@ -7,6 +7,7 @@
 | 1.0    | 2 de abril de 2026 | Danilo Melin | Criação do ciclo V15                        |
 | 1.1    | 2 de abril de 2026 | Codex        | Ajuste de foco do ciclo V15                 |
 | 1.2    | 5 de abril de 2026 | Codex        | Revisão da priorização operacional da lista |
+| 1.3    | 5 de abril de 2026 | Codex        | Implementação da priorização operacional    |
 
 ## Objetivo
 
@@ -65,7 +66,7 @@ na lista:
 
 #### 1.2 Implementar a priorização operacional prioritária na lista de igrejas
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - ajustar ordenação e destaque da lista principal
@@ -134,7 +135,7 @@ na lista:
 ## Registro de progresso
 
 - [x] Fase 1.1 concluída
-- [ ] Fase 1.2 pendente
+- [x] Fase 1.2 concluída
 - [ ] Fase 2.1 pendente
 - [ ] Fase 2.2 pendente
 - [ ] Fase 3.1 pendente

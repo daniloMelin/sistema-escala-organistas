@@ -24,6 +24,12 @@ import logger from '../utils/logger';
 const hasUsefulChurchConfig = (config) =>
   Boolean(config && typeof config === 'object' && Object.values(config).some(Array.isArray));
 
+const READINESS_PRIORITY = {
+  incomplete: 0,
+  warning: 1,
+  ready: 2,
+};
+
 const getChurchReadiness = ({ config, organistCount, scheduleCount, cultoModel }) => {
   if (!hasUsefulChurchConfig(config) || organistCount === 0) {
     return {
@@ -63,6 +69,20 @@ const buildFallbackChurchSummary = (church) => {
     cultoModel: effectiveCultoModel,
   };
 };
+
+const sortChurchesByOperationalPriority = (churches) =>
+  [...churches].sort((a, b) => {
+    const aPriority =
+      READINESS_PRIORITY[a.operationalSummary?.readiness?.tone] ?? Number.MAX_SAFE_INTEGER;
+    const bPriority =
+      READINESS_PRIORITY[b.operationalSummary?.readiness?.tone] ?? Number.MAX_SAFE_INTEGER;
+
+    if (aPriority !== bPriority) {
+      return aPriority - bPriority;
+    }
+
+    return a.name.localeCompare(b.name, 'pt-BR');
+  });
 
 export const useChurchManager = (user) => {
   const [churches, setChurches] = useState([]);
@@ -130,7 +150,7 @@ export const useChurchManager = (user) => {
         })
       );
 
-      setChurches(churchesWithSummary);
+      setChurches(sortChurchesByOperationalPriority(churchesWithSummary));
       setLoadError('');
     } catch (err) {
       if (!isMountedRef.current) return;
