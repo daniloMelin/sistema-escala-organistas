@@ -2,10 +2,11 @@
 
 ## Histórico de Revisões
 
-| Versão | Data               | Autor(es)    | Descrição da Revisão        |
-| ------ | ------------------ | ------------ | --------------------------- |
-| 1.0    | 2 de abril de 2026 | Danilo Melin | Criação do ciclo V15        |
-| 1.1    | 2 de abril de 2026 | Codex        | Ajuste de foco do ciclo V15 |
+| Versão | Data               | Autor(es)    | Descrição da Revisão                        |
+| ------ | ------------------ | ------------ | ------------------------------------------- |
+| 1.0    | 2 de abril de 2026 | Danilo Melin | Criação do ciclo V15                        |
+| 1.1    | 2 de abril de 2026 | Codex        | Ajuste de foco do ciclo V15                 |
+| 1.2    | 5 de abril de 2026 | Codex        | Revisão da priorização operacional da lista |
 
 ## Objetivo
 
@@ -15,7 +16,7 @@ poucas igrejas cadastradas por pessoa responsável.
 
 ## Status do Ciclo
 
-- Status geral: `PLANEJADO`
+- Status geral: `EM ANDAMENTO`
 - Data de início: `2 de abril de 2026`
 - Data de encerramento: `A definir`
 - Contexto: continuidade direta do `CODE_REVIEW_V14`, agora focando em
@@ -55,7 +56,7 @@ na lista:
 
 #### 1.1 Revisar opções de priorização operacional da lista de igrejas
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - comparar ordenação por status, destaque visual e filtros simples
@@ -132,7 +133,7 @@ na lista:
 
 ## Registro de progresso
 
-- [ ] Fase 1.1 pendente
+- [x] Fase 1.1 concluída
 - [ ] Fase 1.2 pendente
 - [ ] Fase 2.1 pendente
 - [ ] Fase 2.2 pendente
@@ -146,3 +147,7 @@ na lista:
   na lista principal
 - leitura operacional preservada durante o uso da ordenação ou destaque
 - documentação do ciclo atualizada com impacto prático e próximos passos
+
+## Artefatos da Fase 1
+
+- `docs/reviews/artifacts/v15/CHURCH_LIST_PRIORITIZATION_REVIEW_V15.md`
