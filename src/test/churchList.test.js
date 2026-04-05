@@ -107,4 +107,63 @@ describe('ChurchList', () => {
 
     expect(screen.queryByText('Nenhuma igreja cadastrada.')).not.toBeInTheDocument();
   });
+
+  test('aplica destaque visual por status operacional', () => {
+    const { container } = render(
+      <ChurchList
+        churches={[
+          {
+            id: 'c-incomplete',
+            name: 'Igreja Incompleta',
+            operationalSummary: {
+              cultoModelLabel: 'Culto único com reserva',
+              organistCount: 0,
+              scheduleCount: 0,
+              readiness: {
+                label: 'Incompleta',
+                tone: 'incomplete',
+                detail: 'Nenhuma organista cadastrada.',
+              },
+            },
+          },
+          {
+            id: 'c-warning',
+            name: 'Igreja Atenção',
+            operationalSummary: {
+              cultoModelLabel: 'Culto único com reserva',
+              organistCount: 2,
+              scheduleCount: 0,
+              readiness: {
+                label: 'Atenção',
+                tone: 'warning',
+                detail: 'Ainda não possui escala salva.',
+              },
+            },
+          },
+          {
+            id: 'c-ready',
+            name: 'Igreja Pronta',
+            operationalSummary: {
+              cultoModelLabel: 'Meia hora e culto',
+              organistCount: 3,
+              scheduleCount: 2,
+              readiness: {
+                label: 'Pronta',
+                tone: 'ready',
+                detail: 'Base mínima atendida e histórico disponível.',
+              },
+            },
+          },
+        ]}
+        isLoading={false}
+        onChurchSelect={jest.fn()}
+        onStartEdit={jest.fn()}
+        onRequestDeleteChurch={jest.fn()}
+      />
+    );
+
+    expect(container.querySelector('.church-list__item--incomplete')).not.toBeNull();
+    expect(container.querySelector('.church-list__item--warning')).not.toBeNull();
+    expect(container.querySelector('.church-list__item--ready')).not.toBeNull();
+  });
 });

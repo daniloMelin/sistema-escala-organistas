@@ -21,7 +21,11 @@ const ChurchList = ({
             <li
               key={church.id}
               onClick={() => onChurchSelect(church)}
-              className="church-list__item"
+              className={`church-list__item${
+                church.operationalSummary
+                  ? ` church-list__item--${church.operationalSummary.readiness.tone}`
+                  : ''
+              }`}
             >
               <div className="church-list__content">
                 <div className="church-list__header">
