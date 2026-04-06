@@ -10,6 +10,7 @@
 | 1.3    | 5 de abril de 2026 | Codex        | Implementação da priorização operacional    |
 | 1.4    | 5 de abril de 2026 | Codex        | Refino da clareza da lista priorizada       |
 | 1.5    | 6 de abril de 2026 | Codex        | Validação E2E da lista priorizada           |
+| 1.6    | 6 de abril de 2026 | Codex        | Consolidação do impacto operacional do V15  |
 
 ## Objetivo
 
@@ -98,7 +99,7 @@ na lista:
 
 #### 3.1 Revisar impacto operacional da priorização da lista
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - consolidar o ganho prático da nova priorização
@@ -140,7 +141,7 @@ na lista:
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
-- [ ] Fase 3.1 pendente
+- [x] Fase 3.1 concluída
 - [ ] Fase 3.2 pendente
 - [ ] Fase 4.1 pendente
 
@@ -154,3 +155,7 @@ na lista:
 ## Artefatos da Fase 1
 
 - `docs/reviews/artifacts/v15/CHURCH_LIST_PRIORITIZATION_REVIEW_V15.md`
+
+## Artefatos da Fase 3
+
+- `docs/reviews/artifacts/v15/CHURCH_LIST_PRIORITIZATION_IMPACT_V15.md`
