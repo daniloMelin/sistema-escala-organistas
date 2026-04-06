@@ -11,6 +11,7 @@
 | 1.4    | 5 de abril de 2026 | Codex        | Refino da clareza da lista priorizada       |
 | 1.5    | 6 de abril de 2026 | Codex        | Validação E2E da lista priorizada           |
 | 1.6    | 6 de abril de 2026 | Codex        | Consolidação do impacto operacional do V15  |
+| 1.7    | 6 de abril de 2026 | Codex        | Consolidação da cobertura funcional do V15  |
 
 ## Objetivo
 
@@ -108,7 +109,7 @@ na lista:
 
 #### 3.2 Consolidar cobertura e documentação do fluxo evoluído
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - documentar a cobertura da melhoria entregue
@@ -142,7 +143,7 @@ na lista:
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
 - [x] Fase 3.1 concluída
-- [ ] Fase 3.2 pendente
+- [x] Fase 3.2 concluída
 - [ ] Fase 4.1 pendente
 
 ## Critério de Conclusão do V15
@@ -159,3 +160,4 @@ na lista:
 ## Artefatos da Fase 3
 
 - `docs/reviews/artifacts/v15/CHURCH_LIST_PRIORITIZATION_IMPACT_V15.md`
+- `docs/reviews/artifacts/v15/CHURCH_LIST_PRIORITIZATION_COVERAGE_V15.md`
