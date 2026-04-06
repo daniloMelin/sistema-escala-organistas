@@ -96,15 +96,24 @@ test.describe('cadastro e edicao de igreja', () => {
     const readyItem = page.locator('.church-list__item', { hasText: 'Igreja Pronta' });
     const warningItem = page.locator('.church-list__item', { hasText: 'Igreja Atencao' });
     const incompleteItem = page.locator('.church-list__item', { hasText: 'Igreja Incompleta' });
+    const orderedNames = page.locator('.church-list__name');
 
+    await expect(page.getByText(/Igrejas mais críticas aparecem primeiro/)).toBeVisible();
+    await expect(orderedNames.nth(0)).toHaveText('Igreja Incompleta');
+    await expect(orderedNames.nth(1)).toHaveText('Igreja Atencao');
+    await expect(orderedNames.nth(2)).toHaveText('Igreja Pronta');
+
+    await expect(incompleteItem).toContainText('Prioridade incompleta');
     await expect(readyItem).toContainText('Pronta');
     await expect(readyItem).toContainText('Base mínima atendida e histórico disponível.');
+    await expect(readyItem).toContainText('Prioridade pronta');
     await expect(readyItem).toContainText('Modelo: Meia hora e culto');
     await expect(readyItem).toContainText('Organistas: 2');
     await expect(readyItem).toContainText('Escalas: 1');
 
     await expect(warningItem).toContainText('Atenção');
     await expect(warningItem).toContainText('Ainda não possui escala salva.');
+    await expect(warningItem).toContainText('Prioridade atenção');
     await expect(warningItem).toContainText('Modelo: Culto único com reserva');
     await expect(warningItem).toContainText('Organistas: 2');
 
