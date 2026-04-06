@@ -166,4 +166,49 @@ describe('ChurchList', () => {
     expect(container.querySelector('.church-list__item--warning')).not.toBeNull();
     expect(container.querySelector('.church-list__item--ready')).not.toBeNull();
   });
+
+  test('explica a priorizacao operacional quando ha mais de uma igreja com resumo', () => {
+    render(
+      <ChurchList
+        churches={[
+          {
+            id: 'c-incomplete',
+            name: 'Igreja Incompleta',
+            operationalSummary: {
+              cultoModelLabel: 'Culto único com reserva',
+              organistCount: 0,
+              scheduleCount: 0,
+              readiness: {
+                label: 'Incompleta',
+                tone: 'incomplete',
+                detail: 'Nenhuma organista cadastrada.',
+              },
+            },
+          },
+          {
+            id: 'c-ready',
+            name: 'Igreja Pronta',
+            operationalSummary: {
+              cultoModelLabel: 'Meia hora e culto',
+              organistCount: 3,
+              scheduleCount: 2,
+              readiness: {
+                label: 'Pronta',
+                tone: 'ready',
+                detail: 'Base mínima atendida e histórico disponível.',
+              },
+            },
+          },
+        ]}
+        isLoading={false}
+        onChurchSelect={jest.fn()}
+        onStartEdit={jest.fn()}
+        onRequestDeleteChurch={jest.fn()}
+      />
+    );
+
+    expect(screen.getByText(/Igrejas mais críticas aparecem primeiro/)).toBeInTheDocument();
+    expect(screen.getByText('Prioridade incompleta')).toBeInTheDocument();
+    expect(screen.getByText('Prioridade pronta')).toBeInTheDocument();
+  });
 });
