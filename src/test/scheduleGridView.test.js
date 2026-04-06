@@ -37,6 +37,16 @@ const buildProps = (overrides = {}) => ({
 describe('ScheduleGridView', () => {
   test('exibe apenas cards de dias com escala quando nao esta em edicao', () => {
     render(<ScheduleGridView {...buildProps()} />);
+    expect(screen.getByText('Resumo do período')).toBeInTheDocument();
+    expect(
+      screen.getByText('Quantidade de vezes por organista no período gerado.')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('Ana', { selector: '.schedule-grid__distribution-name' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getAllByText('1', { selector: '.schedule-grid__distribution-count' })
+    ).toHaveLength(3);
     expect(screen.getByText('Domingo, 01/03/2026')).toBeInTheDocument();
     expect(screen.getByText('Meia Hora:')).toBeInTheDocument();
     expect(screen.getByText('Culto:')).toBeInTheDocument();

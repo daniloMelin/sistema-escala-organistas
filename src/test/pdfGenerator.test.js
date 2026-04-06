@@ -1,5 +1,7 @@
 import { exportScheduleToPDF } from '../utils/pdfGenerator';
 
+const mockJsPDFConstructor = jest.fn();
+
 const mockDoc = {
   internal: {
     pageSize: {
@@ -19,6 +21,7 @@ const mockDoc = {
   setLineWidth: jest.fn(),
   roundedRect: jest.fn(),
   getTextWidth: jest.fn(() => 10),
+  splitTextToSize: jest.fn((text) => [text]),
   save: jest.fn(),
   setPage: jest.fn(),
 };
@@ -27,7 +30,8 @@ jest.mock('jspdf', () => {
   return {
     __esModule: true,
     default: class MockJsPDF {
-      constructor() {
+      constructor(...args) {
+        mockJsPDFConstructor(...args);
         return mockDoc;
       }
     },
@@ -46,9 +50,13 @@ jest.mock('../utils/logger', () => ({
 describe('exportScheduleToPDF', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockDoc.internal.pageSize.getWidth.mockReturnValue(210);
+    mockDoc.internal.pageSize.getHeight.mockReturnValue(297);
+    mockDoc.internal.getNumberOfPages.mockReturnValue(1);
+    mockDoc.splitTextToSize.mockImplementation((text) => [text]);
   });
 
-  test('exporta labels dinamicos para reserva e partes do culto', () => {
+  test('exporta resumo por organista em layout compacto A4 paisagem', () => {
     exportScheduleToPDF(
       [
         {
@@ -59,7 +67,7 @@ describe('exportScheduleToPDF', () => {
             MeiaHoraCulto: 'Bia',
             Parte1: 'Clara',
             Parte2: 'Dani',
-            Reserva: 'Eva',
+            Reserva: 'Ana',
           },
         },
       ],
@@ -71,7 +79,14 @@ describe('exportScheduleToPDF', () => {
     const renderedLabels = mockDoc.text.mock.calls.map(([text]) => text);
 
     expect(renderedLabels).toEqual(
-      expect.arrayContaining(['RJM:', 'Meia Hora:', 'Parte 1:', 'Parte 2:', 'Reserva:'])
+      expect.arrayContaining(['Igreja PDF', 'Resumo do período', 'Ana', 'Bia', 'Clara'])
+    );
+    expect(mockJsPDFConstructor).toHaveBeenCalledWith(
+      expect.objectContaining({
+        orientation: 'landscape',
+        unit: 'mm',
+        format: 'a4',
+      })
     );
     expect(mockDoc.save).toHaveBeenCalled();
   });

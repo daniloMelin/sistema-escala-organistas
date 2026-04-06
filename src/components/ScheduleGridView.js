@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from './ui/Button';
 import { getServiceDisplayLabel, getServiceSortPriority } from '../utils/scheduleLogic';
+import { buildOrganistDistributionSummary } from '../utils/scheduleSummary';
 
 const ScheduleGridView = ({
   groupedSchedule,
@@ -14,6 +15,8 @@ const ScheduleGridView = ({
   onAssignmentChange,
 }) => {
   if (Object.keys(groupedSchedule).length === 0) return null;
+  const flattenedSchedule = Object.values(groupedSchedule).flat();
+  const distributionSummary = buildOrganistDistributionSummary(flattenedSchedule);
 
   return (
     <div className="schedule-grid">
@@ -44,6 +47,26 @@ const ScheduleGridView = ({
           )}
         </div>
       </div>
+
+      {distributionSummary.length > 0 && (
+        <div className="schedule-grid__distribution">
+          <div className="schedule-grid__distribution-header">
+            <h4 className="schedule-grid__distribution-title">Resumo do período</h4>
+            <span className="schedule-grid__distribution-subtitle">
+              Quantidade de vezes por organista no período gerado.
+            </span>
+          </div>
+
+          <ul className="schedule-grid__distribution-list list-reset">
+            {distributionSummary.map((item) => (
+              <li key={item.name} className="schedule-grid__distribution-item">
+                <span className="schedule-grid__distribution-name">{item.name}</span>
+                <span className="schedule-grid__distribution-count">{item.count}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {Object.entries(groupedSchedule).map(([monthLabel, days]) => (
         <div key={monthLabel} className="schedule-grid__month">
