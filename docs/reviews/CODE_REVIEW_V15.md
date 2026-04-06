@@ -12,6 +12,7 @@
 | 1.5    | 6 de abril de 2026 | Codex        | Validação E2E da lista priorizada           |
 | 1.6    | 6 de abril de 2026 | Codex        | Consolidação do impacto operacional do V15  |
 | 1.7    | 6 de abril de 2026 | Codex        | Consolidação da cobertura funcional do V15  |
+| 1.8    | 6 de abril de 2026 | Codex        | Fechamento formal do ciclo V15              |
 
 ## Objetivo
 
@@ -21,9 +22,9 @@ poucas igrejas cadastradas por pessoa responsável.
 
 ## Status do Ciclo
 
-- Status geral: `EM ANDAMENTO`
+- Status geral: `CONCLUÍDO`
 - Data de início: `2 de abril de 2026`
-- Data de encerramento: `A definir`
+- Data de encerramento: `6 de abril de 2026`
 - Contexto: continuidade direta do `CODE_REVIEW_V14`, agora focando em
   priorização visual da lista principal de igrejas
 
@@ -119,7 +120,7 @@ na lista:
 
 #### 4.1 Encerrar formalmente o V15
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - registrar o resultado do ciclo
@@ -144,7 +145,7 @@ na lista:
 - [x] Fase 2.2 concluída
 - [x] Fase 3.1 concluída
 - [x] Fase 3.2 concluída
-- [ ] Fase 4.1 pendente
+- [x] Fase 4.1 concluída
 
 ## Critério de Conclusão do V15
 
@@ -161,3 +162,43 @@ na lista:
 
 - `docs/reviews/artifacts/v15/CHURCH_LIST_PRIORITIZATION_IMPACT_V15.md`
 - `docs/reviews/artifacts/v15/CHURCH_LIST_PRIORITIZATION_COVERAGE_V15.md`
+
+## Resumo Executivo
+
+O V15 concluiu a evolução da lista principal de igrejas iniciada no
+V14, com foco em uma decisão funcional simples:
+
+- não priorizar campo de busca para um cenário de baixo volume
+- priorizar ordenação operacional e destaque visual leve
+
+Com isso, a lista passou a responder melhor qual igreja precisa ser
+vista primeiro, sem aumentar complexidade desnecessária.
+
+## Impacto Prático no Projeto
+
+Ao final do ciclo, o projeto passou a ter:
+
+- lista ordenada por prioridade operacional
+- reforço visual coerente com o estado de cada igreja
+- clareza maior sobre o motivo da priorização
+- validação de componente, hook e E2E para o comportamento novo
+
+O ganho principal do V15 não foi “encontrar” a igreja certa, e sim
+reduzir o esforço de decisão sobre qual igreja merece atenção imediata.
+
+## Artefatos Consolidados do Ciclo
+
+- `docs/reviews/CODE_REVIEW_V15.md`
+- `docs/reviews/artifacts/v15/CHURCH_LIST_PRIORITIZATION_REVIEW_V15.md`
+- `docs/reviews/artifacts/v15/CHURCH_LIST_PRIORITIZATION_IMPACT_V15.md`
+- `docs/reviews/artifacts/v15/CHURCH_LIST_PRIORITIZATION_COVERAGE_V15.md`
+
+## Próximos Passos Recomendados
+
+1. avaliar se o volume real de igrejas continua baixo antes de investir
+   em busca textual
+2. considerar sinais adicionais para a lista, como última atividade ou
+   última escala gerada
+3. abrir o próximo ciclo técnico para migração de `CRA` para `Vite` com
+   `TypeScript`
+4. manter `Mantine` como decisão para a etapa posterior à migração
