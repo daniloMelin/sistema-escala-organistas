@@ -109,7 +109,7 @@ describe('ChurchList', () => {
   });
 
   test('aplica destaque visual por status operacional', () => {
-    const { container } = render(
+    render(
       <ChurchList
         churches={[
           {
@@ -162,8 +162,58 @@ describe('ChurchList', () => {
       />
     );
 
-    expect(container.querySelector('.church-list__item--incomplete')).not.toBeNull();
-    expect(container.querySelector('.church-list__item--warning')).not.toBeNull();
-    expect(container.querySelector('.church-list__item--ready')).not.toBeNull();
+    const listItems = screen.getAllByRole('listitem');
+
+    expect(listItems[0]).toHaveTextContent('Igreja Incompleta');
+    expect(listItems[0]).toHaveClass('church-list__item--incomplete');
+    expect(listItems[1]).toHaveTextContent('Igreja Atenção');
+    expect(listItems[1]).toHaveClass('church-list__item--warning');
+    expect(listItems[2]).toHaveTextContent('Igreja Pronta');
+    expect(listItems[2]).toHaveClass('church-list__item--ready');
+  });
+
+  test('explica a priorizacao operacional quando ha mais de uma igreja com resumo', () => {
+    render(
+      <ChurchList
+        churches={[
+          {
+            id: 'c-incomplete',
+            name: 'Igreja Incompleta',
+            operationalSummary: {
+              cultoModelLabel: 'Culto único com reserva',
+              organistCount: 0,
+              scheduleCount: 0,
+              readiness: {
+                label: 'Incompleta',
+                tone: 'incomplete',
+                detail: 'Nenhuma organista cadastrada.',
+              },
+            },
+          },
+          {
+            id: 'c-ready',
+            name: 'Igreja Pronta',
+            operationalSummary: {
+              cultoModelLabel: 'Meia hora e culto',
+              organistCount: 3,
+              scheduleCount: 2,
+              readiness: {
+                label: 'Pronta',
+                tone: 'ready',
+                detail: 'Base mínima atendida e histórico disponível.',
+              },
+            },
+          },
+        ]}
+        isLoading={false}
+        onChurchSelect={jest.fn()}
+        onStartEdit={jest.fn()}
+        onRequestDeleteChurch={jest.fn()}
+      />
+    );
+
+    expect(screen.getByText(/Igrejas mais críticas aparecem primeiro/)).toBeInTheDocument();
+    expect(screen.getByText('Prioridade incompleta')).toBeInTheDocument();
+    expect(screen.getByText('Prioridade pronta')).toBeInTheDocument();
   });
 });

@@ -8,6 +8,8 @@
 | 1.1    | 2 de abril de 2026 | Codex        | Ajuste de foco do ciclo V15                 |
 | 1.2    | 5 de abril de 2026 | Codex        | Revisão da priorização operacional da lista |
 | 1.3    | 5 de abril de 2026 | Codex        | Implementação da priorização operacional    |
+| 1.4    | 5 de abril de 2026 | Codex        | Refino da clareza da lista priorizada       |
+| 1.5    | 6 de abril de 2026 | Codex        | Validação E2E da lista priorizada           |
 
 ## Objetivo
 
@@ -77,7 +79,7 @@ na lista:
 
 #### 2.1 Refinar clareza do uso combinado entre priorização e resumo
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - revisar hierarquia visual, labels e destaque do estado operacional
@@ -86,7 +88,7 @@ na lista:
 
 #### 2.2 Validar o fluxo ponta a ponta com lista priorizada
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - criar ou atualizar cenário E2E da lista de igrejas
@@ -136,8 +138,8 @@ na lista:
 
 - [x] Fase 1.1 concluída
 - [x] Fase 1.2 concluída
-- [ ] Fase 2.1 pendente
-- [ ] Fase 2.2 pendente
+- [x] Fase 2.1 concluída
+- [x] Fase 2.2 concluída
 - [ ] Fase 3.1 pendente
 - [ ] Fase 3.2 pendente
 - [ ] Fase 4.1 pendente
