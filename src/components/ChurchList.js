@@ -12,15 +12,13 @@ const ChurchList = ({
 }) => {
   const churchesWithSummary = churches.filter((church) => church.operationalSummary);
   const hasOperationalPriority = churchesWithSummary.length > 1;
-  const firstChurchStatus = churchesWithSummary[0]?.operationalSummary?.readiness?.label;
 
   return (
     <>
       <h3>Igrejas Cadastradas:</h3>
-      {hasOperationalPriority && firstChurchStatus && (
+      {hasOperationalPriority && (
         <p className="church-list__priority-hint">
-          Igrejas mais críticas aparecem primeiro. Prioridade atual:{' '}
-          <strong>{firstChurchStatus}</strong>.
+          A lista prioriza as igrejas que precisam de atenção.
         </p>
       )}
       {!isLoading && !hasLoadError && churches.length === 0 ? (
@@ -42,16 +40,11 @@ const ChurchList = ({
                   <strong className="church-list__name">{church.name}</strong>
                   {church.operationalSummary && (
                     <div className="church-list__status-block">
-                      <div className="church-list__status-row">
-                        <span
-                          className={`church-list__status church-list__status--${church.operationalSummary.readiness.tone}`}
-                        >
-                          {church.operationalSummary.readiness.label}
-                        </span>
-                        <span className="church-list__priority-label">
-                          Prioridade {church.operationalSummary.readiness.label.toLowerCase()}
-                        </span>
-                      </div>
+                      <span
+                        className={`church-list__status church-list__status--${church.operationalSummary.readiness.tone}`}
+                      >
+                        {church.operationalSummary.readiness.label}
+                      </span>
                       <span className="church-list__status-detail">
                         {church.operationalSummary.readiness.detail}
                       </span>

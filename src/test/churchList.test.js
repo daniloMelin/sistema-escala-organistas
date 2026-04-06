@@ -212,8 +212,10 @@ describe('ChurchList', () => {
       />
     );
 
-    expect(screen.getByText(/Igrejas mais críticas aparecem primeiro/)).toBeInTheDocument();
-    expect(screen.getByText('Prioridade incompleta')).toBeInTheDocument();
-    expect(screen.getByText('Prioridade pronta')).toBeInTheDocument();
+    expect(
+      screen.getByText('A lista prioriza as igrejas que precisam de atenção.')
+    ).toBeInTheDocument();
+    expect(screen.queryByText('Prioridade incompleta')).not.toBeInTheDocument();
+    expect(screen.queryByText('Prioridade pronta')).not.toBeInTheDocument();
   });
 });
