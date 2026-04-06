@@ -109,7 +109,7 @@ describe('ChurchList', () => {
   });
 
   test('aplica destaque visual por status operacional', () => {
-    const { container } = render(
+    render(
       <ChurchList
         churches={[
           {
@@ -162,9 +162,14 @@ describe('ChurchList', () => {
       />
     );
 
-    expect(container.querySelector('.church-list__item--incomplete')).not.toBeNull();
-    expect(container.querySelector('.church-list__item--warning')).not.toBeNull();
-    expect(container.querySelector('.church-list__item--ready')).not.toBeNull();
+    const listItems = screen.getAllByRole('listitem');
+
+    expect(listItems[0]).toHaveTextContent('Igreja Incompleta');
+    expect(listItems[0]).toHaveClass('church-list__item--incomplete');
+    expect(listItems[1]).toHaveTextContent('Igreja Atenção');
+    expect(listItems[1]).toHaveClass('church-list__item--warning');
+    expect(listItems[2]).toHaveTextContent('Igreja Pronta');
+    expect(listItems[2]).toHaveClass('church-list__item--ready');
   });
 
   test('explica a priorizacao operacional quando ha mais de uma igreja com resumo', () => {
