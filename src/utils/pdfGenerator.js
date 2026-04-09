@@ -17,7 +17,7 @@ const COLORS = {
 
 const SERVICE_SHORT_LABELS = {
   RJM: 'RJM',
-  MeiaHoraCulto: 'MH',
+  MeiaHoraCulto: 'M. Hora',
   Culto: 'Culto',
   Parte1: 'P1',
   Parte2: 'P2',
@@ -64,20 +64,20 @@ const getShortDayName = (dayName) => {
 
 const drawHeader = (doc, pageWidth, margin, churchName, startDate, endDate) => {
   doc.setFillColor(...COLORS.headerBg);
-  doc.roundedRect(margin, margin, pageWidth - margin * 2, 16, 3, 3, 'F');
+  doc.roundedRect(margin, margin, pageWidth - margin * 2, 12, 3, 3, 'F');
 
-  doc.setFontSize(16);
+  doc.setFontSize(14);
   doc.setTextColor(...COLORS.headerText);
   doc.setFont(undefined, 'bold');
-  doc.text(churchName || 'Escala de Organistas', pageWidth / 2, margin + 6.5, {
+  doc.text(churchName || 'Escala de Organistas', pageWidth / 2, margin + 4.8, {
     align: 'center',
   });
 
-  doc.setFontSize(9);
+  doc.setFontSize(8);
   doc.setFont(undefined, 'normal');
   const startFmt = startDate ? startDate.split('-').reverse().join('/') : 'N/A';
   const endFmt = endDate ? endDate.split('-').reverse().join('/') : 'N/A';
-  doc.text(`Período: ${startFmt} a ${endFmt}`, pageWidth / 2, margin + 12, {
+  doc.text(`Período: ${startFmt} a ${endFmt}`, pageWidth / 2, margin + 9, {
     align: 'center',
   });
 };
@@ -88,7 +88,7 @@ const drawDistributionSummary = (doc, items, x, y, width) => {
   }
 
   doc.setFillColor(246, 248, 252);
-  doc.roundedRect(x, y, width, 24, 2, 2, 'F');
+  doc.roundedRect(x, y, width, 23, 2, 2, 'F');
 
   doc.setFontSize(9);
   doc.setFont(undefined, 'bold');
@@ -100,8 +100,19 @@ const drawDistributionSummary = (doc, items, x, y, width) => {
   doc.setTextColor(...COLORS.textLabel);
   doc.text('Quantidade de vezes por organista.', x + 3, y + 9);
 
+  doc.setFontSize(7);
+  doc.setFont(undefined, 'bold');
+  doc.text('Nome', x + 3, y + 13);
+
   const columns = Math.min(4, Math.max(1, Math.ceil(items.length / 3)));
   const columnWidth = width / columns;
+
+  for (let columnIndex = 1; columnIndex <= columns; columnIndex += 1) {
+    doc.text('Qtd', x + columnIndex * columnWidth - 5, y + 13, { align: 'right' });
+  }
+
+  doc.setFillColor(220, 226, 235);
+  doc.rect(x + 3, y + 14.5, width - 6, 0.4, 'F');
 
   doc.setFontSize(7.5);
   doc.setTextColor(...COLORS.textValue);
@@ -110,7 +121,7 @@ const drawDistributionSummary = (doc, items, x, y, width) => {
     const column = index % columns;
     const row = Math.floor(index / columns);
     const lineX = x + column * columnWidth + 3;
-    const lineY = y + 14 + row * 4;
+    const lineY = y + 18 + row * 3.6;
 
     doc.setFont(undefined, 'bold');
     doc.text(item.name, lineX, lineY);
@@ -162,8 +173,8 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
 
       const currentMonths = monthLabels.slice(startIndex, startIndex + monthsPerPage);
       const isLastPage = startIndex + monthsPerPage >= monthLabels.length;
-      const summaryHeight = isLastPage && distributionSummary.length > 0 ? 28 : 0;
-      const contentTop = margin + 20;
+      const summaryHeight = isLastPage && distributionSummary.length > 0 ? 27 : 0;
+      const contentTop = margin + 15;
       const contentBottom = pageHeight - margin - footerHeight - summaryHeight;
       const contentWidth = pageWidth - margin * 2;
       const monthWidth = (contentWidth - gap * (currentMonths.length - 1)) / currentMonths.length;

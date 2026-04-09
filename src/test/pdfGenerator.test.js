@@ -81,6 +81,10 @@ describe('exportScheduleToPDF', () => {
     expect(renderedLabels).toEqual(
       expect.arrayContaining(['Igreja PDF', 'Resumo do período', 'Ana', 'Bia', 'Clara'])
     );
+    expect(mockDoc.splitTextToSize).toHaveBeenCalledWith(
+      expect.stringContaining('M. Hora Bia'),
+      expect.any(Number)
+    );
     expect(mockJsPDFConstructor).toHaveBeenCalledWith(
       expect.objectContaining({
         orientation: 'landscape',
