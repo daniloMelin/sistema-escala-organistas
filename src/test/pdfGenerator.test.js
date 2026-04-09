@@ -21,7 +21,6 @@ const mockDoc = {
   setLineWidth: jest.fn(),
   roundedRect: jest.fn(),
   getTextWidth: jest.fn(() => 10),
-  splitTextToSize: jest.fn((text) => [text]),
   save: jest.fn(),
   setPage: jest.fn(),
 };
@@ -53,7 +52,6 @@ describe('exportScheduleToPDF', () => {
     mockDoc.internal.pageSize.getWidth.mockReturnValue(210);
     mockDoc.internal.pageSize.getHeight.mockReturnValue(297);
     mockDoc.internal.getNumberOfPages.mockReturnValue(1);
-    mockDoc.splitTextToSize.mockImplementation((text) => [text]);
   });
 
   test('exporta resumo por organista em layout compacto A4 paisagem', () => {
@@ -80,10 +78,6 @@ describe('exportScheduleToPDF', () => {
 
     expect(renderedLabels).toEqual(
       expect.arrayContaining(['Igreja PDF', 'Resumo do período', 'Ana', 'Bia', 'Clara'])
-    );
-    expect(mockDoc.splitTextToSize).toHaveBeenCalledWith(
-      expect.stringContaining('M. Hora Bia'),
-      expect.any(Number)
     );
     expect(mockJsPDFConstructor).toHaveBeenCalledWith(
       expect.objectContaining({

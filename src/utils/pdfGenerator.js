@@ -40,13 +40,20 @@ const getRenderableAssignments = (assignments) =>
         getServiceSortPriority(serviceA) - getServiceSortPriority(serviceB)
     );
 
-const getCompactAssignmentsLabel = (assignments) =>
-  getRenderableAssignments(assignments)
-    .map(
-      ([serviceId, assignedName]) =>
-        `${SERVICE_SHORT_LABELS[serviceId] || serviceId} ${assignedName}`
-    )
-    .join(' | ');
+const getCompactAssignmentSegments = (assignments) =>
+  getRenderableAssignments(assignments).map(
+    ([serviceId, assignedName]) => `${SERVICE_SHORT_LABELS[serviceId] || serviceId} ${assignedName}`
+  );
+
+const getCompactAssignmentLines = (assignments) => {
+  const segments = getCompactAssignmentSegments(assignments);
+
+  if (segments.length <= 2) {
+    return [segments.join(' | ')];
+  }
+
+  return [segments.slice(0, 2).join(' | '), segments.slice(2).join(' | ')];
+};
 
 const getShortDayName = (dayName) => {
   const labels = {
@@ -196,9 +203,7 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
 
         itemsByMonth[monthLabel].forEach((item) => {
           const dateLine = `${getShortDayName(item.dayName)} ${item.date.slice(0, 5)}`;
-          const assignmentLines = doc
-            .splitTextToSize(getCompactAssignmentsLabel(item.assignments), monthWidth - 5)
-            .slice(0, 2);
+          const assignmentLines = getCompactAssignmentLines(item.assignments);
           const rowHeight = 5 + assignmentLines.length * 3.2;
 
           if (monthY + rowHeight > contentBottom) {
