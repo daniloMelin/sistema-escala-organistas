@@ -19,6 +19,7 @@ const mockDoc = {
   addPage: jest.fn(),
   setDrawColor: jest.fn(),
   setLineWidth: jest.fn(),
+  line: jest.fn(),
   roundedRect: jest.fn(),
   getTextWidth: jest.fn(() => 10),
   save: jest.fn(),

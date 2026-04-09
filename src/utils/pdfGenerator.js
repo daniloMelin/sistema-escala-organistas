@@ -1,27 +1,22 @@
 import jsPDF from 'jspdf';
 import { getMonthYearLabel } from './dateUtils';
 import logger from './logger';
-import { getServiceSortPriority } from './scheduleLogic';
+import { getServiceDisplayLabel, getServiceSortPriority } from './scheduleLogic';
 import { buildOrganistDistributionSummary } from './scheduleSummary';
 
 const COLORS = {
-  headerBg: [41, 128, 185],
-  headerText: [255, 255, 255],
-  monthBg: [230, 230, 230],
-  monthText: [60, 60, 60],
-  cardBorder: [200, 200, 200],
-  textDate: [0, 0, 0],
-  textLabel: [100, 100, 100],
-  textValue: [40, 40, 40],
-};
-
-const SERVICE_SHORT_LABELS = {
-  RJM: 'RJM',
-  MeiaHoraCulto: 'M. Hora',
-  Culto: 'Culto',
-  Parte1: 'P1',
-  Parte2: 'P2',
-  Reserva: 'Res',
+  titleBg: [37, 63, 101],
+  titleText: [255, 255, 255],
+  monthBg: [51, 104, 153],
+  monthText: [255, 255, 255],
+  tableHeaderBg: [37, 63, 101],
+  tableHeaderText: [255, 255, 255],
+  rowEven: [246, 249, 252],
+  rowOdd: [235, 241, 247],
+  border: [202, 214, 226],
+  textPrimary: [37, 49, 66],
+  textMuted: [110, 121, 137],
+  summaryBg: [246, 248, 252],
 };
 
 const hasValidAssignments = (assignments) => {
@@ -32,27 +27,17 @@ const hasValidAssignments = (assignments) => {
   return Object.values(assignments).some((value) => value && value.toUpperCase() !== 'VAGO');
 };
 
-const getRenderableAssignments = (assignments) =>
-  Object.entries(assignments || {})
-    .filter(([, value]) => value && value !== 'VAGO')
-    .sort(
-      ([serviceA], [serviceB]) =>
-        getServiceSortPriority(serviceA) - getServiceSortPriority(serviceB)
-    );
-
-const getCompactAssignmentSegments = (assignments) =>
-  getRenderableAssignments(assignments).map(
-    ([serviceId, assignedName]) => `${SERVICE_SHORT_LABELS[serviceId] || serviceId} ${assignedName}`
+const getServiceColumns = (scheduleData) =>
+  Array.from(new Set(scheduleData.flatMap((item) => Object.keys(item.assignments || {})))).sort(
+    (serviceA, serviceB) => getServiceSortPriority(serviceA) - getServiceSortPriority(serviceB)
   );
 
-const getCompactAssignmentLines = (assignments) => {
-  const segments = getCompactAssignmentSegments(assignments);
-
-  if (segments.length <= 2) {
-    return [segments.join(' | ')];
+const getServiceHeaderLabel = (serviceId) => {
+  if (serviceId === 'MeiaHoraCulto') {
+    return 'M. Hora';
   }
 
-  return [segments.slice(0, 2).join(' | '), segments.slice(2).join(' | ')];
+  return getServiceDisplayLabel(serviceId);
 };
 
 const getShortDayName = (dayName) => {
@@ -69,23 +54,120 @@ const getShortDayName = (dayName) => {
   return labels[dayName] || dayName;
 };
 
-const drawHeader = (doc, pageWidth, margin, churchName, startDate, endDate) => {
-  doc.setFillColor(...COLORS.headerBg);
-  doc.roundedRect(margin, margin, pageWidth - margin * 2, 12, 3, 3, 'F');
+const drawCenteredCellText = (doc, text, x, y, width, baseFontSize = 6.1) => {
+  const value = text || '—';
+  let fontSize = baseFontSize;
 
-  doc.setFontSize(14);
-  doc.setTextColor(...COLORS.headerText);
+  if (doc.getTextWidth(value) > width - 3) {
+    fontSize = 5.4;
+  }
+
+  doc.setFontSize(fontSize);
+  doc.text(value, x + width / 2, y, { align: 'center' });
+};
+
+const drawHeader = (doc, pageWidth, margin, churchName, startDate, endDate) => {
+  doc.setFillColor(...COLORS.titleBg);
+  doc.rect(margin, margin, pageWidth - margin * 2, 14, 'F');
+
+  doc.setTextColor(...COLORS.titleText);
   doc.setFont(undefined, 'bold');
-  doc.text(churchName || 'Escala de Organistas', pageWidth / 2, margin + 4.8, {
+  doc.setFontSize(17);
+  doc.text(churchName || 'Escala de Organistas', pageWidth / 2, margin + 6.5, {
     align: 'center',
   });
 
-  doc.setFontSize(8);
-  doc.setFont(undefined, 'normal');
   const startFmt = startDate ? startDate.split('-').reverse().join('/') : 'N/A';
   const endFmt = endDate ? endDate.split('-').reverse().join('/') : 'N/A';
-  doc.text(`Período: ${startFmt} a ${endFmt}`, pageWidth / 2, margin + 9, {
+
+  doc.setFont(undefined, 'normal');
+  doc.setFontSize(8.5);
+  doc.text(`Escala de Organistas · ${startFmt} a ${endFmt}`, pageWidth / 2, margin + 11.2, {
     align: 'center',
+  });
+};
+
+const drawMonthTable = (doc, monthLabel, items, serviceColumns, x, y, width, height) => {
+  const monthHeaderHeight = 6;
+  const tableHeaderHeight = 5;
+  const tableTop = y + monthHeaderHeight + 2;
+  const bodyHeight = height - monthHeaderHeight - tableHeaderHeight - 2;
+  const rowCount = items.length;
+
+  doc.setFillColor(...COLORS.monthBg);
+  doc.rect(x, y, width, monthHeaderHeight, 'F');
+  doc.setTextColor(...COLORS.monthText);
+  doc.setFont(undefined, 'bold');
+  doc.setFontSize(8.5);
+  doc.text(monthLabel.toUpperCase(), x + width / 2, y + 4.2, { align: 'center' });
+
+  const dateColumnWidth = 15;
+  const dayColumnWidth = 12;
+  const serviceWidth = (width - dateColumnWidth - dayColumnWidth) / serviceColumns.length;
+  const rowHeight = Math.max(4.2, Math.min(5.2, bodyHeight / Math.max(rowCount, 1)));
+
+  doc.setFillColor(...COLORS.tableHeaderBg);
+  doc.rect(x, tableTop, width, tableHeaderHeight, 'F');
+  doc.setTextColor(...COLORS.tableHeaderText);
+  doc.setFontSize(6.5);
+
+  let columnX = x;
+  const headerY = tableTop + 3.3;
+  drawCenteredCellText(doc, 'Data', columnX, headerY, dateColumnWidth, 6.3);
+  columnX += dateColumnWidth;
+
+  serviceColumns.forEach((serviceId) => {
+    drawCenteredCellText(
+      doc,
+      getServiceHeaderLabel(serviceId),
+      columnX,
+      headerY,
+      serviceWidth,
+      6.1
+    );
+    columnX += serviceWidth;
+  });
+
+  drawCenteredCellText(doc, 'Dia', columnX, headerY, dayColumnWidth, 6.3);
+
+  items.forEach((item, index) => {
+    const rowY = tableTop + tableHeaderHeight + index * rowHeight;
+    const textY = rowY + rowHeight / 2 + 1;
+
+    doc.setFillColor(...(index % 2 === 0 ? COLORS.rowEven : COLORS.rowOdd));
+    doc.rect(x, rowY, width, rowHeight, 'F');
+
+    doc.setDrawColor(...COLORS.border);
+    doc.setLineWidth(0.1);
+    doc.rect(x, rowY, width, rowHeight);
+
+    let rowColumnX = x;
+    doc.setTextColor(...COLORS.textPrimary);
+    doc.setFont(undefined, 'bold');
+    drawCenteredCellText(doc, item.date.slice(0, 5), rowColumnX, textY, dateColumnWidth, 6.1);
+    rowColumnX += dateColumnWidth;
+
+    serviceColumns.forEach((serviceId) => {
+      doc.setFont(undefined, 'normal');
+      drawCenteredCellText(
+        doc,
+        item.assignments?.[serviceId] || '—',
+        rowColumnX,
+        textY,
+        serviceWidth
+      );
+      rowColumnX += serviceWidth;
+    });
+
+    doc.setFont(undefined, 'bold');
+    drawCenteredCellText(
+      doc,
+      getShortDayName(item.dayName),
+      rowColumnX,
+      textY,
+      dayColumnWidth,
+      6.1
+    );
   });
 };
 
@@ -94,48 +176,46 @@ const drawDistributionSummary = (doc, items, x, y, width) => {
     return;
   }
 
-  doc.setFillColor(246, 248, 252);
-  doc.roundedRect(x, y, width, 23, 2, 2, 'F');
+  doc.setFillColor(...COLORS.summaryBg);
+  doc.rect(x, y, width, 19, 'F');
 
-  doc.setFontSize(9);
+  doc.setTextColor(...COLORS.textPrimary);
   doc.setFont(undefined, 'bold');
-  doc.setTextColor(...COLORS.monthText);
-  doc.text('Resumo do período', x + 3, y + 5);
+  doc.setFontSize(8.5);
+  doc.text('Resumo do período', x + 2, y + 4.2);
 
-  doc.setFontSize(7);
+  doc.setTextColor(...COLORS.textMuted);
   doc.setFont(undefined, 'normal');
-  doc.setTextColor(...COLORS.textLabel);
-  doc.text('Quantidade de vezes por organista.', x + 3, y + 9);
-
-  doc.setFontSize(7);
-  doc.setFont(undefined, 'bold');
-  doc.text('Nome', x + 3, y + 13);
+  doc.setFontSize(6.8);
+  doc.text('Quantidade de vezes por organista.', x + 2, y + 7.8);
 
   const columns = Math.min(4, Math.max(1, Math.ceil(items.length / 3)));
   const columnWidth = width / columns;
 
-  for (let columnIndex = 1; columnIndex <= columns; columnIndex += 1) {
-    doc.text('Qtd', x + columnIndex * columnWidth - 5, y + 13, { align: 'right' });
+  doc.setTextColor(...COLORS.textPrimary);
+  doc.setFont(undefined, 'bold');
+  doc.setFontSize(6.5);
+  for (let columnIndex = 0; columnIndex < columns; columnIndex += 1) {
+    const headerX = x + columnIndex * columnWidth;
+    doc.text('Nome', headerX + 2, y + 12);
+    doc.text('Qtd', headerX + columnWidth - 3, y + 12, { align: 'right' });
   }
 
-  doc.setFillColor(220, 226, 235);
-  doc.rect(x + 3, y + 14.5, width - 6, 0.4, 'F');
+  doc.setDrawColor(...COLORS.border);
+  doc.setLineWidth(0.1);
+  doc.line(x + 2, y + 13.2, x + width - 2, y + 13.2);
 
-  doc.setFontSize(7.5);
-  doc.setTextColor(...COLORS.textValue);
-
+  doc.setFontSize(6.7);
   items.forEach((item, index) => {
     const column = index % columns;
     const row = Math.floor(index / columns);
-    const lineX = x + column * columnWidth + 3;
-    const lineY = y + 18 + row * 3.6;
+    const lineX = x + column * columnWidth;
+    const lineY = y + 16.7 + row * 3.2;
 
-    doc.setFont(undefined, 'bold');
-    doc.text(item.name, lineX, lineY);
     doc.setFont(undefined, 'normal');
-    doc.text(String(item.count), x + (column + 1) * columnWidth - 5, lineY, {
-      align: 'right',
-    });
+    doc.text(item.name, lineX + 2, lineY);
+    doc.setFont(undefined, 'bold');
+    doc.text(String(item.count), lineX + columnWidth - 3, lineY, { align: 'right' });
   });
 };
 
@@ -146,6 +226,7 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
     }
 
     const validItems = scheduleData.filter((item) => hasValidAssignments(item.assignments));
+    const serviceColumns = getServiceColumns(validItems);
     const distributionSummary = buildOrganistDistributionSummary(validItems);
     const itemsByMonth = {};
 
@@ -180,52 +261,31 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
 
       const currentMonths = monthLabels.slice(startIndex, startIndex + monthsPerPage);
       const isLastPage = startIndex + monthsPerPage >= monthLabels.length;
-      const summaryHeight = isLastPage && distributionSummary.length > 0 ? 27 : 0;
-      const contentTop = margin + 15;
-      const contentBottom = pageHeight - margin - footerHeight - summaryHeight;
+      const summaryHeight = isLastPage && distributionSummary.length > 0 ? 21 : 0;
+      const contentTop = margin + 18;
+      const contentHeight = pageHeight - contentTop - margin - footerHeight - summaryHeight;
       const contentWidth = pageWidth - margin * 2;
-      const monthWidth = (contentWidth - gap * (currentMonths.length - 1)) / currentMonths.length;
+      const columns = currentMonths.length === 1 ? 1 : 2;
+      const rows = Math.ceil(currentMonths.length / columns);
+      const blockWidth = (contentWidth - gap * (columns - 1)) / columns;
+      const blockHeight = (contentHeight - gap * (rows - 1)) / rows;
 
-      currentMonths.forEach((monthLabel, monthIndex) => {
-        const monthX = margin + monthIndex * (monthWidth + gap);
-        let monthY = contentTop;
+      currentMonths.forEach((monthLabel, index) => {
+        const column = index % columns;
+        const row = Math.floor(index / columns);
+        const blockX = margin + column * (blockWidth + gap);
+        const blockY = contentTop + row * (blockHeight + gap);
 
-        doc.setFillColor(...COLORS.monthBg);
-        doc.roundedRect(monthX, monthY, monthWidth, 7, 2, 2, 'F');
-        doc.setFontSize(8.5);
-        doc.setFont(undefined, 'bold');
-        doc.setTextColor(...COLORS.monthText);
-        doc.text(monthLabel.toUpperCase(), monthX + monthWidth / 2, monthY + 4.8, {
-          align: 'center',
-        });
-
-        monthY += 9;
-
-        itemsByMonth[monthLabel].forEach((item) => {
-          const dateLine = `${getShortDayName(item.dayName)} ${item.date.slice(0, 5)}`;
-          const assignmentLines = getCompactAssignmentLines(item.assignments);
-          const rowHeight = 5 + assignmentLines.length * 3.2;
-
-          if (monthY + rowHeight > contentBottom) {
-            return;
-          }
-
-          doc.setDrawColor(...COLORS.cardBorder);
-          doc.setLineWidth(0.1);
-          doc.roundedRect(monthX, monthY, monthWidth, rowHeight, 1.5, 1.5);
-
-          doc.setFontSize(7);
-          doc.setFont(undefined, 'bold');
-          doc.setTextColor(...COLORS.textDate);
-          doc.text(dateLine, monthX + 2, monthY + 3.5);
-
-          doc.setFontSize(6.4);
-          doc.setFont(undefined, 'normal');
-          doc.setTextColor(...COLORS.textValue);
-          doc.text(assignmentLines, monthX + 2, monthY + 6.5);
-
-          monthY += rowHeight + 2;
-        });
+        drawMonthTable(
+          doc,
+          monthLabel,
+          itemsByMonth[monthLabel],
+          serviceColumns,
+          blockX,
+          blockY,
+          blockWidth,
+          blockHeight
+        );
       });
 
       if (isLastPage && distributionSummary.length > 0) {
@@ -233,7 +293,7 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
           doc,
           distributionSummary,
           margin,
-          pageHeight - margin - footerHeight - summaryHeight,
+          pageHeight - margin - footerHeight - summaryHeight + 1,
           pageWidth - margin * 2
         );
       }
