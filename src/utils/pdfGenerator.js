@@ -101,9 +101,8 @@ const drawMonthTable = (doc, monthLabel, items, serviceColumns, x, y, width, hei
   doc.setFontSize(8.5);
   doc.text(monthLabel.toUpperCase(), x + width / 2, y + 4.2, { align: 'center' });
 
-  const dateColumnWidth = 15;
-  const dayColumnWidth = 12;
-  const serviceWidth = (width - dateColumnWidth - dayColumnWidth) / serviceColumns.length;
+  const dateColumnWidth = 24;
+  const serviceWidth = (width - dateColumnWidth) / serviceColumns.length;
   const rowHeight = Math.max(4.2, Math.min(5.2, bodyHeight / Math.max(rowCount, 1)));
 
   doc.setFillColor(...COLORS.tableHeaderBg);
@@ -128,8 +127,6 @@ const drawMonthTable = (doc, monthLabel, items, serviceColumns, x, y, width, hei
     columnX += serviceWidth;
   });
 
-  drawCenteredCellText(doc, 'Dia', columnX, headerY, dayColumnWidth, 6.3);
-
   items.forEach((item, index) => {
     const rowY = tableTop + tableHeaderHeight + index * rowHeight;
     const textY = rowY + rowHeight / 2 + 1;
@@ -144,7 +141,14 @@ const drawMonthTable = (doc, monthLabel, items, serviceColumns, x, y, width, hei
     let rowColumnX = x;
     doc.setTextColor(...COLORS.textPrimary);
     doc.setFont(undefined, 'bold');
-    drawCenteredCellText(doc, item.date.slice(0, 5), rowColumnX, textY, dateColumnWidth, 6.1);
+    drawCenteredCellText(
+      doc,
+      `${getShortDayName(item.dayName)} ${item.date.slice(0, 5)}`,
+      rowColumnX,
+      textY,
+      dateColumnWidth,
+      6.1
+    );
     rowColumnX += dateColumnWidth;
 
     serviceColumns.forEach((serviceId) => {
@@ -158,16 +162,6 @@ const drawMonthTable = (doc, monthLabel, items, serviceColumns, x, y, width, hei
       );
       rowColumnX += serviceWidth;
     });
-
-    doc.setFont(undefined, 'bold');
-    drawCenteredCellText(
-      doc,
-      getShortDayName(item.dayName),
-      rowColumnX,
-      textY,
-      dayColumnWidth,
-      6.1
-    );
   });
 };
 
