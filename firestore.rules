@@ -58,10 +58,11 @@ service cloud.firestore {
     function isValidServiceList(services) {
       return services is list
         && services.size() >= 1
-        && services.size() <= 3
+        && services.size() <= 4
         && isValidService(services[0])
         && (services.size() < 2 || isValidService(services[1]))
-        && (services.size() < 3 || isValidService(services[2]));
+        && (services.size() < 3 || isValidService(services[2]))
+        && (services.size() < 4 || isValidService(services[3]));
     }
 
     function isValidChurchConfig(config) {
