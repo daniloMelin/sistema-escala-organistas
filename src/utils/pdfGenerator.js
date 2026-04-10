@@ -172,13 +172,13 @@ const drawMonthCalendar = (doc, month, x, y, width, height) => {
   }
 };
 
-const drawDistributionSummary = (doc, items, x, y, width) => {
+const drawDistributionSummary = (doc, items, x, y, width, height) => {
   if (items.length === 0) {
     return;
   }
 
   doc.setFillColor(...COLORS.summaryBg);
-  doc.rect(x, y, width, 19, 'F');
+  doc.rect(x, y, width, height, 'F');
 
   doc.setTextColor(...COLORS.textPrimary);
   doc.setFont(undefined, 'bold');
@@ -190,18 +190,13 @@ const drawDistributionSummary = (doc, items, x, y, width) => {
   doc.setTextColor(...COLORS.textMuted);
   doc.text('Quantidade de vezes por organista.', x + 2, y + 7.6);
 
-  const columns = Math.min(4, Math.max(1, Math.ceil(items.length / 3)));
-  const columnWidth = width / columns;
+  const columnWidth = width;
 
   doc.setTextColor(...COLORS.textPrimary);
   doc.setFont(undefined, 'bold');
   doc.setFontSize(6.3);
-
-  for (let columnIndex = 0; columnIndex < columns; columnIndex += 1) {
-    const headerX = x + columnIndex * columnWidth;
-    doc.text('Nome', headerX + 2, y + 11.8);
-    doc.text('Qtd', headerX + columnWidth - 3, y + 11.8, { align: 'right' });
-  }
+  doc.text('Nome', x + 2, y + 11.8);
+  doc.text('Qtd', x + columnWidth - 3, y + 11.8, { align: 'right' });
 
   doc.setDrawColor(...COLORS.cellBorder);
   doc.setLineWidth(0.1);
@@ -209,15 +204,12 @@ const drawDistributionSummary = (doc, items, x, y, width) => {
 
   doc.setFontSize(6.5);
   items.forEach((item, index) => {
-    const column = index % columns;
-    const row = Math.floor(index / columns);
-    const lineX = x + column * columnWidth;
-    const lineY = y + 16.3 + row * 3.1;
+    const lineY = y + 16.3 + index * 3.4;
 
     doc.setFont(undefined, 'normal');
-    doc.text(item.name, lineX + 2, lineY);
+    doc.text(item.name, x + 2, lineY);
     doc.setFont(undefined, 'bold');
-    doc.text(String(item.count), lineX + columnWidth - 3, lineY, { align: 'right' });
+    doc.text(String(item.count), x + columnWidth - 3, lineY, { align: 'right' });
   });
 };
 
@@ -253,12 +245,12 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
 
       const currentMonths = months.slice(startIndex, startIndex + monthsPerPage);
       const isLastPage = startIndex + monthsPerPage >= months.length;
-      const summaryHeight = isLastPage && distributionSummary.length > 0 ? 21 : 0;
+      const summaryWidth = isLastPage && distributionSummary.length > 0 ? 42 : 0;
       const contentTop = margin + 18;
-      const availableHeight = pageHeight - contentTop - margin - footerHeight - summaryHeight;
+      const availableHeight = pageHeight - contentTop - margin - footerHeight;
       const monthHeight =
         (availableHeight - gap * (currentMonths.length - 1)) / currentMonths.length;
-      const monthWidth = pageWidth - margin * 2;
+      const monthWidth = pageWidth - margin * 2 - summaryWidth - (summaryWidth > 0 ? gap : 0);
 
       currentMonths.forEach((month, index) => {
         const monthY = contentTop + index * (monthHeight + gap);
@@ -269,9 +261,10 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
         drawDistributionSummary(
           doc,
           distributionSummary,
-          margin,
-          pageHeight - margin - footerHeight - summaryHeight + 1,
-          pageWidth - margin * 2
+          margin + monthWidth + gap,
+          contentTop,
+          summaryWidth,
+          availableHeight
         );
       }
     }
