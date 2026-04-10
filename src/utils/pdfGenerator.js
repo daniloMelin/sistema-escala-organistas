@@ -30,6 +30,12 @@ const SERVICE_SHORT_LABELS = {
   Reserva: 'Res.',
 };
 
+const DAY_NUMBER_HEIGHT = 4;
+const LINE_HEIGHT_MM = 3.2;
+const CELL_PADDING = 2;
+const MAX_ASSIGNMENTS_PER_DAY = 3;
+const MIN_CELL_HEIGHT = DAY_NUMBER_HEIGHT + MAX_ASSIGNMENTS_PER_DAY * LINE_HEIGHT_MM + CELL_PADDING;
+
 const hasValidAssignments = (assignments) => {
   if (!assignments || Object.keys(assignments).length === 0) {
     return false;
@@ -43,6 +49,9 @@ const parseScheduleDate = (date) => {
   return new Date(year, month - 1, day);
 };
 
+const truncateName = (name, maxLength = 10) =>
+  name && name.length > maxLength ? `${name.slice(0, maxLength - 1)}.` : name;
+
 const getRenderableAssignments = (assignments) =>
   Object.entries(assignments || {})
     .filter(([, value]) => value && value !== 'VAGO')
@@ -52,7 +61,7 @@ const getRenderableAssignments = (assignments) =>
     )
     .map(
       ([serviceId, assignedName]) =>
-        `${SERVICE_SHORT_LABELS[serviceId] || serviceId} ${assignedName}`
+        `${SERVICE_SHORT_LABELS[serviceId] || serviceId} ${truncateName(assignedName)}`
     );
 
 const buildMonths = (scheduleData) => {
@@ -89,6 +98,44 @@ const drawCenteredText = (doc, text, x, y, width, fontSize = 6.3) => {
   doc.text(text, x + width / 2, y, { align: 'center' });
 };
 
+const getMaxAssignmentsInMonth = (month) =>
+  Math.max(
+    1,
+    ...Object.values(month.itemsByDay).map(
+      (item) => getRenderableAssignments(item?.assignments).length
+    )
+  );
+
+const calcCellHeightForMonth = (month) => {
+  const maxLines = Math.min(MAX_ASSIGNMENTS_PER_DAY, getMaxAssignmentsInMonth(month));
+  return Math.max(MIN_CELL_HEIGHT, DAY_NUMBER_HEIGHT + maxLines * LINE_HEIGHT_MM + CELL_PADDING);
+};
+
+const calcMonthsPerPage = (pageHeight, margin, headerHeight, footerHeight, gap, months) => {
+  const available = pageHeight - margin * 2 - headerHeight - footerHeight;
+  const minMonthHeight =
+    6 * Math.max(...months.map((month) => calcCellHeightForMonth(month))) + 6 + 5;
+
+  return Math.max(1, Math.floor((available + gap) / (minMonthHeight + gap)));
+};
+
+const drawAssignmentLines = (doc, lines, cellX, cellY, cellWidth, cellHeight) => {
+  const visibleLines = lines.slice(0, MAX_ASSIGNMENTS_PER_DAY);
+  const availableHeight = cellHeight - DAY_NUMBER_HEIGHT - CELL_PADDING;
+  const fontSize = Math.max(3.5, Math.min(4.6, availableHeight / visibleLines.length - 0.4));
+  const lineSpacing = availableHeight / visibleLines.length;
+
+  doc.setFont(undefined, 'normal');
+  doc.setFontSize(fontSize);
+  visibleLines.forEach((line, index) => {
+    doc.text(
+      line,
+      cellX + 1.2,
+      cellY + DAY_NUMBER_HEIGHT + lineSpacing * index + lineSpacing * 0.7
+    );
+  });
+};
+
 const drawHeader = (doc, pageWidth, margin, churchName, startDate, endDate) => {
   doc.setFillColor(...COLORS.titleBg);
   doc.rect(margin, margin, pageWidth - margin * 2, 15, 'F');
@@ -114,7 +161,11 @@ const drawMonthCalendar = (doc, month, x, y, width, height) => {
   const monthHeaderHeight = 6;
   const weekdayHeaderHeight = 5;
   const cellTop = y + monthHeaderHeight + weekdayHeaderHeight;
-  const cellHeight = (height - monthHeaderHeight - weekdayHeaderHeight) / 6;
+  const idealCellHeight = calcCellHeightForMonth(month);
+  const cellHeight = Math.max(
+    (height - monthHeaderHeight - weekdayHeaderHeight) / 6,
+    idealCellHeight
+  );
   const cellWidth = width / 7;
   const firstDay = new Date(month.year, month.monthIndex, 1).getDay();
   const daysInMonth = new Date(month.year, month.monthIndex + 1, 0).getDate();
@@ -162,13 +213,8 @@ const drawMonthCalendar = (doc, month, x, y, width, height) => {
       continue;
     }
 
-    const lines = getRenderableAssignments(item.assignments).slice(0, 3);
-
-    doc.setFont(undefined, 'normal');
-    doc.setFontSize(4.6);
-    lines.forEach((line, lineIndex) => {
-      doc.text(line, cellX + 1.2, cellY + 7 + lineIndex * 3.2);
-    });
+    const lines = getRenderableAssignments(item.assignments);
+    drawAssignmentLines(doc, lines, cellX, cellY, cellWidth, cellHeight);
   }
 };
 
@@ -234,7 +280,15 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
     const margin = 8;
     const gap = 4;
     const footerHeight = 6;
-    const monthsPerPage = 3;
+    const headerHeight = 18;
+    const monthsPerPage = calcMonthsPerPage(
+      pageHeight,
+      margin,
+      headerHeight,
+      footerHeight,
+      gap,
+      months
+    );
 
     for (let startIndex = 0; startIndex < months.length; startIndex += monthsPerPage) {
       if (startIndex > 0) {
@@ -246,7 +300,7 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
       const currentMonths = months.slice(startIndex, startIndex + monthsPerPage);
       const isLastPage = startIndex + monthsPerPage >= months.length;
       const summaryWidth = isLastPage && distributionSummary.length > 0 ? 42 : 0;
-      const contentTop = margin + 18;
+      const contentTop = margin + headerHeight;
       const availableHeight = pageHeight - contentTop - margin - footerHeight;
       const monthHeight =
         (availableHeight - gap * (currentMonths.length - 1)) / currentMonths.length;
