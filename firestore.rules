@@ -49,9 +49,7 @@ service cloud.firestore {
         && svc.label is string
         && svc.label.size() > 0
         && svc.label.size() <= 40
-        && svc.needs is int
-        && svc.needs >= 1
-        && svc.needs <= 2;
+        && svc.needs in [1, 2];
     }
 
     // Regras não suportam iteração arbitrária; limitamos cardinalidade e validamos índices possíveis.
@@ -155,7 +153,6 @@ service cloud.firestore {
         && data.data.size() >= 1
         && data.data.size() <= 500
         && ('organistCount' in data)
-        && data.organistCount is int
         && data.organistCount >= 1
         && data.organistCount <= 100;
     }

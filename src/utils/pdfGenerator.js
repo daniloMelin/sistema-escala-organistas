@@ -40,7 +40,7 @@ const DAY_SHORT_LABELS = {
 };
 
 const MONTHS_PER_PAGE = 3;
-const ROWS_PER_MONTH = 14;
+const ROWS_PER_MONTH = 15;
 
 const hasValidAssignments = (assignments) => {
   if (!assignments || Object.keys(assignments).length === 0) {
@@ -144,22 +144,22 @@ const drawHeader = (doc, pageWidth, margin, churchName, startDate, endDate) => {
 };
 
 const drawMonthTable = (doc, month, serviceIds, x, y, width, height) => {
-  const monthHeaderHeight = 7;
-  const tableHeaderHeight = 6;
+  const monthHeaderHeight = 6.2;
+  const tableHeaderHeight = 5.4;
   const bodyRows = Math.max(ROWS_PER_MONTH, month.items.length);
   const bodyHeight = height - monthHeaderHeight - tableHeaderHeight;
   const rowHeight = bodyHeight / bodyRows;
 
-  const dateWidth = 18;
+  const dateWidth = 16;
   const serviceAreaWidth = width - dateWidth;
   const serviceWidth = serviceAreaWidth / Math.max(serviceIds.length, 1);
 
   doc.setFillColor(...COLORS.monthBg);
-  doc.roundedRect(x, y, width, monthHeaderHeight, 2, 2, 'F');
+  doc.rect(x, y, width, monthHeaderHeight, 'F');
   doc.setTextColor(...COLORS.monthText);
   doc.setFont(undefined, 'bold');
-  doc.setFontSize(8.5);
-  doc.text(month.label.toUpperCase(), x + width / 2, y + 4.7, { align: 'center' });
+  doc.setFontSize(7.8);
+  doc.text(month.label.toUpperCase(), x + width / 2, y + 4.15, { align: 'center' });
 
   const headerY = y + monthHeaderHeight;
   doc.setDrawColor(...COLORS.border);
@@ -169,12 +169,12 @@ const drawMonthTable = (doc, month, serviceIds, x, y, width, height) => {
   doc.rect(x, headerY, width, tableHeaderHeight, 'F');
   doc.setTextColor(...COLORS.headerText);
   doc.setFont(undefined, 'bold');
-  doc.setFontSize(5.6);
-  doc.text('Data', x + dateWidth / 2, headerY + 4, { align: 'center' });
+  doc.setFontSize(5.8);
+  doc.text('Data', x + dateWidth / 2, headerY + 3.7, { align: 'center' });
 
   serviceIds.forEach((serviceId, index) => {
     const cellX = x + dateWidth + index * serviceWidth;
-    doc.text(getServiceLabel(serviceId), cellX + serviceWidth / 2, headerY + 4, {
+    doc.text(getServiceLabel(serviceId), cellX + serviceWidth / 2, headerY + 3.7, {
       align: 'center',
     });
   });
@@ -197,8 +197,8 @@ const drawMonthTable = (doc, month, serviceIds, x, y, width, height) => {
 
     doc.setTextColor(...COLORS.textPrimary);
     doc.setFont(undefined, 'bold');
-    doc.setFontSize(5.3);
-    doc.text(getDayDateLabel(item), x + 1.4, rowY + rowHeight * 0.68);
+    doc.setFontSize(5.7);
+    doc.text(getDayDateLabel(item), x + 1.2, rowY + rowHeight * 0.64);
 
     serviceIds.forEach((serviceId, index) => {
       const cellX = x + dateWidth + index * serviceWidth;
@@ -206,8 +206,8 @@ const drawMonthTable = (doc, month, serviceIds, x, y, width, height) => {
       const text = assignedName && assignedName !== 'VAGO' ? truncateName(assignedName, 10) : '—';
 
       doc.setFont(undefined, assignedName && assignedName !== 'VAGO' ? 'normal' : 'normal');
-      doc.setFontSize(5.1);
-      doc.text(text, cellX + serviceWidth / 2, rowY + rowHeight * 0.68, { align: 'center' });
+      doc.setFontSize(5.5);
+      doc.text(text, cellX + serviceWidth / 2, rowY + rowHeight * 0.64, { align: 'center' });
     });
   });
 
