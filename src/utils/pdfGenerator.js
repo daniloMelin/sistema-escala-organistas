@@ -162,6 +162,9 @@ const drawMonthTable = (doc, month, serviceIds, x, y, width, height) => {
   doc.text(month.label.toUpperCase(), x + width / 2, y + 4.7, { align: 'center' });
 
   const headerY = y + monthHeaderHeight;
+  doc.setDrawColor(...COLORS.border);
+  doc.setLineWidth(0.1);
+
   doc.setFillColor(...COLORS.headerBg);
   doc.rect(x, headerY, width, tableHeaderHeight, 'F');
   doc.setTextColor(...COLORS.headerText);
@@ -178,7 +181,6 @@ const drawMonthTable = (doc, month, serviceIds, x, y, width, height) => {
 
   doc.setDrawColor(...COLORS.border);
   doc.setLineWidth(0.1);
-  doc.roundedRect(x, headerY, width, tableHeaderHeight + bodyHeight, 2, 2, 'S');
   doc.line(x + dateWidth, headerY, x + dateWidth, headerY + tableHeaderHeight + bodyHeight);
   serviceIds.forEach((_, index) => {
     const lineX = x + dateWidth + (index + 1) * serviceWidth;
@@ -213,6 +215,8 @@ const drawMonthTable = (doc, month, serviceIds, x, y, width, height) => {
     const lineY = headerY + tableHeaderHeight + rowIndex * rowHeight;
     doc.line(x, lineY, x + width, lineY);
   }
+
+  doc.rect(x, headerY, width, tableHeaderHeight + bodyHeight);
 };
 
 const drawDistributionSummary = (doc, items, x, y, width, height) => {
