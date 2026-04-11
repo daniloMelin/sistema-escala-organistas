@@ -222,19 +222,21 @@ const drawDistributionSummary = (doc, items, x, y, width, height) => {
   }
 
   doc.setFillColor(...COLORS.summaryBg);
-  doc.rect(x, y, width, height, 'F');
+  doc.setDrawColor(...COLORS.border);
+  doc.setLineWidth(0.2);
+  doc.roundedRect(x, y, width, height, 2.5, 2.5, 'FD');
 
   doc.setTextColor(...COLORS.textPrimary);
   doc.setFont(undefined, 'bold');
-  doc.setFontSize(8);
+  doc.setFontSize(7.8);
   doc.text('Resumo do período', x + 3, y + 5);
 
   doc.setFont(undefined, 'normal');
-  doc.setFontSize(6.2);
+  doc.setFontSize(5.8);
   doc.setTextColor(...COLORS.textMuted);
-  doc.text('Quantidade de vezes por organista no período.', x + 3, y + 9.3);
+  doc.text('Quantidade de vezes por organista.', x + 3, y + 8.7);
 
-  const cols = 3;
+  const cols = width >= 48 ? 2 : 1;
   const colWidth = width / cols;
   const rowsPerCol = Math.ceil(items.length / cols);
 
@@ -242,11 +244,11 @@ const drawDistributionSummary = (doc, items, x, y, width, height) => {
     const col = Math.floor(index / rowsPerCol);
     const row = index % rowsPerCol;
     const itemX = x + col * colWidth + 3;
-    const lineY = y + 14 + row * 4.1;
+    const lineY = y + 13 + row * 3.8;
 
     doc.setTextColor(...COLORS.textPrimary);
     doc.setFont(undefined, 'normal');
-    doc.setFontSize(6.2);
+    doc.setFontSize(5.9);
     doc.text(truncateName(item.name, 13), itemX, lineY);
 
     doc.setFont(undefined, 'bold');
@@ -277,15 +279,9 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
     const gap = 4;
     const headerHeight = 18;
     const footerHeight = 6;
-    const summaryHeight = distributionSummary.length > 0 ? 28 : 0;
+    const summaryWidth = distributionSummary.length > 0 ? 44 : 0;
     const contentTop = margin + headerHeight;
-    const availableHeight =
-      pageHeight -
-      contentTop -
-      margin -
-      footerHeight -
-      (summaryHeight > 0 ? summaryHeight + gap : 0);
-    const monthWidth = (pageWidth - margin * 2 - gap * (MONTHS_PER_PAGE - 1)) / MONTHS_PER_PAGE;
+    const availableHeight = pageHeight - contentTop - margin - footerHeight;
 
     for (let startIndex = 0; startIndex < months.length; startIndex += MONTHS_PER_PAGE) {
       if (startIndex > 0) {
@@ -295,20 +291,25 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
       drawHeader(doc, pageWidth, margin, churchName, startDate, endDate);
 
       const currentMonths = months.slice(startIndex, startIndex + MONTHS_PER_PAGE);
+      const isLastPage = startIndex + MONTHS_PER_PAGE >= months.length;
+      const pageSummaryWidth = isLastPage ? summaryWidth : 0;
+      const monthAreaWidth =
+        pageWidth - margin * 2 - pageSummaryWidth - (pageSummaryWidth > 0 ? gap : 0);
+      const monthWidth = (monthAreaWidth - gap * (MONTHS_PER_PAGE - 1)) / MONTHS_PER_PAGE;
 
       currentMonths.forEach((month, index) => {
         const monthX = margin + index * (monthWidth + gap);
         drawMonthTable(doc, month, serviceIds, monthX, contentTop, monthWidth, availableHeight);
       });
 
-      if (distributionSummary.length > 0) {
+      if (isLastPage && distributionSummary.length > 0) {
         drawDistributionSummary(
           doc,
           distributionSummary,
-          margin,
-          contentTop + availableHeight + gap,
-          pageWidth - margin * 2,
-          summaryHeight
+          margin + monthAreaWidth + gap,
+          contentTop,
+          pageSummaryWidth,
+          availableHeight
         );
       }
     }

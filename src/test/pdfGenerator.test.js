@@ -87,6 +87,7 @@ describe('exportScheduleToPDF', () => {
         format: 'a4',
       })
     );
+    expect(mockDoc.roundedRect).toHaveBeenCalled();
     expect(mockDoc.save).toHaveBeenCalled();
   });
 });
