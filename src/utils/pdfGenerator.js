@@ -124,7 +124,7 @@ const buildMonths = (scheduleData) => {
 
 const drawHeader = (doc, pageWidth, margin, churchName, startDate, endDate) => {
   doc.setFillColor(...COLORS.titleBg);
-  doc.rect(margin, margin, pageWidth - margin * 2, 14, 'F');
+  doc.roundedRect(margin, margin, pageWidth - margin * 2, 14, 2.8, 2.8, 'F');
 
   doc.setTextColor(...COLORS.titleText);
   doc.setFont(undefined, 'bold');
@@ -155,7 +155,7 @@ const drawMonthTable = (doc, month, serviceIds, x, y, width, height) => {
   const serviceWidth = serviceAreaWidth / Math.max(serviceIds.length, 1);
 
   doc.setFillColor(...COLORS.monthBg);
-  doc.rect(x, y, width, monthHeaderHeight, 'F');
+  doc.roundedRect(x, y, width, monthHeaderHeight, 2, 2, 'F');
   doc.setTextColor(...COLORS.monthText);
   doc.setFont(undefined, 'bold');
   doc.setFontSize(8.5);
@@ -178,6 +178,7 @@ const drawMonthTable = (doc, month, serviceIds, x, y, width, height) => {
 
   doc.setDrawColor(...COLORS.border);
   doc.setLineWidth(0.1);
+  doc.roundedRect(x, headerY, width, tableHeaderHeight + bodyHeight, 2, 2, 'S');
   doc.line(x + dateWidth, headerY, x + dateWidth, headerY + tableHeaderHeight + bodyHeight);
   serviceIds.forEach((_, index) => {
     const lineX = x + dateWidth + (index + 1) * serviceWidth;
@@ -212,8 +213,6 @@ const drawMonthTable = (doc, month, serviceIds, x, y, width, height) => {
     const lineY = headerY + tableHeaderHeight + rowIndex * rowHeight;
     doc.line(x, lineY, x + width, lineY);
   }
-
-  doc.rect(x, headerY, width, tableHeaderHeight + bodyHeight);
 };
 
 const drawDistributionSummary = (doc, items, x, y, width, height) => {
