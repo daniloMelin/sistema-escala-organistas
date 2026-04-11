@@ -55,7 +55,7 @@ describe('exportScheduleToPDF', () => {
     mockDoc.internal.getNumberOfPages.mockReturnValue(1);
   });
 
-  test('exporta resumo por organista em layout de calendario A4 retrato', () => {
+  test('exporta resumo por organista em layout tabular A4 paisagem', () => {
     exportScheduleToPDF(
       [
         {
@@ -78,11 +78,11 @@ describe('exportScheduleToPDF', () => {
     const renderedLabels = mockDoc.text.mock.calls.map(([text]) => text);
 
     expect(renderedLabels).toEqual(
-      expect.arrayContaining(['Igreja PDF', 'Resumo do período', 'Dom', 'Seg', 'Ana'])
+      expect.arrayContaining(['Igreja PDF', 'Resumo do período', 'Data', 'M. Hora', 'Ana'])
     );
     expect(mockJsPDFConstructor).toHaveBeenCalledWith(
       expect.objectContaining({
-        orientation: 'portrait',
+        orientation: 'landscape',
         unit: 'mm',
         format: 'a4',
       })
