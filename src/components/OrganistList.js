@@ -21,25 +21,22 @@ const OrganistList = ({
           {organists.map((org) => (
             <li key={org.id} className="organist-list__item">
               <div className="organist-list__header">
-                <div>
-                  <strong className="organist-list__name">{org.name}</strong>
-                </div>
-
-                <div className="actions-row">
-                  <Button onClick={() => onStartEdit(org)} variant="warning" size="sm">
-                    Editar
-                  </Button>
-                  <Button
-                    onClick={() => onRequestDeleteOrganist(org.id, org.name)}
-                    variant="danger"
-                    size="sm"
-                  >
-                    Excluir
-                  </Button>
-                </div>
+                <strong className="organist-list__name">{org.name}</strong>
               </div>
-              <div className="muted-text muted-text--sm">
+              <div className="muted-text muted-text--sm organist-list__availability">
                 <strong>Disponivel: </strong> {formatOrganistAvailability(org.availability)}
+              </div>
+              <div className="actions-row organist-list__actions">
+                <Button onClick={() => onStartEdit(org)} variant="warning" size="sm">
+                  Editar
+                </Button>
+                <Button
+                  onClick={() => onRequestDeleteOrganist(org.id, org.name)}
+                  variant="danger"
+                  size="sm"
+                >
+                  Excluir
+                </Button>
               </div>
             </li>
           ))}

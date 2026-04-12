@@ -177,6 +177,7 @@
 .actions-row {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .muted-text {
@@ -186,4 +187,40 @@
 .muted-text--sm {
   font-size: 0.9em;
   color: var(--app-muted);
+}
+
+@media (max-width: 640px) {
+  .app-nav {
+    padding: 12px 14px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .app-nav-user {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .app-main {
+    padding: 0 10px;
+  }
+
+  .page-container {
+    padding: 14px;
+  }
+
+  .dashboard-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .actions-row {
+    width: 100%;
+  }
+
+  .actions-row .btn {
+    flex: 1 1 0;
+    min-width: 0;
+  }
 }
