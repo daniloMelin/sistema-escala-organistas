@@ -113,6 +113,17 @@ export const validateDateRange = (startDate, endDate) => {
     return { isValid: false, error: 'Período não pode exceder 1 ano.' };
   }
 
+  const calendarMonthSpan =
+    (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth()) + 1;
+
+  if (calendarMonthSpan > 3) {
+    return {
+      isValid: false,
+      error:
+        'A escala deve ficar dentro de até 3 meses. Ajuste a data final para não entrar no 4º mês.',
+    };
+  }
+
   return { isValid: true };
 };
 

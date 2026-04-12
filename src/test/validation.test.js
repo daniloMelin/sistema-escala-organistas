@@ -89,6 +89,14 @@ describe('validation utils', () => {
         isValid: true,
       });
     });
+
+    test('rejeita periodo que entra no quarto mes mesmo por um dia', () => {
+      expect(validateDateRange('2026-04-01', '2026-07-01')).toEqual({
+        isValid: false,
+        error:
+          'A escala deve ficar dentro de até 3 meses. Ajuste a data final para não entrar no 4º mês.',
+      });
+    });
   });
 
   describe('sanitizeString', () => {
