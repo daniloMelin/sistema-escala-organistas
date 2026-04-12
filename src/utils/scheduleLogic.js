@@ -140,18 +140,36 @@ export const getServiceSortPriority = (serviceId) => SERVICE_PRIORITY[serviceId]
 const getRoleCountForCulto = (stats, cultoId) => {
   if (cultoId === 'MeiaHoraCulto') return stats.meiaHora || 0;
   if (cultoId === 'Culto') return stats.culto || 0;
+  if (cultoId === 'Parte1') return stats.parte1 || 0;
+  if (cultoId === 'Parte2') return stats.parte2 || 0;
+  if (cultoId === 'Reserva') return stats.reserva || 0;
   return stats.total || 0;
 };
+
+const createEmptyStats = () => ({
+  meiaHora: 0,
+  culto: 0,
+  parte1: 0,
+  parte2: 0,
+  reserva: 0,
+  total: 0,
+});
 
 const incrementStatsForCulto = (stats, cultoId) => {
   const next = {
     meiaHora: stats.meiaHora || 0,
     culto: stats.culto || 0,
+    parte1: stats.parte1 || 0,
+    parte2: stats.parte2 || 0,
+    reserva: stats.reserva || 0,
     total: (stats.total || 0) + 1,
   };
 
   if (cultoId === 'MeiaHoraCulto') next.meiaHora += 1;
   if (cultoId === 'Culto') next.culto += 1;
+  if (cultoId === 'Parte1') next.parte1 += 1;
+  if (cultoId === 'Parte2') next.parte2 += 1;
+  if (cultoId === 'Reserva') next.reserva += 1;
 
   return next;
 };
@@ -191,7 +209,9 @@ const buildPeriodDates = (parsedStart, parsedEnd, churchConfig) => {
 const initializeAllocationState = (organists, periodDates) => {
   const organistStats = {};
   organists.forEach((org) => {
-    organistStats[org.id] = org.stats ? { ...org.stats } : { meiaHora: 0, culto: 0, total: 0 };
+    organistStats[org.id] = org.stats
+      ? { ...createEmptyStats(), ...org.stats }
+      : createEmptyStats();
   });
 
   const assignedDates = {};
@@ -210,6 +230,167 @@ const initializeAllocationState = (organists, periodDates) => {
   return { organistStats, assignedDates, lastAssignedRoleByDayKey, schedule };
 };
 
+const assignSingleCulto = ({
+  organists,
+  availabilityScores,
+  dayOfWeek,
+  dayKey,
+  dateStr,
+  culto,
+  currentDayAssignments,
+  assignedDates,
+  lastAssignedRoleByDayKey,
+  organistStats,
+  churchConfig,
+}) => {
+  if (currentDayAssignments[culto.id]) return false;
+
+  const candidates = organists
+    .filter((organist) => {
+      if (assignedDates[organist.id].has(dateStr)) return false;
+      return canOrganistPlayOnDay(organist, dayOfWeek, dayKey, culto.id, churchConfig);
+    })
+    .sort((a, b) => {
+      const statsA = organistStats[a.id] || createEmptyStats();
+      const statsB = organistStats[b.id] || createEmptyStats();
+
+      const scarcityDiff = (availabilityScores[a.id] || 0) - (availabilityScores[b.id] || 0);
+      if (culto.id === 'RJM' && scarcityDiff !== 0) return scarcityDiff;
+
+      const repeatPenaltyDiff =
+        getRepeatedRolePenalty(lastAssignedRoleByDayKey, a.id, dayKey, culto.id) -
+        getRepeatedRolePenalty(lastAssignedRoleByDayKey, b.id, dayKey, culto.id);
+      if (repeatPenaltyDiff !== 0) return repeatPenaltyDiff;
+
+      const roleDiff =
+        getRoleCountForCulto(statsA, culto.id) - getRoleCountForCulto(statsB, culto.id);
+      if (roleDiff !== 0) return roleDiff;
+
+      const totalDiff = (statsA.total || 0) - (statsB.total || 0);
+      if (totalDiff !== 0) return totalDiff;
+
+      if (scarcityDiff !== 0) return scarcityDiff;
+
+      return (a.name || '').localeCompare(b.name || '');
+    });
+
+  const selected = candidates[0];
+  if (!selected) return false;
+
+  currentDayAssignments[culto.id] = selected.name;
+  assignedDates[selected.id].add(dateStr);
+
+  const currentStats =
+    organistStats[selected.id] ||
+    (selected.stats ? { ...createEmptyStats(), ...selected.stats } : createEmptyStats());
+  organistStats[selected.id] = incrementStatsForCulto(currentStats, culto.id);
+  lastAssignedRoleByDayKey[selected.id][dayKey] = culto.id;
+
+  return true;
+};
+
+const assignThreeSlotTeam = ({
+  organists,
+  availabilityScores,
+  dayOfWeek,
+  dayKey,
+  dateStr,
+  currentDayAssignments,
+  assignedDates,
+  lastAssignedRoleByDayKey,
+  organistStats,
+  churchConfig,
+}) => {
+  const roles = ['MeiaHoraCulto', 'Parte1', 'Parte2'];
+  if (roles.some((roleId) => currentDayAssignments[roleId])) return false;
+
+  const roleCandidates = Object.fromEntries(
+    roles.map((roleId) => [
+      roleId,
+      organists.filter((organist) => {
+        if (assignedDates[organist.id].has(dateStr)) return false;
+        return canOrganistPlayOnDay(organist, dayOfWeek, dayKey, roleId, churchConfig);
+      }),
+    ])
+  );
+
+  if (roles.some((roleId) => roleCandidates[roleId].length === 0)) return false;
+
+  let bestTeam = null;
+
+  roleCandidates.MeiaHoraCulto.forEach((meiaHoraOrganist) => {
+    roleCandidates.Parte1.forEach((parte1Organist) => {
+      if (parte1Organist.id === meiaHoraOrganist.id) return;
+
+      roleCandidates.Parte2.forEach((parte2Organist) => {
+        if (parte2Organist.id === meiaHoraOrganist.id || parte2Organist.id === parte1Organist.id) {
+          return;
+        }
+
+        const team = [
+          { organist: meiaHoraOrganist, cultoId: 'MeiaHoraCulto' },
+          { organist: parte1Organist, cultoId: 'Parte1' },
+          { organist: parte2Organist, cultoId: 'Parte2' },
+        ];
+
+        const teamStats = team.map(({ organist, cultoId }) => {
+          const stats = organistStats[organist.id] || createEmptyStats();
+          return {
+            repeatPenalty: getRepeatedRolePenalty(
+              lastAssignedRoleByDayKey,
+              organist.id,
+              dayKey,
+              cultoId
+            ),
+            roleCount: getRoleCountForCulto(stats, cultoId),
+            total: stats.total || 0,
+            scarcity: availabilityScores[organist.id] || 0,
+          };
+        });
+
+        const teamScore = [
+          teamStats.reduce((sum, item) => sum + item.repeatPenalty, 0),
+          Math.max(...teamStats.map((item) => item.total)),
+          teamStats.reduce((sum, item) => sum + item.total, 0),
+          Math.max(...teamStats.map((item) => item.roleCount)),
+          teamStats.reduce((sum, item) => sum + item.roleCount, 0),
+          teamStats.reduce((sum, item) => sum + item.scarcity, 0),
+          meiaHoraOrganist.name || '',
+          parte1Organist.name || '',
+          parte2Organist.name || '',
+        ];
+
+        if (!bestTeam || compareScoreTuples(teamScore, bestTeam.score) < 0) {
+          bestTeam = {
+            assignments: {
+              MeiaHoraCulto: meiaHoraOrganist,
+              Parte1: parte1Organist,
+              Parte2: parte2Organist,
+            },
+            score: teamScore,
+          };
+        }
+      });
+    });
+  });
+
+  if (!bestTeam) return false;
+
+  roles.forEach((roleId) => {
+    const selected = bestTeam.assignments[roleId];
+    currentDayAssignments[roleId] = selected.name;
+    assignedDates[selected.id].add(dateStr);
+
+    const currentStats =
+      organistStats[selected.id] ||
+      (selected.stats ? { ...createEmptyStats(), ...selected.stats } : createEmptyStats());
+    organistStats[selected.id] = incrementStatsForCulto(currentStats, roleId);
+    lastAssignedRoleByDayKey[selected.id][dayKey] = roleId;
+  });
+
+  return true;
+};
+
 const scoreCandidateForReservePair = ({
   organist,
   cultoId,
@@ -218,7 +399,7 @@ const scoreCandidateForReservePair = ({
   organistStats,
   lastAssignedRoleByDayKey,
 }) => {
-  const stats = organistStats[organist.id] || { meiaHora: 0, culto: 0, total: 0 };
+  const stats = organistStats[organist.id] || createEmptyStats();
 
   return [
     getRepeatedRolePenalty(lastAssignedRoleByDayKey, organist.id, dayKey, cultoId),
@@ -308,16 +489,16 @@ const assignCultoWithReservePair = ({
   const cultoStats =
     organistStats[bestPair.cultoOrganist.id] ||
     (bestPair.cultoOrganist.stats
-      ? { ...bestPair.cultoOrganist.stats }
-      : { meiaHora: 0, culto: 0, total: 0 });
+      ? { ...createEmptyStats(), ...bestPair.cultoOrganist.stats }
+      : createEmptyStats());
   organistStats[bestPair.cultoOrganist.id] = incrementStatsForCulto(cultoStats, 'Culto');
   lastAssignedRoleByDayKey[bestPair.cultoOrganist.id][dayKey] = 'Culto';
 
   const reserveStats =
     organistStats[bestPair.reserveOrganist.id] ||
     (bestPair.reserveOrganist.stats
-      ? { ...bestPair.reserveOrganist.stats }
-      : { meiaHora: 0, culto: 0, total: 0 });
+      ? { ...createEmptyStats(), ...bestPair.reserveOrganist.stats }
+      : createEmptyStats());
   organistStats[bestPair.reserveOrganist.id] = incrementStatsForCulto(reserveStats, 'Reserva');
   lastAssignedRoleByDayKey[bestPair.reserveOrganist.id][dayKey] = 'Reserva';
 
@@ -358,53 +539,61 @@ const runPrimaryAllocation = ({
       });
     }
 
+    const hasThreeSlotTeam =
+      cultos.some((culto) => culto.id === 'MeiaHoraCulto') &&
+      cultos.some((culto) => culto.id === 'Parte1') &&
+      cultos.some((culto) => culto.id === 'Parte2');
+
+    if (hasThreeSlotTeam) {
+      const rjmCulto = cultos.find((culto) => culto.id === 'RJM');
+      if (rjmCulto) {
+        assignSingleCulto({
+          organists,
+          availabilityScores,
+          dayOfWeek,
+          dayKey,
+          dateStr,
+          culto: rjmCulto,
+          currentDayAssignments,
+          assignedDates,
+          lastAssignedRoleByDayKey,
+          organistStats,
+          churchConfig,
+        });
+      }
+
+      assignThreeSlotTeam({
+        organists,
+        availabilityScores,
+        dayOfWeek,
+        dayKey,
+        dateStr,
+        currentDayAssignments,
+        assignedDates,
+        lastAssignedRoleByDayKey,
+        organistStats,
+        churchConfig,
+      });
+    }
+
     const orderedCultos = [...cultos].sort(
       (a, b) => (SERVICE_PRIORITY[a.id] ?? 99) - (SERVICE_PRIORITY[b.id] ?? 99)
     );
 
     orderedCultos.forEach((culto) => {
-      if (currentDayAssignments[culto.id]) return;
-
-      const candidates = organists
-        .filter((organist) => {
-          if (assignedDates[organist.id].has(dateStr)) return false;
-          return canOrganistPlayOnDay(organist, dayOfWeek, dayKey, culto.id, churchConfig);
-        })
-        .sort((a, b) => {
-          const statsA = organistStats[a.id] || { meiaHora: 0, culto: 0, total: 0 };
-          const statsB = organistStats[b.id] || { meiaHora: 0, culto: 0, total: 0 };
-
-          // Em caso de empate local, prioriza quem tem menos opções no período
-          // para evitar bloquear alocações viáveis no mesmo dia (ex.: domingo com RJM).
-          const scarcityDiff = (availabilityScores[a.id] || 0) - (availabilityScores[b.id] || 0);
-          if (scarcityDiff !== 0) return scarcityDiff;
-
-          const repeatPenaltyDiff =
-            getRepeatedRolePenalty(lastAssignedRoleByDayKey, a.id, dayKey, culto.id) -
-            getRepeatedRolePenalty(lastAssignedRoleByDayKey, b.id, dayKey, culto.id);
-          if (repeatPenaltyDiff !== 0) return repeatPenaltyDiff;
-
-          const roleDiff =
-            getRoleCountForCulto(statsA, culto.id) - getRoleCountForCulto(statsB, culto.id);
-          if (roleDiff !== 0) return roleDiff;
-
-          const totalDiff = (statsA.total || 0) - (statsB.total || 0);
-          if (totalDiff !== 0) return totalDiff;
-
-          return (a.name || '').localeCompare(b.name || '');
-        });
-
-      const selected = candidates[0];
-      if (!selected) return;
-
-      currentDayAssignments[culto.id] = selected.name;
-      assignedDates[selected.id].add(dateStr);
-
-      const currentStats =
-        organistStats[selected.id] ||
-        (selected.stats ? { ...selected.stats } : { meiaHora: 0, culto: 0, total: 0 });
-      organistStats[selected.id] = incrementStatsForCulto(currentStats, culto.id);
-      lastAssignedRoleByDayKey[selected.id][dayKey] = culto.id;
+      assignSingleCulto({
+        organists,
+        availabilityScores,
+        dayOfWeek,
+        dayKey,
+        dateStr,
+        culto,
+        currentDayAssignments,
+        assignedDates,
+        lastAssignedRoleByDayKey,
+        organistStats,
+        churchConfig,
+      });
     });
   });
 };
@@ -438,7 +627,7 @@ const applyDoubleDutyRule = ({ periodDates, schedule, organists, organistStats, 
       if (canPlayMeiaHora) {
         schedule[dayIndex].assignments[meiaHoraCulto.id] = organistName;
 
-        const stats = organistStats[organist.id] || { meiaHora: 0, culto: 0, total: 0 };
+        const stats = organistStats[organist.id] || createEmptyStats();
         organistStats[organist.id] = incrementStatsForCulto(stats, 'MeiaHoraCulto');
       }
     }
@@ -454,7 +643,7 @@ const applyDoubleDutyRule = ({ periodDates, schedule, organists, organistStats, 
       if (canPlayCulto) {
         schedule[dayIndex].assignments[cultoCulto.id] = organistName;
 
-        const stats = organistStats[organist.id] || { meiaHora: 0, culto: 0, total: 0 };
+        const stats = organistStats[organist.id] || createEmptyStats();
         organistStats[organist.id] = incrementStatsForCulto(stats, 'Culto');
       }
     }
