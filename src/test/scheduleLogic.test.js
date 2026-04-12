@@ -209,6 +209,54 @@ describe('generateSchedule', () => {
     expect(new Set(assignedNames).size).toBe(3);
   });
 
+  test('evita fixar a mesma organista em Meia Hora no modelo com tres slots quando ha alternativas', () => {
+    const organists = [
+      { id: '1', name: 'Ana', fixedDays: [0], stats: { total: 0 } },
+      { id: '2', name: 'Bia', fixedDays: [0], stats: { total: 0 } },
+      { id: '3', name: 'Clara', fixedDays: [0], stats: { total: 0 } },
+      { id: '4', name: 'Dani', fixedDays: [0], stats: { total: 0 } },
+      { id: '5', name: 'Eva', fixedDays: [0], stats: { total: 0 } },
+    ];
+
+    const result = generateSchedule(
+      organists,
+      '2026-03-01',
+      '2026-03-22',
+      SUNDAY_WITH_THREE_SLOTS_CONFIG
+    );
+
+    const meiaHoraAssignments = result.map((day) => day.assignments.MeiaHoraCulto);
+    expect(new Set(meiaHoraAssignments).size).toBeGreaterThan(1);
+  });
+
+  test('distribui melhor a carga total no modelo com tres slots em dias recorrentes', () => {
+    const organists = [
+      { id: '1', name: 'Ana', fixedDays: [0], stats: { total: 0 } },
+      { id: '2', name: 'Bia', fixedDays: [0], stats: { total: 0 } },
+      { id: '3', name: 'Clara', fixedDays: [0], stats: { total: 0 } },
+      { id: '4', name: 'Dani', fixedDays: [0], stats: { total: 0 } },
+      { id: '5', name: 'Eva', fixedDays: [0], stats: { total: 0 } },
+    ];
+
+    const result = generateSchedule(
+      organists,
+      '2026-03-01',
+      '2026-03-29',
+      SUNDAY_WITH_THREE_SLOTS_CONFIG
+    );
+
+    const totals = {};
+    result.forEach((day) => {
+      Object.values(day.assignments).forEach((name) => {
+        totals[name] = (totals[name] || 0) + 1;
+      });
+    });
+
+    const values = Object.values(totals);
+    expect(Object.keys(totals)).toHaveLength(5);
+    expect(Math.max(...values) - Math.min(...values)).toBeLessThanOrEqual(1);
+  });
+
   test('aplica atribuicao dupla quando Culto e definido primeiro', () => {
     const organists = [
       {

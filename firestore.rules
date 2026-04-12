@@ -49,19 +49,18 @@ service cloud.firestore {
         && svc.label is string
         && svc.label.size() > 0
         && svc.label.size() <= 40
-        && svc.needs is int
-        && svc.needs >= 1
-        && svc.needs <= 2;
+        && svc.needs in [1, 2];
     }
 
     // Regras não suportam iteração arbitrária; limitamos cardinalidade e validamos índices possíveis.
     function isValidServiceList(services) {
       return services is list
         && services.size() >= 1
-        && services.size() <= 3
+        && services.size() <= 4
         && isValidService(services[0])
         && (services.size() < 2 || isValidService(services[1]))
-        && (services.size() < 3 || isValidService(services[2]));
+        && (services.size() < 3 || isValidService(services[2]))
+        && (services.size() < 4 || isValidService(services[3]));
     }
 
     function isValidChurchConfig(config) {
@@ -154,7 +153,6 @@ service cloud.firestore {
         && data.data.size() >= 1
         && data.data.size() <= 500
         && ('organistCount' in data)
-        && data.organistCount is int
         && data.organistCount >= 1
         && data.organistCount <= 100;
     }

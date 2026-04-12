@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "target": "es5", // Compila para uma versão de JS compatível com navegadores mais antigos
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true, // Permite que arquivos .js e .ts coexistam no projeto (essencial para migração gradual)
@@ -10,11 +11,11 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
-    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true, // create-react-app cuida da compilação, então não precisamos que o TS gere arquivos JS
-    "jsx": "react-jsx" // Habilita o suporte para JSX do React
+    "jsx": "react-jsx", // Habilita o suporte para JSX do React
+    "moduleResolution": "bundler"
   },
   "include": [
     "src" // Diz ao TypeScript para analisar apenas os arquivos dentro da pasta 'src'

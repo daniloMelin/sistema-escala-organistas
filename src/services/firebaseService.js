@@ -230,9 +230,31 @@ export const updateChurch = async (userId, churchId, dataToUpdate) => {
   if (isE2EMode) return updateChurchLocal(userId, churchId, dataToUpdate);
   try {
     const churchDocRef = doc(db, 'users', userId, 'churches', churchId);
-    await updateDoc(churchDocRef, dataToUpdate);
+    const normalizedChurchData = {
+      name: dataToUpdate.name,
+      code: dataToUpdate.code ?? '',
+      config: dataToUpdate.config ?? {},
+      cultoModel: dataToUpdate.cultoModel,
+    };
+
+    await setDoc(churchDocRef, normalizedChurchData);
   } catch (e) {
-    logger.error('Erro ao atualizar igreja:', e);
+    logger.error(
+      'Erro ao atualizar igreja:',
+      JSON.stringify(
+        {
+          error: {
+            code: e?.code,
+            message: e?.message,
+          },
+          userId,
+          churchId,
+          dataToUpdate,
+        },
+        null,
+        2
+      )
+    );
     throw e;
   }
 };
