@@ -177,3 +177,56 @@
 .church-list__summary-item {
   white-space: nowrap;
 }
+
+@media (max-width: 640px) {
+  .church-form {
+    padding: 14px;
+  }
+
+  .church-form__days {
+    padding: 12px;
+  }
+
+  .church-form__days-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .church-form__actions {
+    flex-direction: column;
+  }
+
+  .church-form__actions .btn {
+    width: 100%;
+  }
+
+  .church-list__priority-hint {
+    margin-bottom: 10px;
+  }
+
+  .church-list__item {
+    padding: 12px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .church-list__header {
+    gap: 8px;
+  }
+
+  .church-list__summary {
+    gap: 6px 10px;
+  }
+
+  .church-list__summary-item {
+    white-space: normal;
+  }
+
+  .church-list__item .actions-row {
+    justify-content: stretch;
+  }
+
+  .church-list__item .actions-row .btn {
+    width: 100%;
+  }
+}
