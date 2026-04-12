@@ -22,4 +22,20 @@ describe('OrganistList', () => {
     expect(props.onStartEdit).toHaveBeenCalledWith(props.organists[0]);
     expect(props.onRequestDeleteOrganist).toHaveBeenCalledWith('o1', 'Maria');
   });
+
+  test('mantem a ordem nome, disponibilidade e acoes na estrutura do item', () => {
+    render(
+      <OrganistList
+        loading={false}
+        organists={[{ id: 'o1', name: 'Maria', availability: { monday: true } }]}
+        formatOrganistAvailability={() => 'Seg'}
+        onStartEdit={jest.fn()}
+        onRequestDeleteOrganist={jest.fn()}
+      />
+    );
+
+    const item = screen.getByRole('listitem');
+
+    expect(item).toHaveTextContent(/Maria[\s\S]*Disponivel:\s*Seg[\s\S]*Editar[\s\S]*Excluir/);
+  });
 });

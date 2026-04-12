@@ -37,6 +37,7 @@ const ScheduleControls = ({
           onClick={onGenerate}
           disabled={isGenerating || isLoading}
           variant="primary"
+          size="sm"
           className="schedule-controls__generate"
         >
           {isGenerating ? 'Gerando...' : 'Gerar Nova Escala'}

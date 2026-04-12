@@ -63,11 +63,19 @@
   border-radius: 6px;
   background: #ffffff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.organist-list__content {
+  flex: 1;
+  min-width: 0;
 }
 
 .organist-list__header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-bottom: 5px;
 }
@@ -83,6 +91,7 @@
 
 .organist-list__actions {
   justify-content: flex-start;
+  flex: 0 0 auto;
 }
 
 .dashboard-toolbar .btn {
@@ -122,6 +131,8 @@
 
   .organist-list__item {
     padding: 12px;
+    flex-direction: column;
+    gap: 0;
   }
 
   .organist-list__header {
