@@ -46,6 +46,7 @@ const ChurchDashboard = ({ user }) => {
         <Button
           onClick={() => navigate(`/igreja/${id}/escala`)}
           variant="primary"
+          size="sm"
           className="btn--elevated"
         >
           📅 Gerar Escala

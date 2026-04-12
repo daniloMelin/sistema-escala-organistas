@@ -76,3 +76,67 @@
   font-size: 1.1em;
   color: var(--app-text);
 }
+
+.organist-list__availability {
+  margin-bottom: 10px;
+}
+
+.organist-list__actions {
+  justify-content: flex-start;
+}
+
+.dashboard-toolbar .btn {
+  min-width: 164px;
+}
+
+@media (max-width: 640px) {
+  .dashboard-toolbar {
+    width: 100%;
+  }
+
+  .dashboard-toolbar .btn {
+    width: 164px;
+    min-width: 164px;
+  }
+
+  .organist-form {
+    padding: 14px;
+  }
+
+  .organist-form__days {
+    gap: 8px;
+  }
+
+  .organist-form__day-item {
+    width: 100%;
+  }
+
+  .organist-form__actions {
+    flex-direction: column;
+  }
+
+  .organist-form__actions .btn,
+  .organist-form__submit {
+    width: 100%;
+  }
+
+  .organist-list__item {
+    padding: 12px;
+  }
+
+  .organist-list__header {
+    margin-bottom: 6px;
+  }
+
+  .organist-list__availability {
+    margin-bottom: 8px;
+  }
+
+  .organist-list__item .actions-row {
+    width: 100%;
+  }
+
+  .organist-list__item .actions-row .btn {
+    width: 100%;
+  }
+}
