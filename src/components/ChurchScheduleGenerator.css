@@ -114,16 +114,16 @@
 }
 
 .schedule-grid {
-  margin-bottom: 40px;
+  margin-bottom: 28px;
 }
 
 .schedule-grid__toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   background: #eeeeee;
-  padding: 10px;
+  padding: 8px 10px;
   border-radius: 4px;
 }
 
@@ -132,8 +132,8 @@
 }
 
 .schedule-grid__distribution {
-  margin-bottom: 20px;
-  padding: 16px;
+  margin-bottom: 12px;
+  padding: 10px;
   border: 1px solid #e3e7ee;
   border-radius: 8px;
   background: #f8fbff;
@@ -143,9 +143,9 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .schedule-grid__distribution-title {
@@ -160,16 +160,16 @@
 
 .schedule-grid__distribution-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 8px 14px;
+  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+  gap: 5px 8px;
 }
 
 .schedule-grid__distribution-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  padding: 8px 10px;
+  gap: 8px;
+  padding: 5px 8px;
   border-radius: 6px;
   background: #ffffff;
   border: 1px solid #e8edf5;
@@ -182,10 +182,10 @@
 
 .schedule-grid__distribution-count {
   display: inline-flex;
-  min-width: 30px;
+  min-width: 28px;
   align-items: center;
   justify-content: center;
-  padding: 2px 8px;
+  padding: 1px 7px;
   border-radius: 999px;
   background: #e6efff;
   color: #2455b8;
@@ -193,28 +193,28 @@
 }
 
 .schedule-grid__month {
-  margin-bottom: 30px;
+  margin-bottom: 16px;
 }
 
 .schedule-grid__month-header {
   background: #e0e0e0;
-  padding: 8px;
+  padding: 5px 8px;
   text-align: center;
   font-weight: 700;
   border-radius: 4px;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   color: #555555;
 }
 
 .schedule-grid__cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+  gap: 8px;
 }
 
 .schedule-card {
   border: 1px solid #cccccc;
-  border-radius: 6px;
+  border-radius: 5px;
   overflow: hidden;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   background: #ffffff;
@@ -222,22 +222,28 @@
 
 .schedule-card__header {
   background: #f0f0f0;
-  padding: 8px;
+  padding: 5px 8px;
   text-align: center;
   font-weight: 700;
   border-bottom: 1px solid #eeeeee;
 }
 
 .schedule-card__body {
-  padding: 15px;
+  padding: 8px 10px;
+}
+
+.schedule-card__body .list-reset {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .schedule-card__row {
-  margin-bottom: 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 0.95em;
+  line-height: 1.25;
 }
 
 .schedule-card__role {
@@ -246,10 +252,10 @@
 }
 
 .schedule-card__select {
-  padding: 4px;
+  padding: 3px 4px;
   border-radius: 4px;
   border: 1px solid #cccccc;
-  max-width: 150px;
+  max-width: 132px;
 }
 
 .schedule-card__name {
