@@ -20,11 +20,13 @@ const OrganistList = ({
         <ul className="list-reset">
           {organists.map((org) => (
             <li key={org.id} className="organist-list__item">
-              <div className="organist-list__header">
-                <strong className="organist-list__name">{org.name}</strong>
-              </div>
-              <div className="muted-text muted-text--sm organist-list__availability">
-                <strong>Disponivel: </strong> {formatOrganistAvailability(org.availability)}
+              <div className="organist-list__content">
+                <div className="organist-list__header">
+                  <strong className="organist-list__name">{org.name}</strong>
+                </div>
+                <div className="muted-text muted-text--sm organist-list__availability">
+                  <strong>Disponivel: </strong> {formatOrganistAvailability(org.availability)}
+                </div>
               </div>
               <div className="actions-row organist-list__actions">
                 <Button onClick={() => onStartEdit(org)} variant="warning" size="sm">

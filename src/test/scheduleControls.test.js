@@ -25,4 +25,22 @@ describe('ScheduleControls', () => {
     expect(props.onEndDateChange).toHaveBeenCalledWith('2026-04-30');
     expect(props.onGenerate).toHaveBeenCalled();
   });
+
+  test('usa o mesmo tamanho base pequeno no botao de gerar nova escala', () => {
+    render(
+      <ScheduleControls
+        startDate="2026-03-01"
+        endDate="2026-03-31"
+        isGenerating={false}
+        isLoading={false}
+        error=""
+        successMessage=""
+        onStartDateChange={jest.fn()}
+        onEndDateChange={jest.fn()}
+        onGenerate={jest.fn()}
+      />
+    );
+
+    expect(screen.getByRole('button', { name: 'Gerar Nova Escala' })).toHaveClass('btn--sm');
+  });
 });
