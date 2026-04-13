@@ -134,8 +134,12 @@ const ChurchForm = ({
               <Input
                 id="church-rehearsal-time"
                 label="Horário:"
-                type="time"
+                type="text"
                 value={rehearsal.time}
+                placeholder="19:30"
+                inputMode="numeric"
+                pattern="[0-9]{2}:[0-9]{2}"
+                maxLength={5}
                 onChange={(e) => onRehearsalChange('time', e.target.value)}
               />
             </div>
