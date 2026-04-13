@@ -94,7 +94,7 @@ const ChurchForm = ({
           <label className="church-form__days-label">Ensaio Local:</label>
 
           <div className="church-form__rehearsal-grid">
-            <div>
+            <div className="church-form__rehearsal-field">
               <label htmlFor="church-rehearsal-week" className="church-form__days-label">
                 Semana do mês:
               </label>
@@ -112,7 +112,7 @@ const ChurchForm = ({
               </select>
             </div>
 
-            <div>
+            <div className="church-form__rehearsal-field">
               <label htmlFor="church-rehearsal-weekday" className="church-form__days-label">
                 Dia da semana:
               </label>
@@ -130,21 +130,25 @@ const ChurchForm = ({
               </select>
             </div>
 
-            <Input
-              id="church-rehearsal-time"
-              label="Horário:"
-              type="time"
-              value={rehearsal.time}
-              onChange={(e) => onRehearsalChange('time', e.target.value)}
-            />
+            <div className="church-form__rehearsal-field">
+              <Input
+                id="church-rehearsal-time"
+                label="Horário:"
+                type="time"
+                value={rehearsal.time}
+                onChange={(e) => onRehearsalChange('time', e.target.value)}
+              />
+            </div>
 
-            <Input
-              id="church-rehearsal-notes"
-              label="Observação (opcional):"
-              type="text"
-              value={rehearsal.notes}
-              onChange={(e) => onRehearsalChange('notes', e.target.value)}
-            />
+            <div className="church-form__rehearsal-field church-form__rehearsal-field--notes">
+              <Input
+                id="church-rehearsal-notes"
+                label="Observação (opcional):"
+                type="text"
+                value={rehearsal.notes}
+                onChange={(e) => onRehearsalChange('notes', e.target.value)}
+              />
+            </div>
           </div>
         </div>
 

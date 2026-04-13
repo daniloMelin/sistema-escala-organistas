@@ -21,6 +21,7 @@
 .church-form__model-select {
   width: 100%;
   padding: 10px 12px;
+  box-sizing: border-box;
   border: 1px solid #cccccc;
   border-radius: 6px;
   background: #ffffff;
@@ -87,9 +88,17 @@
 
 .church-form__rehearsal-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   margin-top: 12px;
+}
+
+.church-form__rehearsal-field {
+  min-width: 0;
+}
+
+.church-form__rehearsal-field--notes {
+  grid-column: 1 / 2;
 }
 
 .church-form__rehearsal-grid .input-field {
@@ -102,9 +111,18 @@
 }
 
 .church-form__rehearsal-grid .input-field__control {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  box-sizing: border-box;
   padding: 10px 12px;
   border-radius: 6px;
   font: inherit;
+}
+
+.church-form__rehearsal-grid input[type='time'] {
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .church-list__priority-hint {
@@ -236,6 +254,10 @@
   .church-form__rehearsal-grid {
     grid-template-columns: 1fr;
     gap: 10px;
+  }
+
+  .church-form__rehearsal-field--notes {
+    grid-column: auto;
   }
 
   .church-list__priority-hint {
