@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ALL_WEEK_DAYS } from '../constants/days';
+import { REHEARSAL_WEEK_OPTIONS, REHEARSAL_WEEKDAY_OPTIONS } from '../constants/rehearsal';
 import { CULT_MODEL_OPTIONS } from '../utils/churchCultModel';
 import Button from './ui/Button';
 import Input from './ui/Input';
@@ -11,6 +12,7 @@ const ChurchForm = ({
   churchCode,
   selectedDays,
   cultoModel,
+  rehearsal,
   isSubmitting,
   isLoading,
   error,
@@ -18,6 +20,7 @@ const ChurchForm = ({
   onChurchNameChange,
   onChurchCodeChange,
   onCultoModelChange,
+  onRehearsalChange,
   onDayChange,
   onSubmit,
   onCancelEdit,
@@ -87,6 +90,64 @@ const ChurchForm = ({
           </div>
         </div>
 
+        <div className="church-form__rehearsal">
+          <label className="church-form__days-label">Ensaio Local:</label>
+
+          <div className="church-form__rehearsal-grid">
+            <div>
+              <label htmlFor="church-rehearsal-week" className="church-form__days-label">
+                Semana do mês:
+              </label>
+              <select
+                id="church-rehearsal-week"
+                value={rehearsal.weekOfMonth}
+                onChange={(e) => onRehearsalChange('weekOfMonth', e.target.value)}
+                className="church-form__model-select"
+              >
+                {REHEARSAL_WEEK_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="church-rehearsal-weekday" className="church-form__days-label">
+                Dia da semana:
+              </label>
+              <select
+                id="church-rehearsal-weekday"
+                value={rehearsal.weekday}
+                onChange={(e) => onRehearsalChange('weekday', e.target.value)}
+                className="church-form__model-select"
+              >
+                {REHEARSAL_WEEKDAY_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <Input
+              id="church-rehearsal-time"
+              label="Horário:"
+              type="time"
+              value={rehearsal.time}
+              onChange={(e) => onRehearsalChange('time', e.target.value)}
+            />
+
+            <Input
+              id="church-rehearsal-notes"
+              label="Observação (opcional):"
+              type="text"
+              value={rehearsal.notes}
+              onChange={(e) => onRehearsalChange('notes', e.target.value)}
+            />
+          </div>
+        </div>
+
         <div className="church-form__actions">
           <Button
             type="submit"
@@ -115,6 +176,12 @@ ChurchForm.propTypes = {
   churchCode: PropTypes.string.isRequired,
   selectedDays: PropTypes.object.isRequired,
   cultoModel: PropTypes.string.isRequired,
+  rehearsal: PropTypes.shape({
+    weekOfMonth: PropTypes.string.isRequired,
+    weekday: PropTypes.string.isRequired,
+    time: PropTypes.string.isRequired,
+    notes: PropTypes.string.isRequired,
+  }).isRequired,
   isSubmitting: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   error: PropTypes.string.isRequired,
@@ -122,6 +189,7 @@ ChurchForm.propTypes = {
   onChurchNameChange: PropTypes.func.isRequired,
   onChurchCodeChange: PropTypes.func.isRequired,
   onCultoModelChange: PropTypes.func.isRequired,
+  onRehearsalChange: PropTypes.func.isRequired,
   onDayChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onCancelEdit: PropTypes.func.isRequired,

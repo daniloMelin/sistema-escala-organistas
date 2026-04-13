@@ -77,6 +77,36 @@
   gap: 10px;
 }
 
+.church-form__rehearsal {
+  margin-bottom: 20px;
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 4px;
+  border: 1px solid #eeeeee;
+}
+
+.church-form__rehearsal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.church-form__rehearsal-grid .input-field {
+  margin-bottom: 0;
+}
+
+.church-form__rehearsal-grid .input-field__label {
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.church-form__rehearsal-grid .input-field__control {
+  padding: 10px 12px;
+  border-radius: 6px;
+  font: inherit;
+}
+
 .church-list__priority-hint {
   margin: 0 0 14px;
   color: #555555;
@@ -197,6 +227,15 @@
 
   .church-form__actions .btn {
     width: 100%;
+  }
+
+  .church-form__rehearsal {
+    padding: 12px;
+  }
+
+  .church-form__rehearsal-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .church-list__priority-hint {

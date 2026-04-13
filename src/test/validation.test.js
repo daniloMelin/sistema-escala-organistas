@@ -2,6 +2,7 @@ import {
   validateChurchName,
   validateOrganistName,
   validateChurchCode,
+  validateChurchRehearsal,
   validateDateRange,
   sanitizeString,
 } from '../utils/validation';
@@ -95,6 +96,42 @@ describe('validation utils', () => {
         isValid: false,
         error:
           'A escala deve ficar dentro de até 3 meses. Ajuste a data final para não entrar no 4º mês.',
+      });
+    });
+  });
+
+  describe('validateChurchRehearsal', () => {
+    test('rejeita ensaio ausente', () => {
+      expect(validateChurchRehearsal()).toEqual({
+        isValid: false,
+        error: 'Preencha os dados do ensaio local.',
+      });
+    });
+
+    test('rejeita horario invalido', () => {
+      expect(
+        validateChurchRehearsal({
+          weekOfMonth: '1',
+          weekday: 'thursday',
+          time: '19h30',
+          notes: '',
+        })
+      ).toEqual({
+        isValid: false,
+        error: 'Informe um horário válido no formato HH:MM.',
+      });
+    });
+
+    test('aceita ensaio completo valido', () => {
+      expect(
+        validateChurchRehearsal({
+          weekOfMonth: '1',
+          weekday: 'thursday',
+          time: '19:30',
+          notes: 'Culto começa às 19:00.',
+        })
+      ).toEqual({
+        isValid: true,
       });
     });
   });

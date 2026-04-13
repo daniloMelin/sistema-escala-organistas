@@ -77,6 +77,7 @@ A melhor abordagem para o V16 é:
 1. tratar ensaio local como bloco próprio da igreja
 2. salvar os dados de forma estruturada
 3. deixar texto livre apenas como observação opcional, se necessário
+4. assumir que toda igreja possui ensaio local, sem toggle de ativação
 
 ## Modelo Inicial Recomendado
 
@@ -84,7 +85,6 @@ Estrutura sugerida no documento da igreja:
 
 ```js
 rehearsal: {
-  enabled: true,
   weekOfMonth: 1,
   weekday: 'thursday',
   time: '19:30',
@@ -94,7 +94,6 @@ rehearsal: {
 
 ## Campos Recomendados na UI
 
-- `Possui ensaio local?`
 - `Semana do mês`
   - 1ª
   - 2ª
@@ -120,6 +119,7 @@ rehearsal: {
 - não incluir cálculo automático de datas do ensaio nesta etapa
 - preparar o dado para futura exibição no PDF, mas sem exigir isso já na
   primeira entrega
+- manter o bloco sempre visível no formulário
 
 ## Conclusão
 

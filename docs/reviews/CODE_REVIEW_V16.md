@@ -6,6 +6,8 @@
 | ------ | ------------------- | ------------ | ----------------------------------------------- |
 | 1.0    | 12 de abril de 2026 | Danilo Melin | Criação do ciclo V16                            |
 | 1.1    | 12 de abril de 2026 | Codex        | Estruturação inicial do ensaio local por igreja |
+| 1.2    | 13 de abril de 2026 | Codex        | Implementação inicial do ensaio local           |
+| 1.3    | 13 de abril de 2026 | Codex        | Simplificação do ensaio local como campo fixo   |
 
 ## Objetivo
 
@@ -45,6 +47,12 @@ Essa informação:
 - deve ser editável ao longo do tempo
 - pode aparecer depois em visualizações e PDF
 
+Durante a evolução da fase inicial, também ficou decidido que:
+
+- toda igreja possui ensaio local
+- por isso, o formulário não deve perguntar se a igreja possui ensaio
+- o bloco de ensaio deve ficar sempre visível e editável
+
 No estado atual, o sistema não possui um lugar estruturado para guardar
 esse dado.
 
@@ -54,7 +62,7 @@ esse dado.
 
 #### 1.1 Revisar o modelo ideal para registrar ensaio local por igreja
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - definir quais campos precisam ser persistidos
@@ -63,7 +71,7 @@ esse dado.
 
 #### 1.2 Implementar suporte inicial ao ensaio local no cadastro da igreja
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `ALTA`
 - Escopo:
   - incluir os campos no formulário de igreja
@@ -132,8 +140,8 @@ esse dado.
 
 ## Registro de progresso
 
-- [ ] Fase 1.1 pendente
-- [ ] Fase 1.2 pendente
+- [x] Fase 1.1 concluída
+- [x] Fase 1.2 concluída
 - [ ] Fase 2.1 pendente
 - [ ] Fase 2.2 pendente
 - [ ] Fase 3.1 pendente

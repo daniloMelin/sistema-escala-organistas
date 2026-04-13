@@ -1,5 +1,6 @@
-import { renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { useChurchManager } from '../hooks/useChurchManager';
+import { INITIAL_REHEARSAL } from '../constants/rehearsal';
 
 const mockNavigate = jest.fn();
 const mockSetSelectedChurch = jest.fn();
@@ -196,5 +197,76 @@ describe('useChurchManager', () => {
       'Aquarela',
       'Beta',
     ]);
+  });
+
+  test('salva ensaio local estruturado ao cadastrar igreja', async () => {
+    const { result } = renderHook(() => useChurchManager(user));
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    act(() => {
+      result.current.setChurchName('Igreja com Ensaio');
+      result.current.handleRehearsalChange('weekOfMonth', '1');
+      result.current.handleRehearsalChange('weekday', 'thursday');
+      result.current.handleRehearsalChange('time', '19:30');
+      result.current.handleRehearsalChange('notes', 'Culto começa às 19:00.');
+    });
+
+    await act(async () => {
+      await result.current.handleSubmit({ preventDefault: jest.fn() });
+    });
+
+    expect(mockAddChurch).toHaveBeenCalledWith(
+      'user-1',
+      expect.objectContaining({
+        name: 'Igreja com Ensaio',
+        rehearsal: {
+          weekOfMonth: 1,
+          weekday: 'thursday',
+          time: '19:30',
+          notes: 'Culto começa às 19:00.',
+        },
+      })
+    );
+  });
+
+  test('carrega ensaio local ao iniciar edicao da igreja', async () => {
+    mockGetChurches.mockResolvedValue([
+      {
+        id: 'church-ready',
+        name: 'Igreja Pronta',
+        code: 'READY',
+        config: {
+          sunday: [{ id: 'MeiaHoraCulto' }, { id: 'Culto' }],
+        },
+        cultoModel: 'meia_hora_e_culto',
+        rehearsal: {
+          enabled: true,
+          weekOfMonth: 2,
+          weekday: 'friday',
+          time: '20:00',
+          notes: 'Ensaio local mensal.',
+        },
+      },
+    ]);
+
+    const { result } = renderHook(() => useChurchManager(user));
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    act(() => {
+      result.current.handleStartEdit(
+        { stopPropagation: jest.fn() },
+        result.current.churches.find((church) => church.id === 'church-ready')
+      );
+    });
+
+    expect(result.current.rehearsal).toEqual({
+      weekOfMonth: '2',
+      weekday: 'friday',
+      time: '20:00',
+      notes: 'Ensaio local mensal.',
+    });
+    expect(result.current.rehearsal).not.toEqual(INITIAL_REHEARSAL);
   });
 });
