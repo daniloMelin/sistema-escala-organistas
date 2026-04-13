@@ -120,9 +120,14 @@
   font: inherit;
 }
 
-.church-form__rehearsal-grid input[type='time'] {
-  appearance: none;
-  -webkit-appearance: none;
+.church-form__rehearsal-grid .church-form__model-select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font: inherit;
 }
 
 .church-list__priority-hint {
