@@ -25,7 +25,6 @@ const ChurchManager = ({ user }) => {
     setChurchName,
     setChurchCode,
     setCultoModel,
-    setRehearsal,
     setPendingDeleteChurch,
     handleStartEdit,
     handleCancelEdit,
