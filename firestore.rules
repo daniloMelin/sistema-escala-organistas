@@ -41,6 +41,18 @@ service cloud.firestore {
       ];
     }
 
+    function isAllowedRehearsalWeekday(weekday) {
+      return weekday in [
+        'sunday',
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday'
+      ];
+    }
+
     function isValidService(svc) {
       return svc is map
         && svc.keys().hasOnly(['id', 'label', 'needs'])
@@ -73,6 +85,20 @@ service cloud.firestore {
         && (!('thursday' in config) || isValidServiceList(config.thursday))
         && (!('friday' in config) || isValidServiceList(config.friday))
         && (!('saturday' in config) || isValidServiceList(config.saturday));
+    }
+
+    function isValidChurchRehearsal(data) {
+      return data is map
+        && data.keys().hasOnly(['weekOfMonth', 'weekday', 'time', 'notes'])
+        && ('weekOfMonth' in data)
+        && data.weekOfMonth in [1, 2, 3, 4, 5]
+        && ('weekday' in data)
+        && data.weekday is string
+        && isAllowedRehearsalWeekday(data.weekday)
+        && ('time' in data)
+        && data.time is string
+        && data.time.matches('^([01]\\d|2[0-3]):([0-5]\\d)$')
+        && optionalString(data, 'notes', 120);
     }
 
     function isValidAvailabilityMap(availability) {
@@ -111,7 +137,7 @@ service cloud.firestore {
 
     function isValidChurchDoc(data) {
       return data is map
-        && data.keys().hasOnly(['name', 'code', 'config', 'cultoModel', 'createdAt'])
+        && data.keys().hasOnly(['name', 'code', 'config', 'cultoModel', 'createdAt', 'rehearsal'])
         && data.name is string
         && data.name.size() >= 3
         && data.name.size() <= 100
@@ -121,6 +147,8 @@ service cloud.firestore {
         && ('cultoModel' in data)
         && data.cultoModel is string
         && isAllowedCultModel(data.cultoModel)
+        && ('rehearsal' in data)
+        && isValidChurchRehearsal(data.rehearsal)
         && optionalTimestamp(data, 'createdAt');
     }
 

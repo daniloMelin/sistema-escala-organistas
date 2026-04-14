@@ -10,7 +10,13 @@ import {
   getChurchScheduleCount,
 } from '../services/firebaseService';
 import { INITIAL_AVAILABILITY } from '../constants/days';
-import { validateChurchName, validateChurchCode, sanitizeString } from '../utils/validation';
+import { INITIAL_REHEARSAL, normalizeRehearsal } from '../constants/rehearsal';
+import {
+  validateChurchName,
+  validateChurchCode,
+  validateChurchRehearsal,
+  sanitizeString,
+} from '../utils/validation';
 import {
   DEFAULT_CULT_MODEL,
   buildChurchConfig,
@@ -91,6 +97,7 @@ export const useChurchManager = (user) => {
   const [churchCode, setChurchCode] = useState('');
   const [selectedDays, setSelectedDays] = useState(INITIAL_AVAILABILITY);
   const [cultoModel, setCultoModel] = useState(DEFAULT_CULT_MODEL);
+  const [rehearsal, setRehearsal] = useState(INITIAL_REHEARSAL);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [error, setError] = useState('');
@@ -174,6 +181,7 @@ export const useChurchManager = (user) => {
     setChurchName(church.name);
     setChurchCode(church.code || '');
     setEditingId(church.id);
+    setRehearsal(normalizeRehearsal(church.rehearsal));
 
     if (church.config) {
       setSelectedDays(inferSelectedDaysFromConfig(church.config));
@@ -192,12 +200,17 @@ export const useChurchManager = (user) => {
     setEditingId(null);
     setSelectedDays(INITIAL_AVAILABILITY);
     setCultoModel(DEFAULT_CULT_MODEL);
+    setRehearsal(INITIAL_REHEARSAL);
     setError('');
     setLoadError('');
   };
 
   const handleDayChange = (key) => {
     setSelectedDays((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const handleRehearsalChange = (field, value) => {
+    setRehearsal((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -215,6 +228,12 @@ export const useChurchManager = (user) => {
       return;
     }
 
+    const rehearsalValidation = validateChurchRehearsal(rehearsal);
+    if (!rehearsalValidation.isValid) {
+      setError(rehearsalValidation.error);
+      return;
+    }
+
     setIsSubmitting(true);
     setError('');
     setLoadError('');
@@ -226,6 +245,12 @@ export const useChurchManager = (user) => {
         code: churchCode ? sanitizeString(churchCode) : '',
         config: buildConfig,
         cultoModel,
+        rehearsal: {
+          weekOfMonth: Number(rehearsal.weekOfMonth),
+          weekday: rehearsal.weekday,
+          time: rehearsal.time,
+          notes: rehearsal.notes ? sanitizeString(rehearsal.notes) : '',
+        },
       };
 
       if (editingId) {
@@ -286,6 +311,7 @@ export const useChurchManager = (user) => {
     churchCode,
     selectedDays,
     cultoModel,
+    rehearsal,
     isSubmitting,
     editingId,
     error,
@@ -295,10 +321,12 @@ export const useChurchManager = (user) => {
     setChurchName,
     setChurchCode,
     setCultoModel,
+    setRehearsal,
     setPendingDeleteChurch,
     handleStartEdit,
     handleCancelEdit,
     handleDayChange,
+    handleRehearsalChange,
     handleSubmit,
     handleRequestDeleteChurch,
     handleConfirmDeleteChurch,

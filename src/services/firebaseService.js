@@ -235,6 +235,12 @@ export const updateChurch = async (userId, churchId, dataToUpdate) => {
       code: dataToUpdate.code ?? '',
       config: dataToUpdate.config ?? {},
       cultoModel: dataToUpdate.cultoModel,
+      rehearsal: dataToUpdate.rehearsal ?? {
+        weekOfMonth: 1,
+        weekday: 'thursday',
+        time: '19:30',
+        notes: '',
+      },
     };
 
     await setDoc(churchDocRef, normalizedChurchData);

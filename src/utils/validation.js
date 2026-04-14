@@ -84,6 +84,46 @@ export const validateChurchCode = (code) => {
 };
 
 /**
+ * Valida configuracao de ensaio local por igreja
+ * @param {object} rehearsal - Dados do ensaio local
+ * @returns {{isValid: boolean, error?: string}}
+ */
+export const validateChurchRehearsal = (rehearsal) => {
+  if (!rehearsal || typeof rehearsal !== 'object') {
+    return { isValid: false, error: 'Preencha os dados do ensaio local.' };
+  }
+
+  const validWeekOptions = ['1', '2', '3', '4', '5', 1, 2, 3, 4, 5];
+  if (!validWeekOptions.includes(rehearsal.weekOfMonth)) {
+    return { isValid: false, error: 'Selecione a semana do mês do ensaio.' };
+  }
+
+  const validWeekdays = [
+    'sunday',
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+  ];
+  if (!validWeekdays.includes(rehearsal.weekday)) {
+    return { isValid: false, error: 'Selecione o dia da semana do ensaio.' };
+  }
+
+  const validTimePattern = /^([01]\d|2[0-3]):([0-5]\d)$/;
+  if (!validTimePattern.test(rehearsal.time || '')) {
+    return { isValid: false, error: 'Informe um horário válido no formato HH:MM.' };
+  }
+
+  if (rehearsal.notes && rehearsal.notes.length > 120) {
+    return { isValid: false, error: 'Observação do ensaio deve ter no máximo 120 caracteres.' };
+  }
+
+  return { isValid: true };
+};
+
+/**
  * Valida período de datas
  * @param {string} startDate - Data de início (YYYY-MM-DD)
  * @param {string} endDate - Data de fim (YYYY-MM-DD)

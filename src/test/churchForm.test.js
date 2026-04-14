@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import ChurchForm from '../components/ChurchForm';
 import { INITIAL_AVAILABILITY } from '../constants/days';
+import { INITIAL_REHEARSAL } from '../constants/rehearsal';
 
 const buildProps = (overrides = {}) => ({
   editingId: null,
@@ -8,6 +9,7 @@ const buildProps = (overrides = {}) => ({
   churchCode: 'ABC',
   selectedDays: { ...INITIAL_AVAILABILITY, sunday_culto: true },
   cultoModel: 'meia_hora_e_culto',
+  rehearsal: INITIAL_REHEARSAL,
   isSubmitting: false,
   isLoading: false,
   error: '',
@@ -15,6 +17,7 @@ const buildProps = (overrides = {}) => ({
   onChurchNameChange: jest.fn(),
   onChurchCodeChange: jest.fn(),
   onCultoModelChange: jest.fn(),
+  onRehearsalChange: jest.fn(),
   onDayChange: jest.fn(),
   onSubmit: jest.fn((e) => e.preventDefault()),
   onCancelEdit: jest.fn(),
@@ -26,11 +29,10 @@ describe('ChurchForm', () => {
     const props = buildProps();
     render(<ChurchForm {...props} />);
 
-    const textInputs = screen.getAllByRole('textbox');
-    fireEvent.change(textInputs[0], {
+    fireEvent.change(screen.getByLabelText(/Nome da Congregação:/i), {
       target: { value: 'Nova Igreja' },
     });
-    fireEvent.change(textInputs[1], {
+    fireEvent.change(screen.getByLabelText(/Código \(opcional\):/i), {
       target: { value: 'NEW' },
     });
     fireEvent.change(screen.getByLabelText('Modelo de culto:'), {
@@ -44,6 +46,37 @@ describe('ChurchForm', () => {
     expect(props.onCultoModelChange).toHaveBeenCalledWith('culto_unico_com_reserva');
     expect(props.onDayChange).toHaveBeenCalledWith('sunday_rjm');
     expect(props.onSubmit).toHaveBeenCalled();
+  });
+
+  test('exibe e altera os campos de ensaio local', () => {
+    const props = buildProps({
+      rehearsal: {
+        weekOfMonth: '1',
+        weekday: 'thursday',
+        time: '19:30',
+        notes: '',
+      },
+    });
+
+    render(<ChurchForm {...props} />);
+
+    fireEvent.change(screen.getByLabelText(/Semana do mês:/i), {
+      target: { value: '2' },
+    });
+    fireEvent.change(screen.getByLabelText(/Dia da semana:/i), {
+      target: { value: 'friday' },
+    });
+    fireEvent.change(screen.getByLabelText(/Horário:/i), {
+      target: { value: '20:00' },
+    });
+    fireEvent.change(screen.getByLabelText(/Observação \(opcional\):/i), {
+      target: { value: 'Culto começa às 19:00.' },
+    });
+
+    expect(props.onRehearsalChange).toHaveBeenCalledWith('weekOfMonth', '2');
+    expect(props.onRehearsalChange).toHaveBeenCalledWith('weekday', 'friday');
+    expect(props.onRehearsalChange).toHaveBeenCalledWith('time', '20:00');
+    expect(props.onRehearsalChange).toHaveBeenCalledWith('notes', 'Culto começa às 19:00.');
   });
 
   test('exibe o botao cancelar apenas durante a edicao', () => {
