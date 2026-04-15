@@ -9,6 +9,7 @@
 | 1.2    | 13 de abril de 2026 | Codex        | Implementação inicial do ensaio local           |
 | 1.3    | 13 de abril de 2026 | Codex        | Simplificação do ensaio local como campo fixo   |
 | 1.4    | 14 de abril de 2026 | Codex        | Exibição inicial do ensaio local na experiência |
+| 1.5    | 14 de abril de 2026 | Codex        | Validação ponta a ponta do ensaio local         |
 
 ## Objetivo
 
@@ -92,7 +93,7 @@ esse dado.
 
 #### 2.2 Validar o fluxo ponta a ponta do ensaio local
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - validar criação e edição do ensaio local em uso real
@@ -144,7 +145,7 @@ esse dado.
 - [x] Fase 1.1 concluída
 - [x] Fase 1.2 concluída
 - [x] Fase 2.1 concluída
-- [ ] Fase 2.2 pendente
+- [x] Fase 2.2 concluída
 - [ ] Fase 3.1 pendente
 - [ ] Fase 3.2 pendente
 - [ ] Fase 4.1 pendente
@@ -153,6 +154,8 @@ esse dado.
 
 - ensaio local persistido como parte da configuração da igreja
 - cadastro e edição funcionando com leitura clara da recorrência
+- fluxo ponta a ponta validado para criação, edição e leitura do ensaio
+  local
 - documentação do ciclo atualizada com impacto prático e próximos
   passos
 
@@ -162,7 +165,7 @@ esse dado.
 
 ## Próximos Passos Recomendados
 
-1. validar o fluxo ponta a ponta de criação e edição do ensaio local
-2. revisar o impacto prático dessa informação na operação do cadastro
+1. revisar o impacto prático dessa informação na operação do cadastro
+2. consolidar cobertura e documentação do fluxo evoluído
 3. decidir em ciclo posterior como e quando essa informação deve entrar
    no PDF
