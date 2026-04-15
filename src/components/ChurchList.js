@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from './ui/Button';
+import { formatRehearsalSummary } from '../constants/rehearsal';
 
 const ChurchList = ({
   churches,
@@ -25,67 +26,83 @@ const ChurchList = ({
         <p>Nenhuma igreja cadastrada.</p>
       ) : (
         <ul className="list-reset">
-          {churches.map((church) => (
-            <li
-              key={church.id}
-              onClick={() => onChurchSelect(church)}
-              className={`church-list__item${
-                church.operationalSummary
-                  ? ` church-list__item--${church.operationalSummary.readiness.tone}`
-                  : ''
-              }`}
-            >
-              <div className="church-list__content">
-                <div className="church-list__header">
-                  <strong className="church-list__name">{church.name}</strong>
+          {churches.map((church) => {
+            const rehearsalSummary = formatRehearsalSummary(church.rehearsal);
+
+            return (
+              <li
+                key={church.id}
+                onClick={() => onChurchSelect(church)}
+                className={`church-list__item${
+                  church.operationalSummary
+                    ? ` church-list__item--${church.operationalSummary.readiness.tone}`
+                    : ''
+                }`}
+              >
+                <div className="church-list__content">
+                  <div className="church-list__header">
+                    <strong className="church-list__name">{church.name}</strong>
+                    {church.operationalSummary && (
+                      <div className="church-list__status-block">
+                        <span
+                          className={`church-list__status church-list__status--${church.operationalSummary.readiness.tone}`}
+                        >
+                          {church.operationalSummary.readiness.label}
+                        </span>
+                        <span className="church-list__status-detail">
+                          {church.operationalSummary.readiness.detail}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  {church.code && <small className="muted-text">Código: {church.code}</small>}
                   {church.operationalSummary && (
-                    <div className="church-list__status-block">
-                      <span
-                        className={`church-list__status church-list__status--${church.operationalSummary.readiness.tone}`}
-                      >
-                        {church.operationalSummary.readiness.label}
+                    <div className="church-list__summary">
+                      <span className="church-list__summary-item">
+                        <strong>Modelo:</strong> {church.operationalSummary.cultoModelLabel}
                       </span>
-                      <span className="church-list__status-detail">
-                        {church.operationalSummary.readiness.detail}
+                      <span className="church-list__summary-item">
+                        <strong>Organistas:</strong> {church.operationalSummary.organistCount}
+                      </span>
+                      <span className="church-list__summary-item">
+                        <strong>Escalas:</strong> {church.operationalSummary.scheduleCount}
+                      </span>
+                      {rehearsalSummary && (
+                        <span className="church-list__summary-item church-list__summary-item--rehearsal">
+                          <strong>Ensaio:</strong> {rehearsalSummary}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  {!church.operationalSummary && rehearsalSummary && (
+                    <div className="church-list__summary">
+                      <span className="church-list__summary-item church-list__summary-item--rehearsal">
+                        <strong>Ensaio:</strong> {rehearsalSummary}
                       </span>
                     </div>
                   )}
                 </div>
-                {church.code && <small className="muted-text">Código: {church.code}</small>}
-                {church.operationalSummary && (
-                  <div className="church-list__summary">
-                    <span className="church-list__summary-item">
-                      <strong>Modelo:</strong> {church.operationalSummary.cultoModelLabel}
-                    </span>
-                    <span className="church-list__summary-item">
-                      <strong>Organistas:</strong> {church.operationalSummary.organistCount}
-                    </span>
-                    <span className="church-list__summary-item">
-                      <strong>Escalas:</strong> {church.operationalSummary.scheduleCount}
-                    </span>
-                  </div>
-                )}
-              </div>
-              <div className="actions-row">
-                <Button
-                  onClick={(e) => onStartEdit(e, church)}
-                  disabled={isLoading}
-                  variant="warning"
-                  size="sm"
-                >
-                  Editar
-                </Button>
-                <Button
-                  onClick={(e) => onRequestDeleteChurch(e, church.id, church.name)}
-                  disabled={isLoading}
-                  variant="danger"
-                  size="sm"
-                >
-                  Excluir
-                </Button>
-              </div>
-            </li>
-          ))}
+                <div className="actions-row">
+                  <Button
+                    onClick={(e) => onStartEdit(e, church)}
+                    disabled={isLoading}
+                    variant="warning"
+                    size="sm"
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    onClick={(e) => onRequestDeleteChurch(e, church.id, church.name)}
+                    disabled={isLoading}
+                    variant="danger"
+                    size="sm"
+                  >
+                    Excluir
+                  </Button>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       )}
     </>
@@ -99,6 +116,12 @@ ChurchList.propTypes = {
       name: PropTypes.string.isRequired,
       code: PropTypes.string,
       config: PropTypes.object,
+      rehearsal: PropTypes.shape({
+        weekOfMonth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        weekday: PropTypes.string,
+        time: PropTypes.string,
+        notes: PropTypes.string,
+      }),
       operationalSummary: PropTypes.shape({
         cultoModelLabel: PropTypes.string.isRequired,
         organistCount: PropTypes.number.isRequired,

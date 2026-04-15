@@ -231,6 +231,10 @@
   white-space: nowrap;
 }
 
+.church-list__summary-item--rehearsal {
+  color: #334155;
+}
+
 @media (max-width: 640px) {
   .church-form {
     padding: 14px;

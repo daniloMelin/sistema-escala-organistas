@@ -31,3 +31,21 @@ export const normalizeRehearsal = (rehearsal = {}) => ({
   time: rehearsal.time || '',
   notes: rehearsal.notes || '',
 });
+
+const getRehearsalWeekLabel = (weekOfMonth) =>
+  REHEARSAL_WEEK_OPTIONS.find((option) => option.value === String(weekOfMonth))?.label || '';
+
+const getRehearsalWeekdayLabel = (weekday) =>
+  REHEARSAL_WEEKDAY_OPTIONS.find((option) => option.value === weekday)?.label.toLowerCase() || '';
+
+export const formatRehearsalSummary = (rehearsal) => {
+  if (!rehearsal) return '';
+
+  const weekLabel = getRehearsalWeekLabel(rehearsal.weekOfMonth);
+  const weekdayLabel = getRehearsalWeekdayLabel(rehearsal.weekday);
+
+  if (!weekLabel || !weekdayLabel) return '';
+
+  const baseSummary = `${weekLabel} ${weekdayLabel} do mês`;
+  return rehearsal.time ? `${baseSummary} às ${rehearsal.time}` : baseSummary;
+};

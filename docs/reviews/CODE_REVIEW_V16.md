@@ -8,6 +8,7 @@
 | 1.1    | 12 de abril de 2026 | Codex        | Estruturação inicial do ensaio local por igreja |
 | 1.2    | 13 de abril de 2026 | Codex        | Implementação inicial do ensaio local           |
 | 1.3    | 13 de abril de 2026 | Codex        | Simplificação do ensaio local como campo fixo   |
+| 1.4    | 14 de abril de 2026 | Codex        | Exibição inicial do ensaio local na experiência |
 
 ## Objetivo
 
@@ -82,7 +83,7 @@ esse dado.
 
 #### 2.1 Refinar clareza da edição e exibição do ensaio local
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - revisar labels e organização visual do bloco de ensaio
@@ -142,7 +143,7 @@ esse dado.
 
 - [x] Fase 1.1 concluída
 - [x] Fase 1.2 concluída
-- [ ] Fase 2.1 pendente
+- [x] Fase 2.1 concluída
 - [ ] Fase 2.2 pendente
 - [ ] Fase 3.1 pendente
 - [ ] Fase 3.2 pendente
@@ -161,8 +162,7 @@ esse dado.
 
 ## Próximos Passos Recomendados
 
-1. implementar o bloco de ensaio local no cadastro e edição de igrejas
-2. avaliar exibição do ensaio local no painel da igreja após a entrega
-   inicial
+1. validar o fluxo ponta a ponta de criação e edição do ensaio local
+2. revisar o impacto prático dessa informação na operação do cadastro
 3. decidir em ciclo posterior como e quando essa informação deve entrar
    no PDF

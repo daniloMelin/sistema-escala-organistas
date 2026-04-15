@@ -7,6 +7,7 @@ import Button from './ui/Button';
 import OrganistForm from './OrganistForm';
 import OrganistList from './OrganistList';
 import { useChurchDashboard } from '../hooks/useChurchDashboard';
+import { formatRehearsalSummary } from '../constants/rehearsal';
 import './ChurchDashboard.css';
 
 const ChurchDashboard = ({ user }) => {
@@ -37,6 +38,8 @@ const ChurchDashboard = ({ user }) => {
 
   if (!user) return <div className="page-loading">Carregando...</div>;
 
+  const rehearsalSummary = selectedChurch ? formatRehearsalSummary(selectedChurch.rehearsal) : '';
+
   return (
     <div className="page-container page-container--lg">
       <div className="dashboard-toolbar">
@@ -59,6 +62,16 @@ const ChurchDashboard = ({ user }) => {
           {selectedChurch ? selectedChurch.name : `Igreja (ID: ${id})`}
         </h3>
       </div>
+
+      {selectedChurch && rehearsalSummary && (
+        <div className="church-dashboard__rehearsal">
+          <strong className="church-dashboard__rehearsal-title">Ensaio Local</strong>
+          <p className="church-dashboard__rehearsal-summary">{rehearsalSummary}</p>
+          {selectedChurch.rehearsal?.notes && (
+            <p className="church-dashboard__rehearsal-note">{selectedChurch.rehearsal.notes}</p>
+          )}
+        </div>
+      )}
 
       <OrganistForm
         editingId={editingId}

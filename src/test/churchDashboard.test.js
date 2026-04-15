@@ -13,7 +13,15 @@ jest.mock(
 
 jest.mock('../contexts/ChurchContext', () => ({
   useChurch: () => ({
-    selectedChurch: { name: 'Jardim Satélite' },
+    selectedChurch: {
+      name: 'Jardim Satélite',
+      rehearsal: {
+        weekOfMonth: 1,
+        weekday: 'friday',
+        time: '19:30',
+        notes: 'Chegar 15 minutos antes.',
+      },
+    },
   }),
 }));
 
@@ -52,5 +60,13 @@ describe('ChurchDashboard', () => {
 
     expect(screen.getByRole('button', { name: /Voltar para Igrejas/i })).toHaveClass('btn--sm');
     expect(screen.getByRole('button', { name: /Gerar Escala/i })).toHaveClass('btn--sm');
+  });
+
+  test('exibe resumo do ensaio local da igreja selecionada', () => {
+    render(<ChurchDashboard user={{ uid: 'user-1', email: 'test@example.com' }} />);
+
+    expect(screen.getByText('Ensaio Local')).toBeInTheDocument();
+    expect(screen.getByText('1ª semana sexta-feira do mês às 19:30')).toBeInTheDocument();
+    expect(screen.getByText('Chegar 15 minutos antes.')).toBeInTheDocument();
   });
 });

@@ -47,6 +47,12 @@ describe('ChurchList', () => {
             id: 'c1',
             name: 'Jardim Uirá',
             code: 'JUI',
+            rehearsal: {
+              weekOfMonth: 1,
+              weekday: 'thursday',
+              time: '19:30',
+              notes: '',
+            },
             operationalSummary: {
               cultoModelLabel: 'Culto único com reserva',
               organistCount: 7,
@@ -76,6 +82,40 @@ describe('ChurchList', () => {
     ).toBeInTheDocument();
     expect(
       screen.getByText((_, element) => element?.textContent === 'Escalas: 3')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        (_, element) => element?.textContent === 'Ensaio: 1ª semana quinta-feira do mês às 19:30'
+      )
+    ).toBeInTheDocument();
+  });
+
+  test('exibe ensaio local mesmo sem resumo operacional', () => {
+    render(
+      <ChurchList
+        churches={[
+          {
+            id: 'c2',
+            name: 'Recreio Campestre',
+            rehearsal: {
+              weekOfMonth: 1,
+              weekday: 'tuesday',
+              time: '19:30',
+              notes: '',
+            },
+          },
+        ]}
+        isLoading={false}
+        onChurchSelect={jest.fn()}
+        onStartEdit={jest.fn()}
+        onRequestDeleteChurch={jest.fn()}
+      />
+    );
+
+    expect(
+      screen.getAllByText(
+        (_, element) => element?.textContent === 'Ensaio: 1ª semana terça-feira do mês às 19:30'
+      )[0]
     ).toBeInTheDocument();
   });
 
