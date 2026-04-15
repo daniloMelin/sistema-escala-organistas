@@ -11,6 +11,7 @@
 | 1.4    | 14 de abril de 2026 | Codex        | Exibição inicial do ensaio local na experiência |
 | 1.5    | 14 de abril de 2026 | Codex        | Validação ponta a ponta do ensaio local         |
 | 1.6    | 14 de abril de 2026 | Codex        | Consolidação do impacto operacional do ensaio   |
+| 1.7    | 15 de abril de 2026 | Codex        | Consolidação da cobertura do ensaio local       |
 
 ## Objetivo
 
@@ -114,7 +115,7 @@ esse dado.
 
 #### 3.2 Consolidar cobertura e documentação do fluxo evoluído
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - documentar a cobertura da melhoria entregue
@@ -148,7 +149,7 @@ esse dado.
 - [x] Fase 2.1 concluída
 - [x] Fase 2.2 concluída
 - [x] Fase 3.1 concluída
-- [ ] Fase 3.2 pendente
+- [x] Fase 3.2 concluída
 - [ ] Fase 4.1 pendente
 
 ## Critério de Conclusão do V16
@@ -164,10 +165,11 @@ esse dado.
 
 - `docs/reviews/artifacts/v16/CHURCH_REHEARSAL_REVIEW_V16.md`
 - `docs/reviews/artifacts/v16/CHURCH_REHEARSAL_IMPACT_V16.md`
+- `docs/reviews/artifacts/v16/CHURCH_REHEARSAL_COVERAGE_V16.md`
 
 ## Próximos Passos Recomendados
 
-1. consolidar cobertura e documentação do fluxo evoluído
+1. encerrar formalmente o V16
 2. decidir em ciclo posterior como e quando essa informação deve entrar
    no PDF
 3. revisar se o ensaio local deve aparecer em outros pontos da
