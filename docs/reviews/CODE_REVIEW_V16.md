@@ -12,6 +12,7 @@
 | 1.5    | 14 de abril de 2026 | Codex        | Validação ponta a ponta do ensaio local         |
 | 1.6    | 14 de abril de 2026 | Codex        | Consolidação do impacto operacional do ensaio   |
 | 1.7    | 15 de abril de 2026 | Codex        | Consolidação da cobertura do ensaio local       |
+| 1.8    | 15 de abril de 2026 | Codex        | Fechamento formal do ciclo V16                  |
 
 ## Objetivo
 
@@ -21,9 +22,9 @@ e preparando seu uso futuro em visualizações e PDF.
 
 ## Status do Ciclo
 
-- Status geral: `PLANEJADO`
+- Status geral: `CONCLUÍDO`
 - Data de início: `12 de abril de 2026`
-- Data de encerramento: `A definir`
+- Data de encerramento: `15 de abril de 2026`
 - Contexto: evolução funcional do cadastro de igrejas, agora com foco em
   registrar uma informação operacional recorrente que hoje não tem lugar
   próprio no sistema
@@ -125,7 +126,7 @@ esse dado.
 
 #### 4.1 Encerrar formalmente o V16
 
-- Status: `PENDENTE`
+- Status: `CONCLUÍDO`
 - Prioridade: `MÉDIA`
 - Escopo:
   - registrar o resultado do ciclo
@@ -150,7 +151,7 @@ esse dado.
 - [x] Fase 2.2 concluída
 - [x] Fase 3.1 concluída
 - [x] Fase 3.2 concluída
-- [ ] Fase 4.1 pendente
+- [x] Fase 4.1 concluída
 
 ## Critério de Conclusão do V16
 
@@ -161,16 +162,42 @@ esse dado.
 - documentação do ciclo atualizada com impacto prático e próximos
   passos
 
-## Artefatos da Fase 1
+## Artefatos Consolidados do Ciclo
 
 - `docs/reviews/artifacts/v16/CHURCH_REHEARSAL_REVIEW_V16.md`
 - `docs/reviews/artifacts/v16/CHURCH_REHEARSAL_IMPACT_V16.md`
 - `docs/reviews/artifacts/v16/CHURCH_REHEARSAL_COVERAGE_V16.md`
 
+## Resumo Executivo
+
+Ao final do `V16`, o sistema passou a tratar o ensaio local como parte
+estruturada do cadastro da igreja, em vez de depender de memória
+informal ou observações externas ao sistema.
+
+O ciclo entregou:
+
+- cadastro e edição do ensaio local por igreja
+- validação do ensaio como dado próprio da igreja
+- exibição do ensaio na lista de igrejas
+- exibição do ensaio no painel da igreja
+- cobertura automatizada e validação ponta a ponta do fluxo
+
+## Impacto Prático no Projeto
+
+O `V16` melhorou o valor operacional do cadastro da igreja sem mexer no
+algoritmo de geração da escala.
+
+Na prática, o sistema agora:
+
+- guarda a recorrência do ensaio local de forma confiável
+- reduz a necessidade de consulta fora do sistema
+- permite leitura rápida da informação sem entrar em edição
+- prepara o dado para futura integração com PDF
+
 ## Próximos Passos Recomendados
 
-1. encerrar formalmente o V16
-2. decidir em ciclo posterior como e quando essa informação deve entrar
+1. decidir em ciclo posterior como e quando essa informação deve entrar
    no PDF
-3. revisar se o ensaio local deve aparecer em outros pontos da
+2. revisar se o ensaio local deve aparecer em outros pontos da
    experiência da igreja
+3. evoluir regras de qualidade de formulário no `V17`
