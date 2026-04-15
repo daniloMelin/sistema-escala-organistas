@@ -130,18 +130,6 @@
   font: inherit;
 }
 
-.church-form__rehearsal-time {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  align-items: center;
-  gap: 8px;
-}
-
-.church-form__rehearsal-time-separator {
-  color: #475467;
-  font-weight: 700;
-}
-
 .church-list__priority-hint {
   margin: 0 0 14px;
   color: #555555;

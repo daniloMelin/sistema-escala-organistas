@@ -58,7 +58,7 @@ describe('ChurchForm', () => {
       },
     });
 
-    const { rerender } = render(<ChurchForm {...props} />);
+    render(<ChurchForm {...props} />);
 
     fireEvent.change(screen.getByLabelText(/Semana do mês:/i), {
       target: { value: '2' },
@@ -66,20 +66,8 @@ describe('ChurchForm', () => {
     fireEvent.change(screen.getByLabelText(/Dia da semana:/i), {
       target: { value: 'friday' },
     });
-    fireEvent.change(screen.getByLabelText(/Hora do ensaio local/i), {
-      target: { value: '20' },
-    });
-    rerender(
-      <ChurchForm
-        {...props}
-        rehearsal={{
-          ...props.rehearsal,
-          time: '20:30',
-        }}
-      />
-    );
-    fireEvent.change(screen.getByLabelText(/Minuto do ensaio local/i), {
-      target: { value: '00' },
+    fireEvent.change(screen.getByLabelText(/Horário:/i), {
+      target: { value: '20:00' },
     });
     fireEvent.change(screen.getByLabelText(/Observação \(opcional\):/i), {
       target: { value: 'Culto começa às 19:00.' },

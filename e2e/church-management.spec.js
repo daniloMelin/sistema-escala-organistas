@@ -14,8 +14,7 @@ test.describe('cadastro e edicao de igreja', () => {
     await page.getByLabel('Domingo (Culto)').check();
     await page.getByLabel('Semana do mês:').selectOption('1');
     await page.getByLabel('Dia da semana:').selectOption('thursday');
-    await page.getByLabel('Hora do ensaio local').selectOption('19');
-    await page.getByLabel('Minuto do ensaio local').selectOption('30');
+    await page.getByLabel('Horário:').selectOption('19:30');
     await page.getByLabel('Observação (opcional):').fill('Chegar 15 minutos antes.');
     await page.getByRole('button', { name: 'Cadastrar' }).click();
 
@@ -51,8 +50,7 @@ test.describe('cadastro e edicao de igreja', () => {
     await page.getByLabel('Modelo de culto:').selectOption('meia_hora_parte1_parte2');
     await page.getByLabel('Semana do mês:').selectOption('2');
     await page.getByLabel('Dia da semana:').selectOption('friday');
-    await page.getByLabel('Hora do ensaio local').selectOption('20');
-    await page.getByLabel('Minuto do ensaio local').selectOption('00');
+    await page.getByLabel('Horário:').selectOption('20:00');
     await page.getByLabel('Observação (opcional):').fill('Ensaio mensal revisado.');
     await page.getByRole('button', { name: 'Atualizar' }).click();
 

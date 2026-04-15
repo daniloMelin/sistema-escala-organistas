@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ALL_WEEK_DAYS } from '../constants/days';
 import {
-  REHEARSAL_HOUR_OPTIONS,
-  REHEARSAL_MINUTE_OPTIONS,
+  REHEARSAL_TIME_OPTIONS,
   REHEARSAL_WEEK_OPTIONS,
   REHEARSAL_WEEKDAY_OPTIONS,
 } from '../constants/rehearsal';
@@ -30,20 +29,6 @@ const ChurchForm = ({
   onSubmit,
   onCancelEdit,
 }) => {
-  const [rehearsalHour = '', rehearsalMinute = ''] = rehearsal.time.split(':');
-
-  const handleRehearsalTimeChange = (field, value) => {
-    const nextHour = field === 'hour' ? value : rehearsalHour;
-    const nextMinute = field === 'minute' ? value : rehearsalMinute;
-
-    if (!nextHour && !nextMinute) {
-      onRehearsalChange('time', '');
-      return;
-    }
-
-    onRehearsalChange('time', `${nextHour || '00'}:${nextMinute || '00'}`);
-  };
-
   return (
     <div className={`church-form ${editingId ? 'church-form--editing' : ''}`}>
       <h3 className="church-form__title">
@@ -150,36 +135,22 @@ const ChurchForm = ({
             </div>
 
             <div className="church-form__rehearsal-field">
-              <label className="church-form__days-label">Horário:</label>
-              <div className="church-form__rehearsal-time">
-                <select
-                  aria-label="Hora do ensaio local"
-                  value={rehearsalHour}
-                  onChange={(e) => handleRehearsalTimeChange('hour', e.target.value)}
-                  className="church-form__model-select"
-                >
-                  <option value="">Hora</option>
-                  {REHEARSAL_HOUR_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                <span className="church-form__rehearsal-time-separator">:</span>
-                <select
-                  aria-label="Minuto do ensaio local"
-                  value={rehearsalMinute}
-                  onChange={(e) => handleRehearsalTimeChange('minute', e.target.value)}
-                  className="church-form__model-select"
-                >
-                  <option value="">Minuto</option>
-                  {REHEARSAL_MINUTE_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <label htmlFor="church-rehearsal-time" className="church-form__days-label">
+                Horário:
+              </label>
+              <select
+                id="church-rehearsal-time"
+                value={rehearsal.time}
+                onChange={(e) => onRehearsalChange('time', e.target.value)}
+                className="church-form__model-select"
+              >
+                <option value="">Selecione o horário</option>
+                {REHEARSAL_TIME_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="church-form__rehearsal-field church-form__rehearsal-field--notes">

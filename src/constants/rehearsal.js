@@ -16,13 +16,11 @@ export const REHEARSAL_WEEKDAY_OPTIONS = [
   { value: 'saturday', label: 'Sábado' },
 ];
 
-export const REHEARSAL_HOUR_OPTIONS = Array.from({ length: 24 }, (_, hour) => {
-  const value = String(hour).padStart(2, '0');
-  return { value, label: value };
-});
+export const REHEARSAL_TIME_OPTIONS = Array.from({ length: 24 * 12 }, (_, index) => {
+  const hour = String(Math.floor(index / 12)).padStart(2, '0');
+  const minute = String((index % 12) * 5).padStart(2, '0');
+  const value = `${hour}:${minute}`;
 
-export const REHEARSAL_MINUTE_OPTIONS = Array.from({ length: 60 }, (_, minute) => {
-  const value = String(minute).padStart(2, '0');
   return { value, label: value };
 });
 
