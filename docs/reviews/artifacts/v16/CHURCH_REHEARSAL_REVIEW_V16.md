@@ -133,7 +133,6 @@ restrita ao formulário:
 
 Isso reduz a necessidade de entrar em modo de edição apenas para
 conferir a informação.
-
 ## Conclusão
 
 O V16 deve começar com uma melhoria objetiva:
