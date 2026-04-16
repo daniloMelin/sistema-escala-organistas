@@ -72,6 +72,7 @@ const ChurchScheduleGenerator = ({ user }) => {
           isEditing={isEditing}
           isGenerating={isGenerating}
           organists={organists}
+          rehearsal={selectedChurch?.rehearsal}
           onToggleEditing={setIsEditing}
           onSaveChanges={handleSaveChanges}
           onExportClick={handleExportClick}
