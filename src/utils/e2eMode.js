@@ -1,4 +1,13 @@
-export const isE2EMode = process.env.REACT_APP_E2E_MODE === 'true';
+const isRuntimeE2EHost = () => {
+  if (typeof window === 'undefined' || !window.location) return true;
+
+  const { hostname, port } = window.location;
+  const isLocalHost = hostname === '127.0.0.1' || hostname === 'localhost';
+
+  return isLocalHost && port === '3001';
+};
+
+export const isE2EMode = process.env.REACT_APP_E2E_MODE === 'true' && isRuntimeE2EHost();
 
 export const E2E_STORAGE_KEYS = {
   session: 'organist_scheduler_e2e_session',
