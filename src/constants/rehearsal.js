@@ -57,3 +57,15 @@ export const formatRehearsalSummary = (rehearsal) => {
   const baseSummary = `${weekLabel} ${weekdayLabel} do mês`;
   return rehearsal.time ? `${baseSummary} às ${rehearsal.time}` : baseSummary;
 };
+
+export const formatCompactRehearsalSummary = (rehearsal) => {
+  if (!rehearsal) return '';
+
+  const weekNumber = String(rehearsal.weekOfMonth || '').trim();
+  const weekdayLabel = getRehearsalWeekdayLabel(rehearsal.weekday);
+
+  if (!weekNumber || !weekdayLabel) return '';
+
+  const baseSummary = `${weekNumber}° ${weekdayLabel} do mês`;
+  return rehearsal.time ? `${baseSummary} às ${rehearsal.time}` : baseSummary;
+};

@@ -3,7 +3,7 @@ import { getMonthYearLabel } from './dateUtils';
 import logger from './logger';
 import { getServiceSortPriority } from './scheduleLogic';
 import { buildOrganistDistributionSummary } from './scheduleSummary';
-import { formatRehearsalSummary } from '../constants/rehearsal';
+import { formatCompactRehearsalSummary } from '../constants/rehearsal';
 
 const COLORS = {
   titleBg: [37, 63, 101],
@@ -144,46 +144,6 @@ const drawHeader = (doc, pageWidth, margin, churchName, startDate, endDate) => {
   });
 };
 
-const getRehearsalBlockOffset = (rehearsal) => {
-  const rehearsalSummary = formatRehearsalSummary(rehearsal);
-  if (!rehearsalSummary) return 0;
-  return (rehearsal?.notes ? 12.5 : 8.4) + 3;
-};
-
-const drawRehearsalInfo = (doc, pageWidth, margin, y, rehearsal) => {
-  const rehearsalSummary = formatRehearsalSummary(rehearsal);
-
-  if (!rehearsalSummary) {
-    return 0;
-  }
-
-  const hasNotes = Boolean(rehearsal?.notes);
-  const blockHeight = hasNotes ? 12.5 : 8.4;
-  const blockWidth = pageWidth - margin * 2;
-
-  doc.setFillColor(...COLORS.summaryBg);
-  doc.setDrawColor(...COLORS.border);
-  doc.setLineWidth(0.2);
-  doc.roundedRect(margin, y, blockWidth, blockHeight, 2.2, 2.2, 'FD');
-
-  doc.setTextColor(...COLORS.textPrimary);
-  doc.setFont(undefined, 'bold');
-  doc.setFontSize(7.4);
-  doc.text('Ensaio Local', margin + 3, y + 4.2);
-
-  doc.setFont(undefined, 'normal');
-  doc.setFontSize(6.4);
-  doc.text(rehearsalSummary, margin + 3, y + 8.1);
-
-  if (hasNotes) {
-    doc.setTextColor(...COLORS.textMuted);
-    doc.setFontSize(5.8);
-    doc.text(rehearsal.notes, margin + 3, y + 11.3);
-  }
-
-  return blockHeight + 3;
-};
-
 const drawMonthTable = (doc, month, serviceIds, x, y, width, height) => {
   const monthHeaderHeight = 6.2;
   const tableHeaderHeight = 5.4;
@@ -260,8 +220,11 @@ const drawMonthTable = (doc, month, serviceIds, x, y, width, height) => {
   doc.rect(x, headerY, width, tableHeaderHeight + bodyHeight);
 };
 
-const drawDistributionSummary = (doc, items, x, y, width, height) => {
-  if (items.length === 0) {
+const drawDistributionSummary = (doc, items, x, y, width, height, rehearsal) => {
+  const rehearsalSummary = formatCompactRehearsalSummary(rehearsal);
+  const hasRehearsal = Boolean(rehearsalSummary);
+
+  if (items.length === 0 && !hasRehearsal) {
     return;
   }
 
@@ -270,25 +233,57 @@ const drawDistributionSummary = (doc, items, x, y, width, height) => {
   doc.setLineWidth(0.2);
   doc.roundedRect(x, y, width, height, 2.5, 2.5, 'FD');
 
+  let currentY = y + 5;
+
+  if (hasRehearsal) {
+    doc.setTextColor(...COLORS.textPrimary);
+    doc.setFont(undefined, 'bold');
+    doc.setFontSize(7.2);
+    doc.text('Ensaio Local', x + 3, currentY);
+
+    currentY += 3.8;
+    doc.setFont(undefined, 'normal');
+    doc.setFontSize(5.8);
+    doc.setTextColor(...COLORS.textMuted);
+    doc.text(rehearsalSummary, x + 3, currentY, { maxWidth: width - 6 });
+
+    if (rehearsal?.notes) {
+      currentY += 3.8;
+      doc.text(rehearsal.notes, x + 3, currentY, { maxWidth: width - 6 });
+      currentY += 4.8;
+    } else {
+      currentY += 4.6;
+    }
+
+    doc.setDrawColor(...COLORS.border);
+    doc.line(x + 3, currentY - 1.5, x + width - 3, currentY - 1.5);
+  }
+
   doc.setTextColor(...COLORS.textPrimary);
   doc.setFont(undefined, 'bold');
   doc.setFontSize(7.8);
-  doc.text('Resumo do período', x + 3, y + 5);
+  doc.text('Resumo do período', x + 3, currentY + 2.5);
 
   doc.setFont(undefined, 'normal');
   doc.setFontSize(5.8);
   doc.setTextColor(...COLORS.textMuted);
-  doc.text('Quantidade de vezes por organista.', x + 3, y + 8.7);
+  doc.text('Quantidade de vezes por organista.', x + 3, currentY + 6.2);
+
+  if (items.length === 0) {
+    return;
+  }
 
   const cols = width >= 48 ? 2 : 1;
   const colWidth = width / cols;
   const rowsPerCol = Math.ceil(items.length / cols);
 
+  const baseY = currentY + 10.5;
+
   items.forEach((item, index) => {
     const col = Math.floor(index / rowsPerCol);
     const row = index % rowsPerCol;
     const itemX = x + col * colWidth + 3;
-    const lineY = y + 13 + row * 3.8;
+    const lineY = baseY + row * 3.8;
 
     doc.setTextColor(...COLORS.textPrimary);
     doc.setFont(undefined, 'normal');
@@ -319,13 +314,7 @@ const drawSchedulePage = ({
   isLastPage,
 }) => {
   drawHeader(doc, pageWidth, margin, churchName, startDate, endDate);
-
-  const rehearsalOffset = getRehearsalBlockOffset(rehearsal);
-  if (rehearsalOffset > 0) {
-    drawRehearsalInfo(doc, pageWidth, margin, margin + headerHeight + 1.5, rehearsal);
-  }
-
-  const contentTop = margin + headerHeight + rehearsalOffset;
+  const contentTop = margin + headerHeight;
   const availableHeight = pageHeight - contentTop - margin - footerHeight;
   const pageSummaryWidth = isLastPage ? summaryWidth : 0;
   const monthAreaWidth =
@@ -337,14 +326,15 @@ const drawSchedulePage = ({
     drawMonthTable(doc, month, serviceIds, monthX, contentTop, monthWidth, availableHeight);
   });
 
-  if (isLastPage && distributionSummary.length > 0) {
+  if (isLastPage && pageSummaryWidth > 0) {
     drawDistributionSummary(
       doc,
       distributionSummary,
       margin + monthAreaWidth + gap,
       contentTop,
       pageSummaryWidth,
-      availableHeight
+      availableHeight,
+      rehearsal
     );
   }
 };
@@ -372,7 +362,9 @@ export const exportScheduleToPDF = (scheduleData, startDate, endDate, churchName
     const gap = 4;
     const headerHeight = 18;
     const footerHeight = 6;
-    const summaryWidth = distributionSummary.length > 0 ? 44 : 0;
+    const showSidebar =
+      distributionSummary.length > 0 || Boolean(formatCompactRehearsalSummary(rehearsal));
+    const summaryWidth = showSidebar ? 48 : 0;
 
     for (let startIndex = 0; startIndex < months.length; startIndex += MONTHS_PER_PAGE) {
       if (startIndex > 0) {
