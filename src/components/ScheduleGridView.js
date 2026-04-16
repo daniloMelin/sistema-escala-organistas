@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from './ui/Button';
 import { getServiceDisplayLabel, getServiceSortPriority } from '../utils/scheduleLogic';
 import { buildOrganistDistributionSummary } from '../utils/scheduleSummary';
-import { formatRehearsalSummary } from '../constants/rehearsal';
+import { formatCompactRehearsalSummary } from '../constants/rehearsal';
 
 const ScheduleGridView = ({
   groupedSchedule,
@@ -19,7 +19,7 @@ const ScheduleGridView = ({
   if (Object.keys(groupedSchedule).length === 0) return null;
   const flattenedSchedule = Object.values(groupedSchedule).flat();
   const distributionSummary = buildOrganistDistributionSummary(flattenedSchedule);
-  const rehearsalSummary = formatRehearsalSummary(rehearsal);
+  const rehearsalSummary = formatCompactRehearsalSummary(rehearsal);
 
   return (
     <div className="schedule-grid">

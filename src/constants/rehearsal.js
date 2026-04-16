@@ -66,6 +66,6 @@ export const formatCompactRehearsalSummary = (rehearsal) => {
 
   if (!weekNumber || !weekdayLabel) return '';
 
-  const baseSummary = `${weekNumber}° ${weekdayLabel} do mês`;
+  const baseSummary = `${weekNumber} ${weekdayLabel} do mês`;
   return rehearsal.time ? `${baseSummary} às ${rehearsal.time}` : baseSummary;
 };

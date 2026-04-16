@@ -150,13 +150,14 @@
 }
 
 .schedule-grid__rehearsal-summary {
-  margin: 4px 0 0;
+  margin: 8px 0 0;
   color: #29415f;
   font-weight: 600;
+  line-height: 1.35;
 }
 
 .schedule-grid__rehearsal-note {
-  margin: 4px 0 0;
+  margin: 6px 0 0;
   color: #5e6c80;
   font-size: 0.9rem;
 }

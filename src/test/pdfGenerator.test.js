@@ -87,7 +87,7 @@ describe('exportScheduleToPDF', () => {
       expect.arrayContaining([
         'Igreja PDF',
         'Ensaio Local',
-        '1° terça-feira do mês às 19:30',
+        '1 terça-feira do mês às 19:30',
         'Resumo do período',
         'Cultos às terças-feiras têm início às 14:30 h.',
         'Data',
