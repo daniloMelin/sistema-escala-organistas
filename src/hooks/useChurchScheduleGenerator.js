@@ -79,8 +79,9 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
 
   const handleExportClick = () => {
     const churchName = selectedChurch?.name || 'Igreja';
+    const rehearsal = selectedChurch?.rehearsal || null;
     try {
-      exportScheduleToPDF(generatedSchedule, startDate, endDate, churchName);
+      exportScheduleToPDF(generatedSchedule, startDate, endDate, churchName, rehearsal);
     } catch (err) {
       logger.error('Erro ao exportar PDF:', err);
       setError('Não foi possível exportar o PDF. Tente novamente.');
