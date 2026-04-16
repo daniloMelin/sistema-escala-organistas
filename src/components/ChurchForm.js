@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ALL_WEEK_DAYS } from '../constants/days';
-import { REHEARSAL_WEEK_OPTIONS, REHEARSAL_WEEKDAY_OPTIONS } from '../constants/rehearsal';
+import {
+  REHEARSAL_TIME_OPTIONS,
+  REHEARSAL_WEEK_OPTIONS,
+  REHEARSAL_WEEKDAY_OPTIONS,
+} from '../constants/rehearsal';
 import { CULT_MODEL_OPTIONS } from '../utils/churchCultModel';
 import Button from './ui/Button';
 import Input from './ui/Input';
@@ -131,17 +135,22 @@ const ChurchForm = ({
             </div>
 
             <div className="church-form__rehearsal-field">
-              <Input
+              <label htmlFor="church-rehearsal-time" className="church-form__days-label">
+                Horário:
+              </label>
+              <select
                 id="church-rehearsal-time"
-                label="Horário:"
-                type="text"
                 value={rehearsal.time}
-                placeholder="19:30"
-                inputMode="numeric"
-                pattern="[0-9]{2}:[0-9]{2}"
-                maxLength={5}
                 onChange={(e) => onRehearsalChange('time', e.target.value)}
-              />
+                className="church-form__model-select"
+              >
+                <option value="">Selecione o horário</option>
+                {REHEARSAL_TIME_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="church-form__rehearsal-field church-form__rehearsal-field--notes">

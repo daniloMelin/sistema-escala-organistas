@@ -16,6 +16,14 @@ export const REHEARSAL_WEEKDAY_OPTIONS = [
   { value: 'saturday', label: 'Sábado' },
 ];
 
+export const REHEARSAL_TIME_OPTIONS = Array.from({ length: 65 }, (_, index) => {
+  const totalMinutes = 6 * 60 + index * 15;
+  const hour = String(Math.floor(totalMinutes / 60)).padStart(2, '0');
+  const minute = String(totalMinutes % 60).padStart(2, '0');
+  const value = `${hour}:${minute}`;
+
+  return { value, label: value };
+});
 export const INITIAL_REHEARSAL = {
   weekOfMonth: '1',
   weekday: 'thursday',
@@ -31,3 +39,21 @@ export const normalizeRehearsal = (rehearsal = {}) => ({
   time: rehearsal.time || '',
   notes: rehearsal.notes || '',
 });
+
+const getRehearsalWeekLabel = (weekOfMonth) =>
+  REHEARSAL_WEEK_OPTIONS.find((option) => option.value === String(weekOfMonth))?.label || '';
+
+const getRehearsalWeekdayLabel = (weekday) =>
+  REHEARSAL_WEEKDAY_OPTIONS.find((option) => option.value === weekday)?.label.toLowerCase() || '';
+
+export const formatRehearsalSummary = (rehearsal) => {
+  if (!rehearsal) return '';
+
+  const weekLabel = getRehearsalWeekLabel(rehearsal.weekOfMonth);
+  const weekdayLabel = getRehearsalWeekdayLabel(rehearsal.weekday);
+
+  if (!weekLabel || !weekdayLabel) return '';
+
+  const baseSummary = `${weekLabel} ${weekdayLabel} do mês`;
+  return rehearsal.time ? `${baseSummary} às ${rehearsal.time}` : baseSummary;
+};

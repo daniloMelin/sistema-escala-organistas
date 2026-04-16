@@ -121,6 +121,19 @@ rehearsal: {
   primeira entrega
 - manter o bloco sempre visível no formulário
 
+## Evolução aplicada na Fase 2.1
+
+Na evolução seguinte do ciclo, a leitura do ensaio local deixou de ficar
+restrita ao formulário:
+
+- a lista de igrejas passou a exibir um resumo curto do ensaio local
+- o painel da igreja passou a mostrar um bloco próprio com:
+  - recorrência principal do ensaio
+  - observação opcional, quando existir
+
+Isso reduz a necessidade de entrar em modo de edição apenas para
+conferir a informação.
+
 ## Conclusão
 
 O V16 deve começar com uma melhoria objetiva:
