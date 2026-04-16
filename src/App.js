@@ -169,7 +169,7 @@ function App() {
             </Layout>
           </ChurchProvider>
         ) : (
-          <Auth onE2ELogin={handleE2ELogin} />
+          <Auth onAuthSuccess={setUser} onE2ELogin={handleE2ELogin} />
         )}
       </Router>
     </ErrorBoundary>

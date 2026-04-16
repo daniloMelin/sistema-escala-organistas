@@ -2,8 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import logger from './utils/logger';
-
-const isE2EMode = process.env.REACT_APP_E2E_MODE === 'true';
+import { isE2EMode } from './utils/e2eMode';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

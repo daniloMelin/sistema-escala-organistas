@@ -10,7 +10,7 @@ import Button from './ui/Button';
 import './Auth.css';
 import { isE2EMode } from '../utils/e2eMode';
 
-const Auth = ({ onE2ELogin }) => {
+const Auth = ({ onAuthSuccess, onE2ELogin }) => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,22 +24,37 @@ const Auth = ({ onE2ELogin }) => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user; // Pegamos os dados do usuário do resultado
 
-      // 2. Cria o documento do usuário no Firestore
-      if (user) {
-        // Criamos uma referência para o documento do usuário na coleção 'users'
-        const userDocRef = doc(db, 'users', user.uid);
+      if (!user) {
+        setError('Não foi possível concluir o login com o Google.');
+        setIsLoading(false);
+        return;
+      }
 
-        // Usamos setDoc para criar ou atualizar o documento.
-        // A opção { merge: true } é importante: ela cria o documento se ele não existir,
-        // e se já existir, apenas atualiza os campos, sem apagar outros dados (como as subcoleções).
-        await setDoc(
-          userDocRef,
-          {
-            email: user.email,
-            lastLogin: Timestamp.now(), // Armazena a data do último login
-          },
-          { merge: true }
-        );
+      onAuthSuccess?.(user);
+
+      // 2. Cria o documento do usuário no Firestore sem bloquear a entrada no app
+      if (user) {
+        try {
+          // Criamos uma referência para o documento do usuário na coleção 'users'
+          const userDocRef = doc(db, 'users', user.uid);
+
+          // Usamos setDoc para criar ou atualizar o documento.
+          // A opção { merge: true } é importante: ela cria o documento se ele não existir,
+          // e se já existir, apenas atualiza os campos, sem apagar outros dados (como as subcoleções).
+          await setDoc(
+            userDocRef,
+            {
+              email: user.email,
+              lastLogin: Timestamp.now(), // Armazena a data do último login
+            },
+            { merge: true }
+          );
+        } catch (profileError) {
+          logger.warn('Login concluído, mas não foi possível sincronizar o perfil no Firestore.', {
+            code: profileError?.code,
+            message: profileError?.message,
+          });
+        }
       }
       // Após isso, o onAuthStateChanged no App.js vai assumir e renderizar o app.
     } catch (err) {
@@ -80,6 +95,7 @@ const Auth = ({ onE2ELogin }) => {
 };
 
 Auth.propTypes = {
+  onAuthSuccess: PropTypes.func,
   onE2ELogin: PropTypes.func,
 };
 
