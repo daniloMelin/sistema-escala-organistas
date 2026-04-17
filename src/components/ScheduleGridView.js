@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import Button from './ui/Button';
 import { getServiceDisplayLabel, getServiceSortPriority } from '../utils/scheduleLogic';
 import { buildOrganistDistributionSummary } from '../utils/scheduleSummary';
+import { formatCompactRehearsalSummary } from '../constants/rehearsal';
 
 const ScheduleGridView = ({
   groupedSchedule,
   isEditing,
   isGenerating,
   organists,
+  rehearsal,
   onToggleEditing,
   onSaveChanges,
   onExportClick,
@@ -17,6 +19,7 @@ const ScheduleGridView = ({
   if (Object.keys(groupedSchedule).length === 0) return null;
   const flattenedSchedule = Object.values(groupedSchedule).flat();
   const distributionSummary = buildOrganistDistributionSummary(flattenedSchedule);
+  const rehearsalSummary = formatCompactRehearsalSummary(rehearsal);
 
   return (
     <div className="schedule-grid">
@@ -48,8 +51,18 @@ const ScheduleGridView = ({
         </div>
       </div>
 
-      {distributionSummary.length > 0 && (
+      {(rehearsalSummary || distributionSummary.length > 0) && (
         <div className="schedule-grid__distribution">
+          {rehearsalSummary && (
+            <div className="schedule-grid__rehearsal">
+              <h4 className="schedule-grid__distribution-title">Ensaio Local</h4>
+              <p className="schedule-grid__rehearsal-summary">{rehearsalSummary}</p>
+              {rehearsal?.notes && (
+                <p className="schedule-grid__rehearsal-note">{rehearsal.notes}</p>
+              )}
+            </div>
+          )}
+
           <div className="schedule-grid__distribution-header">
             <h4 className="schedule-grid__distribution-title">Resumo do período</h4>
             <span className="schedule-grid__distribution-subtitle">
@@ -146,6 +159,12 @@ ScheduleGridView.propTypes = {
       name: PropTypes.string.isRequired,
     })
   ).isRequired,
+  rehearsal: PropTypes.shape({
+    weekOfMonth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    weekday: PropTypes.string,
+    time: PropTypes.string,
+    notes: PropTypes.string,
+  }),
   onToggleEditing: PropTypes.func.isRequired,
   onSaveChanges: PropTypes.func.isRequired,
   onExportClick: PropTypes.func.isRequired,

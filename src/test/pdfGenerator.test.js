@@ -72,13 +72,28 @@ describe('exportScheduleToPDF', () => {
       ],
       '2026-03-01',
       '2026-03-01',
-      'Igreja PDF'
+      'Igreja PDF',
+      {
+        weekOfMonth: 1,
+        weekday: 'tuesday',
+        time: '19:30',
+        notes: 'Cultos às terças-feiras têm início às 14:30 h.',
+      }
     );
 
     const renderedLabels = mockDoc.text.mock.calls.map(([text]) => text);
 
     expect(renderedLabels).toEqual(
-      expect.arrayContaining(['Igreja PDF', 'Resumo do período', 'Data', 'M. Hora', 'Ana'])
+      expect.arrayContaining([
+        'Igreja PDF',
+        'Ensaio Local',
+        '1 terça-feira do mês às 19:30',
+        'Resumo do período',
+        'Cultos às terças-feiras têm início às 14:30 h.',
+        'Data',
+        'M. Hora',
+        'Ana',
+      ])
     );
     expect(mockJsPDFConstructor).toHaveBeenCalledWith(
       expect.objectContaining({

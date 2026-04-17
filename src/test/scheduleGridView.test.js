@@ -22,6 +22,12 @@ const buildProps = (overrides = {}) => ({
   groupedSchedule,
   isEditing: false,
   isGenerating: false,
+  rehearsal: {
+    weekOfMonth: 1,
+    weekday: 'tuesday',
+    time: '19:30',
+    notes: 'Cultos às terças-feiras têm início às 14:30 h.',
+  },
   organists: [
     { id: '1', name: 'Ana' },
     { id: '2', name: 'Bia' },
@@ -37,6 +43,9 @@ const buildProps = (overrides = {}) => ({
 describe('ScheduleGridView', () => {
   test('exibe apenas cards de dias com escala quando nao esta em edicao', () => {
     render(<ScheduleGridView {...buildProps()} />);
+    expect(screen.getByText('Ensaio Local')).toBeInTheDocument();
+    expect(screen.getByText('1 terça-feira do mês às 19:30')).toBeInTheDocument();
+    expect(screen.getByText('Cultos às terças-feiras têm início às 14:30 h.')).toBeInTheDocument();
     expect(screen.getByText('Resumo do período')).toBeInTheDocument();
     expect(
       screen.getByText('Quantidade de vezes por organista no período gerado.')
