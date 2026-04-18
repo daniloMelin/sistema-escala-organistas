@@ -5,14 +5,14 @@
 | Versão | Data               | Autor(es)    | Descrição da Revisão                        |
 | ------ | ------------------ | ------------ | ------------------------------------------- |
 | 1.0    | 2 de abril de 2026 | Danilo Melin | Criação do ciclo V15                        |
-| 1.1    | 2 de abril de 2026 | Codex        | Ajuste de foco do ciclo V15                 |
-| 1.2    | 5 de abril de 2026 | Codex        | Revisão da priorização operacional da lista |
-| 1.3    | 5 de abril de 2026 | Codex        | Implementação da priorização operacional    |
-| 1.4    | 5 de abril de 2026 | Codex        | Refino da clareza da lista priorizada       |
-| 1.5    | 6 de abril de 2026 | Codex        | Validação E2E da lista priorizada           |
-| 1.6    | 6 de abril de 2026 | Codex        | Consolidação do impacto operacional do V15  |
-| 1.7    | 6 de abril de 2026 | Codex        | Consolidação da cobertura funcional do V15  |
-| 1.8    | 6 de abril de 2026 | Codex        | Fechamento formal do ciclo V15              |
+| 1.1    | 2 de abril de 2026 | Danilo Melin | Ajuste de foco do ciclo V15                 |
+| 1.2    | 5 de abril de 2026 | Danilo Melin | Revisão da priorização operacional da lista |
+| 1.3    | 5 de abril de 2026 | Danilo Melin | Implementação da priorização operacional    |
+| 1.4    | 5 de abril de 2026 | Danilo Melin | Refino da clareza da lista priorizada       |
+| 1.5    | 6 de abril de 2026 | Danilo Melin | Validação E2E da lista priorizada           |
+| 1.6    | 6 de abril de 2026 | Danilo Melin | Consolidação do impacto operacional do V15  |
+| 1.7    | 6 de abril de 2026 | Danilo Melin | Consolidação da cobertura funcional do V15  |
+| 1.8    | 6 de abril de 2026 | Danilo Melin | Fechamento formal do ciclo V15              |
 
 ## Objetivo
 
