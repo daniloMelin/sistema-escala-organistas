@@ -40,6 +40,9 @@ export const normalizeRehearsal = (rehearsal = {}) => ({
   notes: rehearsal.notes || '',
 });
 
+const isValidRehearsalWeek = (weekOfMonth) =>
+  REHEARSAL_WEEK_OPTIONS.some((option) => option.value === String(weekOfMonth).trim());
+
 const getRehearsalWeekdayLabel = (weekday) =>
   REHEARSAL_WEEKDAY_OPTIONS.find((option) => option.value === weekday)?.label.toLowerCase() || '';
 
@@ -49,7 +52,7 @@ export const formatRehearsalSummary = (rehearsal) => {
   const weekNumber = String(rehearsal.weekOfMonth || '').trim();
   const weekdayLabel = getRehearsalWeekdayLabel(rehearsal.weekday);
 
-  if (!weekNumber || !weekdayLabel) return '';
+  if (!isValidRehearsalWeek(weekNumber) || !weekdayLabel) return '';
 
   const baseSummary = `${weekNumber} ${weekdayLabel} do mês`;
   return rehearsal.time ? `${baseSummary} às ${rehearsal.time}` : baseSummary;
@@ -61,7 +64,7 @@ export const formatCompactRehearsalSummary = (rehearsal) => {
   const weekNumber = String(rehearsal.weekOfMonth || '').trim();
   const weekdayLabel = getRehearsalWeekdayLabel(rehearsal.weekday);
 
-  if (!weekNumber || !weekdayLabel) return '';
+  if (!isValidRehearsalWeek(weekNumber) || !weekdayLabel) return '';
 
   const baseSummary = `${weekNumber} ${weekdayLabel} do mês`;
   return rehearsal.time ? `${baseSummary} às ${rehearsal.time}` : baseSummary;
