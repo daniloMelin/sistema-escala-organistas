@@ -57,7 +57,7 @@ const ChurchDashboard = ({ user }) => {
       </div>
 
       <div className="section-header">
-        <h2>Painel de Gerenciamento</h2>
+        <h2>Gerenciamento de Organistas</h2>
         <h3 className="section-header__subtitle">
           {selectedChurch ? selectedChurch.name : `Igreja (ID: ${id})`}
         </h3>
@@ -65,7 +65,7 @@ const ChurchDashboard = ({ user }) => {
 
       {selectedChurch && rehearsalSummary && (
         <div className="church-dashboard__rehearsal">
-          <strong className="church-dashboard__rehearsal-title">Ensaio Local</strong>
+          <strong className="church-dashboard__rehearsal-title">Ensaio local</strong>
           <p className="church-dashboard__rehearsal-summary">{rehearsalSummary}</p>
           {selectedChurch.rehearsal?.notes && (
             <p className="church-dashboard__rehearsal-note">{selectedChurch.rehearsal.notes}</p>

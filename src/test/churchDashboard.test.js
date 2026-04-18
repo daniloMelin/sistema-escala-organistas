@@ -65,8 +65,9 @@ describe('ChurchDashboard', () => {
   test('exibe resumo do ensaio local da igreja selecionada', () => {
     render(<ChurchDashboard user={{ uid: 'user-1', email: 'test@example.com' }} />);
 
-    expect(screen.getByText('Ensaio Local')).toBeInTheDocument();
-    expect(screen.getByText('1ª semana sexta-feira do mês às 19:30')).toBeInTheDocument();
+    expect(screen.getByText('Gerenciamento de Organistas')).toBeInTheDocument();
+    expect(screen.getByText('Ensaio local')).toBeInTheDocument();
+    expect(screen.getByText('1 sexta-feira do mês às 19:30')).toBeInTheDocument();
     expect(screen.getByText('Chegar 15 minutos antes.')).toBeInTheDocument();
   });
 });

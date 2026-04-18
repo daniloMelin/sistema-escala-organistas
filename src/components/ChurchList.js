@@ -69,7 +69,7 @@ const ChurchList = ({
                       </span>
                       {rehearsalSummary && (
                         <span className="church-list__summary-item church-list__summary-item--rehearsal">
-                          <strong>Ensaio:</strong> {rehearsalSummary}
+                          <strong>Ensaio local:</strong> {rehearsalSummary}
                         </span>
                       )}
                     </div>
@@ -77,7 +77,7 @@ const ChurchList = ({
                   {!church.operationalSummary && rehearsalSummary && (
                     <div className="church-list__summary">
                       <span className="church-list__summary-item church-list__summary-item--rehearsal">
-                        <strong>Ensaio:</strong> {rehearsalSummary}
+                        <strong>Ensaio local:</strong> {rehearsalSummary}
                       </span>
                     </div>
                   )}

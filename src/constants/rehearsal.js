@@ -49,12 +49,12 @@ const getRehearsalWeekdayLabel = (weekday) =>
 export const formatRehearsalSummary = (rehearsal) => {
   if (!rehearsal) return '';
 
-  const weekLabel = getRehearsalWeekLabel(rehearsal.weekOfMonth);
+  const weekNumber = String(rehearsal.weekOfMonth || '').trim();
   const weekdayLabel = getRehearsalWeekdayLabel(rehearsal.weekday);
 
-  if (!weekLabel || !weekdayLabel) return '';
+  if (!weekNumber || !weekdayLabel) return '';
 
-  const baseSummary = `${weekLabel} ${weekdayLabel} do mês`;
+  const baseSummary = `${weekNumber} ${weekdayLabel} do mês`;
   return rehearsal.time ? `${baseSummary} às ${rehearsal.time}` : baseSummary;
 };
 
