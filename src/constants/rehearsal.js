@@ -40,9 +40,6 @@ export const normalizeRehearsal = (rehearsal = {}) => ({
   notes: rehearsal.notes || '',
 });
 
-const getRehearsalWeekLabel = (weekOfMonth) =>
-  REHEARSAL_WEEK_OPTIONS.find((option) => option.value === String(weekOfMonth))?.label || '';
-
 const getRehearsalWeekdayLabel = (weekday) =>
   REHEARSAL_WEEKDAY_OPTIONS.find((option) => option.value === weekday)?.label.toLowerCase() || '';
 
