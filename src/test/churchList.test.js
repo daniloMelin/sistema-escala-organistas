@@ -85,7 +85,7 @@ describe('ChurchList', () => {
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        (_, element) => element?.textContent === 'Ensaio: 1ª semana quinta-feira do mês às 19:30'
+        (_, element) => element?.textContent === 'Ensaio local: 1 quinta-feira do mês às 19:30'
       )
     ).toBeInTheDocument();
   });
@@ -114,7 +114,7 @@ describe('ChurchList', () => {
 
     expect(
       screen.getAllByText(
-        (_, element) => element?.textContent === 'Ensaio: 1ª semana terça-feira do mês às 19:30'
+        (_, element) => element?.textContent === 'Ensaio local: 1 terça-feira do mês às 19:30'
       )[0]
     ).toBeInTheDocument();
   });
