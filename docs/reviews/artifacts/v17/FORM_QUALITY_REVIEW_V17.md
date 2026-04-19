@@ -37,6 +37,26 @@ A expansão do cadastro reforçou a importância de:
 - exibir mensagem curta logo abaixo do campo
 - evitar depender apenas de erro genérico no topo do formulário
 
+## Tabela inicial de limites
+
+| Campo              | Mínimo | Máximo | Regra proposta                                      |
+| ------------------ | ------ | ------ | --------------------------------------------------- |
+| `church.name`      | 3      | 100    | Letras, números, espaços e acentuação               |
+| `organist.name`    | 2      | 40     | Primeiro nome ou nome + sobrenome                   |
+| `rehearsal.notes`  | 0      | 120    | Observação opcional, sem necessidade de texto longo |
+| `church.code`      | 0      | 50     | Mantido apenas por compatibilidade legada           |
+| `user.email`       | 0      | 320    | Mantém limite compatível com autenticação           |
+| `user.displayName` | 0      | 120    | Mantém compatibilidade com o provedor               |
+| `user.photoURL`    | 0      | 2000   | Mantém compatibilidade com o provedor               |
+
+## Observações sobre aplicação prática
+
+- os limites devem ser centralizados em constantes compartilhadas
+- a UI deve refletir os limites com `maxLength` onde fizer sentido
+- o Firestore deve manter proteção equivalente para os campos críticos
+- `church.code` não deve receber novo investimento funcional na interface
+- o foco principal do ciclo continua em nome de igreja, nome de organista e observação do ensaio
+
 ## Resultado esperado do ciclo
 
 Ao final do `V17`, os formulários devem transmitir mais confiança,
