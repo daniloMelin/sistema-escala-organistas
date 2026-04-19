@@ -7,6 +7,7 @@
 | 1.0    | 18 de abril de 2026 | Danilo Melin | Criação do ciclo V17                              |
 | 1.1    | 18 de abril de 2026 | Danilo Melin | Estruturação do ciclo de qualidade de formulários |
 | 1.2    | 18 de abril de 2026 | Danilo Melin | Definição inicial dos limites de caracteres       |
+| 1.3    | 18 de abril de 2026 | Danilo Melin | Separação entre campos de UX e campos técnicos    |
 
 ## Objetivo
 
@@ -70,15 +71,22 @@ Durante os testes funcionais, foi identificado que alguns formulários ainda apr
 
 ## Limites Iniciais Propostos
 
+### Campos foco de UX no V17
+
+| Campo             | Mínimo | Máximo | Observação                                                |
+| ----------------- | ------ | ------ | --------------------------------------------------------- |
+| `church.name`     | 3      | 100    | Nome principal da igreja, com regra mais flexível         |
+| `organist.name`   | 2      | 40     | Primeiro nome ou nome + sobrenome                         |
+| `rehearsal.notes` | 0      | 120    | Observação opcional do ensaio local                       |
+| `church.code`     | 0      | 50     | Limite legado, com remoção prevista da UI ao longo do V17 |
+
+### Campos técnicos documentados, fora do foco principal do ciclo
+
 | Campo              | Mínimo | Máximo | Observação                                                  |
 | ------------------ | ------ | ------ | ----------------------------------------------------------- |
-| `church.name`      | 3      | 100    | Nome principal da igreja, com regra mais flexível           |
-| `organist.name`    | 2      | 40     | Primeiro nome ou nome + sobrenome                           |
-| `rehearsal.notes`  | 0      | 120    | Observação opcional do ensaio local                         |
 | `user.email`       | 0      | 320    | Mantém compatibilidade com o limite já usado nas rules      |
 | `user.displayName` | 0      | 120    | Mantém compatibilidade com o fluxo atual de autenticação    |
 | `user.photoURL`    | 0      | 2000   | Mantém compatibilidade com o perfil retornado pelo provedor |
-| `church.code`      | 0      | 50     | Limite legado, com remoção prevista da UI ao longo do V17   |
 
 ## Diretriz Técnica de Implementação
 
@@ -87,6 +95,14 @@ Os limites do `V17` devem ser aplicados em três camadas:
 1. interface, com `maxLength` e feedback visual imediato
 2. validação de front-end, com mensagens específicas por campo
 3. regras do Firestore, preservando coerência com o contrato final dos dados
+
+Para implementação do ciclo, a prioridade prática deve ficar
+concentrada em:
+
+- `church.name`
+- `organist.name`
+- `rehearsal.notes`
+- remoção progressiva de `church.code` da interface
 
 ## Ordem de execução recomendada
 
