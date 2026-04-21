@@ -2,14 +2,15 @@
 
 ## Histórico de Revisões
 
-| Versão | Data                | Autor(es)    | Descrição da Revisão                              |
-| ------ | ------------------- | ------------ | ------------------------------------------------- |
-| 1.0    | 18 de abril de 2026 | Danilo Melin | Criação do ciclo V17                              |
-| 1.1    | 18 de abril de 2026 | Danilo Melin | Estruturação do ciclo de qualidade de formulários |
-| 1.2    | 18 de abril de 2026 | Danilo Melin | Definição inicial dos limites de caracteres       |
-| 1.3    | 18 de abril de 2026 | Danilo Melin | Separação entre campos de UX e campos técnicos    |
-| 1.4    | 21 de abril de 2026 | Danilo Melin | Consolidação das regras da fase 1.1 do V17        |
-| 1.5    | 21 de abril de 2026 | Danilo Melin | Consolidação do comportamento de UI da fase 1.2   |
+| Versão | Data                | Autor(es)    | Descrição da Revisão                               |
+| ------ | ------------------- | ------------ | -------------------------------------------------- |
+| 1.0    | 18 de abril de 2026 | Danilo Melin | Criação do ciclo V17                               |
+| 1.1    | 18 de abril de 2026 | Danilo Melin | Estruturação do ciclo de qualidade de formulários  |
+| 1.2    | 18 de abril de 2026 | Danilo Melin | Definição inicial dos limites de caracteres        |
+| 1.3    | 18 de abril de 2026 | Danilo Melin | Separação entre campos de UX e campos técnicos     |
+| 1.4    | 21 de abril de 2026 | Danilo Melin | Consolidação das regras da fase 1.1 do V17         |
+| 1.5    | 21 de abril de 2026 | Danilo Melin | Consolidação do comportamento de UI da fase 1.2    |
+| 1.6    | 21 de abril de 2026 | Danilo Melin | Revisão e consolidação do escopo técnico da fase 2 |
 
 ## Objetivo
 
@@ -135,6 +136,78 @@ Na prática, a decisão de UX do ciclo fica assim:
 - `organist.name`: limite visível, validação de palavras e bloqueio de caracteres inadequados
 - `rehearsal.notes`: limite de tamanho com comportamento simples e previsível
 - `church.code`: não deve receber novo refinamento de UX, pois sua remoção continua prevista
+
+## Escopo técnico da Fase 2
+
+A fase 2 do `V17` fica definida como a etapa de implementação prática
+das regras aprovadas na fase 1.
+
+Ela deve ser executada em quatro blocos técnicos:
+
+1. centralização do contrato de validação
+2. adoção de erros por campo na interface
+3. simplificação da experiência do formulário
+4. alinhamento entre frontend, persistência e Firestore Rules
+
+### Bloco 2.1 - contrato de validação
+
+Arquivos prioritários:
+
+- `src/utils/validation.js`
+- `src/constants/formValidation.js` ou equivalente
+
+Objetivo:
+
+- consolidar limites e mensagens oficiais do `V17`
+- ajustar `organist.name` para `40` caracteres máximos
+- substituir validações genéricas por regras de negócio mais claras
+
+### Bloco 2.2 - erro por campo e feedback visual
+
+Arquivos prioritários:
+
+- `src/components/ChurchForm.js`
+- `src/components/OrganistForm.js`
+- `src/components/ui/Input.js`
+- `src/hooks/useChurchManager.js`
+- `src/hooks/useChurchDashboard.js`
+
+Objetivo:
+
+- substituir erro global único por estrutura de erro por campo
+- usar o `Input` com destaque visual individual
+- manter alerta global apenas como apoio secundário
+
+### Bloco 2.3 - simplificação da experiência
+
+Arquivos prioritários:
+
+- `src/components/ChurchForm.js`
+- `src/components/ChurchList.js`
+- `src/hooks/useChurchManager.js`
+
+Objetivo:
+
+- aplicar `maxLength` nos campos definidos na fase 1.2
+- remover o campo `church.code` da experiência principal
+- manter compatibilidade com registros legados já existentes
+
+### Bloco 2.4 - persistência, rules e testes
+
+Arquivos prioritários:
+
+- `src/services/firebaseService.js`
+- `firestore.rules`
+- `src/test/validation.test.js`
+- `src/test/churchForm.test.js`
+- `src/test/useChurchDashboard.test.js`
+- `src/test/useChurchManager.test.js`
+
+Objetivo:
+
+- alinhar payload salvo com as novas validações
+- reduzir divergência entre frontend e Firestore
+- ampliar cobertura de testes para limites, mensagens e remoção de `church.code`
 
 ## Ordem de execução recomendada
 

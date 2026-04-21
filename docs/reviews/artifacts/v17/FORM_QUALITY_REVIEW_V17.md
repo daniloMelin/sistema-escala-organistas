@@ -140,6 +140,50 @@ A expansão do cadastro reforçou a importância de:
 - reservar a mensagem textual para orientar motivo do erro, não apenas repetir o limite
 - manter erro global apenas como apoio secundário, nunca como única sinalização
 
+## Revisão técnica da fase 2
+
+### Situação atual observada no código
+
+- `src/utils/validation.js` já possui validadores, mas ainda usa regras mais amplas que o `V17`
+- `src/components/ChurchForm.js` e `src/components/OrganistForm.js` ainda dependem de erro global por formulário
+- `src/components/ui/Input.js` já suporta erro por campo e pode ser reaproveitado
+- `src/hooks/useChurchManager.js` e `src/hooks/useChurchDashboard.js` concentram a validação apenas no envio
+- `firestore.rules` ainda aceita contratos mais largos do que os limites aprovados para UX
+
+### Escopo técnico aprovado para implementação
+
+#### 2.1 Validadores e constantes
+
+- centralizar limites e mensagens em constantes compartilhadas
+- ajustar `validateOrganistName` para o limite máximo de `40`
+- diferenciar regra de negócio de sanitização genérica
+
+#### 2.2 Estado de erro por campo
+
+- criar estrutura de erro específica por campo
+- propagar erros individuais para `Input`
+- manter mensagem global apenas como reforço secundário
+
+#### 2.3 Ajustes de UX no formulário
+
+- aplicar `maxLength` nos campos definidos
+- validar composição de nome da organista no `blur` e no `submit`
+- retirar `church.code` da interface principal sem quebrar compatibilidade de dados
+
+#### 2.4 Persistência e rules
+
+- salvar payload já compatível com o contrato final
+- reduzir diferença entre frontend e `firestore.rules`
+- atualizar as rules sem tentar empurrar validação excessivamente sofisticada para o backend
+
+#### 2.5 Testes
+
+- validar cenários de nome inválido para igreja
+- validar número e excesso de palavras no nome da organista
+- validar limite de `40` caracteres para organista
+- validar limite de `120` caracteres para observação do ensaio
+- validar ausência do campo `church.code` na UI
+
 ## Resultado esperado do ciclo
 
 Ao final do `V17`, os formulários devem transmitir mais confiança,
