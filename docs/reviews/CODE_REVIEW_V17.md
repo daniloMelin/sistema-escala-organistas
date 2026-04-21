@@ -8,6 +8,7 @@
 | 1.1    | 18 de abril de 2026 | Danilo Melin | Estruturação do ciclo de qualidade de formulários |
 | 1.2    | 18 de abril de 2026 | Danilo Melin | Definição inicial dos limites de caracteres       |
 | 1.3    | 18 de abril de 2026 | Danilo Melin | Separação entre campos de UX e campos técnicos    |
+| 1.4    | 21 de abril de 2026 | Danilo Melin | Consolidação das regras da fase 1.1 do V17        |
 
 ## Objetivo
 
@@ -20,7 +21,7 @@ Elevar a qualidade dos formulários do sistema com foco em:
 
 ## Status do Ciclo
 
-- Status geral: `PLANEJADO`
+- Status geral: `EM ANDAMENTO`
 - Data de início: `18 de abril de 2026`
 - Contexto: continuidade natural do `V16`, aproveitando a evolução do
   cadastro de igrejas e a necessidade de reforçar qualidade de entrada
@@ -104,6 +105,17 @@ concentrada em:
 - `rehearsal.notes`
 - remoção progressiva de `church.code` da interface
 
+## Consolidação da Fase 1.1
+
+A fase 1.1 do `V17` fica definida como a etapa de consolidação das
+regras oficiais dos formulários, com foco em dois pilares:
+
+1. critérios de validação por campo
+2. padrão visual de comunicação de erro
+
+Com isso, a fase seguinte pode implementar os formulários já com
+mensagens, limites e comportamento visual acordados.
+
 ## Ordem de execução recomendada
 
 1. **Fase 1 - revisar regras e feedback visual dos formulários**
@@ -114,7 +126,8 @@ concentrada em:
 ## Registro de progresso
 
 - [x] Estrutura inicial do V17 criada
-- [ ] Fase 1 concluída
+- [x] Fase 1.1 concluída
+- [ ] Fase 1.2 concluída
 - [ ] Fase 2 concluída
 - [ ] Fase 3 concluída
 - [ ] Fase 4 concluída

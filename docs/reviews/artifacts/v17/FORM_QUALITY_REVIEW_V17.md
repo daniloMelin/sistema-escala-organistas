@@ -65,6 +65,50 @@ A expansão do cadastro reforçou a importância de:
 - o foco principal do ciclo continua em nome de igreja, nome de
   organista e observação do ensaio
 
+## Regras oficiais da fase 1.1
+
+### `church.name`
+
+- mínimo de `3` caracteres
+- máximo de `100` caracteres
+- aceitar letras, números, espaços e acentuação
+- bloquear caracteres especiais inadequados
+- mensagem esperada:
+  - `Use apenas letras, números e espaços no nome da igreja.`
+
+### `organist.name`
+
+- mínimo de `2` caracteres
+- máximo de `40` caracteres
+- aceitar primeiro nome ou nome + sobrenome
+- bloquear números
+- bloquear caracteres especiais inadequados
+- mensagem esperada para caracteres inválidos:
+  - `Use apenas letras e espaços no nome da organista.`
+- mensagem esperada para excesso de palavras:
+  - `Informe somente o primeiro nome ou nome e sobrenome.`
+
+### `rehearsal.notes`
+
+- máximo de `120` caracteres
+- campo opcional
+- deve manter a digitação livre dentro do limite
+- mensagem esperada:
+  - `A observação do ensaio pode ter no máximo 120 caracteres.`
+
+### `church.code`
+
+- permanece apenas como compatibilidade legada
+- não é campo prioritário para evolução
+- a diretriz do ciclo continua sendo remover esse campo da interface
+
+## Padrão visual de erro acordado
+
+- campo inválido com borda de destaque
+- mensagem curta logo abaixo do campo
+- valor digitado preservado
+- erro específico por campo, evitando depender apenas de alerta global
+
 ## Resultado esperado do ciclo
 
 Ao final do `V17`, os formulários devem transmitir mais confiança,
