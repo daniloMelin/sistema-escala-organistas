@@ -13,7 +13,6 @@ import Input from './ui/Input';
 const ChurchForm = ({
   editingId,
   churchName,
-  churchCode,
   selectedDays,
   cultoModel,
   rehearsal,
@@ -24,8 +23,6 @@ const ChurchForm = ({
   successMessage,
   onChurchNameChange,
   onChurchNameBlur,
-  onChurchCodeChange,
-  onChurchCodeBlur,
   onCultoModelChange,
   onRehearsalChange,
   onRehearsalBlur,
@@ -54,14 +51,6 @@ const ChurchForm = ({
           error={fieldErrors.churchName}
           maxLength={100}
           required
-        />
-        <Input
-          label="Código (opcional):"
-          type="text"
-          value={churchCode}
-          onChange={(e) => onChurchCodeChange(e.target.value)}
-          onBlur={onChurchCodeBlur}
-          error={fieldErrors.churchCode}
         />
 
         <div className="church-form__model">
@@ -219,7 +208,6 @@ const ChurchForm = ({
 ChurchForm.propTypes = {
   editingId: PropTypes.string,
   churchName: PropTypes.string.isRequired,
-  churchCode: PropTypes.string.isRequired,
   selectedDays: PropTypes.object.isRequired,
   cultoModel: PropTypes.string.isRequired,
   rehearsal: PropTypes.shape({
@@ -233,7 +221,6 @@ ChurchForm.propTypes = {
   error: PropTypes.string.isRequired,
   fieldErrors: PropTypes.shape({
     churchName: PropTypes.string.isRequired,
-    churchCode: PropTypes.string.isRequired,
     rehearsalWeekOfMonth: PropTypes.string.isRequired,
     rehearsalWeekday: PropTypes.string.isRequired,
     rehearsalTime: PropTypes.string.isRequired,
@@ -242,8 +229,6 @@ ChurchForm.propTypes = {
   successMessage: PropTypes.string.isRequired,
   onChurchNameChange: PropTypes.func.isRequired,
   onChurchNameBlur: PropTypes.func.isRequired,
-  onChurchCodeChange: PropTypes.func.isRequired,
-  onChurchCodeBlur: PropTypes.func.isRequired,
   onCultoModelChange: PropTypes.func.isRequired,
   onRehearsalChange: PropTypes.func.isRequired,
   onRehearsalBlur: PropTypes.func.isRequired,

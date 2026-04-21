@@ -157,7 +157,7 @@ service cloud.firestore {
         && data.keys().hasOnly(['name', 'availability', 'createdAt', 'fixedDays', 'blockedDates', 'stats'])
         && data.name is string
         && data.name.size() >= 2
-        && data.name.size() <= 100
+        && data.name.size() <= 40
         && ('availability' in data)
         && isValidAvailabilityMap(data.availability)
         && optionalTimestamp(data, 'createdAt')

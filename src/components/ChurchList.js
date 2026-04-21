@@ -55,7 +55,6 @@ const ChurchList = ({
                       </div>
                     )}
                   </div>
-                  {church.code && <small className="muted-text">Código: {church.code}</small>}
                   {church.operationalSummary && (
                     <div className="church-list__summary">
                       <span className="church-list__summary-item">

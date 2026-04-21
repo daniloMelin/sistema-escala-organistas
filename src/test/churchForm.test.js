@@ -6,7 +6,6 @@ import { INITIAL_REHEARSAL } from '../constants/rehearsal';
 const buildProps = (overrides = {}) => ({
   editingId: null,
   churchName: 'Central',
-  churchCode: 'ABC',
   selectedDays: { ...INITIAL_AVAILABILITY, sunday_culto: true },
   cultoModel: 'meia_hora_e_culto',
   rehearsal: INITIAL_REHEARSAL,
@@ -15,7 +14,6 @@ const buildProps = (overrides = {}) => ({
   error: '',
   fieldErrors: {
     churchName: '',
-    churchCode: '',
     rehearsalWeekOfMonth: '',
     rehearsalWeekday: '',
     rehearsalTime: '',
@@ -24,8 +22,6 @@ const buildProps = (overrides = {}) => ({
   successMessage: '',
   onChurchNameChange: jest.fn(),
   onChurchNameBlur: jest.fn(),
-  onChurchCodeChange: jest.fn(),
-  onChurchCodeBlur: jest.fn(),
   onCultoModelChange: jest.fn(),
   onRehearsalChange: jest.fn(),
   onRehearsalBlur: jest.fn(),
@@ -43,9 +39,6 @@ describe('ChurchForm', () => {
     fireEvent.change(screen.getByLabelText(/Nome da Congregação:/i), {
       target: { value: 'Nova Igreja' },
     });
-    fireEvent.change(screen.getByLabelText(/Código \(opcional\):/i), {
-      target: { value: 'NEW' },
-    });
     fireEvent.change(screen.getByLabelText('Modelo de culto:'), {
       target: { value: 'culto_unico_com_reserva' },
     });
@@ -53,10 +46,15 @@ describe('ChurchForm', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Cadastrar Igreja' }));
 
     expect(props.onChurchNameChange).toHaveBeenCalledWith('Nova Igreja');
-    expect(props.onChurchCodeChange).toHaveBeenCalledWith('NEW');
     expect(props.onCultoModelChange).toHaveBeenCalledWith('culto_unico_com_reserva');
     expect(props.onDayChange).toHaveBeenCalledWith('sunday_rjm');
     expect(props.onSubmit).toHaveBeenCalled();
+  });
+
+  test('nao exibe mais o campo codigo na interface principal', () => {
+    render(<ChurchForm {...buildProps()} />);
+
+    expect(screen.queryByLabelText(/Código \(opcional\):/i)).not.toBeInTheDocument();
   });
 
   test('exibe e altera os campos de ensaio local', () => {
@@ -96,7 +94,6 @@ describe('ChurchForm', () => {
         {...buildProps({
           fieldErrors: {
             churchName: 'Nome inválido.',
-            churchCode: '',
             rehearsalWeekOfMonth: 'Selecione a semana.',
             rehearsalWeekday: '',
             rehearsalTime: 'Selecione o horário.',

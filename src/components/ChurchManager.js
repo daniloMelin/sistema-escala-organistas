@@ -12,7 +12,6 @@ const ChurchManager = ({ user }) => {
     churches,
     isLoading,
     churchName,
-    churchCode,
     selectedDays,
     cultoModel,
     rehearsal,
@@ -23,14 +22,10 @@ const ChurchManager = ({ user }) => {
     loadError,
     successMessage,
     pendingDeleteChurch,
-    setChurchName,
-    setChurchCode,
     setCultoModel,
     setPendingDeleteChurch,
     handleChurchNameChange,
     handleChurchNameBlur,
-    handleChurchCodeChange,
-    handleChurchCodeBlur,
     handleStartEdit,
     handleCancelEdit,
     handleDayChange,
@@ -61,7 +56,6 @@ const ChurchManager = ({ user }) => {
       <ChurchForm
         editingId={editingId}
         churchName={churchName}
-        churchCode={churchCode}
         selectedDays={selectedDays}
         cultoModel={cultoModel}
         rehearsal={rehearsal}
@@ -72,8 +66,6 @@ const ChurchManager = ({ user }) => {
         successMessage={successMessage}
         onChurchNameChange={handleChurchNameChange}
         onChurchNameBlur={handleChurchNameBlur}
-        onChurchCodeChange={handleChurchCodeChange}
-        onChurchCodeBlur={handleChurchCodeBlur}
         onCultoModelChange={setCultoModel}
         onRehearsalChange={handleRehearsalChange}
         onRehearsalBlur={handleRehearsalBlur}

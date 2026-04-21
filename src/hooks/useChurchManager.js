@@ -13,7 +13,6 @@ import { INITIAL_AVAILABILITY } from '../constants/days';
 import { INITIAL_REHEARSAL, normalizeRehearsal } from '../constants/rehearsal';
 import {
   validateChurchName,
-  validateChurchCode,
   validateChurchRehearsal,
   validateChurchRehearsalField,
   sanitizeString,
@@ -93,7 +92,6 @@ const sortChurchesByOperationalPriority = (churches) =>
 
 const INITIAL_FIELD_ERRORS = {
   churchName: '',
-  churchCode: '',
   rehearsalWeekOfMonth: '',
   rehearsalWeekday: '',
   rehearsalTime: '',
@@ -232,16 +230,6 @@ export const useChurchManager = (user) => {
     setFieldError('churchName', validation.isValid ? '' : validation.error);
   };
 
-  const handleChurchCodeChange = (value) => {
-    setChurchCode(value);
-    if (fieldErrors.churchCode) setFieldError('churchCode', '');
-  };
-
-  const handleChurchCodeBlur = () => {
-    const validation = validateChurchCode(churchCode);
-    setFieldError('churchCode', validation.isValid ? '' : validation.error);
-  };
-
   const handleDayChange = (key) => {
     setSelectedDays((prev) => ({ ...prev, [key]: !prev[key] }));
   };
@@ -282,13 +270,6 @@ export const useChurchManager = (user) => {
     const nameValidation = validateChurchName(churchName);
     if (!nameValidation.isValid) {
       setFieldError('churchName', nameValidation.error);
-      setError('');
-      return;
-    }
-
-    const codeValidation = validateChurchCode(churchCode);
-    if (!codeValidation.isValid) {
-      setFieldError('churchCode', codeValidation.error);
       setError('');
       return;
     }
@@ -411,8 +392,6 @@ export const useChurchManager = (user) => {
     handleCancelEdit,
     handleChurchNameChange,
     handleChurchNameBlur,
-    handleChurchCodeChange,
-    handleChurchCodeBlur,
     handleDayChange,
     handleRehearsalChange,
     handleRehearsalBlur,

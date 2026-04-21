@@ -11,6 +11,7 @@
 | 1.4    | 21 de abril de 2026 | Danilo Melin | Consolidação das regras da fase 1.1 do V17         |
 | 1.5    | 21 de abril de 2026 | Danilo Melin | Consolidação do comportamento de UI da fase 1.2    |
 | 1.6    | 21 de abril de 2026 | Danilo Melin | Revisão e consolidação do escopo técnico da fase 2 |
+| 1.7    | 21 de abril de 2026 | Danilo Melin | Conclusão da fase 2 com implementação no código    |
 
 ## Objetivo
 
@@ -209,6 +210,20 @@ Objetivo:
 - reduzir divergência entre frontend e Firestore
 - ampliar cobertura de testes para limites, mensagens e remoção de `church.code`
 
+## Encerramento da Fase 2
+
+A fase 2 do `V17` fica encerrada com a entrega combinada entre regra,
+interface e persistência.
+
+Resultado consolidado da fase:
+
+- validadores centralizados com limites e mensagens oficiais
+- erros por campo aplicados em `ChurchForm` e `OrganistForm`
+- remoção do campo `Código` da experiência principal da igreja
+- compatibilidade legada preservada para registros antigos
+- `firestore.rules` ajustadas para o limite de `40` caracteres em `organist.name`
+- cobertura de testes ampliada para os cenários críticos da fase
+
 ## Ordem de execução recomendada
 
 1. **Fase 1 - revisar regras e feedback visual dos formulários**
@@ -221,7 +236,7 @@ Objetivo:
 - [x] Estrutura inicial do V17 criada
 - [x] Fase 1.1 concluída
 - [x] Fase 1.2 concluída
-- [ ] Fase 2 concluída
+- [x] Fase 2 concluída
 - [ ] Fase 3 concluída
 - [ ] Fase 4 concluída
 

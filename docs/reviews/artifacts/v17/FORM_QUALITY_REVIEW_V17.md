@@ -184,6 +184,16 @@ A expansão do cadastro reforçou a importância de:
 - validar limite de `120` caracteres para observação do ensaio
 - validar ausência do campo `church.code` na UI
 
+## Resultado consolidado da fase 2
+
+- `src/constants/formValidation.js` passou a centralizar limites e mensagens
+- `src/utils/validation.js` foi alinhado ao contrato oficial do `V17`
+- `src/hooks/useChurchManager.js` e `src/hooks/useChurchDashboard.js` passaram a expor erros por campo
+- `src/components/ChurchForm.js` e `src/components/OrganistForm.js` passaram a renderizar feedback individual
+- `src/components/ChurchList.js` deixou de exibir `church.code` na experiência principal
+- `firestore.rules` foi ajustado para o limite de `40` caracteres em nome de organista
+- os testes de validação, formulário e hooks foram ampliados e aprovados
+
 ## Resultado esperado do ciclo
 
 Ao final do `V17`, os formulários devem transmitir mais confiança,

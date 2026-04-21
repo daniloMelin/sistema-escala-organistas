@@ -26,7 +26,6 @@ const ChurchDashboard = ({ user }) => {
     fieldErrors,
     successMessage,
     pendingDeleteOrganist,
-    setNewOrganistName,
     setPendingDeleteOrganist,
     handleOrganistNameChange,
     handleOrganistNameBlur,
