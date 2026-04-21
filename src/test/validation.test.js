@@ -16,10 +16,10 @@ describe('validation utils', () => {
       });
     });
 
-    test('rejeita caracteres perigosos', () => {
+    test('rejeita caracteres invalidos fora da regra do negocio', () => {
       expect(validateChurchName('Igreja <script>')).toEqual({
         isValid: false,
-        error: 'Nome contém caracteres inválidos.',
+        error: 'Use apenas letras, números e espaços no nome da igreja.',
       });
     });
 
@@ -38,8 +38,35 @@ describe('validation utils', () => {
       });
     });
 
+    test('rejeita numeros no nome da organista', () => {
+      expect(validateOrganistName('Ana 1')).toEqual({
+        isValid: false,
+        error: 'Use apenas letras e espaços no nome da organista.',
+      });
+    });
+
+    test('rejeita mais de duas palavras', () => {
+      expect(validateOrganistName('Ana Maria Silva')).toEqual({
+        isValid: false,
+        error: 'Informe somente o primeiro nome ou nome e sobrenome.',
+      });
+    });
+
+    test('rejeita nome com mais de 40 caracteres', () => {
+      expect(validateOrganistName('AnastaciaBernardinaConceicao AlexandrinaMaria')).toEqual({
+        isValid: false,
+        error: 'Nome deve ter no máximo 40 caracteres.',
+      });
+    });
+
     test('aceita nome valido', () => {
       expect(validateOrganistName('Ana')).toEqual({
+        isValid: true,
+      });
+    });
+
+    test('aceita nome e sobrenome com acentuacao', () => {
+      expect(validateOrganistName('Ana Júlia')).toEqual({
         isValid: true,
       });
     });
@@ -119,6 +146,20 @@ describe('validation utils', () => {
       ).toEqual({
         isValid: false,
         error: 'Informe um horário válido no formato HH:MM.',
+      });
+    });
+
+    test('rejeita observacao acima do limite', () => {
+      expect(
+        validateChurchRehearsal({
+          weekOfMonth: '1',
+          weekday: 'thursday',
+          time: '19:30',
+          notes: 'a'.repeat(121),
+        })
+      ).toEqual({
+        isValid: false,
+        error: 'A observação do ensaio pode ter no máximo 120 caracteres.',
       });
     });
 
