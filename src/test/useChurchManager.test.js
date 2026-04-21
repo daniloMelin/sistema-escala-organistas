@@ -230,6 +230,24 @@ describe('useChurchManager', () => {
     );
   });
 
+  test('preenche erro por campo ao validar nome invalido da igreja', async () => {
+    const { result } = renderHook(() => useChurchManager(user));
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    act(() => {
+      result.current.handleChurchNameChange('Igreja <Central>');
+    });
+
+    act(() => {
+      result.current.handleChurchNameBlur();
+    });
+
+    expect(result.current.fieldErrors.churchName).toBe(
+      'Use apenas letras, números e espaços no nome da igreja.'
+    );
+  });
+
   test('carrega ensaio local ao iniciar edicao da igreja', async () => {
     mockGetChurches.mockResolvedValue([
       {

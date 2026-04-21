@@ -110,6 +110,24 @@ describe('useChurchDashboard', () => {
     expect(result.current.error).toBe('Já existe uma organista com este nome nesta igreja.');
   });
 
+  test('preenche erro por campo ao validar nome invalido da organista', async () => {
+    const { result } = renderHook(() => useChurchDashboard(user));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    act(() => {
+      result.current.handleOrganistNameChange('Ana Maria Silva');
+    });
+
+    act(() => {
+      result.current.handleOrganistNameBlur();
+    });
+
+    expect(result.current.fieldErrors.organistName).toBe(
+      'Informe somente o primeiro nome ou nome e sobrenome.'
+    );
+  });
+
   test('permite editar a mesma organista sem bloquear pelo proprio nome', async () => {
     const { result } = renderHook(() => useChurchDashboard(user));
 

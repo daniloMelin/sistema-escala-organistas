@@ -13,11 +13,22 @@ const buildProps = (overrides = {}) => ({
   isSubmitting: false,
   isLoading: false,
   error: '',
+  fieldErrors: {
+    churchName: '',
+    churchCode: '',
+    rehearsalWeekOfMonth: '',
+    rehearsalWeekday: '',
+    rehearsalTime: '',
+    rehearsalNotes: '',
+  },
   successMessage: '',
   onChurchNameChange: jest.fn(),
+  onChurchNameBlur: jest.fn(),
   onChurchCodeChange: jest.fn(),
+  onChurchCodeBlur: jest.fn(),
   onCultoModelChange: jest.fn(),
   onRehearsalChange: jest.fn(),
+  onRehearsalBlur: jest.fn(),
   onDayChange: jest.fn(),
   onSubmit: jest.fn((e) => e.preventDefault()),
   onCancelEdit: jest.fn(),
@@ -77,6 +88,32 @@ describe('ChurchForm', () => {
     expect(props.onRehearsalChange).toHaveBeenCalledWith('weekday', 'friday');
     expect(props.onRehearsalChange).toHaveBeenCalledWith('time', '20:00');
     expect(props.onRehearsalChange).toHaveBeenCalledWith('notes', 'Culto começa às 19:00.');
+  });
+
+  test('exibe erros por campo nos inputs e selects do ensaio', () => {
+    render(
+      <ChurchForm
+        {...buildProps({
+          fieldErrors: {
+            churchName: 'Nome inválido.',
+            churchCode: '',
+            rehearsalWeekOfMonth: 'Selecione a semana.',
+            rehearsalWeekday: '',
+            rehearsalTime: 'Selecione o horário.',
+            rehearsalNotes: 'Observação muito longa.',
+          },
+        })}
+      />
+    );
+
+    expect(screen.getByText('Nome inválido.')).toBeInTheDocument();
+    expect(screen.getByText('Selecione a semana.')).toBeInTheDocument();
+    expect(screen.getByText('Selecione o horário.')).toBeInTheDocument();
+    expect(screen.getByText('Observação muito longa.')).toBeInTheDocument();
+    expect(screen.getByLabelText(/Semana do mês:/i)).toHaveClass(
+      'church-form__model-select--error'
+    );
+    expect(screen.getByLabelText(/Horário:/i)).toHaveClass('church-form__model-select--error');
   });
 
   test('exibe o botao cancelar apenas durante a edicao', () => {

@@ -8,10 +8,12 @@ const OrganistForm = ({
   newOrganistName,
   isSubmitting,
   error,
+  fieldErrors,
   successMessage,
   visibleDays,
   availability,
   onNameChange,
+  onNameBlur,
   onCheckboxChange,
   onSubmit,
   onCancelEdit,
@@ -32,6 +34,9 @@ const OrganistForm = ({
           type="text"
           value={newOrganistName}
           onChange={(e) => onNameChange(e.target.value)}
+          onBlur={onNameBlur}
+          error={fieldErrors.organistName}
+          maxLength={40}
           required
           disabled={isSubmitting}
         />
@@ -104,6 +109,9 @@ OrganistForm.propTypes = {
   newOrganistName: PropTypes.string.isRequired,
   isSubmitting: PropTypes.bool.isRequired,
   error: PropTypes.string.isRequired,
+  fieldErrors: PropTypes.shape({
+    organistName: PropTypes.string.isRequired,
+  }).isRequired,
   successMessage: PropTypes.string.isRequired,
   visibleDays: PropTypes.arrayOf(
     PropTypes.shape({
@@ -113,6 +121,7 @@ OrganistForm.propTypes = {
   ).isRequired,
   availability: PropTypes.object.isRequired,
   onNameChange: PropTypes.func.isRequired,
+  onNameBlur: PropTypes.func.isRequired,
   onCheckboxChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onCancelEdit: PropTypes.func.isRequired,

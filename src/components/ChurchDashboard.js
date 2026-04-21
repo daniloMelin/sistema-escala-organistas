@@ -23,10 +23,13 @@ const ChurchDashboard = ({ user }) => {
     isSubmitting,
     editingId,
     error,
+    fieldErrors,
     successMessage,
     pendingDeleteOrganist,
     setNewOrganistName,
     setPendingDeleteOrganist,
+    handleOrganistNameChange,
+    handleOrganistNameBlur,
     handleCheckboxChange,
     handleStartEdit,
     handleCancelEdit,
@@ -78,10 +81,12 @@ const ChurchDashboard = ({ user }) => {
         newOrganistName={newOrganistName}
         isSubmitting={isSubmitting}
         error={error}
+        fieldErrors={fieldErrors}
         successMessage={successMessage}
         visibleDays={visibleDays}
         availability={availability}
-        onNameChange={setNewOrganistName}
+        onNameChange={handleOrganistNameChange}
+        onNameBlur={handleOrganistNameBlur}
         onCheckboxChange={handleCheckboxChange}
         onSubmit={handleSaveOrganist}
         onCancelEdit={handleCancelEdit}

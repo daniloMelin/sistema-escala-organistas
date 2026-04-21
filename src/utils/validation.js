@@ -138,6 +138,50 @@ export const validateChurchRehearsal = (rehearsal) => {
   return { isValid: true };
 };
 
+export const validateChurchRehearsalField = (field, rehearsal) => {
+  const safeRehearsal = rehearsal && typeof rehearsal === 'object' ? rehearsal : {};
+
+  switch (field) {
+    case 'weekOfMonth': {
+      const validWeekOptions = ['1', '2', '3', '4', '5', 1, 2, 3, 4, 5];
+      if (!validWeekOptions.includes(safeRehearsal.weekOfMonth)) {
+        return { isValid: false, error: FORM_ERROR_MESSAGES.rehearsalWeekRequired };
+      }
+      return { isValid: true };
+    }
+    case 'weekday': {
+      const validWeekdays = [
+        'sunday',
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+      ];
+      if (!validWeekdays.includes(safeRehearsal.weekday)) {
+        return { isValid: false, error: FORM_ERROR_MESSAGES.rehearsalWeekdayRequired };
+      }
+      return { isValid: true };
+    }
+    case 'time': {
+      const validTimePattern = /^([01]\d|2[0-3]):([0-5]\d)$/;
+      if (!validTimePattern.test(safeRehearsal.time || '')) {
+        return { isValid: false, error: FORM_ERROR_MESSAGES.rehearsalTimeInvalid };
+      }
+      return { isValid: true };
+    }
+    case 'notes': {
+      if (normalizeWhitespace(safeRehearsal.notes).length > FORM_LIMITS.rehearsalNotes.max) {
+        return { isValid: false, error: FORM_ERROR_MESSAGES.rehearsalNotesMax };
+      }
+      return { isValid: true };
+    }
+    default:
+      return { isValid: true };
+  }
+};
+
 /**
  * Valida período de datas
  * @param {string} startDate - Data de início (YYYY-MM-DD)

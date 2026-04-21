@@ -16,6 +16,7 @@ const Input = ({ label, error, required = false, size = 'md', id, ...props }) =>
       )}
       <input
         id={inputId}
+        aria-invalid={Boolean(error)}
         className={[
           'input-field__control',
           size === 'sm' ? 'input-field__control--sm' : '',

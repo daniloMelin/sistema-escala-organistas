@@ -12,6 +12,10 @@ import { getVisibleDaysFromConfig } from '../utils/churchCultModel';
 import { validateOrganistName, sanitizeString } from '../utils/validation';
 import logger from '../utils/logger';
 
+const INITIAL_FIELD_ERRORS = {
+  organistName: '',
+};
+
 export const useChurchDashboard = (user) => {
   const { id } = useParams();
 
@@ -23,6 +27,7 @@ export const useChurchDashboard = (user) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState(INITIAL_FIELD_ERRORS);
   const [successMessage, setSuccessMessage] = useState('');
   const [pendingDeleteOrganist, setPendingDeleteOrganist] = useState(null);
   const isMountedRef = useRef(false);
@@ -82,6 +87,7 @@ export const useChurchDashboard = (user) => {
     setAvailability(loadedAvailability);
     setEditingId(organist.id);
     setError('');
+    setFieldErrors(INITIAL_FIELD_ERRORS);
     setSuccessMessage('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -91,6 +97,21 @@ export const useChurchDashboard = (user) => {
     setAvailability(INITIAL_AVAILABILITY);
     setEditingId(null);
     setError('');
+    setFieldErrors(INITIAL_FIELD_ERRORS);
+  };
+
+  const handleOrganistNameChange = (value) => {
+    setNewOrganistName(value);
+    if (fieldErrors.organistName) {
+      setFieldErrors(INITIAL_FIELD_ERRORS);
+    }
+  };
+
+  const handleOrganistNameBlur = () => {
+    const validation = validateOrganistName(newOrganistName);
+    setFieldErrors({
+      organistName: validation.isValid ? '' : validation.error,
+    });
   };
 
   const hasDuplicateOrganistName = useCallback(
@@ -108,9 +129,14 @@ export const useChurchDashboard = (user) => {
   const handleSaveOrganist = async (e) => {
     e.preventDefault();
 
+    setFieldErrors(INITIAL_FIELD_ERRORS);
+
     const nameValidation = validateOrganistName(newOrganistName);
     if (!nameValidation.isValid) {
-      setError(nameValidation.error);
+      setFieldErrors({
+        organistName: nameValidation.error,
+      });
+      setError('');
       return;
     }
 
@@ -190,10 +216,13 @@ export const useChurchDashboard = (user) => {
     isSubmitting,
     editingId,
     error,
+    fieldErrors,
     successMessage,
     pendingDeleteOrganist,
     setNewOrganistName,
     setPendingDeleteOrganist,
+    handleOrganistNameChange,
+    handleOrganistNameBlur,
     handleCheckboxChange,
     handleStartEdit,
     handleCancelEdit,
