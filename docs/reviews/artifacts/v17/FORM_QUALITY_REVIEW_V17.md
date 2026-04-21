@@ -109,6 +109,37 @@ A expansão do cadastro reforçou a importância de:
 - valor digitado preservado
 - erro específico por campo, evitando depender apenas de alerta global
 
+## Consolidação da fase 1.2
+
+### Comportamento de interface por campo
+
+| Campo             | Comportamento esperado de UI                                                               |
+| ----------------- | ------------------------------------------------------------------------------------------ |
+| `church.name`     | Aplicar `maxLength=100`, manter texto digitado, validar caracteres inválidos e exibir erro |
+| `organist.name`   | Aplicar `maxLength=40`, validar excesso de palavras, bloquear números e exibir erro        |
+| `rehearsal.notes` | Aplicar `maxLength=120`, sem complexidade extra, apenas limite claro e mensagem objetiva   |
+| `church.code`     | Não investir em refinamento novo, pois o campo segue marcado para remoção da interface     |
+
+### Momento de feedback esperado
+
+- validar em tempo de digitação quando houver excesso de tamanho
+- validar ao perder foco para campos com regra de composição
+- validar novamente no envio do formulário antes de salvar
+- manter a mesma mensagem de erro nas três situações, evitando conflito de interpretação
+
+### Texto de apoio recomendado
+
+- `church.name`: apoio opcional com foco em clareza, sem poluir a interface
+- `organist.name`: apoio útil com a orientação `Informe primeiro nome ou nome e sobrenome.`
+- `rehearsal.notes`: apoio opcional com foco em observação curta
+
+### Decisões específicas de UX
+
+- não exibir contador visual permanente se ele deixar o formulário poluído
+- usar o limite técnico no `input` para impedir que o usuário digite além do máximo
+- reservar a mensagem textual para orientar motivo do erro, não apenas repetir o limite
+- manter erro global apenas como apoio secundário, nunca como única sinalização
+
 ## Resultado esperado do ciclo
 
 Ao final do `V17`, os formulários devem transmitir mais confiança,

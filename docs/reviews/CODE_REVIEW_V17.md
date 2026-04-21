@@ -9,6 +9,7 @@
 | 1.2    | 18 de abril de 2026 | Danilo Melin | Definição inicial dos limites de caracteres       |
 | 1.3    | 18 de abril de 2026 | Danilo Melin | Separação entre campos de UX e campos técnicos    |
 | 1.4    | 21 de abril de 2026 | Danilo Melin | Consolidação das regras da fase 1.1 do V17        |
+| 1.5    | 21 de abril de 2026 | Danilo Melin | Consolidação do comportamento de UI da fase 1.2   |
 
 ## Objetivo
 
@@ -116,6 +117,25 @@ regras oficiais dos formulários, com foco em dois pilares:
 Com isso, a fase seguinte pode implementar os formulários já com
 mensagens, limites e comportamento visual acordados.
 
+## Consolidação da Fase 1.2
+
+A fase 1.2 do `V17` fica definida como a etapa que transforma as regras
+aprovadas em comportamento esperado de interface.
+
+Os formulários devem seguir este padrão:
+
+1. aplicar `maxLength` nos campos textuais com limite fechado
+2. impedir crescimento invisível do valor além do máximo permitido
+3. mostrar mensagem de erro específica ao perder foco ou ao tentar salvar
+4. manter texto de apoio discreto quando isso ajudar a preencher melhor
+
+Na prática, a decisão de UX do ciclo fica assim:
+
+- `church.name`: limite visível e mensagem específica se houver caracteres inválidos
+- `organist.name`: limite visível, validação de palavras e bloqueio de caracteres inadequados
+- `rehearsal.notes`: limite de tamanho com comportamento simples e previsível
+- `church.code`: não deve receber novo refinamento de UX, pois sua remoção continua prevista
+
 ## Ordem de execução recomendada
 
 1. **Fase 1 - revisar regras e feedback visual dos formulários**
@@ -127,7 +147,7 @@ mensagens, limites e comportamento visual acordados.
 
 - [x] Estrutura inicial do V17 criada
 - [x] Fase 1.1 concluída
-- [ ] Fase 1.2 concluída
+- [x] Fase 1.2 concluída
 - [ ] Fase 2 concluída
 - [ ] Fase 3 concluída
 - [ ] Fase 4 concluída
