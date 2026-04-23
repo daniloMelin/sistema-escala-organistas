@@ -11,10 +11,12 @@ const buildProps = (overrides = {}) => ({
   newOrganistName: 'Ana',
   isSubmitting: false,
   error: '',
+  fieldErrors: { organistName: '' },
   successMessage: '',
   visibleDays,
   availability: { monday: true, sunday_culto: false },
   onNameChange: jest.fn(),
+  onNameBlur: jest.fn(),
   onCheckboxChange: jest.fn(),
   onSubmit: jest.fn((e) => e.preventDefault()),
   onCancelEdit: jest.fn(),
@@ -40,5 +42,19 @@ describe('OrganistForm', () => {
   test('exibe aviso quando nao ha dias disponiveis', () => {
     render(<OrganistForm {...buildProps({ visibleDays: [] })} />);
     expect(screen.getByText(/Nenhum dia de culto configurado/i)).toBeInTheDocument();
+  });
+
+  test('exibe erro por campo no nome da organista', () => {
+    render(
+      <OrganistForm
+        {...buildProps({
+          fieldErrors: { organistName: 'Informe somente o primeiro nome ou nome e sobrenome.' },
+        })}
+      />
+    );
+
+    expect(
+      screen.getByText('Informe somente o primeiro nome ou nome e sobrenome.')
+    ).toBeInTheDocument();
   });
 });
