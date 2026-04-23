@@ -13,22 +13,28 @@ import Input from './ui/Input';
 const ChurchForm = ({
   editingId,
   churchName,
-  churchCode,
   selectedDays,
   cultoModel,
   rehearsal,
   isSubmitting,
   isLoading,
   error,
+  fieldErrors,
   successMessage,
   onChurchNameChange,
-  onChurchCodeChange,
+  onChurchNameBlur,
   onCultoModelChange,
   onRehearsalChange,
+  onRehearsalBlur,
   onDayChange,
   onSubmit,
   onCancelEdit,
 }) => {
+  const getSelectClassName = (hasError) =>
+    ['church-form__model-select', hasError ? 'church-form__model-select--error' : '']
+      .join(' ')
+      .trim();
+
   return (
     <div className={`church-form ${editingId ? 'church-form--editing' : ''}`}>
       <h3 className="church-form__title">
@@ -41,13 +47,10 @@ const ChurchForm = ({
           type="text"
           value={churchName}
           onChange={(e) => onChurchNameChange(e.target.value)}
+          onBlur={onChurchNameBlur}
+          error={fieldErrors.churchName}
+          maxLength={100}
           required
-        />
-        <Input
-          label="Código (opcional):"
-          type="text"
-          value={churchCode}
-          onChange={(e) => onChurchCodeChange(e.target.value)}
         />
 
         <div className="church-form__model">
@@ -106,7 +109,8 @@ const ChurchForm = ({
                 id="church-rehearsal-week"
                 value={rehearsal.weekOfMonth}
                 onChange={(e) => onRehearsalChange('weekOfMonth', e.target.value)}
-                className="church-form__model-select"
+                onBlur={() => onRehearsalBlur('weekOfMonth')}
+                className={getSelectClassName(Boolean(fieldErrors.rehearsalWeekOfMonth))}
               >
                 {REHEARSAL_WEEK_OPTIONS.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -114,6 +118,9 @@ const ChurchForm = ({
                   </option>
                 ))}
               </select>
+              {fieldErrors.rehearsalWeekOfMonth && (
+                <p className="church-form__field-error">{fieldErrors.rehearsalWeekOfMonth}</p>
+              )}
             </div>
 
             <div className="church-form__rehearsal-field">
@@ -124,7 +131,8 @@ const ChurchForm = ({
                 id="church-rehearsal-weekday"
                 value={rehearsal.weekday}
                 onChange={(e) => onRehearsalChange('weekday', e.target.value)}
-                className="church-form__model-select"
+                onBlur={() => onRehearsalBlur('weekday')}
+                className={getSelectClassName(Boolean(fieldErrors.rehearsalWeekday))}
               >
                 {REHEARSAL_WEEKDAY_OPTIONS.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -132,6 +140,9 @@ const ChurchForm = ({
                   </option>
                 ))}
               </select>
+              {fieldErrors.rehearsalWeekday && (
+                <p className="church-form__field-error">{fieldErrors.rehearsalWeekday}</p>
+              )}
             </div>
 
             <div className="church-form__rehearsal-field">
@@ -142,7 +153,8 @@ const ChurchForm = ({
                 id="church-rehearsal-time"
                 value={rehearsal.time}
                 onChange={(e) => onRehearsalChange('time', e.target.value)}
-                className="church-form__model-select"
+                onBlur={() => onRehearsalBlur('time')}
+                className={getSelectClassName(Boolean(fieldErrors.rehearsalTime))}
               >
                 <option value="">Selecione o horário</option>
                 {REHEARSAL_TIME_OPTIONS.map((option) => (
@@ -151,6 +163,9 @@ const ChurchForm = ({
                   </option>
                 ))}
               </select>
+              {fieldErrors.rehearsalTime && (
+                <p className="church-form__field-error">{fieldErrors.rehearsalTime}</p>
+              )}
             </div>
 
             <div className="church-form__rehearsal-field church-form__rehearsal-field--notes">
@@ -160,6 +175,9 @@ const ChurchForm = ({
                 type="text"
                 value={rehearsal.notes}
                 onChange={(e) => onRehearsalChange('notes', e.target.value)}
+                onBlur={() => onRehearsalBlur('notes')}
+                error={fieldErrors.rehearsalNotes}
+                maxLength={120}
               />
             </div>
           </div>
@@ -190,7 +208,6 @@ const ChurchForm = ({
 ChurchForm.propTypes = {
   editingId: PropTypes.string,
   churchName: PropTypes.string.isRequired,
-  churchCode: PropTypes.string.isRequired,
   selectedDays: PropTypes.object.isRequired,
   cultoModel: PropTypes.string.isRequired,
   rehearsal: PropTypes.shape({
@@ -202,11 +219,19 @@ ChurchForm.propTypes = {
   isSubmitting: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   error: PropTypes.string.isRequired,
+  fieldErrors: PropTypes.shape({
+    churchName: PropTypes.string.isRequired,
+    rehearsalWeekOfMonth: PropTypes.string.isRequired,
+    rehearsalWeekday: PropTypes.string.isRequired,
+    rehearsalTime: PropTypes.string.isRequired,
+    rehearsalNotes: PropTypes.string.isRequired,
+  }).isRequired,
   successMessage: PropTypes.string.isRequired,
   onChurchNameChange: PropTypes.func.isRequired,
-  onChurchCodeChange: PropTypes.func.isRequired,
+  onChurchNameBlur: PropTypes.func.isRequired,
   onCultoModelChange: PropTypes.func.isRequired,
   onRehearsalChange: PropTypes.func.isRequired,
+  onRehearsalBlur: PropTypes.func.isRequired,
   onDayChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onCancelEdit: PropTypes.func.isRequired,

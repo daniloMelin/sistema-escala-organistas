@@ -28,6 +28,16 @@
   font: inherit;
 }
 
+.church-form__model-select--error {
+  border-color: var(--danger);
+}
+
+.church-form__field-error {
+  color: var(--danger);
+  font-size: 0.9em;
+  margin: 5px 0 0;
+}
+
 .church-form__model-help {
   margin: 8px 0 0;
   color: #555555;

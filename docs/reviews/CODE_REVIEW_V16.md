@@ -5,14 +5,14 @@
 | Versão | Data                | Autor(es)    | Descrição da Revisão                            |
 | ------ | ------------------- | ------------ | ----------------------------------------------- |
 | 1.0    | 12 de abril de 2026 | Danilo Melin | Criação do ciclo V16                            |
-| 1.1    | 12 de abril de 2026 | Codex        | Estruturação inicial do ensaio local por igreja |
-| 1.2    | 13 de abril de 2026 | Codex        | Implementação inicial do ensaio local           |
-| 1.3    | 13 de abril de 2026 | Codex        | Simplificação do ensaio local como campo fixo   |
-| 1.4    | 14 de abril de 2026 | Codex        | Exibição inicial do ensaio local na experiência |
-| 1.5    | 14 de abril de 2026 | Codex        | Validação ponta a ponta do ensaio local         |
-| 1.6    | 14 de abril de 2026 | Codex        | Consolidação do impacto operacional do ensaio   |
-| 1.7    | 15 de abril de 2026 | Codex        | Consolidação da cobertura do ensaio local       |
-| 1.8    | 15 de abril de 2026 | Codex        | Fechamento formal do ciclo V16                  |
+| 1.1    | 12 de abril de 2026 | Danilo Melin | Estruturação inicial do ensaio local por igreja |
+| 1.2    | 13 de abril de 2026 | Danilo Melin | Implementação inicial do ensaio local           |
+| 1.3    | 13 de abril de 2026 | Danilo Melin | Simplificação do ensaio local como campo fixo   |
+| 1.4    | 14 de abril de 2026 | Danilo Melin | Exibição inicial do ensaio local na experiência |
+| 1.5    | 14 de abril de 2026 | Danilo Melin | Validação ponta a ponta do ensaio local         |
+| 1.6    | 14 de abril de 2026 | Danilo Melin | Consolidação do impacto operacional do ensaio   |
+| 1.7    | 15 de abril de 2026 | Danilo Melin | Consolidação da cobertura do ensaio local       |
+| 1.8    | 15 de abril de 2026 | Danilo Melin | Fechamento formal do ciclo V16                  |
 
 ## Objetivo
 

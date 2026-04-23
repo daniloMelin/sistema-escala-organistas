@@ -12,24 +12,25 @@ const ChurchManager = ({ user }) => {
     churches,
     isLoading,
     churchName,
-    churchCode,
     selectedDays,
     cultoModel,
     rehearsal,
     isSubmitting,
     editingId,
     error,
+    fieldErrors,
     loadError,
     successMessage,
     pendingDeleteChurch,
-    setChurchName,
-    setChurchCode,
     setCultoModel,
     setPendingDeleteChurch,
+    handleChurchNameChange,
+    handleChurchNameBlur,
     handleStartEdit,
     handleCancelEdit,
     handleDayChange,
     handleRehearsalChange,
+    handleRehearsalBlur,
     handleSubmit,
     handleRequestDeleteChurch,
     handleConfirmDeleteChurch,
@@ -55,18 +56,19 @@ const ChurchManager = ({ user }) => {
       <ChurchForm
         editingId={editingId}
         churchName={churchName}
-        churchCode={churchCode}
         selectedDays={selectedDays}
         cultoModel={cultoModel}
         rehearsal={rehearsal}
         isSubmitting={isSubmitting}
         isLoading={isLoading}
         error={error}
+        fieldErrors={fieldErrors}
         successMessage={successMessage}
-        onChurchNameChange={setChurchName}
-        onChurchCodeChange={setChurchCode}
+        onChurchNameChange={handleChurchNameChange}
+        onChurchNameBlur={handleChurchNameBlur}
         onCultoModelChange={setCultoModel}
         onRehearsalChange={handleRehearsalChange}
+        onRehearsalBlur={handleRehearsalBlur}
         onDayChange={handleDayChange}
         onSubmit={handleSubmit}
         onCancelEdit={handleCancelEdit}

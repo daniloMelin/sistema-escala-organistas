@@ -13,8 +13,8 @@ import { INITIAL_AVAILABILITY } from '../constants/days';
 import { INITIAL_REHEARSAL, normalizeRehearsal } from '../constants/rehearsal';
 import {
   validateChurchName,
-  validateChurchCode,
   validateChurchRehearsal,
+  validateChurchRehearsalField,
   sanitizeString,
 } from '../utils/validation';
 import {
@@ -90,6 +90,14 @@ const sortChurchesByOperationalPriority = (churches) =>
     return a.name.localeCompare(b.name, 'pt-BR');
   });
 
+const INITIAL_FIELD_ERRORS = {
+  churchName: '',
+  rehearsalWeekOfMonth: '',
+  rehearsalWeekday: '',
+  rehearsalTime: '',
+  rehearsalNotes: '',
+};
+
 export const useChurchManager = (user) => {
   const [churches, setChurches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -101,6 +109,7 @@ export const useChurchManager = (user) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState(INITIAL_FIELD_ERRORS);
   const [loadError, setLoadError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [pendingDeleteChurch, setPendingDeleteChurch] = useState(null);
@@ -189,6 +198,7 @@ export const useChurchManager = (user) => {
     setCultoModel(church.cultoModel || inferCultModelFromConfig(church.config));
 
     setError('');
+    setFieldErrors(INITIAL_FIELD_ERRORS);
     setLoadError('');
     setSuccessMessage('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -202,7 +212,22 @@ export const useChurchManager = (user) => {
     setCultoModel(DEFAULT_CULT_MODEL);
     setRehearsal(INITIAL_REHEARSAL);
     setError('');
+    setFieldErrors(INITIAL_FIELD_ERRORS);
     setLoadError('');
+  };
+
+  const setFieldError = (field, value) => {
+    setFieldErrors((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleChurchNameChange = (value) => {
+    setChurchName(value);
+    if (fieldErrors.churchName) setFieldError('churchName', '');
+  };
+
+  const handleChurchNameBlur = () => {
+    const validation = validateChurchName(churchName);
+    setFieldError('churchName', validation.isValid ? '' : validation.error);
   };
 
   const handleDayChange = (key) => {
@@ -211,26 +236,65 @@ export const useChurchManager = (user) => {
 
   const handleRehearsalChange = (field, value) => {
     setRehearsal((prev) => ({ ...prev, [field]: value }));
+    const fieldMap = {
+      weekOfMonth: 'rehearsalWeekOfMonth',
+      weekday: 'rehearsalWeekday',
+      time: 'rehearsalTime',
+      notes: 'rehearsalNotes',
+    };
+    const errorField = fieldMap[field];
+    if (errorField && fieldErrors[errorField]) {
+      setFieldError(errorField, '');
+    }
+  };
+
+  const handleRehearsalBlur = (field) => {
+    const validation = validateChurchRehearsalField(field, rehearsal);
+    const fieldMap = {
+      weekOfMonth: 'rehearsalWeekOfMonth',
+      weekday: 'rehearsalWeekday',
+      time: 'rehearsalTime',
+      notes: 'rehearsalNotes',
+    };
+    const errorField = fieldMap[field];
+    if (errorField) {
+      setFieldError(errorField, validation.isValid ? '' : validation.error);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setFieldErrors(INITIAL_FIELD_ERRORS);
+
     const nameValidation = validateChurchName(churchName);
     if (!nameValidation.isValid) {
-      setError(nameValidation.error);
-      return;
-    }
-
-    const codeValidation = validateChurchCode(churchCode);
-    if (!codeValidation.isValid) {
-      setError(codeValidation.error);
+      setFieldError('churchName', nameValidation.error);
+      setError('');
       return;
     }
 
     const rehearsalValidation = validateChurchRehearsal(rehearsal);
     if (!rehearsalValidation.isValid) {
-      setError(rehearsalValidation.error);
+      const rehearsalFields = ['weekOfMonth', 'weekday', 'time', 'notes'];
+      const firstInvalidField = rehearsalFields.find(
+        (field) => !validateChurchRehearsalField(field, rehearsal).isValid
+      );
+      const fieldMap = {
+        weekOfMonth: 'rehearsalWeekOfMonth',
+        weekday: 'rehearsalWeekday',
+        time: 'rehearsalTime',
+        notes: 'rehearsalNotes',
+      };
+
+      if (firstInvalidField) {
+        const fieldValidation = validateChurchRehearsalField(firstInvalidField, rehearsal);
+        setFieldError(
+          fieldMap[firstInvalidField],
+          fieldValidation.error || rehearsalValidation.error
+        );
+      }
+      setError('');
       return;
     }
 
@@ -315,6 +379,7 @@ export const useChurchManager = (user) => {
     isSubmitting,
     editingId,
     error,
+    fieldErrors,
     loadError,
     successMessage,
     pendingDeleteChurch,
@@ -325,8 +390,11 @@ export const useChurchManager = (user) => {
     setPendingDeleteChurch,
     handleStartEdit,
     handleCancelEdit,
+    handleChurchNameChange,
+    handleChurchNameBlur,
     handleDayChange,
     handleRehearsalChange,
+    handleRehearsalBlur,
     handleSubmit,
     handleRequestDeleteChurch,
     handleConfirmDeleteChurch,
