@@ -23,6 +23,13 @@ describe('validation utils', () => {
       });
     });
 
+    test('rejeita simbolos que caiam no range unicode antigo', () => {
+      expect(validateChurchName('Igreja × Central')).toEqual({
+        isValid: false,
+        error: 'Use apenas letras, números e espaços no nome da igreja.',
+      });
+    });
+
     test('aceita nome valido', () => {
       expect(validateChurchName('Congregacao Central')).toEqual({
         isValid: true,
@@ -40,6 +47,13 @@ describe('validation utils', () => {
 
     test('rejeita numeros no nome da organista', () => {
       expect(validateOrganistName('Ana 1')).toEqual({
+        isValid: false,
+        error: 'Use apenas letras e espaços no nome da organista.',
+      });
+    });
+
+    test('rejeita simbolos especiais em nome de organista', () => {
+      expect(validateOrganistName('Ana ÷')).toEqual({
         isValid: false,
         error: 'Use apenas letras e espaços no nome da organista.',
       });

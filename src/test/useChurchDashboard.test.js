@@ -128,6 +128,51 @@ describe('useChurchDashboard', () => {
     );
   });
 
+  test('permite salvar alteracoes de disponibilidade com nome legado inalterado', async () => {
+    mockGetOrganistsByChurch.mockResolvedValue([
+      {
+        id: 'org-1',
+        name: 'Anastacia Bernardina Conceicao Alexandrina',
+        availability: { sunday_culto: true },
+      },
+    ]);
+
+    const { result } = renderHook(() => useChurchDashboard(user));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    act(() => {
+      result.current.handleStartEdit({
+        id: 'org-1',
+        name: 'Anastacia Bernardina Conceicao Alexandrina',
+        availability: { sunday_culto: true },
+      });
+      result.current.handleCheckboxChange({
+        target: { name: 'friday', checked: true },
+      });
+    });
+
+    act(() => {
+      result.current.handleOrganistNameBlur();
+    });
+
+    expect(result.current.fieldErrors.organistName).toBe('');
+
+    await act(async () => {
+      await result.current.handleSaveOrganist({ preventDefault: jest.fn() });
+    });
+
+    expect(mockUpdateOrganistInChurch).toHaveBeenCalledWith(
+      'user-1',
+      'church-1',
+      'org-1',
+      expect.objectContaining({
+        name: 'Anastacia Bernardina Conceicao Alexandrina',
+        availability: expect.objectContaining({ friday: true }),
+      })
+    );
+  });
+
   test('permite editar a mesma organista sem bloquear pelo proprio nome', async () => {
     const { result } = renderHook(() => useChurchDashboard(user));
 

@@ -9,7 +9,11 @@ import {
 } from '../services/firebaseService';
 import { ALL_WEEK_DAYS, INITIAL_AVAILABILITY, formatAvailability } from '../constants/days';
 import { getVisibleDaysFromConfig } from '../utils/churchCultModel';
-import { validateOrganistName, sanitizeString } from '../utils/validation';
+import {
+  normalizeComparableString,
+  validateOrganistName,
+  sanitizeString,
+} from '../utils/validation';
 import logger from '../utils/logger';
 
 const INITIAL_FIELD_ERRORS = {
@@ -108,6 +112,17 @@ export const useChurchDashboard = (user) => {
   };
 
   const handleOrganistNameBlur = () => {
+    const existingOrganist = organists.find((organist) => organist.id === editingId);
+    const isKeepingLegacyName =
+      Boolean(existingOrganist) &&
+      normalizeComparableString(existingOrganist.name) ===
+        normalizeComparableString(newOrganistName);
+
+    if (isKeepingLegacyName) {
+      setFieldErrors(INITIAL_FIELD_ERRORS);
+      return;
+    }
+
     const validation = validateOrganistName(newOrganistName);
     setFieldErrors({
       organistName: validation.isValid ? '' : validation.error,
@@ -116,11 +131,11 @@ export const useChurchDashboard = (user) => {
 
   const hasDuplicateOrganistName = useCallback(
     (sanitizedName) => {
-      const normalizedName = sanitizedName.toLocaleLowerCase('pt-BR');
+      const normalizedName = normalizeComparableString(sanitizedName);
 
       return organists.some((organist) => {
         if (editingId && organist.id === editingId) return false;
-        return organist.name?.toLocaleLowerCase('pt-BR') === normalizedName;
+        return normalizeComparableString(organist.name) === normalizedName;
       });
     },
     [editingId, organists]
@@ -131,7 +146,15 @@ export const useChurchDashboard = (user) => {
 
     setFieldErrors(INITIAL_FIELD_ERRORS);
 
-    const nameValidation = validateOrganistName(newOrganistName);
+    const existingOrganist = organists.find((organist) => organist.id === editingId);
+    const isKeepingLegacyName =
+      Boolean(existingOrganist) &&
+      normalizeComparableString(existingOrganist.name) ===
+        normalizeComparableString(newOrganistName);
+
+    const nameValidation = isKeepingLegacyName
+      ? { isValid: true }
+      : validateOrganistName(newOrganistName);
     if (!nameValidation.isValid) {
       setFieldErrors({
         organistName: nameValidation.error,
@@ -145,8 +168,11 @@ export const useChurchDashboard = (user) => {
       return;
     }
 
-    const sanitizedName = sanitizeString(newOrganistName);
-    if (hasDuplicateOrganistName(sanitizedName)) {
+    const sanitizedName = isKeepingLegacyName
+      ? existingOrganist.name
+      : sanitizeString(newOrganistName);
+
+    if (!isKeepingLegacyName && hasDuplicateOrganistName(sanitizedName)) {
       setError('Já existe uma organista com este nome nesta igreja.');
       return;
     }

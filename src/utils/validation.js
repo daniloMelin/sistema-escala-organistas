@@ -5,11 +5,14 @@
 
 import { FORM_ERROR_MESSAGES, FORM_LIMITS } from '../constants/formValidation';
 
-const CHURCH_NAME_PATTERN = /^[A-Za-zÀ-ÿ0-9]+(?:[A-Za-zÀ-ÿ0-9 ]*[A-Za-zÀ-ÿ0-9])?$/;
-const ORGANIST_NAME_PATTERN = /^[A-Za-zÀ-ÿ]+(?: [A-Za-zÀ-ÿ]+)?$/;
+const CHURCH_NAME_PATTERN = /^(?:[\p{L}\p{N}]+(?: [\p{L}\p{N}]+)*)$/u;
+const ORGANIST_NAME_PATTERN = /^(?:\p{L}+(?: \p{L}+)?)$/u;
 
 const normalizeWhitespace = (value) =>
   typeof value === 'string' ? value.trim().replace(/\s+/g, ' ') : '';
+
+export const normalizeComparableString = (value) =>
+  normalizeWhitespace(value).toLocaleLowerCase('pt-BR');
 
 /**
  * Valida nome da igreja
