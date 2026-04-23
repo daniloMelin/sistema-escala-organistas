@@ -1,8 +1,10 @@
 import {
+  normalizeComparableString,
   validateChurchName,
   validateOrganistName,
   validateChurchCode,
   validateChurchRehearsal,
+  validateChurchRehearsalField,
   validateDateRange,
   sanitizeString,
 } from '../utils/validation';
@@ -188,6 +190,48 @@ describe('validation utils', () => {
       ).toEqual({
         isValid: true,
       });
+    });
+  });
+
+  describe('validateChurchRehearsalField', () => {
+    test('rejeita semana invalida', () => {
+      expect(validateChurchRehearsalField('weekOfMonth', { weekOfMonth: '9' })).toEqual({
+        isValid: false,
+        error: 'Selecione a semana do mês do ensaio.',
+      });
+    });
+
+    test('rejeita dia da semana invalido', () => {
+      expect(validateChurchRehearsalField('weekday', { weekday: 'holiday' })).toEqual({
+        isValid: false,
+        error: 'Selecione o dia da semana do ensaio.',
+      });
+    });
+
+    test('rejeita horario invalido', () => {
+      expect(validateChurchRehearsalField('time', { time: '19h30' })).toEqual({
+        isValid: false,
+        error: 'Informe um horário válido no formato HH:MM.',
+      });
+    });
+
+    test('rejeita observacao acima do limite', () => {
+      expect(validateChurchRehearsalField('notes', { notes: 'a'.repeat(121) })).toEqual({
+        isValid: false,
+        error: 'A observação do ensaio pode ter no máximo 120 caracteres.',
+      });
+    });
+
+    test('aceita campo desconhecido sem erro', () => {
+      expect(validateChurchRehearsalField('unknown', {})).toEqual({
+        isValid: true,
+      });
+    });
+  });
+
+  describe('normalizeComparableString', () => {
+    test('normaliza espacos e caixa para comparacao', () => {
+      expect(normalizeComparableString('  Ana   Júlia  ')).toBe('ana júlia');
     });
   });
 

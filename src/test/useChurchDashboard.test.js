@@ -63,6 +63,26 @@ describe('useChurchDashboard', () => {
     );
   });
 
+  test('usa todos os dias quando a igreja nao possui configuracao', async () => {
+    mockGetChurch.mockResolvedValue({});
+
+    const { result } = renderHook(() => useChurchDashboard(user));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    expect(result.current.visibleDays).toHaveLength(8);
+  });
+
+  test('exibe erro quando falha ao carregar dados da igreja', async () => {
+    mockGetOrganistsByChurch.mockRejectedValue(new Error('falha'));
+
+    const { result } = renderHook(() => useChurchDashboard(user));
+
+    await waitFor(() => expect(result.current.error).toBe('Falha ao carregar dados da igreja.'));
+
+    expect(result.current.loading).toBe(false);
+  });
+
   test('salva nova organista e redefine o estado de edicao', async () => {
     const { result } = renderHook(() => useChurchDashboard(user));
 
@@ -126,6 +146,28 @@ describe('useChurchDashboard', () => {
     expect(result.current.fieldErrors.organistName).toBe(
       'Informe somente o primeiro nome ou nome e sobrenome.'
     );
+  });
+
+  test('limpa erro por campo ao voltar a digitar', async () => {
+    const { result } = renderHook(() => useChurchDashboard(user));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    act(() => {
+      result.current.handleOrganistNameChange('Ana Maria Silva');
+    });
+
+    act(() => {
+      result.current.handleOrganistNameBlur();
+    });
+
+    expect(result.current.fieldErrors.organistName).toBeTruthy();
+
+    act(() => {
+      result.current.handleOrganistNameChange('Ana Maria');
+    });
+
+    expect(result.current.fieldErrors.organistName).toBe('');
   });
 
   test('permite salvar alteracoes de disponibilidade com nome legado inalterado', async () => {
@@ -200,6 +242,54 @@ describe('useChurchDashboard', () => {
     expect(result.current.error).toBe('');
   });
 
+  test('mapeia disponibilidade antiga de sunday para sunday_culto ao editar', async () => {
+    const { result } = renderHook(() => useChurchDashboard(user));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    act(() => {
+      result.current.handleStartEdit({
+        id: 'org-1',
+        name: 'Ana',
+        availability: { sunday: true },
+      });
+    });
+
+    expect(result.current.availability.sunday_culto).toBe(true);
+  });
+
+  test('retorna erro de identificacao quando faltam dados obrigatorios', async () => {
+    const { result } = renderHook(() => useChurchDashboard(null));
+
+    act(() => {
+      result.current.handleOrganistNameChange('Maria');
+    });
+
+    await act(async () => {
+      await result.current.handleSaveOrganist({ preventDefault: jest.fn() });
+    });
+
+    expect(result.current.error).toBe('Erro de identificação.');
+  });
+
+  test('exibe erro quando falha ao salvar organista', async () => {
+    mockAddOrganistToChurch.mockRejectedValue(new Error('falha ao salvar'));
+
+    const { result } = renderHook(() => useChurchDashboard(user));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    act(() => {
+      result.current.handleOrganistNameChange('Maria');
+    });
+
+    await act(async () => {
+      await result.current.handleSaveOrganist({ preventDefault: jest.fn() });
+    });
+
+    expect(result.current.error).toBe('Erro ao salvar organista.');
+  });
+
   test('solicita e confirma a exclusao de organista', async () => {
     const { result } = renderHook(() => useChurchDashboard(user));
 
@@ -215,6 +305,25 @@ describe('useChurchDashboard', () => {
     });
 
     expect(mockDeleteOrganistFromChurch).toHaveBeenCalledWith('user-1', 'church-1', 'org-1');
+    expect(result.current.pendingDeleteOrganist).toBe(null);
+  });
+
+  test('exibe erro quando falha ao excluir organista', async () => {
+    mockDeleteOrganistFromChurch.mockRejectedValue(new Error('falha ao excluir'));
+
+    const { result } = renderHook(() => useChurchDashboard(user));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    act(() => {
+      result.current.handleRequestDeleteOrganist('org-1', 'Ana');
+    });
+
+    await act(async () => {
+      await result.current.handleConfirmDeleteOrganist();
+    });
+
+    expect(result.current.error).toBe('Erro ao excluir organista.');
     expect(result.current.pendingDeleteOrganist).toBe(null);
   });
 });
