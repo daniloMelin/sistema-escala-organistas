@@ -12,6 +12,8 @@
 | 1.5    | 21 de abril de 2026 | Danilo Melin | Consolidação do comportamento de UI da fase 1.2    |
 | 1.6    | 21 de abril de 2026 | Danilo Melin | Revisão e consolidação do escopo técnico da fase 2 |
 | 1.7    | 21 de abril de 2026 | Danilo Melin | Conclusão da fase 2 com implementação no código    |
+| 1.8    | 25 de abril de 2026 | Danilo Melin | Consolidação da fase 3 do V17                      |
+| 1.9    | 25 de abril de 2026 | Danilo Melin | Fechamento formal do ciclo V17                     |
 
 ## Objetivo
 
@@ -24,8 +26,9 @@ Elevar a qualidade dos formulários do sistema com foco em:
 
 ## Status do Ciclo
 
-- Status geral: `EM ANDAMENTO`
+- Status geral: `CONCLUÍDO`
 - Data de início: `18 de abril de 2026`
+- Data de encerramento: `25 de abril de 2026`
 - Contexto: continuidade natural do `V16`, aproveitando a evolução do
   cadastro de igrejas e a necessidade de reforçar qualidade de entrada
   de dados
@@ -224,6 +227,42 @@ Resultado consolidado da fase:
 - `firestore.rules` ajustadas para o limite de `40` caracteres em `organist.name`
 - cobertura de testes ampliada para os cenários críticos da fase
 
+## Consolidação da Fase 3
+
+A fase 3 do `V17` revisou a entrega da fase 2 sob a ótica de cobertura,
+coerência operacional e risco residual.
+
+Resultado consolidado da fase:
+
+- contrato de validação conferido entre constantes, validadores, UI e
+  `firestore.rules`
+- campos principais protegidos por `maxLength` na interface e por testes
+  de componente
+- cenários críticos de nome de igreja, nome de organista e observação do
+  ensaio cobertos em testes unitários e de hooks
+- ausência do campo `Código` preservada na interface principal e coberta
+  por teste
+- compatibilidade com dados legados mantida para edição de organistas com
+  nomes antigos fora do novo limite
+- suíte relevante do ciclo executada com sucesso
+
+## Fechamento da Fase 4
+
+A fase 4 encerra formalmente o `V17` com o ciclo de qualidade de
+formulários consolidado.
+
+Resultado alcançado:
+
+- formulários principais passaram a comunicar erros de forma específica
+  por campo
+- limites oficiais foram centralizados e refletidos na interface
+- nome de igreja, nome de organista e observação do ensaio local
+  ganharam regras mais claras
+- campo `Código` saiu da experiência principal sem romper
+  compatibilidade com registros antigos
+- documentação e cobertura foram atualizadas para preservar o novo
+  contrato de qualidade
+
 ## Ordem de execução recomendada
 
 1. **Fase 1 - revisar regras e feedback visual dos formulários**
@@ -237,8 +276,8 @@ Resultado consolidado da fase:
 - [x] Fase 1.1 concluída
 - [x] Fase 1.2 concluída
 - [x] Fase 2 concluída
-- [ ] Fase 3 concluída
-- [ ] Fase 4 concluída
+- [x] Fase 3 concluída
+- [x] Fase 4 concluída
 
 ## Critério de Conclusão do V17
 
@@ -250,3 +289,56 @@ Resultado consolidado da fase:
 ## Artefatos do Ciclo
 
 - `docs/reviews/artifacts/v17/FORM_QUALITY_REVIEW_V17.md`
+
+## Resumo Executivo
+
+O `V17` concluiu a melhoria de qualidade dos formulários iniciada após
+a evolução do cadastro de igrejas no `V16`.
+
+O ciclo entregou:
+
+- validação centralizada para campos críticos
+- feedback visual por campo nos formulários de igreja e organista
+- regras mais previsíveis para nomes de igrejas e organistas
+- limite claro para observação do ensaio local
+- remoção do campo `Código` da experiência principal
+- alinhamento entre frontend, persistência e Firestore Rules para os
+  limites estruturais essenciais
+
+## Impacto Prático no Projeto
+
+Ao final do `V17`, o sistema reduz tentativa e erro durante o cadastro,
+mantém o valor digitado quando há falha de validação e torna mais claro
+qual campo precisa de correção.
+
+Na prática, a experiência ficou mais previsível para quem cadastra
+igrejas e organistas, sem aumentar complexidade visual nem exigir novos
+passos no fluxo.
+
+## Artefatos Consolidados do Ciclo
+
+- `docs/reviews/CODE_REVIEW_V17.md`
+- `docs/reviews/artifacts/v17/FORM_QUALITY_REVIEW_V17.md`
+- `src/constants/formValidation.js`
+- `src/utils/validation.js`
+- `src/components/ChurchForm.js`
+- `src/components/OrganistForm.js`
+- `src/components/ChurchList.js`
+- `src/hooks/useChurchManager.js`
+- `src/hooks/useChurchDashboard.js`
+- `firestore.rules`
+- `src/test/validation.test.js`
+- `src/test/churchForm.test.js`
+- `src/test/organistForm.test.js`
+- `src/test/useChurchManager.test.js`
+- `src/test/useChurchDashboard.test.js`
+- `src/test/churchList.test.js`
+
+## Próximos Passos Recomendados
+
+1. observar em uso real se as mensagens de validação reduzem dúvidas no
+   cadastro
+2. manter validações semânticas complexas no front-end e Firestore Rules
+   focadas em estrutura e limites
+3. abrir o próximo ciclo para revisão de fluxo operacional ou migração
+   técnica, conforme prioridade do projeto

@@ -57,6 +57,13 @@ describe('ChurchForm', () => {
     expect(screen.queryByLabelText(/Código \(opcional\):/i)).not.toBeInTheDocument();
   });
 
+  test('aplica limites visiveis nos campos textuais do V17', () => {
+    render(<ChurchForm {...buildProps()} />);
+
+    expect(screen.getByLabelText(/Nome da Congregação:/i)).toHaveAttribute('maxlength', '100');
+    expect(screen.getByLabelText(/Observação \(opcional\):/i)).toHaveAttribute('maxlength', '120');
+  });
+
   test('exibe e altera os campos de ensaio local', () => {
     const props = buildProps({
       rehearsal: {

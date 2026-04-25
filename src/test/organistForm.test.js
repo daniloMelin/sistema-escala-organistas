@@ -57,4 +57,10 @@ describe('OrganistForm', () => {
       screen.getByText('Informe somente o primeiro nome ou nome e sobrenome.')
     ).toBeInTheDocument();
   });
+
+  test('aplica limite visivel no nome da organista', () => {
+    render(<OrganistForm {...buildProps()} />);
+
+    expect(screen.getByLabelText(/Nome da Organista:/i)).toHaveAttribute('maxlength', '40');
+  });
 });
