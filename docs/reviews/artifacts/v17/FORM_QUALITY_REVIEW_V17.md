@@ -194,6 +194,34 @@ A expansão do cadastro reforçou a importância de:
 - `firestore.rules` foi ajustado para o limite de `40` caracteres em nome de organista
 - os testes de validação, formulário e hooks foram ampliados e aprovados
 
+## Revisão de impacto da fase 3
+
+A revisão de consolidação confirmou que a entrega mantém coerência entre
+as camadas principais do ciclo:
+
+- `src/constants/formValidation.js` concentra os limites oficiais
+- `src/utils/validation.js` aplica as regras de negócio aprovadas
+- `ChurchForm` e `OrganistForm` exibem erros por campo e aplicam
+  `maxLength` nos campos textuais do V17
+- `useChurchManager` e `useChurchDashboard` preservam o valor digitado e
+  bloqueiam envio inválido antes da persistência
+- `firestore.rules` mantém os limites estruturais essenciais para igreja,
+  organista e ensaio local
+
+Cobertura validada na fase:
+
+- validações de nome de igreja, nome de organista e observação do ensaio
+- feedback por campo nos formulários principais
+- limites visíveis de `100`, `40` e `120` caracteres na UI
+- remoção do campo `Código` da experiência principal
+- compatibilidade com nome legado de organista ao editar disponibilidade
+
+Risco residual aceito:
+
+- as regras do Firestore validam limites e estrutura, mas não reproduzem
+  toda a regra textual de caracteres permitidos; essa decisão mantém as
+  rules simples e deixa a validação semântica no front-end.
+
 ## Resultado esperado do ciclo
 
 Ao final do `V17`, os formulários devem transmitir mais confiança,

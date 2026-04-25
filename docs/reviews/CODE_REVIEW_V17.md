@@ -12,6 +12,7 @@
 | 1.5    | 21 de abril de 2026 | Danilo Melin | Consolidação do comportamento de UI da fase 1.2    |
 | 1.6    | 21 de abril de 2026 | Danilo Melin | Revisão e consolidação do escopo técnico da fase 2 |
 | 1.7    | 21 de abril de 2026 | Danilo Melin | Conclusão da fase 2 com implementação no código    |
+| 1.8    | 25 de abril de 2026 | Danilo Melin | Consolidação da fase 3 do V17                      |
 
 ## Objetivo
 
@@ -224,6 +225,25 @@ Resultado consolidado da fase:
 - `firestore.rules` ajustadas para o limite de `40` caracteres em `organist.name`
 - cobertura de testes ampliada para os cenários críticos da fase
 
+## Consolidação da Fase 3
+
+A fase 3 do `V17` revisou a entrega da fase 2 sob a ótica de cobertura,
+coerência operacional e risco residual.
+
+Resultado consolidado da fase:
+
+- contrato de validação conferido entre constantes, validadores, UI e
+  `firestore.rules`
+- campos principais protegidos por `maxLength` na interface e por testes
+  de componente
+- cenários críticos de nome de igreja, nome de organista e observação do
+  ensaio cobertos em testes unitários e de hooks
+- ausência do campo `Código` preservada na interface principal e coberta
+  por teste
+- compatibilidade com dados legados mantida para edição de organistas com
+  nomes antigos fora do novo limite
+- suíte relevante do ciclo executada com sucesso
+
 ## Ordem de execução recomendada
 
 1. **Fase 1 - revisar regras e feedback visual dos formulários**
@@ -237,7 +257,7 @@ Resultado consolidado da fase:
 - [x] Fase 1.1 concluída
 - [x] Fase 1.2 concluída
 - [x] Fase 2 concluída
-- [ ] Fase 3 concluída
+- [x] Fase 3 concluída
 - [ ] Fase 4 concluída
 
 ## Critério de Conclusão do V17
