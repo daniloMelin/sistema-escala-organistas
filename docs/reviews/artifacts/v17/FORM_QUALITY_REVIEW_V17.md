@@ -227,3 +227,15 @@ Risco residual aceito:
 Ao final do `V17`, os formulários devem transmitir mais confiança,
 exigir menos tentativa e erro e reduzir inconsistências de
 preenchimento em uso real.
+
+## Encerramento do ciclo
+
+O `V17` fica encerrado com o contrato de qualidade de formulário
+consolidado para os fluxos principais de igreja e organista.
+
+A decisão final do ciclo é manter formulários simples, com validação
+específica e mensagens próximas do campo, sem adicionar controles
+visuais permanentes que aumentem ruído para casos comuns.
+
+Próximos ciclos podem evoluir a mesma linha de qualidade em outros
+fluxos, mas o escopo do `V17` está concluído.
