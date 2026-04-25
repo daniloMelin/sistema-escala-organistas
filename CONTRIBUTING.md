@@ -78,6 +78,29 @@ npm run test:e2e
 - Se a mudança mexer em workflow, documentação técnica ou comandos do
   projeto, trate a validação local como obrigatória.
 
+## 🔀 Padrão para PRs e Merge
+
+O título da PR deve seguir uma escrita limpa e objetiva, sem prefixos
+automáticos de ferramenta.
+
+### Regras
+
+- Não usar prefixos como `[codex]`, `[bot]` ou equivalentes no título da PR.
+- O título da PR deve reaproveitar o mesmo padrão semântico usado nos commits
+  sempre que fizer sentido.
+- Antes de concluir o merge, revise o título final que ficará registrado na
+  `main`.
+- Se o GitHub sugerir um título automático ruim, edite manualmente antes de
+  confirmar o merge.
+
+### Exemplos
+
+```text
+feat: ✨ Conclui fase 2 do V17 com validação por campo
+docs: 📚 Consolida e encerra ciclo V17
+fix: 🐛 Corrige fluxo de login local com Google
+```
+
 ## 🔧 Automação Local
 
 Neste momento, o projeto **não adota `husky`/`lint-staged` como etapa
