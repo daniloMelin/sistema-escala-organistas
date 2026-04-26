@@ -1,13 +1,13 @@
 # **Sistema de Gestão de Escalas para Organistas** 🎹
 
-![Status do Projeto](https://img.shields.io/badge/Status-Em_Produção-brightgreen)
+![Status do Projeto](https://img.shields.io/badge/Status-Em_Refinamento-yellow)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
-Uma plataforma web completa (SaaS) para automatizar, gerenciar e
-distribuir escalas de organistas para múltiplas congregações. O sistema
-substitui planilhas manuais por uma solução inteligente que considera
-disponibilidade granular, equidade na distribuição e permite ajustes
-manuais finos.
+Uma aplicação web para automatizar, gerenciar e distribuir escalas de
+organistas para múltiplas congregações. O sistema centraliza cadastro
+de igrejas, organistas, geração de escala, edição manual e exportação
+em PDF, considerando disponibilidade granular e critérios de
+distribuição.
 
 Este projeto foi desenvolvido como parte do **Projeto de Extensão
 (PEX)** do curso de Tecnologia em Análise e Desenvolvimento de
@@ -78,16 +78,15 @@ robusta com as seguintes capacidades:
 ### ✏️ Flexibilidade Total (Human-in-the-loop)
 
 - **Edição Manual:** Após a geração automática, o administrador pode
-  editar manualmente qualquer dia da escala (trocando a organista)
-  antes de finalizar.
+  editar manualmente qualquer dia da escala antes de finalizar.
 - **Atualização em Tempo Real:** As alterações são salvas
   instantaneamente no banco de dados.
 
 ### 📄 Relatórios e Exportação
 
-- **PDF Profissional:** Geração de PDF formatado com o nome da
-  congregação no cabeçalho e nome de arquivo normalizado e seguro (ex:
-  `escala_jardim_uira.pdf`).
+- **PDF em A4:** Geração de PDF formatado com nome da congregação,
+  resumo do período, ensaio local e nome de arquivo normalizado (ex:
+  `jardim_uira_2026-04-01.pdf`).
 - **Visualização Mobile:** Interface responsiva para acesso via celular.
 
 ---
@@ -96,14 +95,16 @@ robusta com as seguintes capacidades:
 
 O projeto utiliza uma stack moderna e serverless:
 
-- **Frontend:** [React.js](https://reactjs.org/) (Hooks, Context API,
-  React Router v6)
+- **Frontend:** [React.js](https://reactjs.org/) 19 (Hooks, Context API,
+  React Router 7)
 - **Backend as a Service:** [Firebase](https://firebase.google.com/)
   - **Authentication:** Login seguro via Google.
   - **Firestore:** Banco de dados NoSQL para dados em tempo real.
   - **Hosting:** Hospedagem global rápida e segura (HTTPS).
 - **Utilitários:**
   - `jspdf`: Para geração de relatórios em PDF no navegador.
+  - `date-fns`: Para manipulação de datas.
+  - `Playwright`: Para testes E2E.
 
 ---
 
@@ -132,11 +133,22 @@ npm install
 
 **Configuração do Firebase:**
 
-- Crie um arquivo `src/firebaseConfig.js` na raiz da pasta `src`.
-  Exemplo: `src/firebaseConfig.example.js`
-- Cole suas credenciais do Firebase (API Key, Auth Domain, Project ID, etc.).
-- _Nota: Este arquivo deve permanecer em `.gitignore` por segurança,
-  não o comite._
+- Copie o arquivo de exemplo de variáveis:
+
+```bash
+cp .env.example .env.local
+```
+
+- Preencha em `.env.local` suas credenciais do Firebase:
+  - `REACT_APP_FIREBASE_API_KEY`
+  - `REACT_APP_FIREBASE_AUTH_DOMAIN`
+  - `REACT_APP_FIREBASE_PROJECT_ID`
+  - `REACT_APP_FIREBASE_STORAGE_BUCKET`
+  - `REACT_APP_FIREBASE_MESSAGING_SENDER_ID`
+  - `REACT_APP_FIREBASE_APP_ID`
+- O arquivo `src/firebaseConfig.js` já existe no projeto e consome essas
+  variáveis automaticamente.
+- _Nota: `.env.local` deve permanecer fora do versionamento._
 
 **Rodar o Projeto:**
 
@@ -172,20 +184,29 @@ _Certifique-se de ter o `firebase-tools` instalado e estar logado (`firebase log
 
 ## 🤝 _Como Contribuir_
 
-Este projeto segue padrões rigorosos de desenvolvimento:
+Este projeto adota um fluxo de contribuição documentado no
+[`CONTRIBUTING.md`](CONTRIBUTING.md).
 
-1. **Conventional Commits:** Utilizamos commits semânticos (`feat:`,
-   `fix:`, `docs:`, `style:`) com emojis para facilitar a leitura do
-   histórico.
-2. **Feature Branches:** Não commite diretamente na `main`. Crie
-   branches como `feat/nova-funcionalidade`.
+Resumo rápido:
 
-Checklist rápido para PRs:
+- commits seguem padrão semântico com emoji
+- títulos de PR e merge usam frases naturais, sem tipo e sem emoji
+- mudanças devem nascer, preferencialmente, em branch própria
+- formatação, lint e testes impactados devem ser validados antes de abrir PR
 
-- Atualize a documentação quando necessário.
-- Execute `npm install` e verifique que a aplicação inicia (`npm start`).
-- Crie uma branch com nome claro e faça um PR direcionado à branch
-  `main` ou à branch de feature correspondente.
+Rotina mínima recomendada:
+
+```bash
+npm run format:check
+npm run lint:md
+npm run lint
+```
+
+Se a mudança afetar comportamento da aplicação, execute também:
+
+```bash
+npm test -- --watchAll=false --runInBand
+```
 
 Para detalhes completos, leia nosso [Guia de Contribuição](CONTRIBUTING.md).
 
