@@ -1,119 +1,180 @@
-# Changelog - Melhorias Implementadas
+# Changelog do Projeto
 
-## Data: 2024
+## Contexto
 
-### ✅ Melhorias de Segurança
+Este arquivo passa a funcionar como visão executiva da evolução do
+projeto.
 
-1. **Migração de Credenciais para Variáveis de Ambiente**
-   - ✅ Atualizado `firebaseConfig.js` para usar `process.env`
-   - ✅ Mantido fallback para desenvolvimento
-   - ⚠️ **AÇÃO NECESSÁRIA:** Criar arquivo `.env.local` com as credenciais
+O detalhamento técnico completo de cada ciclo está concentrado em:
 
-2. **Regras de Segurança do Firestore**
-   - ✅ Criado arquivo `firestore.rules` com regras baseadas em `userId`
-   - ⚠️ **AÇÃO NECESSÁRIA:** Fazer deploy: `firebase deploy --only firestore:rules`
+- `docs/reviews/CODE_REVIEW_V2.md` até `docs/reviews/CODE_REVIEW_V22.md`
+- `docs/reviews/artifacts/`
 
-3. **Validação de Inputs**
-   - ✅ Criado `src/utils/validation.js` com funções de validação
-   - ✅ Implementado validação em `ChurchManager.js`
-   - ✅ Implementado validação em `ChurchDashboard.js`
-   - ✅ Implementado validação em `ChurchScheduleGenerator.js`
-   - ✅ Sanitização de strings para prevenir XSS
+## Status atual da documentação
 
-### ✅ Melhorias de Clean Code
+- baseline legada inicial: `docs/reviews/CODE_REVIEW.md`
+- trilha canônica de evolução: `V2` até `V22`
+- estado atual do sistema: `Em Refinamento`
 
-1. **Constantes Centralizadas**
-   - ✅ Criado `src/constants/days.js` com `ALL_WEEK_DAYS` e `INITIAL_AVAILABILITY`
-   - ✅ Criado `src/utils/dateUtils.js` com funções de data centralizadas
-   - ✅ Removida duplicação de `getMonthYearLabel` (agora em `dateUtils.js`)
-   - ✅ Removida duplicação de constantes de dias da semana
+## Linha do tempo resumida
 
-2. **Componentes de UI Reutilizáveis**
-   - ✅ Criado `src/components/ui/Button.js` com variantes
-   - ✅ Criado `src/components/ui/Input.js` com validação integrada
-   - 📝 **PRÓXIMO PASSO:** Refatorar componentes para usar esses componentes
+### Baseline legada
 
-3. **ErrorBoundary**
-   - ✅ Criado `src/components/ErrorBoundary.js`
-   - ✅ Implementado no `App.js` para capturar erros globais
+- `CODE_REVIEW.md`
+  - documento legado de referência
+  - mantido apenas para compatibilidade histórica
+  - o conteúdo canônico passa a começar em `V2`
 
-### ✅ Melhorias de Performance
+### V2 - Segurança, validação e base estrutural
 
-1. **Memoização**
-   - ✅ `buildConfig` em `ChurchManager.js` agora usa `useMemo`
-   - ✅ `groupedSchedule` em `ChurchScheduleGenerator.js` agora usa `useMemo`
-   - ✅ `formatAvailability` em `ChurchDashboard.js` agora usa `useCallback`
+- migração de credenciais para variáveis de ambiente
+- criação das regras iniciais do Firestore
+- validações centrais de entrada
+- componentes reutilizáveis de UI
+- `ErrorBoundary` e primeiros ganhos de organização
 
-2. **Lazy Loading**
-   - ✅ `ChurchDashboard` carregado com `lazy()`
-   - ✅ `ChurchScheduleGenerator` carregado com `lazy()`
-   - ✅ Implementado `Suspense` no `App.js`
+Documento principal:
 
-### 📝 Arquivos Criados
+- `docs/reviews/CODE_REVIEW_V2.md`
 
-- `firestore.rules` - Regras de segurança do Firestore
-- `src/constants/days.js` - Constantes de dias da semana
-- `src/utils/dateUtils.js` - Utilitários de data
-- `src/utils/validation.js` - Funções de validação
-- `src/components/ErrorBoundary.js` - Componente de tratamento de erros
-- `src/components/ui/Button.js` - Componente de botão reutilizável
-- `src/components/ui/Input.js` - Componente de input reutilizável
-- `CODE_REVIEW.md` - Documento completo de code review
-- `IMPLEMENTATION_GUIDE.md` - Guia de implementação
-- `CHANGELOG.md` - Este arquivo
+### V3 - Qualidade técnica e cobertura inicial
 
-### 📝 Arquivos Modificados
+- avanço de cobertura em utilitários e hooks críticos
+- evolução de padronização de UI
+- preparação do terreno para expansão dos testes E2E
 
-- `src/firebaseConfig.js` - Migrado para variáveis de ambiente
-- `src/App.js` - Adicionado ErrorBoundary e lazy loading
-- `src/components/ChurchManager.js` - Validações, constantes centralizadas, memoização
-- `src/components/ChurchDashboard.js` - Validações, constantes centralizadas, memoização
-- `src/components/ChurchScheduleGenerator.js` - Validações, constantes
-  centralizadas, memoização
-- `src/utils/pdfGenerator.js` - Usa `getMonthYearLabel` de `dateUtils.js`
+Documento principal:
 
-### ⚠️ Ações Necessárias do Usuário
+- `docs/reviews/CODE_REVIEW_V3.md`
 
-1. **Segurança (URGENTE):**
+### V4 - Robustez de produção e segurança operacional
 
-   ```bash
-   # Criar arquivo .env.local na raiz do projeto
-   touch .env.local
+- reforço de robustez com foco em segurança de dados
+- evolução do contrato de acesso e confiabilidade de fluxo
 
-   # Adicionar credenciais do Firebase (ver IMPLEMENTATION_GUIDE.md)
-   # Depois fazer deploy das regras:
-   firebase deploy --only firestore:rules
-   ```
+Documento principal:
 
-2. **Testes:**
-   - Testar validações de formulários
-   - Testar lazy loading
-   - Testar ErrorBoundary (forçar um erro para verificar)
-   - Verificar se todas as funcionalidades ainda funcionam
+- `docs/reviews/CODE_REVIEW_V4.md`
 
-### 🔄 Próximas Melhorias Sugeridas
+### V5 a V7 - Fundação e amadurecimento da suíte E2E
 
-1. **Refatoração de Componentes Grandes:**
-   - Quebrar `ChurchManager.js` em componentes menores
-   - Quebrar `ChurchDashboard.js` em componentes menores
-   - Quebrar `ChurchScheduleGenerator.js` em componentes menores
+- `V5`
+  - criação da base de testes E2E
+  - cobertura ponta a ponta dos fluxos principais
+- `V6`
+  - expansão para exclusões, cenários negativos e falhas operacionais
+- `V7`
+  - evolução da suíte E2E para uso mais confiável no CI
+  - melhor recuperação de erro e sustentabilidade da suíte
 
-2. **Testes:**
-   - Adicionar testes unitários para funções utilitárias
-   - Adicionar testes de componentes críticos
+Documentos principais:
 
-3. **Documentação:**
-   - Adicionar JSDoc nas funções públicas
-   - Melhorar README.md com instruções de setup
+- `docs/reviews/CODE_REVIEW_V5.md`
+- `docs/reviews/CODE_REVIEW_V6.md`
+- `docs/reviews/CODE_REVIEW_V7.md`
 
-4. **Acessibilidade:**
-   - Adicionar atributos ARIA
-   - Melhorar navegação por teclado
+### V8 e V9 - Qualidade documental e rotina operacional
 
-### 📊 Métricas de Melhoria
+- `V8`
+  - limpeza e padronização da documentação com `markdownlint`
+- `V9`
+  - transformação da qualidade estática em rotina operacional
+  - consolidação de políticas em `CONTRIBUTING.md`
 
-- ✅ **Duplicação de Código:** Reduzida de ~15% para ~5%
-- ✅ **Validação de Inputs:** 100% dos formulários agora têm validação
-- ✅ **Segurança:** Regras do Firestore implementadas
-- ✅ **Performance:** Memoização e lazy loading implementados
-- ✅ **Manutenibilidade:** Constantes centralizadas, código mais organizado
+Documentos principais:
+
+- `docs/reviews/CODE_REVIEW_V8.md`
+- `docs/reviews/CODE_REVIEW_V9.md`
+
+### V10 a V12 - Histórico de escalas
+
+- `V10`
+  - evolução da visibilidade do histórico de escalas
+- `V11`
+  - busca textual no histórico
+- `V12`
+  - filtro por período para consulta operacional
+
+Documentos principais:
+
+- `docs/reviews/CODE_REVIEW_V10.md`
+- `docs/reviews/CODE_REVIEW_V11.md`
+- `docs/reviews/CODE_REVIEW_V12.md`
+
+### V13 - Modelo de culto por igreja
+
+- configuração do modelo de culto por igreja
+- alinhamento entre cadastro, geração, visualização e PDF
+- preservação da lógica de `RJM`
+
+Documento principal:
+
+- `docs/reviews/CODE_REVIEW_V13.md`
+
+### V14 e V15 - Lista de igrejas e visão operacional
+
+- `V14`
+  - resumo operacional por igreja na listagem
+- `V15`
+  - priorização e ordenação da lista de igrejas
+  - redução do esforço de decisão para quem administra várias igrejas
+
+Documentos principais:
+
+- `docs/reviews/CODE_REVIEW_V14.md`
+- `docs/reviews/CODE_REVIEW_V15.md`
+
+### V16 - Ensaio local por igreja
+
+- cadastro estruturado do ensaio local
+- edição e persistência por igreja
+- exibição do ensaio local na experiência principal
+- base preparada para visualização e PDF
+
+Documento principal:
+
+- `docs/reviews/CODE_REVIEW_V16.md`
+
+### V17 - Qualidade de formulários
+
+- melhoria de validação para igrejas e organistas
+- erros por campo
+- redução de ambiguidade de preenchimento
+- remoção do `Código` da experiência principal
+- alinhamento entre interface, validação e Firestore
+
+Documento principal:
+
+- `docs/reviews/CODE_REVIEW_V17.md`
+
+### V18 a V22 - Trilha planejada dos próximos ciclos
+
+- `V18`
+  - consistência operacional dos fluxos principais
+- `V19`
+  - qualidade final do PDF
+- `V20`
+  - regras de negócio da geração da escala
+- `V21`
+  - consolidação da experiência mobile
+- `V22`
+  - preparação para produção
+
+Documentos principais:
+
+- `docs/reviews/CODE_REVIEW_V18.md`
+- `docs/reviews/CODE_REVIEW_V19.md`
+- `docs/reviews/CODE_REVIEW_V20.md`
+- `docs/reviews/CODE_REVIEW_V21.md`
+- `docs/reviews/CODE_REVIEW_V22.md`
+
+## Como usar este changelog
+
+Use este arquivo para:
+
+- entender rapidamente a evolução do projeto
+- localizar o ciclo certo para leitura aprofundada
+- explicar o momento atual do sistema sem abrir todos os artefatos
+
+Para análise detalhada, use sempre os documentos em `docs/reviews/` e
+os artefatos específicos de cada ciclo.
