@@ -78,27 +78,29 @@ npm run test:e2e
 - Se a mudança mexer em workflow, documentação técnica ou comandos do
   projeto, trate a validação local como obrigatória.
 
-## 🔀 Padrão para PRs e Merge
+## 🔀 Padrão para Títulos de PR e Merge
 
 O título da PR deve seguir uma escrita limpa e objetiva, sem prefixos
-automáticos de ferramenta.
+automáticos de ferramenta, sem tipo semântico e sem emoji.
 
 ### Regras
 
 - Não usar prefixos como `[codex]`, `[bot]` ou equivalentes no título da PR.
-- O título da PR deve reaproveitar o mesmo padrão semântico usado nos commits
-  sempre que fizer sentido.
+- O título da PR deve usar uma frase natural e profissional, sem `Feat`, `Fix`,
+  `Docs` ou equivalentes.
+- O título da PR não deve usar emoji.
 - Antes de concluir o merge, revise o título final que ficará registrado na
   `main`.
+- O título final do merge deve manter o mesmo padrão natural do título da PR.
 - Se o GitHub sugerir um título automático ruim, edite manualmente antes de
   confirmar o merge.
 
 ### Exemplos
 
 ```text
-feat: ✨ Conclui fase 2 do V17 com validação por campo
-docs: 📚 Consolida e encerra ciclo V17
-fix: 🐛 Corrige fluxo de login local com Google
+Conclui fase 2 do V17 com validação por campo
+Consolida e encerra ciclo V17
+Corrige fluxo de login local com Google
 ```
 
 ## 🔧 Automação Local
