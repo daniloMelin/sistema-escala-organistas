@@ -51,6 +51,104 @@ revisar os fluxos principais como jornada completa.
 - corrigir com escopo pequeno sempre que possível
 - proteger com teste apenas o que reduz risco real de regressão
 
+## Checklist operacional da fase 1
+
+### 1. Igrejas
+
+Objetivo: confirmar que o cadastro de igreja continua funcionando como
+jornada completa após os ciclos de ensaio local, modelo de culto e
+qualidade de formulário.
+
+Checklist:
+
+- cadastrar igreja com nome válido, modelo de culto e ensaio local
+- editar nome, modelo de culto, dias de culto e ensaio local
+- confirmar que o campo `Código` não aparece na experiência principal
+- conferir se igrejas legadas com `code` continuam abrindo e editando
+- excluir igreja e confirmar remoção da lista
+- validar mensagens de erro para nome inválido e ensaio incompleto
+
+Critério de aceite:
+
+- a igreja salva deve voltar na lista com nome, modelo operacional e
+  ensaio local coerentes
+- a edição não deve apagar dados não alterados
+- a exclusão não deve deixar a lista em estado visual inconsistente
+
+### 2. Organistas
+
+Objetivo: validar o fluxo principal de organistas com as regras
+introduzidas no `V17`.
+
+Checklist:
+
+- cadastrar organista com primeiro nome
+- cadastrar organista com nome e sobrenome
+- rejeitar números, símbolos e mais de duas palavras
+- editar disponibilidade sem alterar nome
+- preservar organista legado quando o nome antigo não atender ao novo
+  limite
+- impedir duplicidade de nome dentro da mesma igreja
+- excluir organista e confirmar atualização da lista
+
+Critério de aceite:
+
+- mensagens de erro devem aparecer no campo correto
+- disponibilidade deve persistir de forma coerente com os dias visíveis
+- dados legados devem continuar editáveis quando o nome for mantido
+
+### 3. Escala
+
+Objetivo: confirmar que a geração continua coerente com o limite de
+período e com os modelos de culto configuráveis.
+
+Checklist:
+
+- gerar escala dentro do período máximo de `3` meses
+- bloquear tentativa de gerar período que entra no quarto mês
+- validar cenário com `2` organistas por dia
+- validar cenário com `3` organistas por dia
+- confirmar que reservas e cultos independentes não se misturam
+- salvar escala gerada e recarregar histórico
+
+Critério de aceite:
+
+- a escala gerada deve respeitar o modelo da igreja
+- o período exibido deve corresponder ao período solicitado
+- histórico salvo deve reabrir sem perda de dados relevantes
+
+### 4. Visualização e PDF
+
+Objetivo: revisar a consistência entre o que aparece na tela e o que é
+exportado.
+
+Checklist:
+
+- comparar período exibido na tela com período do PDF
+- conferir se o ensaio local aparece com a mesma recorrência
+- validar presença dos cultos esperados no PDF
+- validar nomes de organistas em cenários com múltiplas atribuições
+- revisar legibilidade básica em `A4`
+- identificar divergências de informação entre tela e PDF
+
+Critério de aceite:
+
+- PDF e tela devem comunicar o mesmo período, igreja e ensaio local
+- diferenças visuais são aceitáveis; diferenças informacionais não são
+- qualquer divergência operacional deve virar correção ou risco residual
+  documentado
+
+## Priorização inicial da fase 2
+
+1. Igreja com ensaio local e modelo de culto
+2. Organistas com regras novas do `V17`
+3. Geração de escala no limite de `3` meses
+4. Comparação entre visualização e PDF
+
+Essa ordem privilegia os fluxos que alimentam os demais: primeiro a
+base de igreja, depois os dados de organistas, em seguida a geração e,
+por fim, a saída visual/PDF.
+
 ## Resultado esperado do ciclo
 
 Ao final do `V18`, o sistema deve ter:
