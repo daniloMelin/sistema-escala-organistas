@@ -9,6 +9,7 @@
 | 1.2    | 27 de abril de 2026 | Danilo Melin | Consolidação da fase 1 do V18                     |
 | 1.3    | 27 de abril de 2026 | Danilo Melin | Validação operacional do fluxo de igrejas         |
 | 1.4    | 27 de abril de 2026 | Danilo Melin | Validação operacional do fluxo de organistas      |
+| 1.5    | 27 de abril de 2026 | Danilo Melin | Validação operacional da geração de escala        |
 
 ## Objetivo
 
@@ -133,6 +134,11 @@ Execução inicial:
   aberta no formulário
 - cobertura de `useChurchDashboard` ampliada para envio com nome inválido
   e exclusão da organista em edição
+- geração de escala revisada no limite operacional de `3` meses,
+  persistência, recarga e reabertura de histórico
+- cobertura de `useChurchScheduleGenerator` adicionada para bloquear
+  quarto mês, salvar escala válida e reabrir escala salva preservando
+  período e dados
 
 ### Fase 3 - Cobertura e impacto
 

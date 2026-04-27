@@ -253,6 +253,55 @@ excluída é a mesma que está aberta no formulário.
     --watchAll=false
   ```
 
+## Execução da fase 2 - geração de escala
+
+### Escopo de escala revisado
+
+O terceiro bloco executado foi o fluxo de geração de escala, com foco
+no limite operacional de `3` meses e na persistência da escala gerada.
+
+Itens avaliados:
+
+- bloqueio de período que entra no quarto mês
+- geração de escala válida dentro de `3` meses
+- cenários de distribuição com `2` e `3` organistas por dia
+- persistência da escala gerada
+- recarga do histórico após salvar
+- reabertura de escala salva preservando período e dados
+
+### Resultado em escala
+
+Não foi identificada regressão funcional no fluxo de geração.
+
+A revisão mostrou que a validação de período e a lógica de distribuição
+já estavam coerentes com o checklist, mas o hook do fluxo operacional
+ainda não tinha cobertura direta para geração, salvamento e reabertura
+de histórico.
+
+### Cobertura adicionada em escala
+
+`src/test/useChurchScheduleGenerator.test.js` passou a cobrir:
+
+- bloqueio de geração quando o período entra no quarto mês
+- geração, salvamento e recarga de uma escala válida dentro de `3`
+  meses
+- reabertura de escala salva preservando `startDate`, `endDate` e
+  `generatedSchedule`
+
+### Validação executada em escala
+
+- testes focados:
+
+  ```bash
+  npm test -- --runTestsByPath \
+    src/test/useChurchScheduleGenerator.test.js \
+    src/test/scheduleLogic.test.js \
+    src/test/scheduleControls.test.js \
+    src/test/scheduleHistoryList.test.js \
+    src/test/validation.test.js \
+    --watchAll=false
+  ```
+
 ## Resultado esperado do ciclo
 
 Ao final do `V18`, o sistema deve ter:
