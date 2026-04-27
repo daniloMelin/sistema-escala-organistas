@@ -11,6 +11,7 @@
 | 1.4    | 27 de abril de 2026 | Danilo Melin | Validação operacional do fluxo de organistas      |
 | 1.5    | 27 de abril de 2026 | Danilo Melin | Validação operacional da geração de escala        |
 | 1.6    | 27 de abril de 2026 | Danilo Melin | Alinhamento entre visualização e PDF              |
+| 1.7    | 27 de abril de 2026 | Danilo Melin | Consolidação da fase 2 do V18                     |
 
 ## Objetivo
 
@@ -145,6 +146,22 @@ Execução inicial:
 - PDF ajustado para manter colunas de serviços vagos exibidos na tela,
   preservando consistência informacional
 
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- quatro blocos prioritários do checklist executados:
+  - igrejas
+  - organistas
+  - geração de escala
+  - visualização e PDF
+- duas inconsistências operacionais corrigidas:
+  - edição de organista permanecia aberta após excluir a organista em
+    edição
+  - PDF podia ocultar serviços configurados sem atribuição
+- cobertura automatizada ampliada nos pontos de maior risco operacional
+- base preparada para a Fase 3, com impacto e cobertura já parcialmente
+  documentados no artefato do ciclo
+
 ### Fase 3 - Cobertura e impacto
 
 Objetivo:
@@ -181,12 +198,12 @@ Saídas esperadas:
 
 - [x] Estrutura inicial do V18 criada
 - [x] Fase 1 concluída
-- [ ] Fase 2 concluída
+- [x] Fase 2 concluída
 - [ ] Fase 3 concluída
 - [ ] Fase 4 concluída
 
 ## Próximos Passos do V18
 
-1. executar o checklist operacional da fase 2 pelos fluxos priorizados
-2. registrar inconsistências encontradas com escopo pequeno de correção
-3. ampliar testes somente quando a proteção reduzir risco real de regressão
+1. consolidar impacto operacional da fase 3
+2. separar cobertura adicionada de risco residual aceito
+3. preparar fechamento do ciclo com critérios de saída claros

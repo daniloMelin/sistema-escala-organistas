@@ -350,6 +350,40 @@ A correção aplicada faz o PDF coletar os serviços a partir das chaves de
     --watchAll=false
   ```
 
+## Consolidação da fase 2
+
+A fase 2 do `V18` fica consolidada com a execução dos quatro blocos
+prioritários definidos na fase 1.
+
+Resultado consolidado:
+
+- fluxo de igrejas revisado sem regressão funcional identificada
+- fluxo de organistas revisado com correção de estado de edição após
+  exclusão
+- geração de escala validada no limite operacional de `3` meses
+- visualização e PDF alinhados para preservar serviços configurados sem
+  atribuição
+- cobertura automatizada ampliada apenas nos pontos em que havia risco
+  real de regressão
+
+Correções aplicadas:
+
+- limpar edição ao excluir a organista atualmente aberta no formulário
+- manter no PDF os serviços vagos exibidos na visualização da escala
+
+Cobertura criada ou ampliada:
+
+- `src/test/useChurchManager.test.js`
+- `src/test/useChurchDashboard.test.js`
+- `src/test/useChurchScheduleGenerator.test.js`
+- `src/test/pdfGenerator.test.js`
+
+Risco residual aceito para a fase:
+
+- a revisão visual fina do PDF em folha `A4` permanece como foco do
+  `V19`; no `V18`, o critério foi consistência informacional entre tela
+  e PDF.
+
 ## Resultado esperado do ciclo
 
 Ao final do `V18`, o sistema deve ter:
