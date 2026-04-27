@@ -6,6 +6,7 @@
 | ------ | ------------------- | ------------ | ------------------------------------------------- |
 | 1.0    | 25 de abril de 2026 | Danilo Melin | Criação do ciclo V18                              |
 | 1.1    | 25 de abril de 2026 | Danilo Melin | Estruturação do ciclo de consistência operacional |
+| 1.2    | 27 de abril de 2026 | Danilo Melin | Consolidação da fase 1 do V18                     |
 
 ## Objetivo
 
@@ -19,7 +20,7 @@ funções já existentes.
 
 ## Status do Ciclo
 
-- Status geral: `PLANEJADO`
+- Status geral: `EM ANDAMENTO`
 - Data de início: `25 de abril de 2026`
 - Data de encerramento: `em aberto`
 - Contexto: estabilização da base após o fechamento do `V17` e limpeza
@@ -93,6 +94,16 @@ Saídas esperadas:
 - artefato base do ciclo com checklist operacional
 - priorização do que deve ser testado primeiro
 
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- Checklist operacional detalhado no artefato
+  `docs/reviews/artifacts/v18/OPERATIONAL_CONSISTENCY_REVIEW_V18.md`
+- Priorização inicial definida para igreja, organista, escala,
+  visualização e PDF
+- Critério de execução definido: registrar comportamento esperado antes
+  de corrigir e automatizar apenas o que reduzir risco real
+
 ### Fase 2 - Execução e correções
 
 Objetivo:
@@ -138,8 +149,16 @@ Saídas esperadas:
 - cobertura ampliada apenas onde ela reduz risco real
 - documentação do ciclo consolidada com impacto e pendências residuais
 
+## Registro de Progresso
+
+- [x] Estrutura inicial do V18 criada
+- [x] Fase 1 concluída
+- [ ] Fase 2 concluída
+- [ ] Fase 3 concluída
+- [ ] Fase 4 concluída
+
 ## Próximos Passos do V18
 
-1. estruturar o checklist operacional detalhado na fase 1
-2. escolher os primeiros fluxos para validação prática
-3. abrir a primeira branch do ciclo a partir da `main` atualizada
+1. executar o checklist operacional da fase 2 pelos fluxos priorizados
+2. registrar inconsistências encontradas com escopo pequeno de correção
+3. ampliar testes somente quando a proteção reduzir risco real de regressão
