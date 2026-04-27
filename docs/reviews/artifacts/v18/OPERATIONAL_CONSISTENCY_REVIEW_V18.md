@@ -151,7 +151,7 @@ por fim, a saída visual/PDF.
 
 ## Execução da fase 2 - fluxo de igrejas
 
-### Escopo revisado
+### Escopo de igrejas revisado
 
 O primeiro bloco executado foi o fluxo de igrejas, por ser a base dos
 demais fluxos operacionais.
@@ -167,7 +167,7 @@ Itens avaliados:
 - exclusão de igreja e limpeza do estado de edição quando a igreja
   excluída era a que estava aberta no formulário
 
-### Resultado
+### Resultado em igrejas
 
 Não foi identificada regressão funcional no fluxo de igrejas.
 
@@ -178,7 +178,7 @@ críticos mais protegidos por testes automatizados:
 - troca de modelo de culto durante edição
 - exclusão da igreja atualmente em edição limpando o formulário
 
-### Cobertura adicionada
+### Cobertura adicionada em igrejas
 
 `src/test/useChurchManager.test.js` passou a cobrir:
 
@@ -188,7 +188,7 @@ críticos mais protegidos por testes automatizados:
 - exclusão da igreja em edição com reset de `editingId`, `churchName` e
   `pendingDeleteChurch`
 
-### Validação executada
+### Validação executada em igrejas
 
 - testes focados:
 
@@ -203,6 +203,55 @@ críticos mais protegidos por testes automatizados:
   ```
 
 - `npm run lint -- --max-warnings=0`
+
+## Execução da fase 2 - fluxo de organistas
+
+### Escopo de organistas revisado
+
+O segundo bloco executado foi o fluxo de organistas, aproveitando as
+regras de qualidade de formulário consolidadas no `V17`.
+
+Itens avaliados:
+
+- cadastro com primeiro nome e nome com sobrenome
+- bloqueio de números, símbolos e mais de duas palavras
+- validação no envio, além do feedback ao perder foco
+- prevenção de duplicidade dentro da mesma igreja
+- edição de disponibilidade sem alterar nome
+- preservação de nome legado quando mantido sem alteração
+- mapeamento de disponibilidade antiga de `sunday` para `sunday_culto`
+- exclusão de organista e atualização do estado do formulário
+
+### Resultado em organistas
+
+Foi identificada uma inconsistência operacional pequena:
+
+- ao excluir a organista que estava aberta em edição, o formulário podia
+  permanecer com o estado de edição preenchido
+
+A correção aplicada faz o fluxo cancelar a edição quando a organista
+excluída é a mesma que está aberta no formulário.
+
+### Cobertura adicionada em organistas
+
+`src/test/useChurchDashboard.test.js` passou a cobrir:
+
+- bloqueio de envio com nome inválido da organista
+- limpeza de `editingId`, `newOrganistName`, `availability` e
+  `pendingDeleteOrganist` ao excluir a organista em edição
+
+### Validação executada em organistas
+
+- testes focados:
+
+  ```bash
+  npm test -- --runTestsByPath \
+    src/test/useChurchDashboard.test.js \
+    src/test/organistForm.test.js \
+    src/test/organistList.test.js \
+    src/test/validation.test.js \
+    --watchAll=false
+  ```
 
 ## Resultado esperado do ciclo
 

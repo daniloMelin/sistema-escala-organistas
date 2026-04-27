@@ -221,6 +221,7 @@ export const useChurchDashboard = (user) => {
       if (!isMountedRef.current) return;
       setSuccessMessage('Organista excluída com sucesso.');
       setError('');
+      if (editingId === pendingDeleteOrganist.id) handleCancelEdit();
     } catch (deleteError) {
       if (!isMountedRef.current) return;
       logger.error('Erro ao excluir organista:', deleteError);

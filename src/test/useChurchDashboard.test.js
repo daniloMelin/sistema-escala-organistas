@@ -148,6 +148,26 @@ describe('useChurchDashboard', () => {
     );
   });
 
+  test('bloqueia envio com nome invalido da organista', async () => {
+    const { result } = renderHook(() => useChurchDashboard(user));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    act(() => {
+      result.current.handleOrganistNameChange('Ana 1');
+    });
+
+    await act(async () => {
+      await result.current.handleSaveOrganist({ preventDefault: jest.fn() });
+    });
+
+    expect(mockAddOrganistToChurch).not.toHaveBeenCalled();
+    expect(result.current.fieldErrors.organistName).toBe(
+      'Use apenas letras e espaços no nome da organista.'
+    );
+    expect(result.current.error).toBe('');
+  });
+
   test('limpa erro por campo ao voltar a digitar', async () => {
     const { result } = renderHook(() => useChurchDashboard(user));
 
@@ -306,6 +326,31 @@ describe('useChurchDashboard', () => {
 
     expect(mockDeleteOrganistFromChurch).toHaveBeenCalledWith('user-1', 'church-1', 'org-1');
     expect(result.current.pendingDeleteOrganist).toBe(null);
+  });
+
+  test('limpa edicao ao excluir a organista em edicao', async () => {
+    const { result } = renderHook(() => useChurchDashboard(user));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    act(() => {
+      result.current.handleStartEdit({
+        id: 'org-1',
+        name: 'Ana',
+        availability: { sunday_culto: true },
+      });
+      result.current.handleRequestDeleteOrganist('org-1', 'Ana');
+    });
+
+    await act(async () => {
+      await result.current.handleConfirmDeleteOrganist();
+    });
+
+    expect(mockDeleteOrganistFromChurch).toHaveBeenCalledWith('user-1', 'church-1', 'org-1');
+    expect(result.current.editingId).toBe(null);
+    expect(result.current.newOrganistName).toBe('');
+    expect(result.current.pendingDeleteOrganist).toBe(null);
+    expect(result.current.availability).toEqual(INITIAL_AVAILABILITY);
   });
 
   test('exibe erro quando falha ao excluir organista', async () => {

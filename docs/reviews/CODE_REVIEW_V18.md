@@ -8,6 +8,7 @@
 | 1.1    | 25 de abril de 2026 | Danilo Melin | Estruturação do ciclo de consistência operacional |
 | 1.2    | 27 de abril de 2026 | Danilo Melin | Consolidação da fase 1 do V18                     |
 | 1.3    | 27 de abril de 2026 | Danilo Melin | Validação operacional do fluxo de igrejas         |
+| 1.4    | 27 de abril de 2026 | Danilo Melin | Validação operacional do fluxo de organistas      |
 
 ## Objetivo
 
@@ -126,6 +127,12 @@ Execução inicial:
 - cobertura de `useChurchManager` ampliada para preservar `code` legado
   durante edição, atualizar modelo de culto e limpar edição ao excluir
   a igreja em edição
+- fluxo de organistas revisado com foco nas regras do `V17`, duplicidade,
+  nome legado, disponibilidade e exclusão
+- correção aplicada para limpar edição ao excluir a organista atualmente
+  aberta no formulário
+- cobertura de `useChurchDashboard` ampliada para envio com nome inválido
+  e exclusão da organista em edição
 
 ### Fase 3 - Cobertura e impacto
 
