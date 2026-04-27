@@ -73,8 +73,7 @@ const collectServiceIds = (scheduleData) => {
   const ids = new Set();
 
   scheduleData.forEach((item) => {
-    Object.entries(item.assignments || {}).forEach(([serviceId, assignedName]) => {
-      if (!assignedName || assignedName === 'VAGO') return;
+    Object.keys(item.assignments || {}).forEach((serviceId) => {
       ids.add(serviceId);
     });
   });

@@ -302,6 +302,54 @@ de histórico.
     --watchAll=false
   ```
 
+## Execução da fase 2 - visualização e PDF
+
+### Escopo de visualização e PDF revisado
+
+O quarto bloco executado comparou a grade exibida na tela com o PDF
+exportado, priorizando divergências informacionais.
+
+Itens avaliados:
+
+- período exibido na tela e no PDF
+- ensaio local exibido na grade e no PDF
+- resumo de distribuição por organista
+- serviços esperados para modelos com múltiplas atribuições
+- comportamento de slots vagos na visualização e na exportação
+
+### Resultado em visualização e PDF
+
+Foi identificada uma divergência informacional:
+
+- a tela mantinha visíveis os serviços configurados mesmo quando ainda
+  estavam vagos
+- o PDF montava suas colunas apenas a partir dos serviços com organista
+  atribuída, podendo ocultar `Parte 1`, `Parte 2` ou outro slot vago
+
+A correção aplicada faz o PDF coletar os serviços a partir das chaves de
+`assignments`, preservando também os serviços sem atribuição.
+
+### Cobertura adicionada em visualização e PDF
+
+`src/test/pdfGenerator.test.js` passou a cobrir:
+
+- exportação de serviços sem atribuição que aparecem na visualização
+- manutenção das colunas `M. Hora`, `P1` e `P2` mesmo quando `P1` e
+  `P2` estão vagos
+
+### Validação executada em visualização e PDF
+
+- testes focados:
+
+  ```bash
+  npm test -- --runTestsByPath \
+    src/test/pdfGenerator.test.js \
+    src/test/scheduleGridView.test.js \
+    src/test/useChurchScheduleGenerator.test.js \
+    src/test/scheduleLogic.test.js \
+    --watchAll=false
+  ```
+
 ## Resultado esperado do ciclo
 
 Ao final do `V18`, o sistema deve ter:

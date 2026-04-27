@@ -10,6 +10,7 @@
 | 1.3    | 27 de abril de 2026 | Danilo Melin | Validação operacional do fluxo de igrejas         |
 | 1.4    | 27 de abril de 2026 | Danilo Melin | Validação operacional do fluxo de organistas      |
 | 1.5    | 27 de abril de 2026 | Danilo Melin | Validação operacional da geração de escala        |
+| 1.6    | 27 de abril de 2026 | Danilo Melin | Alinhamento entre visualização e PDF              |
 
 ## Objetivo
 
@@ -139,6 +140,10 @@ Execução inicial:
 - cobertura de `useChurchScheduleGenerator` adicionada para bloquear
   quarto mês, salvar escala válida e reabrir escala salva preservando
   período e dados
+- visualização e PDF comparados para serviços configurados sem
+  atribuição
+- PDF ajustado para manter colunas de serviços vagos exibidos na tela,
+  preservando consistência informacional
 
 ### Fase 3 - Cobertura e impacto
 
