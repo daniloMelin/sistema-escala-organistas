@@ -149,6 +149,61 @@ Essa ordem privilegia os fluxos que alimentam os demais: primeiro a
 base de igreja, depois os dados de organistas, em seguida a geração e,
 por fim, a saída visual/PDF.
 
+## Execução da fase 2 - fluxo de igrejas
+
+### Escopo revisado
+
+O primeiro bloco executado foi o fluxo de igrejas, por ser a base dos
+demais fluxos operacionais.
+
+Itens avaliados:
+
+- cadastro de igreja com ensaio local estruturado
+- edição de igreja com alteração de nome, modelo de culto e manutenção
+  dos dias selecionados
+- preservação de `code` legado mesmo sem campo visível na interface
+- exibição do ensaio local na lista com e sem resumo operacional
+- ausência do campo `Código` na experiência principal
+- exclusão de igreja e limpeza do estado de edição quando a igreja
+  excluída era a que estava aberta no formulário
+
+### Resultado
+
+Não foi identificada regressão funcional no fluxo de igrejas.
+
+A revisão apontou apenas a necessidade de deixar alguns comportamentos
+críticos mais protegidos por testes automatizados:
+
+- edição de igreja legada preservando `code`
+- troca de modelo de culto durante edição
+- exclusão da igreja atualmente em edição limpando o formulário
+
+### Cobertura adicionada
+
+`src/test/useChurchManager.test.js` passou a cobrir:
+
+- atualização de igreja legada preservando `code`
+- reconstrução da configuração ao trocar o modelo para
+  `culto_unico_com_reserva`
+- exclusão da igreja em edição com reset de `editingId`, `churchName` e
+  `pendingDeleteChurch`
+
+### Validação executada
+
+- testes focados:
+
+  ```bash
+  npm test -- --runTestsByPath \
+    src/test/useChurchManager.test.js \
+    src/test/churchForm.test.js \
+    src/test/churchList.test.js \
+    src/test/rehearsal.test.js \
+    src/test/churchCultModel.test.js \
+    --watchAll=false
+  ```
+
+- `npm run lint -- --max-warnings=0`
+
 ## Resultado esperado do ciclo
 
 Ao final do `V18`, o sistema deve ter:

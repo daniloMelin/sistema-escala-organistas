@@ -7,6 +7,7 @@
 | 1.0    | 25 de abril de 2026 | Danilo Melin | Criação do ciclo V18                              |
 | 1.1    | 25 de abril de 2026 | Danilo Melin | Estruturação do ciclo de consistência operacional |
 | 1.2    | 27 de abril de 2026 | Danilo Melin | Consolidação da fase 1 do V18                     |
+| 1.3    | 27 de abril de 2026 | Danilo Melin | Validação operacional do fluxo de igrejas         |
 
 ## Objetivo
 
@@ -116,6 +117,15 @@ Saídas esperadas:
 
 - correções validadas por fluxo
 - atualização de testes quando a regressão justificar proteção automatizada
+
+Execução inicial:
+
+- fluxo de igrejas revisado como primeira prioridade operacional
+- cadastro, edição, compatibilidade legada de `code`, ensaio local,
+  modelo de culto e exclusão avaliados
+- cobertura de `useChurchManager` ampliada para preservar `code` legado
+  durante edição, atualizar modelo de culto e limpar edição ao excluir
+  a igreja em edição
 
 ### Fase 3 - Cobertura e impacto
 

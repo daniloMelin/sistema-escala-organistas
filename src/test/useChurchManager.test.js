@@ -287,4 +287,98 @@ describe('useChurchManager', () => {
     });
     expect(result.current.rehearsal).not.toEqual(INITIAL_REHEARSAL);
   });
+
+  test('preserva codigo legado e atualiza modelo de culto ao editar igreja', async () => {
+    mockGetChurches.mockResolvedValue([
+      {
+        id: 'church-legacy',
+        name: 'Igreja Legada',
+        code: 'LEGACY',
+        config: {
+          thursday: [{ id: 'MeiaHoraCulto' }, { id: 'Culto' }],
+        },
+        cultoModel: 'meia_hora_e_culto',
+        rehearsal: {
+          weekOfMonth: 1,
+          weekday: 'thursday',
+          time: '19:30',
+          notes: '',
+        },
+      },
+    ]);
+    mockGetOrganistsByChurch.mockResolvedValue([]);
+    mockGetChurchScheduleCount.mockResolvedValue(0);
+
+    const { result } = renderHook(() => useChurchManager(user));
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    act(() => {
+      result.current.handleStartEdit(
+        { stopPropagation: jest.fn() },
+        result.current.churches.find((church) => church.id === 'church-legacy')
+      );
+      result.current.handleChurchNameChange('Igreja Legada Atualizada');
+      result.current.setCultoModel('culto_unico_com_reserva');
+    });
+
+    await act(async () => {
+      await result.current.handleSubmit({ preventDefault: jest.fn() });
+    });
+
+    expect(mockUpdateChurch).toHaveBeenCalledWith(
+      'user-1',
+      'church-legacy',
+      expect.objectContaining({
+        name: 'Igreja Legada Atualizada',
+        code: 'LEGACY',
+        cultoModel: 'culto_unico_com_reserva',
+        config: {
+          thursday: [
+            { id: 'Culto', label: 'Culto', needs: 1 },
+            { id: 'Reserva', label: 'Reserva', needs: 1 },
+          ],
+        },
+      })
+    );
+  });
+
+  test('limpa edicao ao excluir a igreja em edicao', async () => {
+    mockGetChurches.mockResolvedValue([
+      {
+        id: 'church-ready',
+        name: 'Igreja Pronta',
+        code: 'READY',
+        config: {
+          sunday: [{ id: 'MeiaHoraCulto' }, { id: 'Culto' }],
+        },
+        cultoModel: 'meia_hora_e_culto',
+      },
+    ]);
+    mockGetOrganistsByChurch.mockResolvedValue([]);
+    mockGetChurchScheduleCount.mockResolvedValue(0);
+
+    const { result } = renderHook(() => useChurchManager(user));
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    act(() => {
+      const church = result.current.churches.find((item) => item.id === 'church-ready');
+      result.current.handleStartEdit({ stopPropagation: jest.fn() }, church);
+      result.current.handleRequestDeleteChurch(
+        { stopPropagation: jest.fn() },
+        church.id,
+        church.name
+      );
+    });
+
+    await act(async () => {
+      await result.current.handleConfirmDeleteChurch();
+    });
+
+    expect(mockDeleteChurchWithSubcollections).toHaveBeenCalledWith('user-1', 'church-ready');
+    expect(result.current.editingId).toBe(null);
+    expect(result.current.churchName).toBe('');
+    expect(result.current.pendingDeleteChurch).toBe(null);
+  });
 });
