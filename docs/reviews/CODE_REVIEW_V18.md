@@ -12,6 +12,7 @@
 | 1.5    | 27 de abril de 2026 | Danilo Melin | Validação operacional da geração de escala        |
 | 1.6    | 27 de abril de 2026 | Danilo Melin | Alinhamento entre visualização e PDF              |
 | 1.7    | 27 de abril de 2026 | Danilo Melin | Consolidação da fase 2 do V18                     |
+| 1.8    | 27 de abril de 2026 | Danilo Melin | Consolidação da fase 3 do V18                     |
 
 ## Objetivo
 
@@ -175,6 +176,17 @@ Saídas esperadas:
 - documento de impacto do `V18`
 - documento de cobertura do `V18`
 
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- impacto operacional registrado em
+  `docs/reviews/artifacts/v18/OPERATIONAL_CONSISTENCY_IMPACT_V18.md`
+- cobertura consolidada em
+  `docs/reviews/artifacts/v18/OPERATIONAL_CONSISTENCY_COVERAGE_V18.md`
+- risco residual separado entre revisão visual fina do PDF, regras
+  avançadas de distribuição e validação manual em ambiente real
+- base documental preparada para o fechamento formal da Fase 4
+
 ### Fase 4 - Fechamento
 
 Objetivo:
@@ -199,11 +211,16 @@ Saídas esperadas:
 - [x] Estrutura inicial do V18 criada
 - [x] Fase 1 concluída
 - [x] Fase 2 concluída
-- [ ] Fase 3 concluída
+- [x] Fase 3 concluída
 - [ ] Fase 4 concluída
 
 ## Próximos Passos do V18
 
-1. consolidar impacto operacional da fase 3
-2. separar cobertura adicionada de risco residual aceito
-3. preparar fechamento do ciclo com critérios de saída claros
+1. encerrar formalmente o `V18`
+2. registrar resumo executivo, artefatos e próximos passos
+3. preparar transição para o `V19`, focado em qualidade final do PDF
+
+## Artefatos da Fase 3
+
+- `docs/reviews/artifacts/v18/OPERATIONAL_CONSISTENCY_IMPACT_V18.md`
+- `docs/reviews/artifacts/v18/OPERATIONAL_CONSISTENCY_COVERAGE_V18.md`
