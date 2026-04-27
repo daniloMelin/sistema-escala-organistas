@@ -149,6 +149,241 @@ Essa ordem privilegia os fluxos que alimentam os demais: primeiro a
 base de igreja, depois os dados de organistas, em seguida a geração e,
 por fim, a saída visual/PDF.
 
+## Execução da fase 2 - fluxo de igrejas
+
+### Escopo de igrejas revisado
+
+O primeiro bloco executado foi o fluxo de igrejas, por ser a base dos
+demais fluxos operacionais.
+
+Itens avaliados:
+
+- cadastro de igreja com ensaio local estruturado
+- edição de igreja com alteração de nome, modelo de culto e manutenção
+  dos dias selecionados
+- preservação de `code` legado mesmo sem campo visível na interface
+- exibição do ensaio local na lista com e sem resumo operacional
+- ausência do campo `Código` na experiência principal
+- exclusão de igreja e limpeza do estado de edição quando a igreja
+  excluída era a que estava aberta no formulário
+
+### Resultado em igrejas
+
+Não foi identificada regressão funcional no fluxo de igrejas.
+
+A revisão apontou apenas a necessidade de deixar alguns comportamentos
+críticos mais protegidos por testes automatizados:
+
+- edição de igreja legada preservando `code`
+- troca de modelo de culto durante edição
+- exclusão da igreja atualmente em edição limpando o formulário
+
+### Cobertura adicionada em igrejas
+
+`src/test/useChurchManager.test.js` passou a cobrir:
+
+- atualização de igreja legada preservando `code`
+- reconstrução da configuração ao trocar o modelo para
+  `culto_unico_com_reserva`
+- exclusão da igreja em edição com reset de `editingId`, `churchName` e
+  `pendingDeleteChurch`
+
+### Validação executada em igrejas
+
+- testes focados:
+
+  ```bash
+  npm test -- --runTestsByPath \
+    src/test/useChurchManager.test.js \
+    src/test/churchForm.test.js \
+    src/test/churchList.test.js \
+    src/test/rehearsal.test.js \
+    src/test/churchCultModel.test.js \
+    --watchAll=false
+  ```
+
+- `npm run lint -- --max-warnings=0`
+
+## Execução da fase 2 - fluxo de organistas
+
+### Escopo de organistas revisado
+
+O segundo bloco executado foi o fluxo de organistas, aproveitando as
+regras de qualidade de formulário consolidadas no `V17`.
+
+Itens avaliados:
+
+- cadastro com primeiro nome e nome com sobrenome
+- bloqueio de números, símbolos e mais de duas palavras
+- validação no envio, além do feedback ao perder foco
+- prevenção de duplicidade dentro da mesma igreja
+- edição de disponibilidade sem alterar nome
+- preservação de nome legado quando mantido sem alteração
+- mapeamento de disponibilidade antiga de `sunday` para `sunday_culto`
+- exclusão de organista e atualização do estado do formulário
+
+### Resultado em organistas
+
+Foi identificada uma inconsistência operacional pequena:
+
+- ao excluir a organista que estava aberta em edição, o formulário podia
+  permanecer com o estado de edição preenchido
+
+A correção aplicada faz o fluxo cancelar a edição quando a organista
+excluída é a mesma que está aberta no formulário.
+
+### Cobertura adicionada em organistas
+
+`src/test/useChurchDashboard.test.js` passou a cobrir:
+
+- bloqueio de envio com nome inválido da organista
+- limpeza de `editingId`, `newOrganistName`, `availability` e
+  `pendingDeleteOrganist` ao excluir a organista em edição
+
+### Validação executada em organistas
+
+- testes focados:
+
+  ```bash
+  npm test -- --runTestsByPath \
+    src/test/useChurchDashboard.test.js \
+    src/test/organistForm.test.js \
+    src/test/organistList.test.js \
+    src/test/validation.test.js \
+    --watchAll=false
+  ```
+
+## Execução da fase 2 - geração de escala
+
+### Escopo de escala revisado
+
+O terceiro bloco executado foi o fluxo de geração de escala, com foco
+no limite operacional de `3` meses e na persistência da escala gerada.
+
+Itens avaliados:
+
+- bloqueio de período que entra no quarto mês
+- geração de escala válida dentro de `3` meses
+- cenários de distribuição com `2` e `3` organistas por dia
+- persistência da escala gerada
+- recarga do histórico após salvar
+- reabertura de escala salva preservando período e dados
+
+### Resultado em escala
+
+Não foi identificada regressão funcional no fluxo de geração.
+
+A revisão mostrou que a validação de período e a lógica de distribuição
+já estavam coerentes com o checklist, mas o hook do fluxo operacional
+ainda não tinha cobertura direta para geração, salvamento e reabertura
+de histórico.
+
+### Cobertura adicionada em escala
+
+`src/test/useChurchScheduleGenerator.test.js` passou a cobrir:
+
+- bloqueio de geração quando o período entra no quarto mês
+- geração, salvamento e recarga de uma escala válida dentro de `3`
+  meses
+- reabertura de escala salva preservando `startDate`, `endDate` e
+  `generatedSchedule`
+
+### Validação executada em escala
+
+- testes focados:
+
+  ```bash
+  npm test -- --runTestsByPath \
+    src/test/useChurchScheduleGenerator.test.js \
+    src/test/scheduleLogic.test.js \
+    src/test/scheduleControls.test.js \
+    src/test/scheduleHistoryList.test.js \
+    src/test/validation.test.js \
+    --watchAll=false
+  ```
+
+## Execução da fase 2 - visualização e PDF
+
+### Escopo de visualização e PDF revisado
+
+O quarto bloco executado comparou a grade exibida na tela com o PDF
+exportado, priorizando divergências informacionais.
+
+Itens avaliados:
+
+- período exibido na tela e no PDF
+- ensaio local exibido na grade e no PDF
+- resumo de distribuição por organista
+- serviços esperados para modelos com múltiplas atribuições
+- comportamento de slots vagos na visualização e na exportação
+
+### Resultado em visualização e PDF
+
+Foi identificada uma divergência informacional:
+
+- a tela mantinha visíveis os serviços configurados mesmo quando ainda
+  estavam vagos
+- o PDF montava suas colunas apenas a partir dos serviços com organista
+  atribuída, podendo ocultar `Parte 1`, `Parte 2` ou outro slot vago
+
+A correção aplicada faz o PDF coletar os serviços a partir das chaves de
+`assignments`, preservando também os serviços sem atribuição.
+
+### Cobertura adicionada em visualização e PDF
+
+`src/test/pdfGenerator.test.js` passou a cobrir:
+
+- exportação de serviços sem atribuição que aparecem na visualização
+- manutenção das colunas `M. Hora`, `P1` e `P2` mesmo quando `P1` e
+  `P2` estão vagos
+
+### Validação executada em visualização e PDF
+
+- testes focados:
+
+  ```bash
+  npm test -- --runTestsByPath \
+    src/test/pdfGenerator.test.js \
+    src/test/scheduleGridView.test.js \
+    src/test/useChurchScheduleGenerator.test.js \
+    src/test/scheduleLogic.test.js \
+    --watchAll=false
+  ```
+
+## Consolidação da fase 2
+
+A fase 2 do `V18` fica consolidada com a execução dos quatro blocos
+prioritários definidos na fase 1.
+
+Resultado consolidado:
+
+- fluxo de igrejas revisado sem regressão funcional identificada
+- fluxo de organistas revisado com correção de estado de edição após
+  exclusão
+- geração de escala validada no limite operacional de `3` meses
+- visualização e PDF alinhados para preservar serviços configurados sem
+  atribuição
+- cobertura automatizada ampliada apenas nos pontos em que havia risco
+  real de regressão
+
+Correções aplicadas:
+
+- limpar edição ao excluir a organista atualmente aberta no formulário
+- manter no PDF os serviços vagos exibidos na visualização da escala
+
+Cobertura criada ou ampliada:
+
+- `src/test/useChurchManager.test.js`
+- `src/test/useChurchDashboard.test.js`
+- `src/test/useChurchScheduleGenerator.test.js`
+- `src/test/pdfGenerator.test.js`
+
+Risco residual aceito para a fase:
+
+- a revisão visual fina do PDF em folha `A4` permanece como foco do
+  `V19`; no `V18`, o critério foi consistência informacional entre tela
+  e PDF.
+
 ## Resultado esperado do ciclo
 
 Ao final do `V18`, o sistema deve ter:

@@ -105,4 +105,27 @@ describe('exportScheduleToPDF', () => {
     expect(mockDoc.roundedRect).toHaveBeenCalled();
     expect(mockDoc.save).toHaveBeenCalled();
   });
+
+  test('mantem no PDF servicos sem atribuicao que aparecem na visualizacao', () => {
+    exportScheduleToPDF(
+      [
+        {
+          date: '01/03/2026',
+          dayName: 'Domingo',
+          assignments: {
+            MeiaHoraCulto: 'Ana',
+            Parte1: undefined,
+            Parte2: undefined,
+          },
+        },
+      ],
+      '2026-03-01',
+      '2026-03-01',
+      'Igreja PDF'
+    );
+
+    const renderedLabels = mockDoc.text.mock.calls.map(([text]) => text);
+
+    expect(renderedLabels).toEqual(expect.arrayContaining(['M. Hora', 'P1', 'P2', '—']));
+  });
 });

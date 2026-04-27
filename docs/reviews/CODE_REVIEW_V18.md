@@ -7,6 +7,11 @@
 | 1.0    | 25 de abril de 2026 | Danilo Melin | Criação do ciclo V18                              |
 | 1.1    | 25 de abril de 2026 | Danilo Melin | Estruturação do ciclo de consistência operacional |
 | 1.2    | 27 de abril de 2026 | Danilo Melin | Consolidação da fase 1 do V18                     |
+| 1.3    | 27 de abril de 2026 | Danilo Melin | Validação operacional do fluxo de igrejas         |
+| 1.4    | 27 de abril de 2026 | Danilo Melin | Validação operacional do fluxo de organistas      |
+| 1.5    | 27 de abril de 2026 | Danilo Melin | Validação operacional da geração de escala        |
+| 1.6    | 27 de abril de 2026 | Danilo Melin | Alinhamento entre visualização e PDF              |
+| 1.7    | 27 de abril de 2026 | Danilo Melin | Consolidação da fase 2 do V18                     |
 
 ## Objetivo
 
@@ -117,6 +122,46 @@ Saídas esperadas:
 - correções validadas por fluxo
 - atualização de testes quando a regressão justificar proteção automatizada
 
+Execução inicial:
+
+- fluxo de igrejas revisado como primeira prioridade operacional
+- cadastro, edição, compatibilidade legada de `code`, ensaio local,
+  modelo de culto e exclusão avaliados
+- cobertura de `useChurchManager` ampliada para preservar `code` legado
+  durante edição, atualizar modelo de culto e limpar edição ao excluir
+  a igreja em edição
+- fluxo de organistas revisado com foco nas regras do `V17`, duplicidade,
+  nome legado, disponibilidade e exclusão
+- correção aplicada para limpar edição ao excluir a organista atualmente
+  aberta no formulário
+- cobertura de `useChurchDashboard` ampliada para envio com nome inválido
+  e exclusão da organista em edição
+- geração de escala revisada no limite operacional de `3` meses,
+  persistência, recarga e reabertura de histórico
+- cobertura de `useChurchScheduleGenerator` adicionada para bloquear
+  quarto mês, salvar escala válida e reabrir escala salva preservando
+  período e dados
+- visualização e PDF comparados para serviços configurados sem
+  atribuição
+- PDF ajustado para manter colunas de serviços vagos exibidos na tela,
+  preservando consistência informacional
+
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- quatro blocos prioritários do checklist executados:
+  - igrejas
+  - organistas
+  - geração de escala
+  - visualização e PDF
+- duas inconsistências operacionais corrigidas:
+  - edição de organista permanecia aberta após excluir a organista em
+    edição
+  - PDF podia ocultar serviços configurados sem atribuição
+- cobertura automatizada ampliada nos pontos de maior risco operacional
+- base preparada para a Fase 3, com impacto e cobertura já parcialmente
+  documentados no artefato do ciclo
+
 ### Fase 3 - Cobertura e impacto
 
 Objetivo:
@@ -153,12 +198,12 @@ Saídas esperadas:
 
 - [x] Estrutura inicial do V18 criada
 - [x] Fase 1 concluída
-- [ ] Fase 2 concluída
+- [x] Fase 2 concluída
 - [ ] Fase 3 concluída
 - [ ] Fase 4 concluída
 
 ## Próximos Passos do V18
 
-1. executar o checklist operacional da fase 2 pelos fluxos priorizados
-2. registrar inconsistências encontradas com escopo pequeno de correção
-3. ampliar testes somente quando a proteção reduzir risco real de regressão
+1. consolidar impacto operacional da fase 3
+2. separar cobertura adicionada de risco residual aceito
+3. preparar fechamento do ciclo com critérios de saída claros
