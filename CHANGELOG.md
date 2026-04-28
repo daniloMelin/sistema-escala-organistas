@@ -147,10 +147,18 @@ Documento principal:
 
 - `docs/reviews/CODE_REVIEW_V17.md`
 
-### V18 a V22 - Trilha planejada dos próximos ciclos
+### V18 - Consistência operacional dos fluxos principais
 
-- `V18`
-  - consistência operacional dos fluxos principais
+- revisão ponta a ponta dos fluxos de igreja, organistas, escala e PDF
+- correção de inconsistências operacionais reais antes de novos ciclos
+- ampliação de cobertura apenas onde reduz risco de regressão
+
+Documento principal:
+
+- `docs/reviews/CODE_REVIEW_V18.md`
+
+### V19 a V22 - Trilha planejada dos próximos ciclos
+
 - `V19`
   - qualidade final do PDF
 - `V20`
@@ -162,7 +170,6 @@ Documento principal:
 
 Documentos principais:
 
-- `docs/reviews/CODE_REVIEW_V18.md`
 - `docs/reviews/CODE_REVIEW_V19.md`
 - `docs/reviews/CODE_REVIEW_V20.md`
 - `docs/reviews/CODE_REVIEW_V21.md`
