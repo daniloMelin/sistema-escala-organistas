@@ -12,6 +12,8 @@
 | 1.5    | 27 de abril de 2026 | Danilo Melin | Validação operacional da geração de escala        |
 | 1.6    | 27 de abril de 2026 | Danilo Melin | Alinhamento entre visualização e PDF              |
 | 1.7    | 27 de abril de 2026 | Danilo Melin | Consolidação da fase 2 do V18                     |
+| 1.8    | 27 de abril de 2026 | Danilo Melin | Consolidação da fase 3 do V18                     |
+| 1.9    | 27 de abril de 2026 | Danilo Melin | Fechamento formal do ciclo V18                    |
 
 ## Objetivo
 
@@ -25,9 +27,9 @@ funções já existentes.
 
 ## Status do Ciclo
 
-- Status geral: `EM ANDAMENTO`
+- Status geral: `CONCLUÍDO`
 - Data de início: `25 de abril de 2026`
-- Data de encerramento: `em aberto`
+- Data de encerramento: `27 de abril de 2026`
 - Contexto: estabilização da base após o fechamento do `V17` e limpeza
   das branches locais e remotas
 
@@ -175,6 +177,17 @@ Saídas esperadas:
 - documento de impacto do `V18`
 - documento de cobertura do `V18`
 
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- impacto operacional registrado em
+  `docs/reviews/artifacts/v18/OPERATIONAL_CONSISTENCY_IMPACT_V18.md`
+- cobertura consolidada em
+  `docs/reviews/artifacts/v18/OPERATIONAL_CONSISTENCY_COVERAGE_V18.md`
+- risco residual separado entre revisão visual fina do PDF, regras
+  avançadas de distribuição e validação manual em ambiente real
+- base documental preparada para o fechamento formal da Fase 4
+
 ### Fase 4 - Fechamento
 
 Objetivo:
@@ -186,6 +199,16 @@ Saídas esperadas:
 
 - `CODE_REVIEW_V18.md` marcado como concluído
 - recomendações para o próximo ciclo
+
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- ciclo encerrado com consistência operacional consolidada nos fluxos
+  principais
+- artefatos de review, impacto e cobertura registrados para consulta
+  futura
+- transição preparada para o `V19`, com foco explícito em qualidade
+  final do PDF
 
 ## Critérios de Saída Propostos
 
@@ -199,11 +222,46 @@ Saídas esperadas:
 - [x] Estrutura inicial do V18 criada
 - [x] Fase 1 concluída
 - [x] Fase 2 concluída
-- [ ] Fase 3 concluída
-- [ ] Fase 4 concluída
+- [x] Fase 3 concluída
+- [x] Fase 4 concluída
 
 ## Próximos Passos do V18
 
-1. consolidar impacto operacional da fase 3
-2. separar cobertura adicionada de risco residual aceito
-3. preparar fechamento do ciclo com critérios de saída claros
+1. iniciar o `V19` com foco em qualidade final do PDF
+2. usar o `V18` como baseline de consistência operacional para os
+   próximos ciclos
+3. manter a separação entre consistência informacional e refinamento
+   visual
+
+## Artefatos da Fase 3
+
+- `docs/reviews/artifacts/v18/OPERATIONAL_CONSISTENCY_IMPACT_V18.md`
+- `docs/reviews/artifacts/v18/OPERATIONAL_CONSISTENCY_COVERAGE_V18.md`
+
+## Artefatos Consolidados do Ciclo
+
+- `docs/reviews/CODE_REVIEW_V18.md`
+- `docs/reviews/artifacts/v18/OPERATIONAL_CONSISTENCY_REVIEW_V18.md`
+- `docs/reviews/artifacts/v18/OPERATIONAL_CONSISTENCY_IMPACT_V18.md`
+- `docs/reviews/artifacts/v18/OPERATIONAL_CONSISTENCY_COVERAGE_V18.md`
+
+## Resumo Executivo
+
+O `V18` concluiu a revisão de consistência operacional do sistema antes
+dos próximos refinamentos funcionais e visuais.
+
+O ciclo entregou:
+
+- validação operacional do fluxo de igrejas
+- validação operacional do fluxo de organistas
+- proteção da geração de escala no limite de `3` meses
+- alinhamento entre visualização da escala e PDF
+- cobertura automatizada ampliada nos pontos de maior risco real
+
+## Impacto Prático no Projeto
+
+Ao final do `V18`, os fluxos principais ficaram mais previsíveis como
+jornadas completas, não apenas como funções isoladas.
+
+Na prática, o projeto passa a seguir para o `V19` com menos risco de
+surpresas entre cadastro, geração, histórico e exportação.
