@@ -157,10 +157,19 @@ Documento principal:
 
 - `docs/reviews/CODE_REVIEW_V18.md`
 
-### V19 a V22 - Trilha planejada dos próximos ciclos
+### V19 - Qualidade final do PDF
 
-- `V19`
-  - qualidade final do PDF
+- refinamento visual do PDF em folha `A4`
+- ajuste estrutural da grade principal em cenários densos
+- compactação do resumo do período e do ensaio local
+- consolidação de cobertura e impacto específicos do exportador
+
+Documento principal:
+
+- `docs/reviews/CODE_REVIEW_V19.md`
+
+### V20 a V22 - Trilha planejada dos próximos ciclos
+
 - `V20`
   - regras de negócio da geração da escala
 - `V21`
@@ -170,7 +179,6 @@ Documento principal:
 
 Documentos principais:
 
-- `docs/reviews/CODE_REVIEW_V19.md`
 - `docs/reviews/CODE_REVIEW_V20.md`
 - `docs/reviews/CODE_REVIEW_V21.md`
 - `docs/reviews/CODE_REVIEW_V22.md`
