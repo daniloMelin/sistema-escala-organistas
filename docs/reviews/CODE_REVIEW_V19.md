@@ -6,6 +6,7 @@
 | ------ | ------------------- | ------------ | ----------------------------------------- |
 | 1.0    | 25 de abril de 2026 | Danilo Melin | Criação do ciclo V19                      |
 | 1.1    | 25 de abril de 2026 | Danilo Melin | Estruturação do ciclo de qualidade do PDF |
+| 1.2    | 3 de maio de 2026   | Danilo Melin | Consolidação da fase 1 do V19             |
 
 ## Objetivo
 
@@ -19,8 +20,8 @@ refinar a saída final mais importante para uso prático.
 
 ## Status do Ciclo
 
-- Status geral: `PLANEJADO`
-- Data de início: `em aberto`
+- Status geral: `EM ANDAMENTO`
+- Data de início: `3 de maio de 2026`
 - Data de encerramento: `em aberto`
 - Contexto: refinamento da saída final do sistema para uso real
 
@@ -68,9 +69,31 @@ refinar a saída final mais importante para uso prático.
 
 ### Fase 1 - Diagnóstico visual
 
-- consolidar exemplos bons e ruins do PDF atual
-- definir critérios visuais de aceite
-- registrar os cenários de maior sensibilidade
+Objetivo:
+
+- consolidar os critérios visuais e operacionais do PDF
+- registrar os cenários com maior sensibilidade de largura e leitura
+- definir o checklist que deve orientar os ajustes da fase 2
+
+Saídas esperadas:
+
+- artefato base do ciclo com critérios de aceite do PDF
+- priorização dos cenários que precisam ser testados primeiro
+
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- artefato base consolidado em
+  `docs/reviews/artifacts/v19/PDF_QUALITY_REVIEW_V19.md`
+- critérios de aceite definidos para legibilidade, densidade,
+  consistência entre tela e PDF e utilidade dos blocos auxiliares
+- cenários prioritários mapeados para revisão visual:
+  - cultos com `2` organistas no dia
+  - cultos com `3` organistas no dia
+  - serviços vagos exibidos na grade
+  - resumo do período e ensaio local competindo por espaço
+- sequência da fase 2 definida para atacar primeiro grade principal,
+  largura de colunas, blocos auxiliares e consistência visual em `A4`
 
 ### Fase 2 - Refino do layout
 
@@ -95,3 +118,23 @@ refinar a saída final mais importante para uso prático.
 - cenários com `2` e `3` organistas revisados
 - resumo do período e ensaio local mantidos com boa utilidade
 - cobertura e impacto consolidados em artefatos próprios
+
+## Registro de Progresso
+
+- [x] Estrutura inicial do V19 criada
+- [x] Fase 1 concluída
+- [ ] Fase 2 concluída
+- [ ] Fase 3 concluída
+- [ ] Fase 4 concluída
+
+## Próximos Passos do V19
+
+1. executar a fase 2 com revisão visual da grade principal do PDF
+2. validar largura de colunas e abreviações nos cenários com `2` e `3`
+   organistas
+3. revisar o equilíbrio entre calendário, resumo do período e ensaio
+   local antes de consolidar cobertura e impacto
+
+## Artefatos da Fase 1
+
+- `docs/reviews/artifacts/v19/PDF_QUALITY_REVIEW_V19.md`
