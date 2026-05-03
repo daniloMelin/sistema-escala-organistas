@@ -6,6 +6,7 @@
 | ------ | ------------------- | ------------ | ---------------------------------------------------- |
 | 1.0    | 25 de abril de 2026 | Danilo Melin | Criação do ciclo V20                                 |
 | 1.1    | 25 de abril de 2026 | Danilo Melin | Estruturação do ciclo de regras de negócio da escala |
+| 1.2    | 3 de maio de 2026   | Danilo Melin | Consolidação da fase 1 do V20                        |
 
 ## Objetivo
 
@@ -15,8 +16,8 @@ de operação das igrejas.
 
 ## Status do Ciclo
 
-- Status geral: `PLANEJADO`
-- Data de início: `em aberto`
+- Status geral: `EM ANDAMENTO`
+- Data de início: `3 de maio de 2026`
 - Data de encerramento: `em aberto`
 - Contexto: maturação da lógica principal do produto após revisão operacional e visual
 
@@ -63,9 +64,31 @@ de operação das igrejas.
 
 ### Fase 1 - Mapeamento das regras
 
+Objetivo:
+
 - documentar critérios atuais do algoritmo
-- registrar onde a distribuição ainda parece injusta
-- definir metas de comportamento esperado
+- registrar onde a distribuição ainda pode parecer injusta
+- definir metas de comportamento esperado antes de alterar a lógica
+
+Saídas esperadas:
+
+- artefato base do ciclo com checklist das regras principais
+- priorização dos cenários de distribuição que devem ser validados primeiro
+
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- artefato base consolidado em
+  `docs/reviews/artifacts/v20/SCHEDULE_RULES_REVIEW_V20.md`
+- critérios centrais mapeados para rotação, escassez, desempate e
+  preservação do período fechado de `3` meses
+- cenários prioritários definidos para:
+  - rotação entre elegíveis com mesma disponibilidade
+  - impacto de organistas escassas em dias concorridos
+  - distribuição em modelos com `2` e `3` funções no mesmo dia
+  - efeito de histórico recente e carga acumulada
+- diretriz de execução definida: registrar comportamento esperado antes
+  de tratar o algoritmo como problema de implementação
 
 ### Fase 2 - Ajustes do algoritmo
 
@@ -90,3 +113,21 @@ de operação das igrejas.
 - período fechado de `3` meses preservado
 - cenários sensíveis protegidos por testes relevantes
 - impacto funcional consolidado na documentação
+
+## Registro de Progresso
+
+- [x] Estrutura inicial do V20 criada
+- [x] Fase 1 concluída
+- [ ] Fase 2 concluída
+- [ ] Fase 3 concluída
+- [ ] Fase 4 concluída
+
+## Próximos Passos do V20
+
+1. executar a fase 2 com revisão dos critérios de rotação e escassez
+2. validar cenários representativos com `2` e `3` funções no mesmo dia
+3. confirmar quais ajustes merecem cobertura nova por reduzir risco real
+
+## Artefatos da Fase 1
+
+- `docs/reviews/artifacts/v20/SCHEDULE_RULES_REVIEW_V20.md`
