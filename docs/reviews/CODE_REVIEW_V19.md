@@ -7,6 +7,7 @@
 | 1.0    | 25 de abril de 2026 | Danilo Melin | Criação do ciclo V19                      |
 | 1.1    | 25 de abril de 2026 | Danilo Melin | Estruturação do ciclo de qualidade do PDF |
 | 1.2    | 3 de maio de 2026   | Danilo Melin | Consolidação da fase 1 do V19             |
+| 1.3    | 3 de maio de 2026   | Danilo Melin | Refino inicial da grade principal do PDF  |
 
 ## Objetivo
 
@@ -97,9 +98,39 @@ Resultado consolidado:
 
 ### Fase 2 - Refino do layout
 
-- ajustar estrutura do PDF
-- validar leitura em `A4`
+Objetivo:
+
+- ajustar a estrutura do PDF com foco em leitura real
+- validar cenários densos em folha `A4`
 - corrigir conflitos de largura, altura e alinhamento
+
+Saídas esperadas:
+
+- refinamentos visuais rastreáveis no exportador
+- proteção automatizada para os cenários mais sensíveis
+
+Execução inicial:
+
+- grade principal revisada nos cenários com `4` e `5` serviços por dia
+- layout passou a reagir à densidade da tabela, reduzindo de `3` para
+  `2` meses por página quando a quantidade de serviços pressiona a
+  largura útil
+- largura da coluna de data e tamanhos de fonte foram ampliados no modo
+  denso para preservar leitura de dia, serviço e nome da organista
+- área lateral de resumo foi compactada no modo denso para devolver
+  espaço à grade principal
+- cobertura de `pdfGenerator` ampliada para garantir paginação mais
+  folgada nos meses densos
+
+Resultado parcial:
+
+- Status: `EM ANDAMENTO`
+- principal gargalo visual de largura foi reduzido sem alterar o
+  contrato do exportador
+- cenários com múltiplos serviços passaram a privilegiar legibilidade em
+  vez de concentrar `3` meses por página a qualquer custo
+- próximos ajustes da fase 2 devem revisar equilíbrio visual entre
+  grade, resumo do período e ensaio local
 
 ### Fase 3 - Cobertura e impacto
 
@@ -129,11 +160,11 @@ Resultado consolidado:
 
 ## Próximos Passos do V19
 
-1. executar a fase 2 com revisão visual da grade principal do PDF
+1. revisar o equilíbrio visual entre grade, resumo do período e ensaio
+   local
 2. validar largura de colunas e abreviações nos cenários com `2` e `3`
-   organistas
-3. revisar o equilíbrio entre calendário, resumo do período e ensaio
-   local antes de consolidar cobertura e impacto
+   organistas em revisão manual do PDF gerado
+3. consolidar a fase 2 antes de avançar para cobertura e impacto
 
 ## Artefatos da Fase 1
 

@@ -50,8 +50,8 @@ jest.mock('../utils/logger', () => ({
 describe('exportScheduleToPDF', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockDoc.internal.pageSize.getWidth.mockReturnValue(210);
-    mockDoc.internal.pageSize.getHeight.mockReturnValue(297);
+    mockDoc.internal.pageSize.getWidth.mockReturnValue(297);
+    mockDoc.internal.pageSize.getHeight.mockReturnValue(210);
     mockDoc.internal.getNumberOfPages.mockReturnValue(1);
   });
 
@@ -127,5 +127,59 @@ describe('exportScheduleToPDF', () => {
     const renderedLabels = mockDoc.text.mock.calls.map(([text]) => text);
 
     expect(renderedLabels).toEqual(expect.arrayContaining(['M. Hora', 'P1', 'P2', '—']));
+  });
+
+  test('usa layout mais folgado para meses densos com multiplos servicos', () => {
+    mockDoc.internal.getNumberOfPages.mockReturnValue(2);
+
+    exportScheduleToPDF(
+      [
+        {
+          date: '01/03/2026',
+          dayName: 'Domingo',
+          assignments: {
+            RJM: 'Ana Clara',
+            MeiaHoraCulto: 'Beatriz Lima',
+            Parte1: 'Claudia Souza',
+            Parte2: 'Daniela Rocha',
+            Reserva: 'Eva Dias',
+          },
+        },
+        {
+          date: '01/04/2026',
+          dayName: 'Quarta',
+          assignments: {
+            RJM: 'Ana Clara',
+            MeiaHoraCulto: 'Beatriz Lima',
+            Parte1: 'Claudia Souza',
+            Parte2: 'Daniela Rocha',
+            Reserva: 'Eva Dias',
+          },
+        },
+        {
+          date: '01/05/2026',
+          dayName: 'Sexta',
+          assignments: {
+            RJM: 'Ana Clara',
+            MeiaHoraCulto: 'Beatriz Lima',
+            Parte1: 'Claudia Souza',
+            Parte2: 'Daniela Rocha',
+            Reserva: 'Eva Dias',
+          },
+        },
+      ],
+      '2026-03-01',
+      '2026-05-01',
+      'Igreja PDF'
+    );
+
+    const renderedLabels = mockDoc.text.mock.calls.map(([text]) => text);
+    const assignmentFontCalls = mockDoc.setFontSize.mock.calls.filter(([size]) => size === 5.8);
+
+    expect(mockDoc.addPage).toHaveBeenCalledTimes(1);
+    expect(renderedLabels).toEqual(
+      expect.arrayContaining(['MARÇO DE 2026', 'ABRIL DE 2026', 'MAIO DE 2026'])
+    );
+    expect(assignmentFontCalls.length).toBeGreaterThan(0);
   });
 });

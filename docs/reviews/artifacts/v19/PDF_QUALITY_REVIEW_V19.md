@@ -113,6 +113,48 @@ Sinais de reprovação:
 4. registrar risco residual apenas se a troca necessária ultrapassar o
    escopo do `V19`
 
+## Execução inicial da fase 2
+
+### Escopo revisado
+
+O primeiro bloco executado no `V19` foi a grade principal do PDF, por
+ser o componente mais sensível à densidade de informação.
+
+Itens trabalhados:
+
+- cenários com `4` e `5` serviços simultâneos no mesmo dia
+- paginação mensal em layout paisagem `A4`
+- largura útil da tabela em páginas com barra lateral
+- legibilidade de data, siglas de serviço e nomes truncados
+
+### Ajuste aplicado
+
+O exportador passou a usar um perfil de layout denso quando a quantidade
+de serviços por dia aumenta.
+
+Nesse perfil:
+
+- a grade usa `2` meses por página em vez de `3`
+- a barra lateral fica mais compacta
+- a coluna de data ganha mais largura
+- títulos e nomes da tabela usam fonte ligeiramente maior
+- o truncamento de nomes fica menos agressivo
+
+### Resultado parcial
+
+- a largura útil por mês aumentou nos cenários mais carregados
+- a leitura de nomes e siglas ficou menos comprimida
+- a mudança preserva o contrato atual do PDF e o comportamento dos casos
+  menos densos
+
+### Cobertura adicionada
+
+`src/test/pdfGenerator.test.js` agora protege:
+
+- manutenção de serviços vagos visíveis no PDF
+- paginação mais folgada em cenário com múltiplos serviços e `3` meses
+  no período
+
 ## Resultado esperado do ciclo
 
 Ao final do `V19`, o PDF deve estar visualmente consolidado e com
