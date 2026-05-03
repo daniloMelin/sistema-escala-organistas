@@ -8,6 +8,7 @@
 | 1.1    | 25 de abril de 2026 | Danilo Melin | Estruturação do ciclo de qualidade do PDF |
 | 1.2    | 3 de maio de 2026   | Danilo Melin | Consolidação da fase 1 do V19             |
 | 1.3    | 3 de maio de 2026   | Danilo Melin | Refino inicial da grade principal do PDF  |
+| 1.4    | 3 de maio de 2026   | Danilo Melin | Consolidação da fase 2 do V19             |
 
 ## Objetivo
 
@@ -124,13 +125,16 @@ Execução inicial:
 
 Resultado parcial:
 
-- Status: `EM ANDAMENTO`
+- Status: `CONCLUÍDO`
 - principal gargalo visual de largura foi reduzido sem alterar o
   contrato do exportador
 - cenários com múltiplos serviços passaram a privilegiar legibilidade em
   vez de concentrar `3` meses por página a qualquer custo
-- próximos ajustes da fase 2 devem revisar equilíbrio visual entre
-  grade, resumo do período e ensaio local
+- bloco lateral de resumo e ensaio local foi compactado para competir
+  menos com a grade principal
+- observações longas do ensaio passaram a quebrar de forma controlada no
+  PDF
+- cobertura do exportador ampliada para layout denso e textos laterais
 
 ### Fase 3 - Cobertura e impacto
 
@@ -154,17 +158,15 @@ Resultado parcial:
 
 - [x] Estrutura inicial do V19 criada
 - [x] Fase 1 concluída
-- [ ] Fase 2 concluída
+- [x] Fase 2 concluída
 - [ ] Fase 3 concluída
 - [ ] Fase 4 concluída
 
 ## Próximos Passos do V19
 
-1. revisar o equilíbrio visual entre grade, resumo do período e ensaio
-   local
-2. validar largura de colunas e abreviações nos cenários com `2` e `3`
-   organistas em revisão manual do PDF gerado
-3. consolidar a fase 2 antes de avançar para cobertura e impacto
+1. consolidar cobertura específica do exportador na fase 3
+2. registrar impacto visual e operacional das mudanças do PDF
+3. separar risco residual de refinamento fino para os próximos ciclos
 
 ## Artefatos da Fase 1
 

@@ -154,6 +154,32 @@ Nesse perfil:
 - manutenção de serviços vagos visíveis no PDF
 - paginação mais folgada em cenário com múltiplos serviços e `3` meses
   no período
+- quebra controlada de observação longa no ensaio local
+
+## Consolidação da fase 2
+
+### Blocos executados
+
+- grade principal da tabela mensal
+- barra lateral de resumo do período
+- bloco de ensaio local com observações
+
+### Resultado consolidado
+
+- a fase 2 reduziu o principal gargalo de largura da grade em `A4`
+- o resumo lateral ficou mais compacto nos cenários densos
+- o ensaio local passou a acomodar observações maiores com quebra de
+  linha controlada
+- o contrato do exportador foi preservado, sem alterar o fluxo de
+  exportação no restante do sistema
+
+### Risco residual após a fase 2
+
+- a aceitação visual final ainda depende de conferência manual com PDFs
+  reais gerados no navegador
+- refinamentos finos de espaçamento e percepção gráfica podem ficar para
+  o fechamento do ciclo, sem bloquear a consolidação de cobertura e
+  impacto
 
 ## Resultado esperado do ciclo
 

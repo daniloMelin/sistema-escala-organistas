@@ -61,10 +61,43 @@ const truncateName = (name, maxLength = 10) =>
 
 const getServiceLabel = (serviceId) => SERVICE_SHORT_LABELS[serviceId] || serviceId;
 
+const wrapTextByWords = (text, maxCharsPerLine) => {
+  if (!text) return [];
+
+  const normalizedText = String(text).trim();
+  if (!normalizedText) return [];
+
+  const words = normalizedText.split(/\s+/);
+  const lines = [];
+  let currentLine = '';
+
+  words.forEach((word) => {
+    const candidate = currentLine ? `${currentLine} ${word}` : word;
+
+    if (candidate.length <= maxCharsPerLine) {
+      currentLine = candidate;
+      return;
+    }
+
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+
+    currentLine = word;
+  });
+
+  if (currentLine) {
+    lines.push(currentLine);
+  }
+
+  return lines;
+};
+
 const resolveLayoutProfile = (serviceIds, hasSidebar) => {
   const isDenseLayout = serviceIds.length >= DENSE_LAYOUT_SERVICE_COUNT;
 
   return {
+    isDenseLayout,
     monthsPerPage: isDenseLayout ? 2 : 3,
     summaryWidth: hasSidebar ? (isDenseLayout ? 42 : 48) : 0,
     dateWidth: isDenseLayout ? 18 : 16,
@@ -73,6 +106,12 @@ const resolveLayoutProfile = (serviceIds, hasSidebar) => {
     dateFontSize: isDenseLayout ? 6 : 5.7,
     assignmentFontSize: isDenseLayout ? 5.8 : 5.5,
     assignmentMaxLength: isDenseLayout ? 12 : 10,
+    summaryTitleFontSize: isDenseLayout ? 6.8 : 7.8,
+    summaryBodyFontSize: isDenseLayout ? 5.4 : 5.8,
+    summaryItemFontSize: isDenseLayout ? 5.6 : 5.9,
+    summaryPadding: isDenseLayout ? 2.6 : 3,
+    summaryLineHeight: isDenseLayout ? 3.1 : 3.6,
+    summaryCharsPerLine: isDenseLayout ? 24 : 28,
   };
 };
 
@@ -237,7 +276,7 @@ const drawMonthTable = (doc, month, serviceIds, x, y, width, height, layoutProfi
   doc.rect(x, headerY, width, tableHeaderHeight + bodyHeight);
 };
 
-const drawDistributionSummary = (doc, items, x, y, width, height, rehearsal) => {
+const drawDistributionSummary = (doc, items, x, y, width, height, rehearsal, layoutProfile) => {
   const rehearsalSummary = formatCompactRehearsalSummary(rehearsal);
   const hasRehearsal = Boolean(rehearsalSummary);
 
@@ -250,41 +289,55 @@ const drawDistributionSummary = (doc, items, x, y, width, height, rehearsal) => 
   doc.setLineWidth(0.2);
   doc.roundedRect(x, y, width, height, 2.5, 2.5, 'FD');
 
-  let currentY = y + 5;
+  const padding = layoutProfile.summaryPadding;
+  const contentX = x + padding;
+  const contentWidth = width - padding * 2;
+  const lineHeight = layoutProfile.summaryLineHeight;
+  const bodyFontSize = layoutProfile.summaryBodyFontSize;
+  const textMaxChars = layoutProfile.summaryCharsPerLine;
+
+  let currentY = y + padding + 1.9;
 
   if (hasRehearsal) {
     doc.setTextColor(...COLORS.textPrimary);
     doc.setFont(undefined, 'bold');
-    doc.setFontSize(7.2);
-    doc.text('Ensaio Local', x + 3, currentY);
+    doc.setFontSize(layoutProfile.summaryTitleFontSize);
+    doc.text('Ensaio Local', contentX, currentY);
 
-    currentY += 3.8;
+    currentY += lineHeight;
     doc.setFont(undefined, 'normal');
-    doc.setFontSize(5.8);
+    doc.setFontSize(bodyFontSize);
     doc.setTextColor(...COLORS.textMuted);
-    doc.text(rehearsalSummary, x + 3, currentY, { maxWidth: width - 6 });
+    doc.text(rehearsalSummary, contentX, currentY, { maxWidth: contentWidth });
 
     if (rehearsal?.notes) {
-      currentY += 3.8;
-      doc.text(rehearsal.notes, x + 3, currentY, { maxWidth: width - 6 });
-      currentY += 4.8;
+      const noteLines = wrapTextByWords(rehearsal.notes, textMaxChars);
+      currentY += lineHeight;
+      doc.text(noteLines.length > 0 ? noteLines : rehearsal.notes, contentX, currentY, {
+        maxWidth: contentWidth,
+      });
+      currentY += lineHeight * Math.max(noteLines.length, 1) + 1.2;
     } else {
-      currentY += 4.6;
+      currentY += lineHeight + 1.2;
     }
 
     doc.setDrawColor(...COLORS.border);
-    doc.line(x + 3, currentY - 1.5, x + width - 3, currentY - 1.5);
+    doc.line(contentX, currentY - 0.9, x + width - padding, currentY - 0.9);
   }
 
   doc.setTextColor(...COLORS.textPrimary);
   doc.setFont(undefined, 'bold');
-  doc.setFontSize(7.8);
-  doc.text('Resumo do período', x + 3, currentY + 2.5);
+  doc.setFontSize(layoutProfile.summaryTitleFontSize);
+  doc.text('Resumo do período', contentX, currentY + 2.2);
 
   doc.setFont(undefined, 'normal');
-  doc.setFontSize(5.8);
+  doc.setFontSize(bodyFontSize);
   doc.setTextColor(...COLORS.textMuted);
-  doc.text('Quantidade de vezes por organista.', x + 3, currentY + 6.2);
+  doc.text(
+    layoutProfile.isDenseLayout ? 'Vezes por organista.' : 'Quantidade de vezes por organista.',
+    contentX,
+    currentY + 5.3
+  );
 
   if (items.length === 0) {
     return;
@@ -294,21 +347,23 @@ const drawDistributionSummary = (doc, items, x, y, width, height, rehearsal) => 
   const colWidth = width / cols;
   const rowsPerCol = Math.ceil(items.length / cols);
 
-  const baseY = currentY + 10.5;
+  const baseY = currentY + 8.7;
 
   items.forEach((item, index) => {
     const col = Math.floor(index / rowsPerCol);
     const row = index % rowsPerCol;
-    const itemX = x + col * colWidth + 3;
-    const lineY = baseY + row * 3.8;
+    const itemX = x + col * colWidth + padding;
+    const lineY = baseY + row * (layoutProfile.isDenseLayout ? 3.4 : 3.8);
 
     doc.setTextColor(...COLORS.textPrimary);
     doc.setFont(undefined, 'normal');
-    doc.setFontSize(5.9);
+    doc.setFontSize(layoutProfile.summaryItemFontSize);
     doc.text(truncateName(item.name, 13), itemX, lineY);
 
     doc.setFont(undefined, 'bold');
-    doc.text(String(item.count), x + (col + 1) * colWidth - 3, lineY, { align: 'right' });
+    doc.text(String(item.count), x + (col + 1) * colWidth - padding, lineY, {
+      align: 'right',
+    });
   });
 };
 
@@ -362,7 +417,8 @@ const drawSchedulePage = ({
       contentTop,
       pageSummaryWidth,
       availableHeight,
-      rehearsal
+      rehearsal,
+      layoutProfile
     );
   }
 };

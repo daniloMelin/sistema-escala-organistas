@@ -82,6 +82,9 @@ describe('exportScheduleToPDF', () => {
     );
 
     const renderedLabels = mockDoc.text.mock.calls.map(([text]) => text);
+    const wrappedNoteCall = mockDoc.text.mock.calls.find(
+      ([text]) => Array.isArray(text) && text.join(' ').includes('têm início às 14:30 h.')
+    );
 
     expect(renderedLabels).toEqual(
       expect.arrayContaining([
@@ -89,12 +92,12 @@ describe('exportScheduleToPDF', () => {
         'Ensaio Local',
         '1 terça-feira do mês às 19:30',
         'Resumo do período',
-        'Cultos às terças-feiras têm início às 14:30 h.',
         'Data',
         'M. Hora',
         'Ana',
       ])
     );
+    expect(wrappedNoteCall).toBeTruthy();
     expect(mockJsPDFConstructor).toHaveBeenCalledWith(
       expect.objectContaining({
         orientation: 'landscape',
@@ -180,6 +183,44 @@ describe('exportScheduleToPDF', () => {
     expect(renderedLabels).toEqual(
       expect.arrayContaining(['MARÇO DE 2026', 'ABRIL DE 2026', 'MAIO DE 2026'])
     );
+    expect(renderedLabels).toContain('Vezes por organista.');
     expect(assignmentFontCalls.length).toBeGreaterThan(0);
+  });
+
+  test('quebra observacao longa do ensaio sem perder o resumo lateral', () => {
+    exportScheduleToPDF(
+      [
+        {
+          date: '01/03/2026',
+          dayName: 'Domingo',
+          assignments: {
+            MeiaHoraCulto: 'Ana',
+            Parte1: 'Bia',
+            Parte2: 'Clara',
+            Reserva: 'Dani',
+          },
+        },
+      ],
+      '2026-03-01',
+      '2026-03-01',
+      'Igreja PDF',
+      {
+        weekOfMonth: 1,
+        weekday: 'tuesday',
+        time: '19:30',
+        notes:
+          'Cultos às terças-feiras têm início às 14:30 h e o ensaio local deve preservar leitura clara do PDF.',
+      }
+    );
+
+    const renderedLabels = mockDoc.text.mock.calls.map(([text]) => text);
+    const wrappedNoteCall = mockDoc.text.mock.calls.find(
+      ([text]) => Array.isArray(text) && text.join(' ').includes('preservar leitura clara do PDF')
+    );
+
+    expect(renderedLabels).toEqual(
+      expect.arrayContaining(['Ensaio Local', 'Resumo do período', 'Vezes por organista.'])
+    );
+    expect(wrappedNoteCall).toBeTruthy();
   });
 });
