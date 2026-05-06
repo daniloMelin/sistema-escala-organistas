@@ -297,6 +297,29 @@ describe('generateSchedule', () => {
     expect(Math.max(...values) - Math.min(...values)).toBeLessThanOrEqual(1);
   });
 
+  test('prioriza menor carga total antes de zerar contagem por funcao quando ha alternativa viavel', () => {
+    const organists = [
+      {
+        id: '1',
+        name: 'Ana',
+        fixedDays: [2],
+        stats: { meiaHora: 0, culto: 4, total: 4 },
+      },
+      {
+        id: '2',
+        name: 'Bia',
+        fixedDays: [2],
+        stats: { meiaHora: 1, culto: 0, total: 1 },
+      },
+    ];
+
+    const result = generateSchedule(organists, '2026-03-03', '2026-03-03', TUESDAY_CONFIG);
+
+    expect(result).toHaveLength(1);
+    expect(result[0].assignments.MeiaHoraCulto).toBe('Bia');
+    expect(result[0].assignments.Culto).toBe('Ana');
+  });
+
   test('prioriza organista escassa para RJM para preservar atribuicoes viaveis no domingo', () => {
     const organists = [
       {
@@ -320,6 +343,47 @@ describe('generateSchedule', () => {
     expect(assignments.RJM).toBe('RjmOnly');
     expect(assignments.MeiaHoraCulto).toBe('Flexible');
     expect(assignments.Culto).toBe('Flexible');
+  });
+
+  test('prioriza a dupla de menor carga total em culto e reserva quando ha alternativas viaveis', () => {
+    const organists = [
+      {
+        id: '1',
+        name: 'Aline',
+        fixedDays: [5],
+        stats: { culto: 0, reserva: 4, total: 4 },
+      },
+      {
+        id: '2',
+        name: 'Bela',
+        fixedDays: [5],
+        stats: { culto: 1, reserva: 0, total: 1 },
+      },
+      {
+        id: '3',
+        name: 'Cris',
+        fixedDays: [5],
+        stats: { culto: 4, reserva: 0, total: 4 },
+      },
+      {
+        id: '4',
+        name: 'Dora',
+        fixedDays: [5],
+        stats: { culto: 0, reserva: 1, total: 1 },
+      },
+    ];
+
+    const result = generateSchedule(
+      organists,
+      '2026-04-03',
+      '2026-04-03',
+      FRIDAY_WITH_RESERVE_CONFIG
+    );
+
+    expect(result).toHaveLength(1);
+    expect(new Set([result[0].assignments.Culto, result[0].assignments.Reserva])).toEqual(
+      new Set(['Bela', 'Dora'])
+    );
   });
 
   test('evita repetir a mesma funcao em domingos consecutivos quando ha alternativa viavel', () => {

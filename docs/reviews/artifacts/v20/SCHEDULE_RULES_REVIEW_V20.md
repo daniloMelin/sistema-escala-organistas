@@ -114,6 +114,47 @@ Sinais de reprovação:
 4. separar claramente problema de justiça percebida e problema de bug
    funcional
 
+## Execução inicial da fase 2
+
+### Escopo revisado
+
+O primeiro bloco executado no `V20` foi a priorização de carga total em
+empates simples, por ser um ponto em que o algoritmo podia parecer justo
+por função, mas injusto no conjunto do período.
+
+Itens trabalhados:
+
+- slot único com organistas elegíveis e histórico desigual
+- dupla `Culto + Reserva` com alternativas viáveis
+- relação entre carga total acumulada e contagem específica por função
+
+### Ajuste aplicado
+
+O algoritmo passou a priorizar carga total antes de contagem por função
+nos cenários em que há alternativa viável e nenhuma restrição adicional
+mais forte.
+
+Isso foi aplicado em:
+
+- escolha de organista em `assignSingleCulto`
+- composição da dupla `Culto + Reserva`
+
+### Resultado parcial
+
+- a distribuição passa a evitar melhor o acúmulo desnecessário em quem
+  já está mais carregada
+- a lógica continua respeitando disponibilidade, repetição de função e
+  escassez
+- a sensação de justiça tende a melhorar nos casos em que o algoritmo
+  antes “zerava a função” sacrificando o equilíbrio global
+
+### Cobertura adicionada
+
+`src/test/scheduleLogic.test.js` agora protege:
+
+- prioridade para menor carga total antes de zerar contagem por função
+- escolha da dupla mais leve em `Culto + Reserva`
+
 ## Resultado esperado do ciclo
 
 Ao final do `V20`, a regra de negócio da escala deve estar mais clara,

@@ -7,6 +7,7 @@
 | 1.0    | 25 de abril de 2026 | Danilo Melin | Criação do ciclo V20                                 |
 | 1.1    | 25 de abril de 2026 | Danilo Melin | Estruturação do ciclo de regras de negócio da escala |
 | 1.2    | 3 de maio de 2026   | Danilo Melin | Consolidação da fase 1 do V20                        |
+| 1.3    | 6 de maio de 2026   | Danilo Melin | Ajuste inicial de justiça da distribuição no V20     |
 
 ## Objetivo
 
@@ -92,9 +93,37 @@ Resultado consolidado:
 
 ### Fase 2 - Ajustes do algoritmo
 
+Objetivo:
+
 - implementar refinamentos de distribuição
 - revisar critérios de desempate e escassez
 - validar impacto em cenários representativos
+
+Saídas esperadas:
+
+- ajustes rastreáveis na lógica do algoritmo
+- cenários com comportamento esperado protegidos por testes focados
+
+Execução inicial:
+
+- lógica de escolha em `assignSingleCulto` revisada para priorizar carga
+  total antes de zerar contagem por função quando houver alternativa
+  viável
+- lógica de dupla `Culto + Reserva` revisada para privilegiar a dupla de
+  menor carga total antes de esgotar candidatas mais carregadas
+- cobertura de `scheduleLogic` ampliada para proteger:
+  - escolha por menor carga total em slot único
+  - escolha da dupla mais leve em `Culto + Reserva`
+
+Resultado parcial:
+
+- Status: `EM ANDAMENTO`
+- algoritmo passou a tratar justiça global de carga como critério mais
+  forte em cenários simples de empate funcional
+- comportamento segue preservando restrições de disponibilidade e
+  rotação por função como critérios relevantes, mas não dominantes
+- próximos ajustes da fase 2 devem revisar escassez e impacto em
+  cenários com `3` funções no mesmo dia
 
 ### Fase 3 - Cobertura e impacto
 
@@ -124,9 +153,9 @@ Resultado consolidado:
 
 ## Próximos Passos do V20
 
-1. executar a fase 2 com revisão dos critérios de rotação e escassez
-2. validar cenários representativos com `2` e `3` funções no mesmo dia
-3. confirmar quais ajustes merecem cobertura nova por reduzir risco real
+1. revisar escassez e critérios de desempate em cenários mais densos
+2. validar impacto da mudança em modelos com `3` funções no mesmo dia
+3. consolidar a fase 2 antes de avançar para cobertura e impacto
 
 ## Artefatos da Fase 1
 
