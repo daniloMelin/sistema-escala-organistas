@@ -344,7 +344,7 @@ const assignThreeSlotTeam = ({
             ),
             roleCount: getRoleCountForCulto(stats, cultoId),
             total: stats.total || 0,
-            scarcity: availabilityScores[organist.id] || 0,
+            availability: availabilityScores[organist.id] || 0,
           };
         });
 
@@ -354,7 +354,7 @@ const assignThreeSlotTeam = ({
           teamStats.reduce((sum, item) => sum + item.total, 0),
           Math.max(...teamStats.map((item) => item.roleCount)),
           teamStats.reduce((sum, item) => sum + item.roleCount, 0),
-          teamStats.reduce((sum, item) => sum + item.scarcity, 0),
+          -teamStats.reduce((sum, item) => sum + item.availability, 0),
           meiaHoraOrganist.name || '',
           parte1Organist.name || '',
           parte2Organist.name || '',

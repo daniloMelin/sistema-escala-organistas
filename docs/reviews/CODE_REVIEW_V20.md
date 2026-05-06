@@ -8,6 +8,7 @@
 | 1.1    | 25 de abril de 2026 | Danilo Melin | Estruturação do ciclo de regras de negócio da escala |
 | 1.2    | 3 de maio de 2026   | Danilo Melin | Consolidação da fase 1 do V20                        |
 | 1.3    | 6 de maio de 2026   | Danilo Melin | Ajuste inicial de justiça da distribuição no V20     |
+| 1.4    | 6 de maio de 2026   | Danilo Melin | Refino de escassez em cenários com três funções      |
 
 ## Objetivo
 
@@ -114,6 +115,8 @@ Execução inicial:
 - cobertura de `scheduleLogic` ampliada para proteger:
   - escolha por menor carga total em slot único
   - escolha da dupla mais leve em `Culto + Reserva`
+  - preservação de trio mais flexível quando há organista escassa
+    desnecessária ao preenchimento do dia
 
 Resultado parcial:
 
@@ -122,8 +125,11 @@ Resultado parcial:
   forte em cenários simples de empate funcional
 - comportamento segue preservando restrições de disponibilidade e
   rotação por função como critérios relevantes, mas não dominantes
-- próximos ajustes da fase 2 devem revisar escassez e impacto em
-  cenários com `3` funções no mesmo dia
+- cenários com `3` funções no mesmo dia passaram a preferir equipe mais
+  flexível quando isso preserva organista escassa sem comprometer a
+  cobertura
+- próximos ajustes da fase 2 devem consolidar o bloco antes de avançar
+  para cobertura e impacto
 
 ### Fase 3 - Cobertura e impacto
 
@@ -153,9 +159,9 @@ Resultado parcial:
 
 ## Próximos Passos do V20
 
-1. revisar escassez e critérios de desempate em cenários mais densos
-2. validar impacto da mudança em modelos com `3` funções no mesmo dia
-3. consolidar a fase 2 antes de avançar para cobertura e impacto
+1. consolidar a fase 2 do V20 com os blocos já executados
+2. revisar se ainda resta algum caso crítico de desempate não coberto
+3. avançar para cobertura e impacto após fechar o algoritmo desta etapa
 
 ## Artefatos da Fase 1
 

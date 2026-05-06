@@ -154,6 +154,8 @@ Isso foi aplicado em:
 
 - prioridade para menor carga total antes de zerar contagem por função
 - escolha da dupla mais leve em `Culto + Reserva`
+- preservação de trio mais flexível em cenário com organista escassa
+  disponível, mas não necessária
 
 ## Resultado esperado do ciclo
 
