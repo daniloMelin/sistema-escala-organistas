@@ -9,6 +9,7 @@
 | 1.2    | 3 de maio de 2026   | Danilo Melin | Consolidação da fase 1 do V20                        |
 | 1.3    | 6 de maio de 2026   | Danilo Melin | Ajuste inicial de justiça da distribuição no V20     |
 | 1.4    | 6 de maio de 2026   | Danilo Melin | Refino de escassez em cenários com três funções      |
+| 1.5    | 6 de maio de 2026   | Danilo Melin | Consolidação da fase 2 do V20                        |
 
 ## Objetivo
 
@@ -118,9 +119,9 @@ Execução inicial:
   - preservação de trio mais flexível quando há organista escassa
     desnecessária ao preenchimento do dia
 
-Resultado parcial:
+Resultado consolidado:
 
-- Status: `EM ANDAMENTO`
+- Status: `CONCLUÍDO`
 - algoritmo passou a tratar justiça global de carga como critério mais
   forte em cenários simples de empate funcional
 - comportamento segue preservando restrições de disponibilidade e
@@ -128,8 +129,11 @@ Resultado parcial:
 - cenários com `3` funções no mesmo dia passaram a preferir equipe mais
   flexível quando isso preserva organista escassa sem comprometer a
   cobertura
-- próximos ajustes da fase 2 devem consolidar o bloco antes de avançar
-  para cobertura e impacto
+- dois blocos centrais do ciclo foram executados:
+  - priorização de carga total em empates simples
+  - preservação de organista escassa quando há trio flexível suficiente
+- cobertura de `scheduleLogic` foi ampliada apenas nos comportamentos
+  que reduzem risco real de regressão
 
 ### Fase 3 - Cobertura e impacto
 
@@ -153,15 +157,15 @@ Resultado parcial:
 
 - [x] Estrutura inicial do V20 criada
 - [x] Fase 1 concluída
-- [ ] Fase 2 concluída
+- [x] Fase 2 concluída
 - [ ] Fase 3 concluída
 - [ ] Fase 4 concluída
 
 ## Próximos Passos do V20
 
-1. consolidar a fase 2 do V20 com os blocos já executados
-2. revisar se ainda resta algum caso crítico de desempate não coberto
-3. avançar para cobertura e impacto após fechar o algoritmo desta etapa
+1. consolidar cobertura específica da regra na fase 3
+2. registrar impacto funcional das mudanças de distribuição
+3. separar risco residual de ajuste fino para os próximos ciclos
 
 ## Artefatos da Fase 1
 

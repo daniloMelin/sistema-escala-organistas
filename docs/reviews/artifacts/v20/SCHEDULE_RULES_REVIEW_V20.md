@@ -157,6 +157,29 @@ Isso foi aplicado em:
 - preservação de trio mais flexível em cenário com organista escassa
   disponível, mas não necessária
 
+## Consolidação da fase 2
+
+### Blocos executados
+
+- justiça global por carga total em empates simples
+- preservação de escassez no modelo com `3` funções
+
+### Resultado consolidado
+
+- a fase 2 reduziu a chance de concentração desnecessária em quem já
+  chega mais carregada
+- o algoritmo passou a preservar melhor organistas escassas quando a
+  cobertura do dia já é possível com trio mais flexível
+- a lógica continua respeitando disponibilidade, período fechado e
+  coerência entre funções
+
+### Risco residual após a fase 2
+
+- ainda vale documentar melhor o impacto funcional percebido ao longo do
+  período completo
+- podem existir refinamentos finos de desempate que façam sentido no
+  fechamento do ciclo, sem invalidar os ganhos já consolidados
+
 ## Resultado esperado do ciclo
 
 Ao final do `V20`, a regra de negócio da escala deve estar mais clara,
