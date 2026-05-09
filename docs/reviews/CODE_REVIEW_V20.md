@@ -11,6 +11,7 @@
 | 1.4    | 6 de maio de 2026   | Danilo Melin | Refino de escassez em cenários com três funções      |
 | 1.5    | 6 de maio de 2026   | Danilo Melin | Consolidação da fase 2 do V20                        |
 | 1.6    | 8 de maio de 2026   | Danilo Melin | Consolidação da fase 3 do V20                        |
+| 1.7    | 8 de maio de 2026   | Danilo Melin | Fechamento formal do ciclo V20                       |
 
 ## Objetivo
 
@@ -20,9 +21,9 @@ de operação das igrejas.
 
 ## Status do Ciclo
 
-- Status geral: `EM ANDAMENTO`
+- Status geral: `CONCLUÍDO`
 - Data de início: `3 de maio de 2026`
-- Data de encerramento: `em aberto`
+- Data de encerramento: `8 de maio de 2026`
 - Contexto: maturação da lógica principal do produto após revisão operacional e visual
 
 ## Diretriz de Prioridade
@@ -163,8 +164,25 @@ Resultado consolidado:
 
 ### Fase 4 - Fechamento
 
+Objetivo:
+
 - encerrar formalmente o ciclo
-- consolidar próximos passos para produção
+- consolidar resumo executivo, artefatos e próximos passos
+
+Saídas esperadas:
+
+- `CODE_REVIEW_V20.md` marcado como concluído
+- recomendações para o próximo ciclo
+
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- ciclo encerrado com refinamento funcional consolidado para a regra de
+  geração da escala
+- artefatos de review, impacto e cobertura registrados para consulta
+  futura
+- transição preparada para o `V21`, com foco na consolidação da
+  experiência mobile
 
 ## Critérios de Saída Propostos
 
@@ -179,14 +197,14 @@ Resultado consolidado:
 - [x] Fase 1 concluída
 - [x] Fase 2 concluída
 - [x] Fase 3 concluída
-- [ ] Fase 4 concluída
+- [x] Fase 4 concluída
 
 ## Próximos Passos do V20
 
-1. encerrar formalmente o ciclo na fase 4
-2. registrar artefatos consolidados e resumo executivo do `V20`
-3. separar ajustes finos de desempate do que já está funcionalmente
-   aprovado
+1. iniciar o `V21` com foco na consolidação da experiência mobile
+2. usar o `V20` como baseline funcional da regra de distribuição
+3. manter separado o que é refinamento fino de desempate do que já está
+   estabilizado na lógica principal
 
 ## Artefatos da Fase 1
 
@@ -196,3 +214,33 @@ Resultado consolidado:
 
 - `docs/reviews/artifacts/v20/SCHEDULE_RULES_IMPACT_V20.md`
 - `docs/reviews/artifacts/v20/SCHEDULE_RULES_COVERAGE_V20.md`
+
+## Artefatos Consolidados do Ciclo
+
+- `docs/reviews/CODE_REVIEW_V20.md`
+- `docs/reviews/artifacts/v20/SCHEDULE_RULES_REVIEW_V20.md`
+- `docs/reviews/artifacts/v20/SCHEDULE_RULES_IMPACT_V20.md`
+- `docs/reviews/artifacts/v20/SCHEDULE_RULES_COVERAGE_V20.md`
+
+## Resumo Executivo
+
+O `V20` concluiu o refinamento das regras de negócio da geração de
+escala como núcleo funcional do sistema.
+
+O ciclo entregou:
+
+- mapeamento das regras e critérios de aceite do algoritmo
+- ajuste de justiça global por carga total em empates simples
+- melhoria da composição da dupla `Culto + Reserva`
+- preservação melhor de organistas escassas no modelo com `3` funções
+- cobertura automatizada ampliada nos pontos de maior risco do algoritmo
+
+## Impacto Prático no Projeto
+
+Ao final do `V20`, a geração da escala passou a produzir decisões mais
+defensáveis do ponto de vista operacional, especialmente em cenários com
+empate entre candidatas e modelos mais densos.
+
+Na prática, o projeto segue para o `V21` com uma base funcional mais
+estável na lógica de distribuição, deixando o próximo ciclo livre para
+focar na experiência mobile.
