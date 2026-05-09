@@ -10,6 +10,7 @@
 | 1.3    | 6 de maio de 2026   | Danilo Melin | Ajuste inicial de justiça da distribuição no V20     |
 | 1.4    | 6 de maio de 2026   | Danilo Melin | Refino de escassez em cenários com três funções      |
 | 1.5    | 6 de maio de 2026   | Danilo Melin | Consolidação da fase 2 do V20                        |
+| 1.6    | 8 de maio de 2026   | Danilo Melin | Consolidação da fase 3 do V20                        |
 
 ## Objetivo
 
@@ -137,9 +138,28 @@ Resultado consolidado:
 
 ### Fase 3 - Cobertura e impacto
 
+Objetivo:
+
 - proteger as regras principais com testes
 - documentar comportamento antes e depois
 - registrar risco residual aceito
+
+Saídas esperadas:
+
+- documento de impacto do `V20`
+- documento de cobertura do `V20`
+
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- impacto funcional registrado em
+  `docs/reviews/artifacts/v20/SCHEDULE_RULES_IMPACT_V20.md`
+- cobertura consolidada em
+  `docs/reviews/artifacts/v20/SCHEDULE_RULES_COVERAGE_V20.md`
+- proteção automatizada organizada por justiça global de carga,
+  composição de duplas e preservação de escassez
+- risco residual separado entre refinamento fino de desempate e
+  validação perceptiva da justiça ao longo do período
 
 ### Fase 4 - Fechamento
 
@@ -158,15 +178,21 @@ Resultado consolidado:
 - [x] Estrutura inicial do V20 criada
 - [x] Fase 1 concluída
 - [x] Fase 2 concluída
-- [ ] Fase 3 concluída
+- [x] Fase 3 concluída
 - [ ] Fase 4 concluída
 
 ## Próximos Passos do V20
 
-1. consolidar cobertura específica da regra na fase 3
-2. registrar impacto funcional das mudanças de distribuição
-3. separar risco residual de ajuste fino para os próximos ciclos
+1. encerrar formalmente o ciclo na fase 4
+2. registrar artefatos consolidados e resumo executivo do `V20`
+3. separar ajustes finos de desempate do que já está funcionalmente
+   aprovado
 
 ## Artefatos da Fase 1
 
 - `docs/reviews/artifacts/v20/SCHEDULE_RULES_REVIEW_V20.md`
+
+## Artefatos da Fase 3
+
+- `docs/reviews/artifacts/v20/SCHEDULE_RULES_IMPACT_V20.md`
+- `docs/reviews/artifacts/v20/SCHEDULE_RULES_COVERAGE_V20.md`
