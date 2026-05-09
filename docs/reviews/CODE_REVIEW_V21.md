@@ -6,6 +6,7 @@
 | ------ | ------------------- | ------------ | ---------------------------------------- |
 | 1.0    | 25 de abril de 2026 | Danilo Melin | Criação do ciclo V21                     |
 | 1.1    | 25 de abril de 2026 | Danilo Melin | Estruturação do ciclo de UX mobile final |
+| 1.2    | 9 de maio de 2026   | Danilo Melin | Consolidação da fase 1 do V21            |
 
 ## Objetivo
 
@@ -15,8 +16,8 @@ pequena.
 
 ## Status do Ciclo
 
-- Status geral: `PLANEJADO`
-- Data de início: `em aberto`
+- Status geral: `EM ANDAMENTO`
+- Data de início: `9 de maio de 2026`
 - Data de encerramento: `em aberto`
 - Contexto: fechamento da experiência de uso em smartphone após ajustes pontuais anteriores
 
@@ -64,9 +65,31 @@ pequena.
 
 ### Fase 1 - Checklist de uso mobile
 
-- definir telas prioritárias
-- listar pontos críticos de interação
-- registrar comportamentos esperados por tela
+Objetivo:
+
+- definir telas prioritárias para revisão em smartphone
+- listar pontos críticos de interação e leitura
+- registrar comportamentos esperados por fluxo mobile
+
+Saídas esperadas:
+
+- artefato base do ciclo com checklist de uso mobile
+- priorização das telas que devem ser ajustadas primeiro
+
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- artefato base consolidado em
+  `docs/reviews/artifacts/v21/MOBILE_UX_REVIEW_V21.md`
+- checklist inicial definido para igreja, organistas, geração de escala
+  e visualização mobile
+- pontos sensíveis mapeados para:
+  - leitura de cards e listas em largura estreita
+  - ordem entre conteúdo e ações críticas
+  - toolbars com múltiplos botões
+  - formulários com campos e mensagens de erro em coluna única
+- diretriz de execução definida: corrigir primeiro o que compromete uso
+  real em smartphone antes de polir detalhes cosméticos
 
 ### Fase 2 - Ajustes visuais e estruturais
 
@@ -91,3 +114,23 @@ pequena.
 - ações críticas estáveis em mobile
 - regressões visuais relevantes tratadas
 - impacto e cobertura consolidados na documentação
+
+## Registro de Progresso
+
+- [x] Estrutura inicial do V21 criada
+- [x] Fase 1 concluída
+- [ ] Fase 2 concluída
+- [ ] Fase 3 concluída
+- [ ] Fase 4 concluída
+
+## Próximos Passos do V21
+
+1. executar a fase 2 começando por toolbars, formulários e ações
+   críticas em mobile
+2. validar leitura e ordem de conteúdo nas telas de igreja e organistas
+3. revisar visualização da escala em smartphone antes de consolidar
+   cobertura e impacto
+
+## Artefatos da Fase 1
+
+- `docs/reviews/artifacts/v21/MOBILE_UX_REVIEW_V21.md`
