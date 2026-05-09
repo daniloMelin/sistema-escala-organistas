@@ -262,12 +262,12 @@ const assignSingleCulto = ({
         getRepeatedRolePenalty(lastAssignedRoleByDayKey, b.id, dayKey, culto.id);
       if (repeatPenaltyDiff !== 0) return repeatPenaltyDiff;
 
+      const totalDiff = (statsA.total || 0) - (statsB.total || 0);
+      if (totalDiff !== 0) return totalDiff;
+
       const roleDiff =
         getRoleCountForCulto(statsA, culto.id) - getRoleCountForCulto(statsB, culto.id);
       if (roleDiff !== 0) return roleDiff;
-
-      const totalDiff = (statsA.total || 0) - (statsB.total || 0);
-      if (totalDiff !== 0) return totalDiff;
 
       if (scarcityDiff !== 0) return scarcityDiff;
 
@@ -344,7 +344,7 @@ const assignThreeSlotTeam = ({
             ),
             roleCount: getRoleCountForCulto(stats, cultoId),
             total: stats.total || 0,
-            scarcity: availabilityScores[organist.id] || 0,
+            availability: availabilityScores[organist.id] || 0,
           };
         });
 
@@ -354,7 +354,7 @@ const assignThreeSlotTeam = ({
           teamStats.reduce((sum, item) => sum + item.total, 0),
           Math.max(...teamStats.map((item) => item.roleCount)),
           teamStats.reduce((sum, item) => sum + item.roleCount, 0),
-          teamStats.reduce((sum, item) => sum + item.scarcity, 0),
+          -teamStats.reduce((sum, item) => sum + item.availability, 0),
           meiaHoraOrganist.name || '',
           parte1Organist.name || '',
           parte2Organist.name || '',
@@ -403,8 +403,8 @@ const scoreCandidateForReservePair = ({
 
   return [
     getRepeatedRolePenalty(lastAssignedRoleByDayKey, organist.id, dayKey, cultoId),
-    getRoleCountForCulto(stats, cultoId),
     stats.total || 0,
+    getRoleCountForCulto(stats, cultoId),
     availabilityScores[organist.id] || 0,
     organist.name || '',
   ];

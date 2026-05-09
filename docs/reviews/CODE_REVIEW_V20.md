@@ -6,6 +6,12 @@
 | ------ | ------------------- | ------------ | ---------------------------------------------------- |
 | 1.0    | 25 de abril de 2026 | Danilo Melin | Criação do ciclo V20                                 |
 | 1.1    | 25 de abril de 2026 | Danilo Melin | Estruturação do ciclo de regras de negócio da escala |
+| 1.2    | 3 de maio de 2026   | Danilo Melin | Consolidação da fase 1 do V20                        |
+| 1.3    | 6 de maio de 2026   | Danilo Melin | Ajuste inicial de justiça da distribuição no V20     |
+| 1.4    | 6 de maio de 2026   | Danilo Melin | Refino de escassez em cenários com três funções      |
+| 1.5    | 6 de maio de 2026   | Danilo Melin | Consolidação da fase 2 do V20                        |
+| 1.6    | 8 de maio de 2026   | Danilo Melin | Consolidação da fase 3 do V20                        |
+| 1.7    | 8 de maio de 2026   | Danilo Melin | Fechamento formal do ciclo V20                       |
 
 ## Objetivo
 
@@ -15,9 +21,9 @@ de operação das igrejas.
 
 ## Status do Ciclo
 
-- Status geral: `PLANEJADO`
-- Data de início: `em aberto`
-- Data de encerramento: `em aberto`
+- Status geral: `CONCLUÍDO`
+- Data de início: `3 de maio de 2026`
+- Data de encerramento: `8 de maio de 2026`
 - Contexto: maturação da lógica principal do produto após revisão operacional e visual
 
 ## Diretriz de Prioridade
@@ -63,26 +69,120 @@ de operação das igrejas.
 
 ### Fase 1 - Mapeamento das regras
 
+Objetivo:
+
 - documentar critérios atuais do algoritmo
-- registrar onde a distribuição ainda parece injusta
-- definir metas de comportamento esperado
+- registrar onde a distribuição ainda pode parecer injusta
+- definir metas de comportamento esperado antes de alterar a lógica
+
+Saídas esperadas:
+
+- artefato base do ciclo com checklist das regras principais
+- priorização dos cenários de distribuição que devem ser validados primeiro
+
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- artefato base consolidado em
+  `docs/reviews/artifacts/v20/SCHEDULE_RULES_REVIEW_V20.md`
+- critérios centrais mapeados para rotação, escassez, desempate e
+  preservação do período fechado de `3` meses
+- cenários prioritários definidos para:
+  - rotação entre elegíveis com mesma disponibilidade
+  - impacto de organistas escassas em dias concorridos
+  - distribuição em modelos com `2` e `3` funções no mesmo dia
+  - efeito de histórico recente e carga acumulada
+- diretriz de execução definida: registrar comportamento esperado antes
+  de tratar o algoritmo como problema de implementação
 
 ### Fase 2 - Ajustes do algoritmo
+
+Objetivo:
 
 - implementar refinamentos de distribuição
 - revisar critérios de desempate e escassez
 - validar impacto em cenários representativos
 
+Saídas esperadas:
+
+- ajustes rastreáveis na lógica do algoritmo
+- cenários com comportamento esperado protegidos por testes focados
+
+Execução inicial:
+
+- lógica de escolha em `assignSingleCulto` revisada para priorizar carga
+  total antes de zerar contagem por função quando houver alternativa
+  viável
+- lógica de dupla `Culto + Reserva` revisada para privilegiar a dupla de
+  menor carga total antes de esgotar candidatas mais carregadas
+- cobertura de `scheduleLogic` ampliada para proteger:
+  - escolha por menor carga total em slot único
+  - escolha da dupla mais leve em `Culto + Reserva`
+  - preservação de trio mais flexível quando há organista escassa
+    desnecessária ao preenchimento do dia
+
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- algoritmo passou a tratar justiça global de carga como critério mais
+  forte em cenários simples de empate funcional
+- comportamento segue preservando restrições de disponibilidade e
+  rotação por função como critérios relevantes, mas não dominantes
+- cenários com `3` funções no mesmo dia passaram a preferir equipe mais
+  flexível quando isso preserva organista escassa sem comprometer a
+  cobertura
+- dois blocos centrais do ciclo foram executados:
+  - priorização de carga total em empates simples
+  - preservação de organista escassa quando há trio flexível suficiente
+- cobertura de `scheduleLogic` foi ampliada apenas nos comportamentos
+  que reduzem risco real de regressão
+
 ### Fase 3 - Cobertura e impacto
+
+Objetivo:
 
 - proteger as regras principais com testes
 - documentar comportamento antes e depois
 - registrar risco residual aceito
 
+Saídas esperadas:
+
+- documento de impacto do `V20`
+- documento de cobertura do `V20`
+
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- impacto funcional registrado em
+  `docs/reviews/artifacts/v20/SCHEDULE_RULES_IMPACT_V20.md`
+- cobertura consolidada em
+  `docs/reviews/artifacts/v20/SCHEDULE_RULES_COVERAGE_V20.md`
+- proteção automatizada organizada por justiça global de carga,
+  composição de duplas e preservação de escassez
+- risco residual separado entre refinamento fino de desempate e
+  validação perceptiva da justiça ao longo do período
+
 ### Fase 4 - Fechamento
 
+Objetivo:
+
 - encerrar formalmente o ciclo
-- consolidar próximos passos para produção
+- consolidar resumo executivo, artefatos e próximos passos
+
+Saídas esperadas:
+
+- `CODE_REVIEW_V20.md` marcado como concluído
+- recomendações para o próximo ciclo
+
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- ciclo encerrado com refinamento funcional consolidado para a regra de
+  geração da escala
+- artefatos de review, impacto e cobertura registrados para consulta
+  futura
+- transição preparada para o `V21`, com foco na consolidação da
+  experiência mobile
 
 ## Critérios de Saída Propostos
 
@@ -90,3 +190,57 @@ de operação das igrejas.
 - período fechado de `3` meses preservado
 - cenários sensíveis protegidos por testes relevantes
 - impacto funcional consolidado na documentação
+
+## Registro de Progresso
+
+- [x] Estrutura inicial do V20 criada
+- [x] Fase 1 concluída
+- [x] Fase 2 concluída
+- [x] Fase 3 concluída
+- [x] Fase 4 concluída
+
+## Próximos Passos do V20
+
+1. iniciar o `V21` com foco na consolidação da experiência mobile
+2. usar o `V20` como baseline funcional da regra de distribuição
+3. manter separado o que é refinamento fino de desempate do que já está
+   estabilizado na lógica principal
+
+## Artefatos da Fase 1
+
+- `docs/reviews/artifacts/v20/SCHEDULE_RULES_REVIEW_V20.md`
+
+## Artefatos da Fase 3
+
+- `docs/reviews/artifacts/v20/SCHEDULE_RULES_IMPACT_V20.md`
+- `docs/reviews/artifacts/v20/SCHEDULE_RULES_COVERAGE_V20.md`
+
+## Artefatos Consolidados do Ciclo
+
+- `docs/reviews/CODE_REVIEW_V20.md`
+- `docs/reviews/artifacts/v20/SCHEDULE_RULES_REVIEW_V20.md`
+- `docs/reviews/artifacts/v20/SCHEDULE_RULES_IMPACT_V20.md`
+- `docs/reviews/artifacts/v20/SCHEDULE_RULES_COVERAGE_V20.md`
+
+## Resumo Executivo
+
+O `V20` concluiu o refinamento das regras de negócio da geração de
+escala como núcleo funcional do sistema.
+
+O ciclo entregou:
+
+- mapeamento das regras e critérios de aceite do algoritmo
+- ajuste de justiça global por carga total em empates simples
+- melhoria da composição da dupla `Culto + Reserva`
+- preservação melhor de organistas escassas no modelo com `3` funções
+- cobertura automatizada ampliada nos pontos de maior risco do algoritmo
+
+## Impacto Prático no Projeto
+
+Ao final do `V20`, a geração da escala passou a produzir decisões mais
+defensáveis do ponto de vista operacional, especialmente em cenários com
+empate entre candidatas e modelos mais densos.
+
+Na prática, o projeto segue para o `V21` com uma base funcional mais
+estável na lógica de distribuição, deixando o próximo ciclo livre para
+focar na experiência mobile.

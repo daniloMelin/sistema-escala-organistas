@@ -168,10 +168,19 @@ Documento principal:
 
 - `docs/reviews/CODE_REVIEW_V19.md`
 
-### V20 a V22 - Trilha planejada dos próximos ciclos
+### V20 - Regras de negócio da geração da escala
 
-- `V20`
-  - regras de negócio da geração da escala
+- refinamento da justiça global de distribuição
+- melhoria da composição de `Culto + Reserva`
+- preservação melhor de organistas escassas no modelo com `3` funções
+- consolidação de cobertura e impacto específicos do algoritmo
+
+Documento principal:
+
+- `docs/reviews/CODE_REVIEW_V20.md`
+
+### V21 a V22 - Trilha planejada dos próximos ciclos
+
 - `V21`
   - consolidação da experiência mobile
 - `V22`
@@ -179,7 +188,6 @@ Documento principal:
 
 Documentos principais:
 
-- `docs/reviews/CODE_REVIEW_V20.md`
 - `docs/reviews/CODE_REVIEW_V21.md`
 - `docs/reviews/CODE_REVIEW_V22.md`
 

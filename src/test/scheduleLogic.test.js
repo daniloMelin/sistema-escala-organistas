@@ -34,6 +34,11 @@ const SUNDAY_WITH_THREE_SLOTS_CONFIG = {
   sunday: [SERVICE_TEMPLATES.MeiaHora, SERVICE_TEMPLATES.Parte1, SERVICE_TEMPLATES.Parte2],
 };
 
+const SUNDAY_AND_TUESDAY_WITH_THREE_SLOTS_CONFIG = {
+  sunday: [SERVICE_TEMPLATES.MeiaHora, SERVICE_TEMPLATES.Parte1, SERVICE_TEMPLATES.Parte2],
+  tuesday: [SERVICE_TEMPLATES.MeiaHora, SERVICE_TEMPLATES.Parte1, SERVICE_TEMPLATES.Parte2],
+};
+
 describe('generateSchedule', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -257,6 +262,28 @@ describe('generateSchedule', () => {
     expect(Math.max(...values) - Math.min(...values)).toBeLessThanOrEqual(1);
   });
 
+  test('preserva organista mais escassa fora do trio quando ha equipe mais flexivel suficiente', () => {
+    const organists = [
+      { id: '1', name: 'Ana', fixedDays: [0], stats: { total: 0 } },
+      { id: '2', name: 'Bia', fixedDays: [0, 2], stats: { total: 0 } },
+      { id: '3', name: 'Clara', fixedDays: [0, 2], stats: { total: 0 } },
+      { id: '4', name: 'Dani', fixedDays: [0, 2], stats: { total: 0 } },
+    ];
+
+    const result = generateSchedule(
+      organists,
+      '2026-03-01',
+      '2026-03-03',
+      SUNDAY_AND_TUESDAY_WITH_THREE_SLOTS_CONFIG
+    );
+
+    expect(result).toHaveLength(2);
+    expect(Object.values(result[0].assignments)).not.toContain('Ana');
+    expect(Object.values(result[0].assignments)).toEqual(
+      expect.arrayContaining(['Bia', 'Clara', 'Dani'])
+    );
+  });
+
   test('aplica atribuicao dupla quando Culto e definido primeiro', () => {
     const organists = [
       {
@@ -297,6 +324,29 @@ describe('generateSchedule', () => {
     expect(Math.max(...values) - Math.min(...values)).toBeLessThanOrEqual(1);
   });
 
+  test('prioriza menor carga total antes de zerar contagem por funcao quando ha alternativa viavel', () => {
+    const organists = [
+      {
+        id: '1',
+        name: 'Ana',
+        fixedDays: [2],
+        stats: { meiaHora: 0, culto: 4, total: 4 },
+      },
+      {
+        id: '2',
+        name: 'Bia',
+        fixedDays: [2],
+        stats: { meiaHora: 1, culto: 0, total: 1 },
+      },
+    ];
+
+    const result = generateSchedule(organists, '2026-03-03', '2026-03-03', TUESDAY_CONFIG);
+
+    expect(result).toHaveLength(1);
+    expect(result[0].assignments.MeiaHoraCulto).toBe('Bia');
+    expect(result[0].assignments.Culto).toBe('Ana');
+  });
+
   test('prioriza organista escassa para RJM para preservar atribuicoes viaveis no domingo', () => {
     const organists = [
       {
@@ -320,6 +370,47 @@ describe('generateSchedule', () => {
     expect(assignments.RJM).toBe('RjmOnly');
     expect(assignments.MeiaHoraCulto).toBe('Flexible');
     expect(assignments.Culto).toBe('Flexible');
+  });
+
+  test('prioriza a dupla de menor carga total em culto e reserva quando ha alternativas viaveis', () => {
+    const organists = [
+      {
+        id: '1',
+        name: 'Aline',
+        fixedDays: [5],
+        stats: { culto: 0, reserva: 4, total: 4 },
+      },
+      {
+        id: '2',
+        name: 'Bela',
+        fixedDays: [5],
+        stats: { culto: 1, reserva: 0, total: 1 },
+      },
+      {
+        id: '3',
+        name: 'Cris',
+        fixedDays: [5],
+        stats: { culto: 4, reserva: 0, total: 4 },
+      },
+      {
+        id: '4',
+        name: 'Dora',
+        fixedDays: [5],
+        stats: { culto: 0, reserva: 1, total: 1 },
+      },
+    ];
+
+    const result = generateSchedule(
+      organists,
+      '2026-04-03',
+      '2026-04-03',
+      FRIDAY_WITH_RESERVE_CONFIG
+    );
+
+    expect(result).toHaveLength(1);
+    expect(new Set([result[0].assignments.Culto, result[0].assignments.Reserva])).toEqual(
+      new Set(['Bela', 'Dora'])
+    );
   });
 
   test('evita repetir a mesma funcao em domingos consecutivos quando ha alternativa viavel', () => {
