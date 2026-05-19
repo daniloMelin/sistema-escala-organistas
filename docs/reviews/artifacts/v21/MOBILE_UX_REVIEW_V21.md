@@ -158,7 +158,7 @@ Itens trabalhados:
 - botão de retorno do gerador adaptado para largura total em smartphone
 - histórico de escalas reorganizado para leitura vertical mais clara
 
-### Resultado parcial
+### Resultado consolidado
 
 - leitura do conteúdo principal passou a vir antes das ações com mais
   clareza
@@ -168,12 +168,19 @@ Itens trabalhados:
   mobile
 - a experiência mobile passou a parecer mais deliberada e menos
   dependente de quebra automática do layout
+- o painel, o gerador e o histórico passaram a preservar melhor a
+  prioridade entre conteúdo, contexto e ação em smartphone
+- o heading atual de `Gerenciamento de Organistas` ficou refletido nos
+  seletores E2E ligados ao fluxo mobile de gestão
 
 ### Validação executada
 
 - `npm test -- --runTestsByPath src/test/churchDashboard.test.js`
   `src/test/churchForm.test.js src/test/organistForm.test.js`
   `src/test/scheduleGridView.test.js --watchAll=false`
+- `npm test -- --runTestsByPath src/test/scheduleGridView.test.js`
+  `src/test/useChurchScheduleGenerator.test.js`
+  `src/test/churchDashboard.test.js --watchAll=false`
 - `npm run lint -- --max-warnings=0`
 - `npm run format:check`
 - `npm run lint:md`

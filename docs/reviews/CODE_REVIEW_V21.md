@@ -9,6 +9,7 @@
 | 1.2    | 9 de maio de 2026   | Danilo Melin | Consolidação da fase 1 do V21            |
 | 1.3    | 18 de maio de 2026  | Danilo Melin | Ajustes iniciais de UX mobile no V21     |
 | 1.4    | 18 de maio de 2026  | Danilo Melin | Passada fina no gerador e histórico      |
+| 1.5    | 18 de maio de 2026  | Danilo Melin | Consolidação da fase 2 do V21            |
 
 ## Objetivo
 
@@ -130,18 +131,21 @@ Execução inicial:
   - cabeçalho e metadados mais respiráveis
   - ação de visualizar em largura total quando necessário
 
-Resultado parcial:
+Resultado consolidado:
 
-- Status: `EM ANDAMENTO`
+- Status: `CONCLUÍDO`
 - experiência mobile ficou mais deliberada nas telas de gestão e na
   visualização da escala
 - ações críticas passaram a competir menos com o conteúdo em largura
   estreita
 - gerador e histórico de escala ganharam melhor ritmo visual em
   smartphone, com menos compressão de ações e metadados
-- cobertura existente de componentes relevantes continuou íntegra
-- próximos ajustes da fase 2 devem consolidar o bloco e revisar se ainda
-  resta algum ponto sensível na experiência mobile real
+- fluxo mobile do gerador passou a respeitar melhor a leitura vertical,
+  com CTA principal e retorno mais previsíveis
+- histórico de escalas ganhou leitura mais clara em cards e metadados em
+  largura estreita
+- cobertura existente de componentes relevantes continuou íntegra após os
+  ajustes responsivos aplicados
 
 ### Fase 3 - Cobertura e impacto
 
@@ -165,17 +169,16 @@ Resultado parcial:
 
 - [x] Estrutura inicial do V21 criada
 - [x] Fase 1 concluída
-- [ ] Fase 2 concluída
+- [x] Fase 2 concluída
 - [ ] Fase 3 concluída
 - [ ] Fase 4 concluída
 
 ## Próximos Passos do V21
 
-1. consolidar a fase 2 do V21 com os blocos já executados
-2. revisar se ainda resta algum ponto crítico de navegação mobile não
-   coberto
-3. avançar para cobertura e impacto após fechar esta etapa visual
+1. consolidar cobertura e impacto prático dos ajustes mobile do V21
+2. registrar risco residual aceito entre smartphone e desktop
+3. avançar para o fechamento formal do ciclo após a fase 3
 
-## Artefatos da Fase 1
+## Artefatos da Fase 1 e 2
 
 - `docs/reviews/artifacts/v21/MOBILE_UX_REVIEW_V21.md`
