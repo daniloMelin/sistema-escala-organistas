@@ -18,7 +18,7 @@ test.describe('cadastro e edicao de igreja', () => {
 
     await expect(page.getByText('Igreja criada!')).toBeVisible();
     await expect(page.getByText('Congregacao Nova')).toBeVisible();
-    await expect(page.getByText('Código: CNV')).toHaveCount(0);
+    await expect(page.getByText(/Código:/)).toHaveCount(0);
     await expect(page.getByText('Ensaio local: 1 quinta-feira do mês às 19:30')).toBeVisible();
   });
 
@@ -52,7 +52,7 @@ test.describe('cadastro e edicao de igreja', () => {
 
     await expect(page.getByText('Igreja atualizada!')).toBeVisible();
     await expect(page.getByText('Igreja Atualizada', { exact: true })).toBeVisible();
-    await expect(page.getByText('Código: NEW')).toHaveCount(0);
+    await expect(page.getByText(/Código:/)).toHaveCount(0);
     await expect(page.getByText('Ensaio local: 2 sexta-feira do mês às 20:00')).toBeVisible();
   });
 
