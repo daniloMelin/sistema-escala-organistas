@@ -18,7 +18,9 @@ test.describe('validacoes negativas de organista', () => {
     await gotoChurchManager(page);
     await page.getByText('Igreja Validacao Organista').click();
 
-    await expect(page.getByRole('heading', { name: 'Painel de Gerenciamento' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Gerenciamento de Organistas' })
+    ).toBeVisible();
 
     await page.getByRole('textbox', { name: 'Nome da Organista:' }).fill('A');
     await page.getByRole('button', { name: 'Cadastrar Organista' }).click();
