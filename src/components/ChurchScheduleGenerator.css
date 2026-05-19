@@ -13,6 +13,12 @@
   align-items: flex-end;
 }
 
+.schedule-controls__row .input-field {
+  flex: 1 1 220px;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
 .schedule-controls__generate {
   margin-bottom: 15px;
 }
@@ -77,6 +83,10 @@
   justify-content: space-between;
   align-items: center;
   background: #ffffff;
+}
+
+.history-item__content {
+  min-width: 0;
 }
 
 .history-item--latest {
@@ -179,6 +189,7 @@
 .schedule-grid__distribution-subtitle {
   color: #666666;
   font-size: 0.9rem;
+  line-height: 1.35;
 }
 
 .schedule-grid__distribution-list {
@@ -265,6 +276,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
   font-size: 0.95em;
   line-height: 1.25;
 }
@@ -272,6 +284,7 @@
 .schedule-card__role {
   color: var(--app-muted);
   font-weight: 700;
+  flex: 0 0 auto;
 }
 
 .schedule-card__select {
@@ -279,10 +292,12 @@
   border-radius: 4px;
   border: 1px solid #cccccc;
   max-width: 132px;
+  min-width: 0;
 }
 
 .schedule-card__name {
   color: var(--app-text);
+  text-align: right;
 }
 
 .schedule-card__name--empty {
@@ -291,16 +306,70 @@
 }
 
 @media (max-width: 640px) {
+  .schedule-generator__back {
+    width: 100%;
+  }
+
   .schedule-controls {
     padding: 14px;
   }
 
   .schedule-controls__row {
     gap: 12px;
+    align-items: stretch;
+  }
+
+  .schedule-controls__row .input-field {
+    flex: 1 1 100%;
+  }
+
+  .history-filters__period,
+  .history-search,
+  .history-search__actions {
+    max-width: none;
+    width: 100%;
+  }
+
+  .history-search__meta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .history-search__actions .btn {
+    width: 100%;
   }
 
   .schedule-controls__generate {
     margin-bottom: 0;
+    width: 100%;
+  }
+
+  .history-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .history-item__summary {
+    line-height: 1.45;
+  }
+
+  .history-item__action {
+    width: 100%;
+  }
+
+  .schedule-grid__distribution {
+    padding: 12px;
+  }
+
+  .schedule-grid__distribution-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .schedule-grid__distribution-list {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
   .schedule-grid__toolbar {
@@ -319,5 +388,39 @@
   .schedule-grid__toolbar .actions-row .btn {
     width: 100%;
     min-width: 0;
+  }
+
+  .schedule-grid__cards {
+    grid-template-columns: 1fr;
+  }
+
+  .schedule-card__body {
+    padding: 10px 12px;
+  }
+
+  .schedule-card__row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .schedule-card__select,
+  .schedule-card__name {
+    width: 100%;
+    max-width: none;
+    text-align: left;
+  }
+}
+
+@media (max-width: 420px) {
+  .history-item__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .church-list__item .actions-row,
+  .organist-list__item .actions-row,
+  .schedule-grid__toolbar .actions-row {
+    grid-template-columns: 1fr;
   }
 }

@@ -81,7 +81,7 @@ const ChurchList = ({
                     </div>
                   )}
                 </div>
-                <div className="actions-row">
+                <div className="actions-row church-list__actions">
                   <Button
                     onClick={(e) => onStartEdit(e, church)}
                     disabled={isLoading}

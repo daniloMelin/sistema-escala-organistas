@@ -169,7 +169,7 @@ const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
       <ul className="list-reset">
         {filteredSchedules.map((sch, index) => (
           <li key={sch.id} className={`history-item ${index === 0 ? 'history-item--latest' : ''}`}>
-            <div>
+            <div className="history-item__content">
               <div className="history-item__header">
                 <strong>{formatSchedulePeriod(sch)}</strong>
                 {index === 0 && <span className="history-item__badge">Mais recente</span>}
@@ -182,7 +182,12 @@ const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
                 {getScheduleDaysLabel(sch)} • {getOrganistCountLabel(sch)}
               </p>
             </div>
-            <Button onClick={() => onViewSaved(sch)} variant="secondary" size="sm">
+            <Button
+              onClick={() => onViewSaved(sch)}
+              variant="secondary"
+              size="sm"
+              className="history-item__action"
+            >
               Visualizar
             </Button>
           </li>
