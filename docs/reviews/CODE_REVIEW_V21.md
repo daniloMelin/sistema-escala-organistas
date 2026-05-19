@@ -8,6 +8,7 @@
 | 1.1    | 25 de abril de 2026 | Danilo Melin | Estruturação do ciclo de UX mobile final |
 | 1.2    | 9 de maio de 2026   | Danilo Melin | Consolidação da fase 1 do V21            |
 | 1.3    | 18 de maio de 2026  | Danilo Melin | Ajustes iniciais de UX mobile no V21     |
+| 1.4    | 18 de maio de 2026  | Danilo Melin | Passada fina no gerador e histórico      |
 
 ## Objetivo
 
@@ -120,6 +121,14 @@ Execução inicial:
   - linhas de função menos comprimidas
 - seletores E2E corrigidos para refletir o heading atual de
   `Gerenciamento de Organistas`
+- gerador de escala refinado em mobile com:
+  - botão de retorno em largura total
+  - controles de data mais estáveis em coluna única
+  - CTA principal com destaque e largura adequada
+- histórico de escalas refinado em smartphone com:
+  - cards em coluna única
+  - cabeçalho e metadados mais respiráveis
+  - ação de visualizar em largura total quando necessário
 
 Resultado parcial:
 
@@ -128,6 +137,8 @@ Resultado parcial:
   visualização da escala
 - ações críticas passaram a competir menos com o conteúdo em largura
   estreita
+- gerador e histórico de escala ganharam melhor ritmo visual em
+  smartphone, com menos compressão de ações e metadados
 - cobertura existente de componentes relevantes continuou íntegra
 - próximos ajustes da fase 2 devem consolidar o bloco e revisar se ainda
   resta algum ponto sensível na experiência mobile real

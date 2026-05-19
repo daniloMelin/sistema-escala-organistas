@@ -13,6 +13,12 @@
   align-items: flex-end;
 }
 
+.schedule-controls__row .input-field {
+  flex: 1 1 220px;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
 .schedule-controls__generate {
   margin-bottom: 15px;
 }
@@ -77,6 +83,10 @@
   justify-content: space-between;
   align-items: center;
   background: #ffffff;
+}
+
+.history-item__content {
+  min-width: 0;
 }
 
 .history-item--latest {
@@ -296,12 +306,21 @@
 }
 
 @media (max-width: 640px) {
+  .schedule-generator__back {
+    width: 100%;
+  }
+
   .schedule-controls {
     padding: 14px;
   }
 
   .schedule-controls__row {
     gap: 12px;
+    align-items: stretch;
+  }
+
+  .schedule-controls__row .input-field {
+    flex: 1 1 100%;
   }
 
   .history-filters__period,
@@ -316,8 +335,27 @@
     align-items: stretch;
   }
 
+  .history-search__actions .btn {
+    width: 100%;
+  }
+
   .schedule-controls__generate {
     margin-bottom: 0;
+    width: 100%;
+  }
+
+  .history-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .history-item__summary {
+    line-height: 1.45;
+  }
+
+  .history-item__action {
+    width: 100%;
   }
 
   .schedule-grid__distribution {
@@ -375,6 +413,11 @@
 }
 
 @media (max-width: 420px) {
+  .history-item__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .church-list__item .actions-row,
   .organist-list__item .actions-row,
   .schedule-grid__toolbar .actions-row {

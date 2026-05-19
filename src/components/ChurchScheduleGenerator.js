@@ -42,7 +42,7 @@ const ChurchScheduleGenerator = ({ user }) => {
         onClick={() => navigate(`/igreja/${id}`)}
         variant="secondary"
         size="sm"
-        className="mb-20"
+        className="mb-20 schedule-generator__back"
       >
         &larr; Voltar para Painel
       </Button>

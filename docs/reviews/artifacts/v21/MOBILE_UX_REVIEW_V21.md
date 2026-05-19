@@ -155,6 +155,8 @@ Itens trabalhados:
 - cards da escala em coluna única com linhas menos comprimidas
 - toolbar da escala e resumo do período mais estáveis em largura
   reduzida
+- botão de retorno do gerador adaptado para largura total em smartphone
+- histórico de escalas reorganizado para leitura vertical mais clara
 
 ### Resultado parcial
 
@@ -162,6 +164,8 @@ Itens trabalhados:
   clareza
 - botões críticos ficaram mais acessíveis em largura estreita
 - a visualização da escala ficou menos apertada em smartphone
+- o gerador e o histórico passaram a usar melhor o fluxo vertical do
+  mobile
 - a experiência mobile passou a parecer mais deliberada e menos
   dependente de quebra automática do layout
 
