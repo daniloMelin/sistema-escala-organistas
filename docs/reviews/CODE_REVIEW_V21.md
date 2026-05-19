@@ -7,6 +7,7 @@
 | 1.0    | 25 de abril de 2026 | Danilo Melin | Criação do ciclo V21                     |
 | 1.1    | 25 de abril de 2026 | Danilo Melin | Estruturação do ciclo de UX mobile final |
 | 1.2    | 9 de maio de 2026   | Danilo Melin | Consolidação da fase 1 do V21            |
+| 1.3    | 18 de maio de 2026  | Danilo Melin | Ajustes iniciais de UX mobile no V21     |
 
 ## Objetivo
 
@@ -93,9 +94,43 @@ Resultado consolidado:
 
 ### Fase 2 - Ajustes visuais e estruturais
 
+Objetivo:
+
 - corrigir quebras ruins
 - revisar alinhamento, espaçamento e ordem de leitura
 - manter consistência entre mobile e desktop
+
+Saídas esperadas:
+
+- ajustes responsivos rastreáveis nas telas principais
+- validação focal dos fluxos mais sensíveis em smartphone
+
+Execução inicial:
+
+- toolbar do painel reorganizada para mobile, removendo larguras rígidas
+  e deixando ações críticas em largura total quando necessário
+- listas de igrejas e organistas ajustadas para priorizar leitura do
+  conteúdo antes das ações, com botões em grid responsivo
+- formulário de igreja e formulário de organista refinados para coluna
+  única, com melhor ritmo entre campos, mensagens e ações
+- visualização da escala revisada em smartphone para:
+  - toolbar com ações mais estáveis
+  - distribuição e blocos auxiliares mais legíveis
+  - cards da escala em coluna única
+  - linhas de função menos comprimidas
+- seletores E2E corrigidos para refletir o heading atual de
+  `Gerenciamento de Organistas`
+
+Resultado parcial:
+
+- Status: `EM ANDAMENTO`
+- experiência mobile ficou mais deliberada nas telas de gestão e na
+  visualização da escala
+- ações críticas passaram a competir menos com o conteúdo em largura
+  estreita
+- cobertura existente de componentes relevantes continuou íntegra
+- próximos ajustes da fase 2 devem consolidar o bloco e revisar se ainda
+  resta algum ponto sensível na experiência mobile real
 
 ### Fase 3 - Cobertura e impacto
 
@@ -125,11 +160,10 @@ Resultado consolidado:
 
 ## Próximos Passos do V21
 
-1. executar a fase 2 começando por toolbars, formulários e ações
-   críticas em mobile
-2. validar leitura e ordem de conteúdo nas telas de igreja e organistas
-3. revisar visualização da escala em smartphone antes de consolidar
-   cobertura e impacto
+1. consolidar a fase 2 do V21 com os blocos já executados
+2. revisar se ainda resta algum ponto crítico de navegação mobile não
+   coberto
+3. avançar para cobertura e impacto após fechar esta etapa visual
 
 ## Artefatos da Fase 1
 

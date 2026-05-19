@@ -31,9 +31,7 @@ test.describe('fluxo inicial de autenticacao e navegacao', () => {
     await expect(page.getByText('Navegacao Central')).toBeVisible();
 
     await page.getByRole('button', { name: /Voltar para Painel/i }).click();
-    await expect(
-      page.getByRole('heading', { name: 'Gerenciamento de Organistas' })
-    ).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Gerenciamento de Organistas' })).toBeVisible();
 
     await page.getByRole('button', { name: /Voltar para Igrejas/i }).click();
     await expect(page.getByRole('heading', { name: 'Gerenciamento de Igrejas' })).toBeVisible();

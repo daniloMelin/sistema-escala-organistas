@@ -133,6 +133,47 @@ Sinais de reprovação:
 4. manter a experiência mobile coerente com o desktop sem tentar
    replicar o mesmo layout
 
+## Execução inicial da fase 2
+
+### Escopo revisado
+
+O primeiro bloco executado no `V21` priorizou as áreas em que ações e
+conteúdo disputavam espaço com mais frequência em smartphone.
+
+Itens trabalhados:
+
+- toolbar do painel de organistas
+- listas de igrejas e organistas com ações laterais
+- formulários principais em coluna única
+- visualização da escala e seus blocos auxiliares
+
+### Ajustes aplicados
+
+- remoção de larguras rígidas em botões do painel
+- reorganização de ações em grid responsivo nas listas mobile
+- melhor distribuição de espaço em formulários e mensagens
+- cards da escala em coluna única com linhas menos comprimidas
+- toolbar da escala e resumo do período mais estáveis em largura
+  reduzida
+
+### Resultado parcial
+
+- leitura do conteúdo principal passou a vir antes das ações com mais
+  clareza
+- botões críticos ficaram mais acessíveis em largura estreita
+- a visualização da escala ficou menos apertada em smartphone
+- a experiência mobile passou a parecer mais deliberada e menos
+  dependente de quebra automática do layout
+
+### Validação executada
+
+- `npm test -- --runTestsByPath src/test/churchDashboard.test.js`
+  `src/test/churchForm.test.js src/test/organistForm.test.js`
+  `src/test/scheduleGridView.test.js --watchAll=false`
+- `npm run lint -- --max-warnings=0`
+- `npm run format:check`
+- `npm run lint:md`
+
 ## Resultado esperado do ciclo
 
 Ao final do `V21`, o sistema deve ter uma experiência mobile estável,

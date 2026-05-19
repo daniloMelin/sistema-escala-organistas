@@ -50,6 +50,7 @@
 .organist-form__actions {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .organist-form__submit {
@@ -121,7 +122,7 @@
 }
 
 .dashboard-toolbar .btn {
-  min-width: 164px;
+  min-width: 0;
 }
 
 @media (max-width: 640px) {
@@ -130,8 +131,7 @@
   }
 
   .dashboard-toolbar .btn {
-    width: 164px;
-    min-width: 164px;
+    width: 100%;
   }
 
   .organist-form {
@@ -149,6 +149,8 @@
 
   .organist-form__day-item {
     width: 100%;
+    align-items: flex-start;
+    gap: 8px;
   }
 
   .organist-form__actions {
@@ -172,10 +174,14 @@
 
   .organist-list__availability {
     margin-bottom: 8px;
+    line-height: 1.45;
   }
 
   .organist-list__item .actions-row {
     width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
 
   .organist-list__item .actions-row .btn {
