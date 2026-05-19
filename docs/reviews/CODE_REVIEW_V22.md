@@ -6,6 +6,7 @@
 | ------ | ------------------- | ------------ | ------------------------------------------------- |
 | 1.0    | 25 de abril de 2026 | Danilo Melin | Criação do ciclo V22                              |
 | 1.1    | 25 de abril de 2026 | Danilo Melin | Estruturação do ciclo de preparação para produção |
+| 1.2    | 19 de maio de 2026  | Danilo Melin | Consolidação da fase 1 do V22                     |
 
 ## Objetivo
 
@@ -15,8 +16,8 @@ segurança operacional e confiabilidade.
 
 ## Status do Ciclo
 
-- Status geral: `PLANEJADO`
-- Data de início: `em aberto`
+- Status geral: `EM ANDAMENTO`
+- Data de início: `19 de maio de 2026`
 - Data de encerramento: `em aberto`
 - Contexto: fechamento da trilha de refinamento antes de considerar uso mais estável em produção
 
@@ -64,9 +65,31 @@ segurança operacional e confiabilidade.
 
 ### Fase 1 - Checklist de produção
 
+Objetivo:
+
 - mapear requisitos mínimos para uso real
 - separar pendência bloqueante de pendência secundária
 - consolidar critérios de aceite do ciclo
+
+Saídas esperadas:
+
+- artefato base do ciclo com checklist de prontidão para produção
+- priorização dos blocos que precisam ser tratados antes de go-live
+
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- artefato base consolidado em
+  `docs/reviews/artifacts/v22/PRODUCTION_READINESS_REVIEW_V22.md`
+- checklist inicial definido para dados, autenticação, regras,
+  observabilidade mínima e operação de deploy
+- pendências priorizadas entre:
+  - bloqueios de segurança ou acesso
+  - dependências explícitas de ambiente de teste
+  - risco operacional de persistência ou erro pouco tratável
+  - ajustes secundários que não impedem avaliação de go-live
+- diretriz de execução definida: atacar primeiro o que pode comprometer
+  uso real, e não o que apenas melhora acabamento técnico
 
 ### Fase 2 - Ajustes e endurecimento
 
@@ -91,3 +114,21 @@ segurança operacional e confiabilidade.
 - pendências críticas identificadas e tratadas
 - autenticação, regras e persistência revisadas
 - decisão documentada sobre prontidão para produção
+
+## Registro de Progresso
+
+- [x] Estrutura inicial do V22 criada
+- [x] Fase 1 concluída
+- [ ] Fase 2 concluída
+- [ ] Fase 3 concluída
+- [ ] Fase 4 concluída
+
+## Próximos Passos do V22
+
+1. executar a fase 2 com foco nos bloqueios reais de produção
+2. revisar autenticação, regras e dependências de contexto de teste
+3. consolidar evidências técnicas antes da validação final do ciclo
+
+## Artefatos da Fase 1
+
+- `docs/reviews/artifacts/v22/PRODUCTION_READINESS_REVIEW_V22.md`
