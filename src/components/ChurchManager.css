@@ -333,3 +333,9 @@
     width: 100%;
   }
 }
+
+@media (max-width: 420px) {
+  .church-list__item .actions-row {
+    grid-template-columns: 1fr;
+  }
+}
