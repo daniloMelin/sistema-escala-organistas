@@ -10,6 +10,7 @@
 | 1.3    | 18 de maio de 2026  | Danilo Melin | Ajustes iniciais de UX mobile no V21     |
 | 1.4    | 18 de maio de 2026  | Danilo Melin | Passada fina no gerador e histórico      |
 | 1.5    | 18 de maio de 2026  | Danilo Melin | Consolidação da fase 2 do V21            |
+| 1.6    | 18 de maio de 2026  | Danilo Melin | Consolidação da fase 3 do V21            |
 
 ## Objetivo
 
@@ -149,9 +150,28 @@ Resultado consolidado:
 
 ### Fase 3 - Cobertura e impacto
 
+Objetivo:
+
 - registrar o que ficou protegido por teste
 - consolidar impacto prático da revisão
 - separar pendência residual de aprovação final
+
+Saídas esperadas:
+
+- documento de impacto do `V21`
+- documento de cobertura do `V21`
+
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- impacto funcional registrado em
+  `docs/reviews/artifacts/v21/MOBILE_UX_IMPACT_V21.md`
+- cobertura consolidada em
+  `docs/reviews/artifacts/v21/MOBILE_UX_COVERAGE_V21.md`
+- proteção organizada por fluxo mobile de gestão, visualização da
+  escala, gerador e histórico
+- risco residual separado entre ergonomia fina de smartphone e
+  diferenças aceitáveis de densidade em relação ao desktop
 
 ### Fase 4 - Fechamento
 
@@ -170,15 +190,20 @@ Resultado consolidado:
 - [x] Estrutura inicial do V21 criada
 - [x] Fase 1 concluída
 - [x] Fase 2 concluída
-- [ ] Fase 3 concluída
+- [x] Fase 3 concluída
 - [ ] Fase 4 concluída
 
 ## Próximos Passos do V21
 
-1. consolidar cobertura e impacto prático dos ajustes mobile do V21
-2. registrar risco residual aceito entre smartphone e desktop
-3. avançar para o fechamento formal do ciclo após a fase 3
+1. encerrar formalmente o ciclo do V21
+2. consolidar resumo executivo, artefatos e impacto prático final
+3. preparar a transição para o próximo ciclo após o fechamento
 
 ## Artefatos da Fase 1 e 2
 
 - `docs/reviews/artifacts/v21/MOBILE_UX_REVIEW_V21.md`
+
+## Artefatos da Fase 3
+
+- `docs/reviews/artifacts/v21/MOBILE_UX_IMPACT_V21.md`
+- `docs/reviews/artifacts/v21/MOBILE_UX_COVERAGE_V21.md`
