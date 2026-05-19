@@ -7,10 +7,8 @@ test.describe('validacoes negativas de igreja', () => {
     await resetE2EState(page, { users: {} });
     await gotoChurchManager(page);
 
-    const textboxes = page.getByRole('textbox');
-    await textboxes.nth(0).fill('AB');
-    await textboxes.nth(1).fill('COD-01');
-    await page.getByRole('button', { name: 'Cadastrar' }).click();
+    await page.getByRole('textbox', { name: 'Nome da Congregação:' }).fill('AB');
+    await page.getByRole('button', { name: 'Cadastrar Igreja' }).click();
 
     await expect(page.getByText('Nome deve ter pelo menos 3 caracteres.')).toBeVisible();
     await expect(page.getByText('AB', { exact: true })).toHaveCount(0);

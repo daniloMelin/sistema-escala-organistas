@@ -44,7 +44,7 @@ test.describe('falhas operacionais controladas', () => {
 
     await expect(loadErrorAlert(page)).toHaveCount(0);
     await expect(page.getByText('Igreja Recuperada')).toBeVisible();
-    await expect(page.getByText('Código: REC')).toBeVisible();
+    await expect(page.getByText('Código: REC')).toHaveCount(0);
   });
 
   test('exibe erro operacional ao tentar salvar organista com falha simulada', async ({ page }) => {
