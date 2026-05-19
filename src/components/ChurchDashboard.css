@@ -188,3 +188,9 @@
     width: 100%;
   }
 }
+
+@media (max-width: 420px) {
+  .organist-list__item .actions-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -10,6 +10,8 @@
 | 1.3    | 18 de maio de 2026  | Danilo Melin | Ajustes iniciais de UX mobile no V21     |
 | 1.4    | 18 de maio de 2026  | Danilo Melin | Passada fina no gerador e histórico      |
 | 1.5    | 18 de maio de 2026  | Danilo Melin | Consolidação da fase 2 do V21            |
+| 1.6    | 18 de maio de 2026  | Danilo Melin | Consolidação da fase 3 do V21            |
+| 1.7    | 18 de maio de 2026  | Danilo Melin | Fechamento formal do ciclo V21           |
 
 ## Objetivo
 
@@ -19,9 +21,9 @@ pequena.
 
 ## Status do Ciclo
 
-- Status geral: `EM ANDAMENTO`
+- Status geral: `CONCLUÍDO`
 - Data de início: `9 de maio de 2026`
-- Data de encerramento: `em aberto`
+- Data de encerramento: `18 de maio de 2026`
 - Contexto: fechamento da experiência de uso em smartphone após ajustes pontuais anteriores
 
 ## Diretriz de Prioridade
@@ -149,14 +151,50 @@ Resultado consolidado:
 
 ### Fase 3 - Cobertura e impacto
 
+Objetivo:
+
 - registrar o que ficou protegido por teste
 - consolidar impacto prático da revisão
 - separar pendência residual de aprovação final
 
+Saídas esperadas:
+
+- documento de impacto do `V21`
+- documento de cobertura do `V21`
+
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- impacto funcional registrado em
+  `docs/reviews/artifacts/v21/MOBILE_UX_IMPACT_V21.md`
+- cobertura consolidada em
+  `docs/reviews/artifacts/v21/MOBILE_UX_COVERAGE_V21.md`
+- proteção organizada por fluxo mobile de gestão, visualização da
+  escala, gerador e histórico
+- risco residual separado entre ergonomia fina de smartphone e
+  diferenças aceitáveis de densidade em relação ao desktop
+
 ### Fase 4 - Fechamento
+
+Objetivo:
 
 - encerrar formalmente o ciclo
 - deixar base pronta para preparação de produção
+
+Saídas esperadas:
+
+- `CODE_REVIEW_V21.md` marcado como concluído
+- recomendações para o próximo ciclo
+
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- ciclo encerrado com consolidação visual e documental da experiência
+  mobile do sistema
+- artefatos de review, impacto e cobertura registrados para consulta
+  futura
+- transição preparada para o `V22`, com foco na preparação final para
+  produção
 
 ## Critérios de Saída Propostos
 
@@ -170,15 +208,53 @@ Resultado consolidado:
 - [x] Estrutura inicial do V21 criada
 - [x] Fase 1 concluída
 - [x] Fase 2 concluída
-- [ ] Fase 3 concluída
-- [ ] Fase 4 concluída
+- [x] Fase 3 concluída
+- [x] Fase 4 concluída
 
 ## Próximos Passos do V21
 
-1. consolidar cobertura e impacto prático dos ajustes mobile do V21
-2. registrar risco residual aceito entre smartphone e desktop
-3. avançar para o fechamento formal do ciclo após a fase 3
+1. iniciar o `V22` com foco na preparação final para produção
+2. usar o `V21` como baseline de experiência mobile para os ajustes
+   finais do sistema
+3. manter separado o que é polimento fino de smartphone do que já está
+   consolidado como ergonomia principal do produto
 
 ## Artefatos da Fase 1 e 2
 
 - `docs/reviews/artifacts/v21/MOBILE_UX_REVIEW_V21.md`
+
+## Artefatos da Fase 3
+
+- `docs/reviews/artifacts/v21/MOBILE_UX_IMPACT_V21.md`
+- `docs/reviews/artifacts/v21/MOBILE_UX_COVERAGE_V21.md`
+
+## Artefatos Consolidados do Ciclo
+
+- `docs/reviews/CODE_REVIEW_V21.md`
+- `docs/reviews/artifacts/v21/MOBILE_UX_REVIEW_V21.md`
+- `docs/reviews/artifacts/v21/MOBILE_UX_IMPACT_V21.md`
+- `docs/reviews/artifacts/v21/MOBILE_UX_COVERAGE_V21.md`
+
+## Resumo Executivo
+
+O `V21` concluiu a consolidação da experiência mobile como camada
+operacional importante do sistema.
+
+O ciclo entregou:
+
+- checklist objetivo de uso em smartphone para as telas principais
+- reorganização responsiva do painel, listas e formulários de gestão
+- refinamento da visualização da escala em largura estreita
+- melhora do fluxo vertical no gerador e no histórico de escalas
+- alinhamento dos testes E2E com o heading atual do painel
+- consolidação de impacto e cobertura dos ajustes mobile
+
+## Impacto Prático no Projeto
+
+Ao final do `V21`, o sistema passou a se comportar de forma mais
+coerente em smartphone, com menos competição entre conteúdo e ações e
+com melhor previsibilidade na navegação dos fluxos principais.
+
+Na prática, o projeto segue para o `V22` com uma base mais estável de
+ergonomia mobile, deixando o próximo ciclo livre para focar na
+preparação final para produção.

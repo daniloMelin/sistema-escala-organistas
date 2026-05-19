@@ -418,8 +418,6 @@
     align-items: flex-start;
   }
 
-  .church-list__item .actions-row,
-  .organist-list__item .actions-row,
   .schedule-grid__toolbar .actions-row {
     grid-template-columns: 1fr;
   }
