@@ -14,7 +14,7 @@ O detalhamento técnico completo de cada ciclo está concentrado em:
 
 - baseline legada inicial: `docs/reviews/CODE_REVIEW.md`
 - trilha canônica de evolução: `V2` até `V22`
-- estado atual do sistema: `Em Refinamento`
+- estado atual do sistema: `Em Preparação Final`
 
 ## Linha do tempo resumida
 
@@ -179,16 +179,21 @@ Documento principal:
 
 - `docs/reviews/CODE_REVIEW_V20.md`
 
-### V21 a V22 - Trilha planejada dos próximos ciclos
+### V21 - Consolidação da experiência mobile
 
-- `V21`
-  - consolidação da experiência mobile
-- `V22`
-  - preparação para produção
+- reorganização responsiva do painel, listas e formulários principais
+- refinamento da visualização da escala em smartphone
+- melhoria do fluxo vertical no gerador e no histórico de escalas
+- consolidação de cobertura e impacto específicos do uso mobile
 
-Documentos principais:
+Documento principal:
 
 - `docs/reviews/CODE_REVIEW_V21.md`
+
+### V22 - Preparação para produção
+
+- fechamento da trilha com foco em prontidão operacional
+- consolidação final antes da etapa de produção
 - `docs/reviews/CODE_REVIEW_V22.md`
 
 ## Como usar este changelog
