@@ -14,7 +14,7 @@ O detalhamento técnico completo de cada ciclo está concentrado em:
 
 - baseline legada inicial: `docs/reviews/CODE_REVIEW.md`
 - trilha canônica de evolução: `V2` até `V22`
-- estado atual do sistema: `Em Preparação Final`
+- estado atual do sistema: `Preparação para Produção Consolidada`
 
 ## Linha do tempo resumida
 
@@ -193,7 +193,11 @@ Documento principal:
 ### V22 - Preparação para produção
 
 - fechamento da trilha com foco em prontidão operacional
-- consolidação final antes da etapa de produção
+- endurecimento da configuração do Firebase e dos serviços principais
+- consolidação de impacto e cobertura da prontidão técnica mínima
+
+Documento principal:
+
 - `docs/reviews/CODE_REVIEW_V22.md`
 
 ## Como usar este changelog
