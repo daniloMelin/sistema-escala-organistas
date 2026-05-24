@@ -27,7 +27,7 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 const ChurchDashboard = lazy(() => import('./components/ChurchDashboard'));
 const ChurchScheduleGenerator = lazy(() => import('./components/ChurchScheduleGenerator'));
 const firestoreReporter = createFirestoreLoggerReporter({
-  getUser: () => auth.currentUser,
+  getUser: () => auth?.currentUser || null,
 });
 
 // Componente de Layout
