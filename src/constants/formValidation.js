@@ -31,7 +31,7 @@ export const FORM_ERROR_MESSAGES = {
   churchNameRequired: 'Nome da igreja é obrigatório.',
   churchNameMin: `Nome deve ter pelo menos ${FORM_LIMITS.churchName.min} caracteres.`,
   churchNameMax: `Nome deve ter no máximo ${FORM_LIMITS.churchName.max} caracteres.`,
-  churchNameInvalid: 'Use apenas letras, números e espaços no nome da igreja.',
+  churchNameInvalid: 'Use apenas letras e espaços no nome da igreja.',
   organistNameRequired: 'Nome da organista é obrigatório.',
   organistNameMin: `Nome deve ter pelo menos ${FORM_LIMITS.organistName.min} caracteres.`,
   organistNameMax: `Nome deve ter no máximo ${FORM_LIMITS.organistName.max} caracteres.`,

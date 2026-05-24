@@ -21,19 +21,32 @@ describe('validation utils', () => {
     test('rejeita caracteres invalidos fora da regra do negocio', () => {
       expect(validateChurchName('Igreja <script>')).toEqual({
         isValid: false,
-        error: 'Use apenas letras, números e espaços no nome da igreja.',
+        error: 'Use apenas letras e espaços no nome da igreja.',
       });
     });
 
     test('rejeita simbolos que caiam no range unicode antigo', () => {
       expect(validateChurchName('Igreja × Central')).toEqual({
         isValid: false,
-        error: 'Use apenas letras, números e espaços no nome da igreja.',
+        error: 'Use apenas letras e espaços no nome da igreja.',
+      });
+    });
+
+    test('rejeita numeros no nome da igreja', () => {
+      expect(validateChurchName('Igreja 2 Central')).toEqual({
+        isValid: false,
+        error: 'Use apenas letras e espaços no nome da igreja.',
       });
     });
 
     test('aceita nome valido', () => {
       expect(validateChurchName('Congregacao Central')).toEqual({
+        isValid: true,
+      });
+    });
+
+    test('aceita nome valido com acentuacao', () => {
+      expect(validateChurchName('Congregação Central')).toEqual({
         isValid: true,
       });
     });

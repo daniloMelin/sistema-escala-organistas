@@ -43,7 +43,7 @@ A expansão do cadastro reforçou a importância de:
 
 | Campo             | Mínimo | Máximo | Regra proposta                                      |
 | ----------------- | ------ | ------ | --------------------------------------------------- |
-| `church.name`     | 3      | 100    | Letras, números, espaços e acentuação               |
+| `church.name`     | 3      | 100    | Letras, espaços e acentuação                        |
 | `organist.name`   | 2      | 40     | Primeiro nome ou nome + sobrenome                   |
 | `rehearsal.notes` | 0      | 120    | Observação opcional, sem necessidade de texto longo |
 | `church.code`     | 0      | 50     | Mantido apenas por compatibilidade legada           |
@@ -71,10 +71,10 @@ A expansão do cadastro reforçou a importância de:
 
 - mínimo de `3` caracteres
 - máximo de `100` caracteres
-- aceitar letras, números, espaços e acentuação
+- aceitar letras, espaços e acentuação
 - bloquear caracteres especiais inadequados
 - mensagem esperada:
-  - `Use apenas letras, números e espaços no nome da igreja.`
+  - `Use apenas letras e espaços no nome da igreja.`
 
 ### `organist.name`
 

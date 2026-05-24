@@ -53,6 +53,20 @@ service cloud.firestore {
       ];
     }
 
+    function isValidChurchName(name) {
+      return name is string
+        && name.size() >= 3
+        && name.size() <= 100
+        && name.matches('^[A-Za-zÀ-ÖØ-öø-ÿ]+( [A-Za-zÀ-ÖØ-öø-ÿ]+)*$');
+    }
+
+    function isValidOrganistName(name) {
+      return name is string
+        && name.size() >= 2
+        && name.size() <= 40
+        && name.matches('^[A-Za-zÀ-ÖØ-öø-ÿ]+( [A-Za-zÀ-ÖØ-öø-ÿ]+)?$');
+    }
+
     function isValidService(svc) {
       return svc is map
         && svc.keys().hasOnly(['id', 'label', 'needs'])
@@ -138,9 +152,7 @@ service cloud.firestore {
     function isValidChurchDoc(data) {
       return data is map
         && data.keys().hasOnly(['name', 'code', 'config', 'cultoModel', 'createdAt', 'rehearsal'])
-        && data.name is string
-        && data.name.size() >= 3
-        && data.name.size() <= 100
+        && isValidChurchName(data.name)
         && optionalString(data, 'code', 50)
         && ('config' in data)
         && isValidChurchConfig(data.config)
@@ -155,9 +167,7 @@ service cloud.firestore {
     function isValidOrganistDoc(data) {
       return data is map
         && data.keys().hasOnly(['name', 'availability', 'createdAt', 'fixedDays', 'blockedDates', 'stats'])
-        && data.name is string
-        && data.name.size() >= 2
-        && data.name.size() <= 40
+        && isValidOrganistName(data.name)
         && ('availability' in data)
         && isValidAvailabilityMap(data.availability)
         && optionalTimestamp(data, 'createdAt')

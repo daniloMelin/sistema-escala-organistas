@@ -244,7 +244,7 @@ describe('useChurchManager', () => {
     });
 
     expect(result.current.fieldErrors.churchName).toBe(
-      'Use apenas letras, números e espaços no nome da igreja.'
+      'Use apenas letras e espaços no nome da igreja.'
     );
   });
 

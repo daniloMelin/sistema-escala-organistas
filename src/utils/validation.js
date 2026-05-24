@@ -5,7 +5,7 @@
 
 import { FORM_ERROR_MESSAGES, FORM_LIMITS } from '../constants/formValidation';
 
-const CHURCH_NAME_PATTERN = /^(?:[\p{L}\p{N}]+(?: [\p{L}\p{N}]+)*)$/u;
+const CHURCH_NAME_PATTERN = /^(?:\p{L}+(?: \p{L}+)*)$/u;
 const ORGANIST_NAME_PATTERN = /^(?:\p{L}+(?: \p{L}+)?)$/u;
 
 const normalizeWhitespace = (value) =>

@@ -80,12 +80,12 @@ Durante os testes funcionais, foi identificado que alguns formulários ainda apr
 
 ### Campos foco de UX no V17
 
-| Campo             | Mínimo | Máximo | Observação                                                |
-| ----------------- | ------ | ------ | --------------------------------------------------------- |
-| `church.name`     | 3      | 100    | Nome principal da igreja, com regra mais flexível         |
-| `organist.name`   | 2      | 40     | Primeiro nome ou nome + sobrenome                         |
-| `rehearsal.notes` | 0      | 120    | Observação opcional do ensaio local                       |
-| `church.code`     | 0      | 50     | Limite legado, com remoção prevista da UI ao longo do V17 |
+| Campo             | Mínimo | Máximo | Observação                                                 |
+| ----------------- | ------ | ------ | ---------------------------------------------------------- |
+| `church.name`     | 3      | 100    | Nome principal da igreja, com letras, espaços e acentuação |
+| `organist.name`   | 2      | 40     | Primeiro nome ou nome + sobrenome                          |
+| `rehearsal.notes` | 0      | 120    | Observação opcional do ensaio local                        |
+| `church.code`     | 0      | 50     | Limite legado, com remoção prevista da UI ao longo do V17  |
 
 ### Campos técnicos documentados, fora do foco principal do ciclo
 
@@ -136,7 +136,7 @@ Os formulários devem seguir este padrão:
 
 Na prática, a decisão de UX do ciclo fica assim:
 
-- `church.name`: limite visível e mensagem específica se houver caracteres inválidos
+- `church.name`: limite visível e mensagem específica, sem aceitar números
 - `organist.name`: limite visível, validação de palavras e bloqueio de caracteres inadequados
 - `rehearsal.notes`: limite de tamanho com comportamento simples e previsível
 - `church.code`: não deve receber novo refinamento de UX, pois sua remoção continua prevista
