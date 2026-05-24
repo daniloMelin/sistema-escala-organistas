@@ -244,8 +244,21 @@ describe('useChurchManager', () => {
     });
 
     expect(result.current.fieldErrors.churchName).toBe(
-      'Use apenas letras, números e espaços no nome da igreja.'
+      'Use apenas letras e espaços no nome da igreja.'
     );
+  });
+
+  test('reinicia formulario com ensaio local sem semana e dia predefinidos', async () => {
+    const { result } = renderHook(() => useChurchManager(user));
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    expect(result.current.rehearsal).toEqual({
+      weekOfMonth: '',
+      weekday: '',
+      time: '',
+      notes: '',
+    });
   });
 
   test('carrega ensaio local ao iniciar edicao da igreja', async () => {

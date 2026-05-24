@@ -11,6 +11,7 @@ import { ALL_WEEK_DAYS, INITIAL_AVAILABILITY, formatAvailability } from '../cons
 import { getVisibleDaysFromConfig } from '../utils/churchCultModel';
 import {
   normalizeComparableString,
+  validateOrganistAvailability,
   validateOrganistName,
   sanitizeString,
 } from '../utils/validation';
@@ -18,6 +19,7 @@ import logger from '../utils/logger';
 
 const INITIAL_FIELD_ERRORS = {
   organistName: '',
+  availability: '',
 };
 
 export const useChurchDashboard = (user) => {
@@ -78,6 +80,9 @@ export const useChurchDashboard = (user) => {
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
     setAvailability((prev) => ({ ...prev, [name]: checked }));
+    if (fieldErrors.availability) {
+      setFieldErrors((prev) => ({ ...prev, availability: '' }));
+    }
   };
 
   const handleStartEdit = (organist) => {
@@ -126,6 +131,7 @@ export const useChurchDashboard = (user) => {
     const validation = validateOrganistName(newOrganistName);
     setFieldErrors({
       organistName: validation.isValid ? '' : validation.error,
+      availability: fieldErrors.availability,
     });
   };
 
@@ -158,6 +164,7 @@ export const useChurchDashboard = (user) => {
     if (!nameValidation.isValid) {
       setFieldErrors({
         organistName: nameValidation.error,
+        availability: '',
       });
       setError('');
       return;
@@ -165,6 +172,16 @@ export const useChurchDashboard = (user) => {
 
     if (!user || !id) {
       setError('Erro de identificação.');
+      return;
+    }
+
+    const availabilityValidation = validateOrganistAvailability(availability, visibleDays);
+    if (!availabilityValidation.isValid) {
+      setFieldErrors({
+        organistName: '',
+        availability: availabilityValidation.error,
+      });
+      setError('');
       return;
     }
 

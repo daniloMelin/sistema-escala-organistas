@@ -25,8 +25,8 @@ export const REHEARSAL_TIME_OPTIONS = Array.from({ length: 65 }, (_, index) => {
   return { value, label: value };
 });
 export const INITIAL_REHEARSAL = {
-  weekOfMonth: '1',
-  weekday: 'thursday',
+  weekOfMonth: '',
+  weekday: '',
   time: '',
   notes: '',
 };

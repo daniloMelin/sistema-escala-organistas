@@ -11,7 +11,7 @@ const buildProps = (overrides = {}) => ({
   newOrganistName: 'Ana',
   isSubmitting: false,
   error: '',
-  fieldErrors: { organistName: '' },
+  fieldErrors: { organistName: '', availability: '' },
   successMessage: '',
   visibleDays,
   availability: { monday: true, sunday_culto: false },
@@ -48,7 +48,10 @@ describe('OrganistForm', () => {
     render(
       <OrganistForm
         {...buildProps({
-          fieldErrors: { organistName: 'Informe somente o primeiro nome ou nome e sobrenome.' },
+          fieldErrors: {
+            organistName: 'Informe somente o primeiro nome ou nome e sobrenome.',
+            availability: '',
+          },
         })}
       />
     );
@@ -62,5 +65,23 @@ describe('OrganistForm', () => {
     render(<OrganistForm {...buildProps()} />);
 
     expect(screen.getByLabelText(/Nome da Organista:/i)).toHaveAttribute('maxlength', '40');
+  });
+
+  test('exibe erro por campo na disponibilidade', () => {
+    render(
+      <OrganistForm
+        {...buildProps({
+          fieldErrors: {
+            organistName: '',
+            availability: 'Selecione pelo menos um dia de disponibilidade da organista.',
+          },
+          availability: { monday: false, sunday_culto: false },
+        })}
+      />
+    );
+
+    expect(
+      screen.getByText('Selecione pelo menos um dia de disponibilidade da organista.')
+    ).toBeInTheDocument();
   });
 });

@@ -5,7 +5,7 @@
 
 import { FORM_ERROR_MESSAGES, FORM_LIMITS } from '../constants/formValidation';
 
-const CHURCH_NAME_PATTERN = /^(?:[\p{L}\p{N}]+(?: [\p{L}\p{N}]+)*)$/u;
+const CHURCH_NAME_PATTERN = /^(?:\p{L}+(?: \p{L}+)*)$/u;
 const ORGANIST_NAME_PATTERN = /^(?:\p{L}+(?: \p{L}+)?)$/u;
 
 const normalizeWhitespace = (value) =>
@@ -68,6 +68,26 @@ export const validateOrganistName = (name) => {
 
   if (!ORGANIST_NAME_PATTERN.test(normalizedName)) {
     return { isValid: false, error: FORM_ERROR_MESSAGES.organistNameInvalid };
+  }
+
+  return { isValid: true };
+};
+
+export const validateOrganistAvailability = (availability, visibleDays) => {
+  if (!Array.isArray(visibleDays) || visibleDays.length === 0) {
+    return {
+      isValid: false,
+      error: FORM_ERROR_MESSAGES.organistAvailabilityUnavailable,
+    };
+  }
+
+  const hasSelectedDay = visibleDays.some((day) => Boolean(availability?.[day.key]));
+
+  if (!hasSelectedDay) {
+    return {
+      isValid: false,
+      error: FORM_ERROR_MESSAGES.organistAvailabilityRequired,
+    };
   }
 
   return { isValid: true };
