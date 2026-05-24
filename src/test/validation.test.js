@@ -1,5 +1,6 @@
 import {
   normalizeComparableString,
+  validateOrganistAvailability,
   validateChurchName,
   validateOrganistName,
   validateChurchCode,
@@ -96,6 +97,39 @@ describe('validation utils', () => {
 
     test('aceita nome e sobrenome com acentuacao', () => {
       expect(validateOrganistName('Ana Júlia')).toEqual({
+        isValid: true,
+      });
+    });
+  });
+
+  describe('validateOrganistAvailability', () => {
+    test('rejeita quando nao ha dias visiveis configurados', () => {
+      expect(validateOrganistAvailability({}, [])).toEqual({
+        isValid: false,
+        error:
+          'Configure os dias de culto da igreja antes de cadastrar a disponibilidade da organista.',
+      });
+    });
+
+    test('rejeita quando nenhum dia foi selecionado', () => {
+      expect(
+        validateOrganistAvailability({ monday: false, sunday_culto: false }, [
+          { key: 'monday', label: 'Segunda' },
+          { key: 'sunday_culto', label: 'Domingo (Culto)' },
+        ])
+      ).toEqual({
+        isValid: false,
+        error: 'Selecione pelo menos um dia de disponibilidade da organista.',
+      });
+    });
+
+    test('aceita quando ao menos um dia visivel esta marcado', () => {
+      expect(
+        validateOrganistAvailability({ monday: true, sunday_culto: false }, [
+          { key: 'monday', label: 'Segunda' },
+          { key: 'sunday_culto', label: 'Domingo (Culto)' },
+        ])
+      ).toEqual({
         isValid: true,
       });
     });

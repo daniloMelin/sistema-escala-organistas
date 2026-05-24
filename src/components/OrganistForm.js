@@ -70,6 +70,9 @@ const OrganistForm = ({
               ))}
             </div>
           )}
+          {fieldErrors.availability && (
+            <p className="church-form__field-error">{fieldErrors.availability}</p>
+          )}
         </div>
 
         <div className="organist-form__actions">
@@ -111,6 +114,7 @@ OrganistForm.propTypes = {
   error: PropTypes.string.isRequired,
   fieldErrors: PropTypes.shape({
     organistName: PropTypes.string.isRequired,
+    availability: PropTypes.string.isRequired,
   }).isRequired,
   successMessage: PropTypes.string.isRequired,
   visibleDays: PropTypes.arrayOf(

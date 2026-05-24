@@ -73,6 +73,26 @@ export const validateOrganistName = (name) => {
   return { isValid: true };
 };
 
+export const validateOrganistAvailability = (availability, visibleDays) => {
+  if (!Array.isArray(visibleDays) || visibleDays.length === 0) {
+    return {
+      isValid: false,
+      error: FORM_ERROR_MESSAGES.organistAvailabilityUnavailable,
+    };
+  }
+
+  const hasSelectedDay = visibleDays.some((day) => Boolean(availability?.[day.key]));
+
+  if (!hasSelectedDay) {
+    return {
+      isValid: false,
+      error: FORM_ERROR_MESSAGES.organistAvailabilityRequired,
+    };
+  }
+
+  return { isValid: true };
+};
+
 /**
  * Valida código da igreja
  * @param {string} code - Código da igreja

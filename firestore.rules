@@ -136,7 +136,18 @@ service cloud.firestore {
         && optionalBool(availability, 'wednesday')
         && optionalBool(availability, 'thursday')
         && optionalBool(availability, 'friday')
-        && optionalBool(availability, 'saturday');
+        && optionalBool(availability, 'saturday')
+        && (
+          availability.sunday == true
+          || availability.sunday_rjm == true
+          || availability.sunday_culto == true
+          || availability.monday == true
+          || availability.tuesday == true
+          || availability.wednesday == true
+          || availability.thursday == true
+          || availability.friday == true
+          || availability.saturday == true
+        );
     }
 
     function isValidUserDoc(data) {

@@ -91,7 +91,7 @@ describe('useChurchDashboard', () => {
     act(() => {
       result.current.setNewOrganistName('  Maria  ');
       result.current.handleCheckboxChange({
-        target: { name: 'friday', checked: true },
+        target: { name: 'tuesday', checked: true },
       });
     });
 
@@ -105,7 +105,7 @@ describe('useChurchDashboard', () => {
       'church-1',
       expect.objectContaining({
         name: 'Maria',
-        availability: expect.objectContaining({ friday: true }),
+        availability: expect.objectContaining({ tuesday: true }),
       })
     );
     expect(result.current.newOrganistName).toBe('');
@@ -120,6 +120,9 @@ describe('useChurchDashboard', () => {
 
     act(() => {
       result.current.setNewOrganistName(' ana ');
+      result.current.handleCheckboxChange({
+        target: { name: 'sunday_culto', checked: true },
+      });
     });
 
     await act(async () => {
@@ -166,6 +169,50 @@ describe('useChurchDashboard', () => {
       'Use apenas letras e espaços no nome da organista.'
     );
     expect(result.current.error).toBe('');
+  });
+
+  test('bloqueia envio sem disponibilidade selecionada', async () => {
+    const { result } = renderHook(() => useChurchDashboard(user));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    act(() => {
+      result.current.setNewOrganistName('Ana Maria');
+    });
+
+    await act(async () => {
+      await result.current.handleSaveOrganist({ preventDefault: jest.fn() });
+    });
+
+    expect(mockAddOrganistToChurch).not.toHaveBeenCalled();
+    expect(result.current.fieldErrors.availability).toBe(
+      'Selecione pelo menos um dia de disponibilidade da organista.'
+    );
+    expect(result.current.error).toBe('');
+  });
+
+  test('limpa erro de disponibilidade ao marcar um dia', async () => {
+    const { result } = renderHook(() => useChurchDashboard(user));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    act(() => {
+      result.current.setNewOrganistName('Ana Maria');
+    });
+
+    await act(async () => {
+      await result.current.handleSaveOrganist({ preventDefault: jest.fn() });
+    });
+
+    expect(result.current.fieldErrors.availability).toBeTruthy();
+
+    act(() => {
+      result.current.handleCheckboxChange({
+        target: { name: 'sunday_culto', checked: true },
+      });
+    });
+
+    expect(result.current.fieldErrors.availability).toBe('');
   });
 
   test('limpa erro por campo ao voltar a digitar', async () => {
@@ -283,6 +330,9 @@ describe('useChurchDashboard', () => {
 
     act(() => {
       result.current.handleOrganistNameChange('Maria');
+      result.current.handleCheckboxChange({
+        target: { name: 'sunday_culto', checked: true },
+      });
     });
 
     await act(async () => {
@@ -301,6 +351,9 @@ describe('useChurchDashboard', () => {
 
     act(() => {
       result.current.handleOrganistNameChange('Maria');
+      result.current.handleCheckboxChange({
+        target: { name: 'sunday_culto', checked: true },
+      });
     });
 
     await act(async () => {
