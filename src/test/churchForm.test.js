@@ -95,6 +95,15 @@ describe('ChurchForm', () => {
     expect(props.onRehearsalChange).toHaveBeenCalledWith('notes', 'Culto começa às 19:00.');
   });
 
+  test('inicia o ensaio local sem semana e dia preselecionados', () => {
+    render(<ChurchForm {...buildProps({ rehearsal: INITIAL_REHEARSAL })} />);
+
+    expect(screen.getByLabelText(/Semana do mês:/i)).toHaveValue('');
+    expect(screen.getByLabelText(/Dia da semana:/i)).toHaveValue('');
+    expect(screen.getByRole('option', { name: 'Selecione a semana' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Selecione o dia' })).toBeInTheDocument();
+  });
+
   test('exibe erros por campo nos inputs e selects do ensaio', () => {
     render(
       <ChurchForm

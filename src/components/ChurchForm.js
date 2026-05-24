@@ -112,6 +112,7 @@ const ChurchForm = ({
                 onBlur={() => onRehearsalBlur('weekOfMonth')}
                 className={getSelectClassName(Boolean(fieldErrors.rehearsalWeekOfMonth))}
               >
+                <option value="">Selecione a semana</option>
                 {REHEARSAL_WEEK_OPTIONS.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
@@ -134,6 +135,7 @@ const ChurchForm = ({
                 onBlur={() => onRehearsalBlur('weekday')}
                 className={getSelectClassName(Boolean(fieldErrors.rehearsalWeekday))}
               >
+                <option value="">Selecione o dia</option>
                 {REHEARSAL_WEEKDAY_OPTIONS.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}

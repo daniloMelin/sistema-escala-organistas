@@ -248,6 +248,19 @@ describe('useChurchManager', () => {
     );
   });
 
+  test('reinicia formulario com ensaio local sem semana e dia predefinidos', async () => {
+    const { result } = renderHook(() => useChurchManager(user));
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    expect(result.current.rehearsal).toEqual({
+      weekOfMonth: '',
+      weekday: '',
+      time: '',
+      notes: '',
+    });
+  });
+
   test('carrega ensaio local ao iniciar edicao da igreja', async () => {
     mockGetChurches.mockResolvedValue([
       {
