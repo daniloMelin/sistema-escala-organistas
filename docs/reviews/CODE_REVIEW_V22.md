@@ -9,6 +9,7 @@
 | 1.2    | 19 de maio de 2026  | Danilo Melin | Consolidação da fase 1 do V22                     |
 | 1.3    | 24 de maio de 2026  | Danilo Melin | Endurecimento inicial de configuração e serviços  |
 | 1.4    | 24 de maio de 2026  | Danilo Melin | Consolidação da fase 2 do V22                     |
+| 1.5    | 24 de maio de 2026  | Danilo Melin | Consolidação da fase 3 do V22                     |
 
 ## Objetivo
 
@@ -145,9 +146,35 @@ Resultado consolidado:
 
 ### Fase 3 - Validação final
 
+Objetivo:
+
 - consolidar evidências técnicas do ciclo
 - registrar riscos aceitos e mitigados
 - preparar recomendação de go-live ou de novo ciclo
+
+Saídas esperadas:
+
+- artefatos de impacto e cobertura da preparação para produção
+- recomendação explícita sobre prontidão técnica mínima do sistema
+
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- impactos e evidências registrados em:
+  - `docs/reviews/artifacts/v22/PRODUCTION_READINESS_IMPACT_V22.md`
+  - `docs/reviews/artifacts/v22/PRODUCTION_READINESS_COVERAGE_V22.md`
+- o ciclo consolidou que o maior ganho do `V22` foi trocar falhas opacas
+  de inicialização e acesso a serviços por bloqueios explícitos e
+  tratáveis antes do uso normal da aplicação
+- a cobertura criada protege o caminho de configuração obrigatória do
+  Firebase e a reação dos serviços principais quando o ambiente não está
+  pronto para uso real
+- o risco residual aceito deixa de ser técnico imediato e passa a ser de
+  decisão operacional de go-live, especialmente na conferência final de
+  credenciais, regras e rotina de publicação
+- a recomendação desta fase é considerar o sistema tecnicamente mais
+  pronto para produção do que no início do ciclo, com fechamento formal
+  ainda dependente da consolidação da fase 4
 
 ### Fase 4 - Fechamento
 
@@ -166,17 +193,21 @@ Resultado consolidado:
 - [x] Estrutura inicial do V22 criada
 - [x] Fase 1 concluída
 - [x] Fase 2 concluída
-- [ ] Fase 3 concluída
+- [x] Fase 3 concluída
 - [ ] Fase 4 concluída
 
 ## Próximos Passos do V22
 
-1. consolidar evidências técnicas e risco residual da preparação para
-   produção
-2. registrar o que ainda depende de validação manual ou decisão de
-   go-live
-3. avançar para a fase 3 com recomendação clara de prontidão
+1. encerrar formalmente o ciclo com decisão clara sobre prontidão
+   mínima para produção
+2. registrar no fechamento o risco residual aceito para operação real
+3. consolidar baseline documental antes de qualquer go-live mais amplo
 
 ## Artefatos da Fase 1
 
 - `docs/reviews/artifacts/v22/PRODUCTION_READINESS_REVIEW_V22.md`
+
+## Artefatos da Fase 3
+
+- `docs/reviews/artifacts/v22/PRODUCTION_READINESS_IMPACT_V22.md`
+- `docs/reviews/artifacts/v22/PRODUCTION_READINESS_COVERAGE_V22.md`

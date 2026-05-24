@@ -175,6 +175,36 @@ Itens trabalhados:
 - o ciclo ainda precisa consolidar, na fase 3, o que é bloqueio
   residual e o que já pode ser aceito como risco controlado
 
+## Consolidação da fase 3
+
+### Evidências técnicas consolidadas
+
+Os artefatos complementares da fase 3 deixam explícito que o `V22`
+fortaleceu principalmente a borda entre configuração de ambiente e uso
+normal da aplicação.
+
+Evidências consolidadas:
+
+- a inicialização do sistema agora depende de configuração obrigatória
+  validada antes do fluxo normal
+- serviços principais falham de forma controlada quando o ambiente está
+  incompleto fora do `E2E`
+- autenticação e reporter de logs deixaram de assumir infraestrutura
+  disponível em todos os cenários
+
+### Recomendação técnica desta fase
+
+Do ponto de vista técnico, o sistema está mais preparado para avaliação
+de go-live do que no início do ciclo.
+
+Recomendação:
+
+- seguir para fechamento formal do `V22`
+- manter como decisão final de produção a conferência manual de
+  credenciais, regras e processo de publicação
+- tratar o risco residual restante como operacional, não como falha
+  estrutural nova descoberta neste ciclo
+
 ## Resultado esperado do ciclo
 
 Ao final do `V22`, o projeto deve ter uma decisão mais objetiva sobre
