@@ -8,6 +8,7 @@
 | 1.1    | 25 de abril de 2026 | Danilo Melin | Estruturação do ciclo de preparação para produção |
 | 1.2    | 19 de maio de 2026  | Danilo Melin | Consolidação da fase 1 do V22                     |
 | 1.3    | 24 de maio de 2026  | Danilo Melin | Endurecimento inicial de configuração e serviços  |
+| 1.4    | 24 de maio de 2026  | Danilo Melin | Consolidação da fase 2 do V22                     |
 
 ## Objetivo
 
@@ -127,16 +128,20 @@ Execução inicial:
   - `npm run format:check`
   - `npm run build`
 
-Resultado parcial:
+Resultado consolidado:
 
-- Status: `EM ANDAMENTO`
+- Status: `CONCLUÍDO`
 - risco de iniciar a aplicação com configuração inválida do Firebase foi
   reduzido de forma explícita
 - serviços principais deixaram de assumir `db/auth` válidos
   silenciosamente fora do `E2E`
 - build de produção segue íntegra após o endurecimento inicial
-- próximos blocos da fase 2 devem revisar autenticação real, regras e
-  dependências residuais de contexto de teste
+- reporter passou a tratar ausência de `auth` de forma segura no fluxo
+  de produção
+- revisão da fase não identificou dependência indevida de `.env.local`
+  no repositório nem bypass de `E2E` fora do host e porta controlados
+- o bloco foi consolidado com foco em prontidão de configuração e
+  comportamento mínimo seguro antes do login
 
 ### Fase 3 - Validação final
 
@@ -160,15 +165,17 @@ Resultado parcial:
 
 - [x] Estrutura inicial do V22 criada
 - [x] Fase 1 concluída
-- [ ] Fase 2 concluída
+- [x] Fase 2 concluída
 - [ ] Fase 3 concluída
 - [ ] Fase 4 concluída
 
 ## Próximos Passos do V22
 
-1. executar a fase 2 com foco nos bloqueios reais de produção
-2. revisar autenticação, regras e dependências de contexto de teste
-3. consolidar evidências técnicas antes da validação final do ciclo
+1. consolidar evidências técnicas e risco residual da preparação para
+   produção
+2. registrar o que ainda depende de validação manual ou decisão de
+   go-live
+3. avançar para a fase 3 com recomendação clara de prontidão
 
 ## Artefatos da Fase 1
 

@@ -142,13 +142,19 @@ Itens trabalhados:
 - reporter de logs ajustado para não tentar publicar quando o Firestore
   não está inicializado
 
-### Resultado parcial
+### Resultado consolidado
 
 - a aplicação passa a falhar de forma explicável em vez de degradar
   silenciosamente com configuração ausente
 - o caminho de produção fica menos dependente de comportamento implícito
   do SDK
 - o risco de erro operacional opaco antes do login foi reduzido
+- o reporter não depende mais de `auth` disponível para decidir se deve
+  publicar logs
+- o modo `E2E` segue confinado ao host e porta controlados pelo fluxo de
+  testes
+- não foi identificado versionamento indevido de `.env.local` no
+  repositório
 
 ### Validação executada
 
@@ -159,6 +165,15 @@ Itens trabalhados:
 - `npm run lint -- --max-warnings=0`
 - `npm run format:check`
 - `npm run build`
+
+## Risco residual aceito após a fase 2
+
+- a prontidão de produção ainda depende de validação final de go-live,
+  não apenas de endurecimento técnico local
+- regras do Firestore estão coerentes com o modelo atual, mas a decisão
+  final de produção ainda pede leitura conjunta com operação real
+- o ciclo ainda precisa consolidar, na fase 3, o que é bloqueio
+  residual e o que já pode ser aceito como risco controlado
 
 ## Resultado esperado do ciclo
 
