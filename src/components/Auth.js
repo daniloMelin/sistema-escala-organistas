@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { auth, db } from '../firebaseConfig';
+import { auth, db, firebaseConfigError, isFirebaseReady } from '../firebaseConfig';
 import { doc, setDoc, Timestamp } from 'firebase/firestore';
 
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
@@ -16,6 +16,12 @@ const Auth = ({ onAuthSuccess, onE2ELogin }) => {
 
   const handleGoogleSignIn = async () => {
     setError('');
+
+    if (!isFirebaseReady || !auth || !db) {
+      setError(firebaseConfigError || 'Configuração do Firebase incompleta.');
+      return;
+    }
+
     setIsLoading(true);
     const provider = new GoogleAuthProvider();
 
