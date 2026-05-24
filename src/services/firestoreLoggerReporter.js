@@ -66,6 +66,7 @@ const shouldSkipByDedup = (entry) => {
 export const createFirestoreLoggerReporter = ({ getUser } = {}) => {
   return async (entry) => {
     if (process.env.NODE_ENV !== 'production') return;
+    if (!db) return;
     if (!REPORTABLE_LEVELS.has(entry.level)) return;
     if (shouldSkipByDedup(entry)) return;
 

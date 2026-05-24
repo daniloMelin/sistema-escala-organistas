@@ -117,6 +117,49 @@ Sinais de reprovação:
 4. manter foco em prontidão operacional, não em abrir novo ciclo de
    refinamento amplo
 
+## Execução inicial da fase 2
+
+### Escopo revisado
+
+O primeiro bloco executado no `V22` priorizou um risco direto de
+produção: inicialização do app e acesso aos serviços com configuração
+incompleta do Firebase.
+
+Itens trabalhados:
+
+- validação completa de configuração do Firebase
+- bloqueio explícito da aplicação quando a configuração está incompleta
+- endurecimento do `firebaseService`, `Auth` e reporter de logs
+
+### Ajustes aplicados
+
+- extração de utilitário de verificação de configuração obrigatória
+- exportação de estado de prontidão do Firebase para consumo da app
+- guarda explícita na `App` para evitar fluxo normal sem configuração
+  válida
+- falha controlada no `firebaseService` quando `db` não está pronto fora
+  do `E2E`
+- reporter de logs ajustado para não tentar publicar quando o Firestore
+  não está inicializado
+
+### Resultado parcial
+
+- a aplicação passa a falhar de forma explicável em vez de degradar
+  silenciosamente com configuração ausente
+- o caminho de produção fica menos dependente de comportamento implícito
+  do SDK
+- o risco de erro operacional opaco antes do login foi reduzido
+
+### Validação executada
+
+- `npm test -- --runTestsByPath src/test/firebaseRuntimeConfig.test.js`
+  `src/test/firebaseServiceReadiness.test.js`
+  `src/test/useChurchManager.test.js src/test/useChurchDashboard.test.js`
+  `src/test/useChurchScheduleGenerator.test.js --watchAll=false`
+- `npm run lint -- --max-warnings=0`
+- `npm run format:check`
+- `npm run build`
+
 ## Resultado esperado do ciclo
 
 Ao final do `V22`, o projeto deve ter uma decisão mais objetiva sobre

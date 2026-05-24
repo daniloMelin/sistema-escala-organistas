@@ -20,7 +20,7 @@ import {
 
 // Contexto e Autenticação
 import { ChurchProvider } from './contexts/ChurchContext';
-import { auth } from './firebaseConfig';
+import { auth, firebaseConfigError, isFirebaseReady } from './firebaseConfig';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 // Lazy loading para componentes grandes
@@ -116,6 +116,11 @@ function App() {
       return undefined;
     }
 
+    if (!isFirebaseReady || !auth) {
+      setIsLoading(false);
+      return undefined;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setIsLoading(false);
@@ -127,6 +132,18 @@ function App() {
     return <div className="app-loading">Carregando...</div>;
   }
 
+  if (!isE2EMode && !isFirebaseReady) {
+    return (
+      <div className="app-center-block">
+        <h2>Configuração pendente</h2>
+        <p>{firebaseConfigError}</p>
+        <p className="muted-text">
+          Revise as variáveis de ambiente do Firebase antes de usar o sistema em produção.
+        </p>
+      </div>
+    );
+  }
+
   const handleLogout = async () => {
     if (isE2EMode) {
       clearE2ESession();
@@ -134,7 +151,9 @@ function App() {
       return;
     }
 
-    await signOut(auth);
+    if (auth) {
+      await signOut(auth);
+    }
   };
 
   const handleE2ELogin = () => {

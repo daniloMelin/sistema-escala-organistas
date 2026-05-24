@@ -7,6 +7,7 @@
 | 1.0    | 25 de abril de 2026 | Danilo Melin | Criação do ciclo V22                              |
 | 1.1    | 25 de abril de 2026 | Danilo Melin | Estruturação do ciclo de preparação para produção |
 | 1.2    | 19 de maio de 2026  | Danilo Melin | Consolidação da fase 1 do V22                     |
+| 1.3    | 24 de maio de 2026  | Danilo Melin | Endurecimento inicial de configuração e serviços  |
 
 ## Objetivo
 
@@ -93,9 +94,49 @@ Resultado consolidado:
 
 ### Fase 2 - Ajustes e endurecimento
 
+Objetivo:
+
 - corrigir o que for crítico para produção
 - revisar persistência, autenticação e regras
 - reduzir dependências de contexto de teste
+
+Saídas esperadas:
+
+- ajustes rastreáveis nos pontos que impedem uso real com segurança
+- validação técnica dos blocos endurecidos para produção
+
+Execução inicial:
+
+- configuração do Firebase passou a validar todos os campos obrigatórios
+  antes da inicialização fora do modo `E2E`
+- a aplicação passou a bloquear a navegação principal com mensagem
+  explícita quando a configuração do Firebase está incompleta
+- `Auth`, `firebaseService` e o reporter do Firestore passaram a tratar
+  ausência de configuração válida de forma controlada, sem depender de
+  runtime opaco
+- cobertura adicionada para:
+  - utilitário de prontidão de configuração do Firebase
+  - falha explícita do `firebaseService` quando a configuração está
+    incompleta
+- validações executadas neste bloco:
+  - `npm test -- --runTestsByPath src/test/firebaseRuntimeConfig.test.js`
+    `src/test/firebaseServiceReadiness.test.js`
+    `src/test/useChurchManager.test.js src/test/useChurchDashboard.test.js`
+    `src/test/useChurchScheduleGenerator.test.js --watchAll=false`
+  - `npm run lint -- --max-warnings=0`
+  - `npm run format:check`
+  - `npm run build`
+
+Resultado parcial:
+
+- Status: `EM ANDAMENTO`
+- risco de iniciar a aplicação com configuração inválida do Firebase foi
+  reduzido de forma explícita
+- serviços principais deixaram de assumir `db/auth` válidos
+  silenciosamente fora do `E2E`
+- build de produção segue íntegra após o endurecimento inicial
+- próximos blocos da fase 2 devem revisar autenticação real, regras e
+  dependências residuais de contexto de teste
 
 ### Fase 3 - Validação final
 

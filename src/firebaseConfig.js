@@ -3,6 +3,11 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import logger from './utils/logger';
 import { isE2EMode } from './utils/e2eMode';
+import {
+  getFirebaseConfigErrorMessage,
+  getMissingFirebaseConfigKeys,
+  hasCompleteFirebaseConfig,
+} from './utils/firebaseRuntimeConfig';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -22,23 +27,34 @@ const fallbackE2EConfig = {
   appId: '1:000000000000:web:e2eapp',
 };
 
-const effectiveFirebaseConfig =
-  isE2EMode && (!firebaseConfig.apiKey || !firebaseConfig.projectId)
-    ? fallbackE2EConfig
-    : firebaseConfig;
+const missingFirebaseConfigKeys = getMissingFirebaseConfigKeys(firebaseConfig);
+const hasRequiredFirebaseConfig = hasCompleteFirebaseConfig(firebaseConfig);
+const shouldUseE2EFallback = isE2EMode && !hasRequiredFirebaseConfig;
+const effectiveFirebaseConfig = shouldUseE2EFallback ? fallbackE2EConfig : firebaseConfig;
+export const isFirebaseReady = hasRequiredFirebaseConfig || shouldUseE2EFallback;
+export const firebaseConfigError = hasRequiredFirebaseConfig
+  ? ''
+  : getFirebaseConfigErrorMessage(missingFirebaseConfigKeys);
 
 // Validação básica
-if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
-  if (isE2EMode) {
+if (!hasRequiredFirebaseConfig) {
+  if (shouldUseE2EFallback) {
     logger.warn(
       'Configuração do Firebase ausente no modo E2E. Usando configuração dummy para bootstrap local.'
     );
   } else {
-    logger.error('Configuração do Firebase incompleta. Verifique as variáveis de ambiente.');
+    logger.error(firebaseConfigError);
   }
 }
 
-// Inicializa e exporta os serviços do Firebase
-export const app = initializeApp(effectiveFirebaseConfig);
-export const db = getFirestore(app);
-export const auth = getAuth(app);
+let app = null;
+let db = null;
+let auth = null;
+
+if (isFirebaseReady) {
+  app = initializeApp(effectiveFirebaseConfig);
+  db = getFirestore(app);
+  auth = getAuth(app);
+}
+
+export { app, db, auth };
