@@ -80,9 +80,7 @@ describe('ChurchList', () => {
     expect(
       screen.getByText((_, element) => element?.textContent === 'Organistas: 7')
     ).toBeInTheDocument();
-    expect(
-      screen.getByText((_, element) => element?.textContent === 'Escalas: 3')
-    ).toBeInTheDocument();
+    expect(screen.queryByText(/Escalas:/i)).not.toBeInTheDocument();
     expect(
       screen.getByText(
         (_, element) => element?.textContent === 'Ensaio local: 1 quinta-feira do mês às 19:30'

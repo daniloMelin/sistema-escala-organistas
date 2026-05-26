@@ -63,9 +63,6 @@ const ChurchList = ({
                       <span className="church-list__summary-item">
                         <strong>Organistas:</strong> {church.operationalSummary.organistCount}
                       </span>
-                      <span className="church-list__summary-item">
-                        <strong>Escalas:</strong> {church.operationalSummary.scheduleCount}
-                      </span>
                       {rehearsalSummary && (
                         <span className="church-list__summary-item church-list__summary-item--rehearsal">
                           <strong>Ensaio local:</strong> {rehearsalSummary}
