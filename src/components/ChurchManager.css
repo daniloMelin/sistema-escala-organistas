@@ -248,7 +248,7 @@
 
 .church-list__actions {
   flex: 0 0 auto;
-  align-self: flex-start;
+  align-self: flex-end;
   align-items: flex-start;
 }
 
