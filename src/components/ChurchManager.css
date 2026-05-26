@@ -248,7 +248,8 @@
 
 .church-list__actions {
   flex: 0 0 auto;
-  align-self: stretch;
+  align-self: flex-start;
+  align-items: flex-start;
 }
 
 @media (max-width: 640px) {
