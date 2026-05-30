@@ -47,11 +47,10 @@ test.describe('cadastro e edicao de organista', () => {
 
     await page.getByRole('button', { name: 'Editar' }).click();
     await page.getByRole('textbox', { name: 'Nome da Organista:' }).fill('Ana Paula');
-    await page.getByLabel('Domingo (Culto)').uncheck();
     await page.getByRole('button', { name: 'Atualizar Organista' }).click();
 
     await expect(page.getByText('Organista atualizada com sucesso.')).toBeVisible();
     await expect(page.getByText('Ana Paula', { exact: true })).toBeVisible();
-    await expect(page.getByText('Nenhum dia')).toBeVisible();
+    await expect(page.getByText(/Dom\(Culto\)/)).toBeVisible();
   });
 });

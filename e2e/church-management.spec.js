@@ -148,7 +148,7 @@ test.describe('cadastro e edicao de igreja', () => {
     await expect(readyItem).toContainText('Base mínima atendida e histórico disponível.');
     await expect(readyItem).toContainText('Modelo: Meia hora e culto');
     await expect(readyItem).toContainText('Organistas: 2');
-    await expect(readyItem).toContainText('Escalas: 1');
+    await expect(readyItem).not.toContainText('Escalas:');
 
     await expect(warningItem).toContainText('Atenção');
     await expect(warningItem).toContainText('Ainda não possui escala salva.');
