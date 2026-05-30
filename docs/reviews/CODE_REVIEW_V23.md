@@ -8,6 +8,7 @@
 | 1.1    | 30 de maio de 2026 | Danilo Melin | Estruturação do ciclo de performance percebida |
 | 1.2    | 30 de maio de 2026 | Danilo Melin | Consolidação da fase 1 do V23                  |
 | 1.3    | 30 de maio de 2026 | Danilo Melin | Execução inicial da fase 2 do V23              |
+| 1.4    | 30 de maio de 2026 | Danilo Melin | Ampliação da fase 2 no fluxo de escala         |
 
 ## Objetivo
 
@@ -130,6 +131,11 @@ Execução inicial:
   estado carregado
 - shell das telas autenticadas recebeu alturas mínimas e bloco de
   ensaio local em placeholder para reduzir `CLS` do dashboard
+- bootstrap da aplicação passou a usar fallback visual estável em vez
+  de texto seco de carregamento
+- rotas lazy principais passaram a ser pré-carregadas após autenticação
+- gerador de escala passou a carregar igreja, organistas e histórico em
+  paralelo, com fallback visual mais estável no histórico e no cabeçalho
 
 ### Fase 3 - Cobertura e impacto
 

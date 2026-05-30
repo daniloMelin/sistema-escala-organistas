@@ -67,6 +67,7 @@ describe('useChurchScheduleGenerator', () => {
     const { result } = renderHook(() => useChurchScheduleGenerator(user, selectedChurch));
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
+    expect(result.current.church).toEqual(expect.objectContaining({ config: churchConfig }));
 
     act(() => {
       result.current.setStartDate('2026-04-01');

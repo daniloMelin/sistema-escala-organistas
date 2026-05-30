@@ -333,6 +333,12 @@ Frentes trabalhadas:
   `selectedChurch` no contexto
 - placeholders simples e alturas mínimas para reduzir deslocamento
   visual nas telas autenticadas
+- fallback de bootstrap e `Suspense` alinhado ao shell real da aplicação
+- pré-carregamento de dashboard e gerador após autenticação
+- carregamento paralelo de igreja, organistas e histórico no gerador de
+  escala
+- placeholders também no histórico de escalas, evitando estado vazio
+  falso durante hidratação
 
 Leitura:
 
