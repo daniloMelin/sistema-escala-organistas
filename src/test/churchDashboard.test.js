@@ -13,7 +13,14 @@ jest.mock(
 
 jest.mock('../contexts/ChurchContext', () => ({
   useChurch: () => ({
-    selectedChurch: {
+    selectedChurch: null,
+  }),
+}));
+
+jest.mock('../hooks/useChurchDashboard', () => ({
+  useChurchDashboard: () => ({
+    id: 'church-1',
+    church: {
       name: 'Jardim Satélite',
       rehearsal: {
         weekOfMonth: 1,
@@ -22,12 +29,6 @@ jest.mock('../contexts/ChurchContext', () => ({
         notes: 'Chegar 15 minutos antes.',
       },
     },
-  }),
-}));
-
-jest.mock('../hooks/useChurchDashboard', () => ({
-  useChurchDashboard: () => ({
-    id: 'church-1',
     organists: [],
     loading: false,
     visibleDays: [],

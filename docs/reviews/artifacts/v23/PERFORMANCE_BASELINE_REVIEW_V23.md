@@ -318,3 +318,26 @@ Auth`
 
 A recomendação desta fase é seguir para implementação com foco no shell
 autenticado antes de qualquer rodada nova de micro-otimização.
+
+## Execução inicial da fase 2
+
+O primeiro bloco implementado no `V23` atacou o shell autenticado, onde
+o baseline mostrou a maior perda de score.
+
+Frentes trabalhadas:
+
+- renderização mais cedo da lista de igrejas, antes do resumo
+  operacional completo
+- carregamento paralelo de igreja e organistas no dashboard
+- fallback real do dashboard para acessos diretos sem
+  `selectedChurch` no contexto
+- placeholders simples e alturas mínimas para reduzir deslocamento
+  visual nas telas autenticadas
+
+Leitura:
+
+- esse bloco não resolve sozinho o `V23`, mas reduz exatamente a fase
+  em que a tela sai de quase vazia para completa
+- o próximo passo natural continua sendo medir se a queda de `CLS` e
+  melhoria de `LCP` justificam uma segunda passada ainda no shell antes
+  de entrar no trabalho de bundle do `V24`

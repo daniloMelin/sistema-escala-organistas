@@ -58,6 +58,13 @@ describe('useChurchDashboard', () => {
     expect(mockGetOrganistsByChurch).toHaveBeenCalledWith('user-1', 'church-1');
     expect(mockGetChurch).toHaveBeenCalledWith('user-1', 'church-1');
     expect(result.current.organists).toHaveLength(1);
+    expect(result.current.church).toEqual(
+      expect.objectContaining({
+        config: expect.objectContaining({
+          sunday: expect.any(Array),
+        }),
+      })
+    );
     expect(result.current.visibleDays.map((d) => d.key)).toEqual(
       expect.arrayContaining(['sunday_rjm', 'sunday_culto', 'tuesday'])
     );

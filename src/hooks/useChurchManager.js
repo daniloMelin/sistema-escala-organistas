@@ -135,6 +135,8 @@ export const useChurchManager = (user) => {
       const userChurches = await getChurches(user.uid);
       if (!isMountedRef.current) return;
 
+      setChurches(sortChurchesByOperationalPriority(userChurches.map(buildFallbackChurchSummary)));
+
       const churchesWithSummary = await Promise.all(
         userChurches.map(async (church) => {
           try {

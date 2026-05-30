@@ -7,6 +7,7 @@
 | 1.0    | 30 de maio de 2026 | Danilo Melin | Criação do ciclo V23                           |
 | 1.1    | 30 de maio de 2026 | Danilo Melin | Estruturação do ciclo de performance percebida |
 | 1.2    | 30 de maio de 2026 | Danilo Melin | Consolidação da fase 1 do V23                  |
+| 1.3    | 30 de maio de 2026 | Danilo Melin | Execução inicial da fase 2 do V23              |
 
 ## Objetivo
 
@@ -115,6 +116,20 @@ Saídas esperadas:
 
 - ajustes rastreáveis no shell autenticado e no carregamento por rota
 - validação focal das telas com pior baseline
+
+Execução inicial:
+
+- lista de igrejas passou a renderizar a base de igrejas antes do
+  enriquecimento completo do resumo operacional, reduzindo o tempo até a
+  primeira leitura útil da tela
+- dashboard passou a carregar dados da igreja em paralelo aos dados das
+  organistas, deixando de depender apenas de `selectedChurch` em
+  acessos diretos por rota
+- listas de igrejas e organistas ganharam placeholders de carregamento
+  com altura estável para reduzir o salto visual entre estado vazio e
+  estado carregado
+- shell das telas autenticadas recebeu alturas mínimas e bloco de
+  ensaio local em placeholder para reduzir `CLS` do dashboard
 
 ### Fase 3 - Cobertura e impacto
 

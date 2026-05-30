@@ -25,6 +25,7 @@ const INITIAL_FIELD_ERRORS = {
 export const useChurchDashboard = (user) => {
   const { id } = useParams();
 
+  const [church, setChurch] = useState(null);
   const [organists, setOrganists] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visibleDays, setVisibleDays] = useState([]);
@@ -52,12 +53,15 @@ export const useChurchDashboard = (user) => {
       setError('');
     }
     try {
-      const orgsData = await getOrganistsByChurch(user.uid, id);
+      const [orgsData, churchData] = await Promise.all([
+        getOrganistsByChurch(user.uid, id),
+        getChurch(user.uid, id),
+      ]);
       if (!isMountedRef.current) return;
-      setOrganists(orgsData);
 
-      const churchData = await getChurch(user.uid, id);
-      if (!isMountedRef.current) return;
+      setOrganists(orgsData);
+      setChurch(churchData || null);
+
       if (churchData && churchData.config) {
         setVisibleDays(getVisibleDaysFromConfig(churchData.config, ALL_WEEK_DAYS));
       } else {
@@ -252,6 +256,7 @@ export const useChurchDashboard = (user) => {
 
   return {
     id,
+    church,
     organists,
     loading,
     visibleDays,
