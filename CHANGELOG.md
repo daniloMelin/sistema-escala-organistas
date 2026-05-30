@@ -7,14 +7,14 @@ projeto.
 
 O detalhamento técnico completo de cada ciclo está concentrado em:
 
-- `docs/reviews/CODE_REVIEW_V2.md` até `docs/reviews/CODE_REVIEW_V22.md`
+- `docs/reviews/CODE_REVIEW_V2.md` até `docs/reviews/CODE_REVIEW_V23.md`
 - `docs/reviews/artifacts/`
 
 ## Status atual da documentação
 
 - baseline legada inicial: `docs/reviews/CODE_REVIEW.md`
-- trilha canônica de evolução: `V2` até `V22`
-- estado atual do sistema: `Preparação para Produção Consolidada`
+- trilha canônica de evolução: `V2` até `V23`
+- estado atual do sistema: `Qualidade percebida e performance em revisão`
 
 ## Linha do tempo resumida
 
@@ -199,6 +199,19 @@ Documento principal:
 Documento principal:
 
 - `docs/reviews/CODE_REVIEW_V22.md`
+
+### V23 - Performance percebida e baseline de Lighthouse
+
+- abertura do primeiro ciclo pós-produção com foco em performance
+  percebida
+- consolidação de baseline mobile em produção para home, lista de
+  igrejas e dashboard
+- priorização do trabalho em `CLS`, `LCP`, bundle inicial, contraste e
+  higiene de publicação
+
+Documento principal:
+
+- `docs/reviews/CODE_REVIEW_V23.md`
 
 ## Como usar este changelog
 
