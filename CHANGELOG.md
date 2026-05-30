@@ -7,13 +7,13 @@ projeto.
 
 O detalhamento técnico completo de cada ciclo está concentrado em:
 
-- `docs/reviews/CODE_REVIEW_V2.md` até `docs/reviews/CODE_REVIEW_V23.md`
+- `docs/reviews/CODE_REVIEW_V2.md` até `docs/reviews/CODE_REVIEW_V25.md`
 - `docs/reviews/artifacts/`
 
 ## Status atual da documentação
 
 - baseline legada inicial: `docs/reviews/CODE_REVIEW.md`
-- trilha canônica de evolução: `V2` até `V23`
+- trilha canônica de evolução: `V2` até `V25`
 - estado atual do sistema: `Qualidade percebida e performance em revisão`
 
 ## Linha do tempo resumida
@@ -212,6 +212,20 @@ Documento principal:
 Documento principal:
 
 - `docs/reviews/CODE_REVIEW_V23.md`
+
+### V24 e V25 - Trilha planejada de Lighthouse
+
+- `V24`
+  - foco em corte de bundle inicial e lazy loading
+  - revisão da rota crítica e dos fluxos secundários mais pesados
+- `V25`
+  - foco em contraste, `robots.txt` e leitura crítica de Best Practices
+  - consolidação dos ganhos complementares de Lighthouse
+
+Documentos principais:
+
+- `docs/reviews/CODE_REVIEW_V24.md`
+- `docs/reviews/CODE_REVIEW_V25.md`
 
 ## Como usar este changelog
 
