@@ -74,6 +74,41 @@
   margin-top: 50px;
 }
 
+.app-route-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 520px;
+}
+
+.app-route-loading__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #ffffff;
+  min-height: 120px;
+}
+
+.auth-shell--loading {
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.auth-card--loading {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  min-height: 280px;
+  justify-content: center;
+}
+
+.auth-card__skeleton-button {
+  width: min(280px, 100%);
+}
+
 .page-container {
   padding: 20px;
   margin: auto;
@@ -261,6 +296,16 @@
 
   .page-container {
     padding: 14px;
+  }
+
+  .app-route-loading {
+    min-height: 460px;
+    gap: 16px;
+  }
+
+  .app-route-loading__panel {
+    padding: 14px;
+    min-height: 104px;
   }
 
   .dashboard-toolbar {

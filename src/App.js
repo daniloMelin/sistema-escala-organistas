@@ -24,8 +24,11 @@ import { auth, firebaseConfigError, isFirebaseReady } from './firebaseConfig';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 // Lazy loading para componentes grandes
-const ChurchDashboard = lazy(() => import('./components/ChurchDashboard'));
-const ChurchScheduleGenerator = lazy(() => import('./components/ChurchScheduleGenerator'));
+const loadChurchDashboard = () => import('./components/ChurchDashboard');
+const loadChurchScheduleGenerator = () => import('./components/ChurchScheduleGenerator');
+
+const ChurchDashboard = lazy(loadChurchDashboard);
+const ChurchScheduleGenerator = lazy(loadChurchScheduleGenerator);
 const firestoreReporter = createFirestoreLoggerReporter({
   getUser: () => auth?.currentUser || null,
 });
@@ -93,6 +96,45 @@ const NotFoundPage = () => (
   </div>
 );
 
+const AppBootLoading = () => (
+  <div className="auth-shell auth-shell--loading" aria-busy="true" aria-live="polite">
+    <div className="auth-card auth-card--loading">
+      <div className="skeleton-line skeleton-line--title" />
+      <div className="skeleton-line skeleton-line--md" />
+      <div className="skeleton-line skeleton-line--md" />
+      <div className="skeleton-button auth-card__skeleton-button" />
+    </div>
+  </div>
+);
+
+const RouteLoadingFallback = () => (
+  <div
+    className="page-container page-container--lg app-route-loading"
+    aria-busy="true"
+    aria-live="polite"
+  >
+    <div className="dashboard-toolbar">
+      <span className="skeleton-button" />
+      <span className="skeleton-button" />
+    </div>
+    <div className="section-header">
+      <div className="skeleton-line skeleton-line--title" />
+      <div className="skeleton-line skeleton-line--md" />
+    </div>
+    <div className="app-route-loading__panel">
+      <div className="skeleton-line skeleton-line--title" />
+      <div className="skeleton-line skeleton-line--md" />
+      <div className="skeleton-line skeleton-line--sm" />
+    </div>
+    <div className="app-route-loading__panel">
+      <div className="skeleton-line skeleton-line--title" />
+      <div className="skeleton-line skeleton-line--md" />
+      <div className="skeleton-line skeleton-line--md" />
+      <div className="skeleton-line skeleton-line--sm" />
+    </div>
+  </div>
+);
+
 function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -128,8 +170,15 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    if (!user) return;
+
+    loadChurchDashboard();
+    loadChurchScheduleGenerator();
+  }, [user]);
+
   if (isLoading) {
-    return <div className="app-loading">Carregando...</div>;
+    return <AppBootLoading />;
   }
 
   if (!isE2EMode && !isFirebaseReady) {
@@ -168,7 +217,7 @@ function App() {
         {user ? (
           <ChurchProvider>
             <Layout user={user} onLogout={handleLogout}>
-              <Suspense fallback={<div className="app-loading">Carregando...</div>}>
+              <Suspense fallback={<RouteLoadingFallback />}>
                 <Routes>
                   {/* Rota principal: Lista de Igrejas */}
                   <Route path="/" element={<ChurchManager user={user} />} />
