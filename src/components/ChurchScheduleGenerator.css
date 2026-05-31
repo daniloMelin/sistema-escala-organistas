@@ -11,6 +11,11 @@
   min-height: 560px;
 }
 
+.schedule-generator__status {
+  min-height: 44px;
+  margin-bottom: 12px;
+}
+
 .schedule-generator__placeholder {
   display: flex;
   flex-direction: column;
@@ -144,7 +149,7 @@
 }
 
 .history-item__date {
-  color: #999999;
+  color: #5b6472;
 }
 
 .history-item__summary {
@@ -155,6 +160,7 @@
 
 .schedule-grid {
   margin-bottom: 28px;
+  min-height: 240px;
 }
 
 .schedule-grid__toolbar {

@@ -319,6 +319,27 @@ Auth`
 A recomendação desta fase é seguir para implementação com foco no shell
 autenticado antes de qualquer rodada nova de micro-otimização.
 
+## Atualização intermediária da fase 2
+
+Após a primeira sequência de ajustes de shell e fallback, o ciclo recebeu
+uma passada curta de quick wins para atacar pontos recorrentes do
+Lighthouse que ainda não dependem do corte de bundle do `V24`.
+
+Entradas desta passada:
+
+- escurecimento dos botões primário e de sucesso para melhorar contraste
+- reforço do contraste de navegação ativa, rodapé e textos de apoio
+- criação de `public/robots.txt` válido
+- reserva explícita de espaço para o status de carregamento no gerador de
+  escala
+
+Leitura:
+
+- o `V23` segue concentrado em `CLS` e `LCP`, mas esta passada reduz
+  pendências baratas de `Accessibility` e `SEO`
+- o gerador continua sendo a tela autenticada que mais pede nova medição
+  após deploy, por ainda concentrar o pior `CLS` residual da rodada local
+
 ## Execução inicial da fase 2
 
 O primeiro bloco implementado no `V23` atacou o shell autenticado, onde

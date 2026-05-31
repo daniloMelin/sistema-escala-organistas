@@ -10,6 +10,7 @@
 | 1.3    | 30 de maio de 2026 | Danilo Melin | Execução inicial da fase 2 do V23              |
 | 1.4    | 30 de maio de 2026 | Danilo Melin | Ampliação da fase 2 no fluxo de escala         |
 | 1.5    | 31 de maio de 2026 | Danilo Melin | Validação intermediária da home em preview     |
+| 1.6    | 31 de maio de 2026 | Danilo Melin | Quick wins de score e estabilidade no V23      |
 
 ## Objetivo
 
@@ -143,6 +144,13 @@ Execução inicial:
 - a leitura parcial reforçou que a estabilidade visual da entrada já
   melhorou, enquanto `LCP`, contraste, `robots.txt` e bundle residual
   permanecem como frente aberta para fechamento completo do ciclo
+- rodada adicional do `V23` atacou ganhos rápidos ainda apontados pelo
+  Lighthouse:
+  - contraste dos botões primário e de sucesso
+  - contraste do link ativo da navegação, rodapé e textos secundários
+  - criação de `public/robots.txt` válido
+  - reserva de espaço para o estado de carregamento do gerador, reduzindo
+    salto visual no topo da rota
 
 ### Fase 3 - Cobertura e impacto
 

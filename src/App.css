@@ -1,8 +1,8 @@
 :root {
-  --app-primary: #007bff;
-  --app-primary-dark: #0056b3;
+  --app-primary: #005fcc;
+  --app-primary-dark: #0f3d91;
   --app-text: #333333;
-  --app-muted: #666666;
+  --app-muted: #595959;
   --app-soft-bg: #f8f9fa;
   --app-border: #eeeeee;
   --danger: #dc3545;
@@ -48,7 +48,7 @@
 }
 
 .app-nav-greeting {
-  color: #555555;
+  color: #4b5563;
 }
 
 .app-main {
@@ -60,7 +60,7 @@
   padding: 20px;
   margin-top: 40px;
   font-size: 0.9em;
-  color: #777777;
+  color: #595959;
   border-top: 1px solid var(--app-border);
 }
 

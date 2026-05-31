@@ -49,7 +49,9 @@ const ChurchScheduleGenerator = ({ user }) => {
       >
         &larr; Voltar para Painel
       </Button>
-      {isLoading && <div className="alert alert--warning">Carregando dados da igreja...</div>}
+      <div className="schedule-generator__status">
+        {isLoading && <div className="alert alert--warning">Carregando dados da igreja...</div>}
+      </div>
       <h2 className="section-title">
         Gerador de Escala:{' '}
         <span className="section-title__highlight">{churchDetails?.name || 'Igreja'}</span>
