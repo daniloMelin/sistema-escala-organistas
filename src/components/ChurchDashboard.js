@@ -41,7 +41,7 @@ const ChurchDashboard = ({ user }) => {
 
   if (!user) return <div className="page-loading">Carregando...</div>;
 
-  const churchDetails = selectedChurch || church;
+  const churchDetails = selectedChurch?.id === id ? selectedChurch : church;
   const rehearsalSummary = churchDetails ? formatRehearsalSummary(churchDetails.rehearsal) : '';
 
   return (

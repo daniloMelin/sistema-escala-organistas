@@ -36,7 +36,7 @@ const ChurchScheduleGenerator = ({ user }) => {
     handleAssignmentChange,
     handleSaveChanges,
   } = useChurchScheduleGenerator(user, selectedChurch);
-  const churchDetails = selectedChurch || church;
+  const churchDetails = selectedChurch?.id === id ? selectedChurch : church;
   const rehearsal = churchDetails?.rehearsal || null;
 
   return (

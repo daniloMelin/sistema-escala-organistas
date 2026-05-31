@@ -1,6 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { useChurchScheduleGenerator } from '../hooks/useChurchScheduleGenerator';
 import { SERVICE_TEMPLATES } from '../utils/scheduleLogic';
+import { exportScheduleToPDF } from '../utils/pdfGenerator';
 
 jest.mock(
   'react-router-dom',
@@ -59,7 +60,17 @@ describe('useChurchScheduleGenerator', () => {
     jest.clearAllMocks();
     window.scrollTo = jest.fn();
     mockGetOrganistsByChurch.mockResolvedValue(organists);
-    mockGetChurch.mockResolvedValue({ config: churchConfig });
+    mockGetChurch.mockResolvedValue({
+      id: 'church-1',
+      name: 'Igreja da Rota',
+      rehearsal: {
+        weekOfMonth: 3,
+        weekday: 'tuesday',
+        time: '20:00',
+        notes: 'Usar igreja da rota.',
+      },
+      config: churchConfig,
+    });
     mockGetChurchSchedules.mockResolvedValue([]);
   });
 
@@ -146,6 +157,48 @@ describe('useChurchScheduleGenerator', () => {
     expect(result.current.generatedSchedule).toEqual(savedSchedule.data);
     expect(result.current.successMessage).toBe(
       'Visualizando escala salva de 03/03/2026 até 31/03/2026.'
+    );
+  });
+
+  test('usa a igreja da rota ao exportar quando selectedChurch diverge do id', async () => {
+    const staleSelectedChurch = {
+      id: 'church-2',
+      name: 'Igreja Antiga',
+      rehearsal: {
+        weekOfMonth: 1,
+        weekday: 'thursday',
+        time: '19:30',
+        notes: 'Nao usar.',
+      },
+    };
+
+    const { result } = renderHook(() => useChurchScheduleGenerator(user, staleSelectedChurch));
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    act(() => {
+      result.current.handleViewSaved({
+        id: 'saved-1',
+        period: { start: '2026-03-03', end: '2026-03-31' },
+        data: [{ date: '03/03/2026', assignments: { MeiaHoraCulto: 'Ana', Culto: 'Bia' } }],
+      });
+    });
+
+    act(() => {
+      result.current.handleExportClick();
+    });
+
+    expect(exportScheduleToPDF).toHaveBeenCalledWith(
+      expect.any(Array),
+      '2026-03-03',
+      '2026-03-31',
+      'Igreja da Rota',
+      expect.objectContaining({
+        weekOfMonth: 3,
+        weekday: 'tuesday',
+        time: '20:00',
+        notes: 'Usar igreja da rota.',
+      })
     );
   });
 });
