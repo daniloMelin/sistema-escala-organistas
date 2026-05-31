@@ -14,7 +14,7 @@ O detalhamento técnico completo de cada ciclo está concentrado em:
 
 - baseline legada inicial: `docs/reviews/CODE_REVIEW.md`
 - trilha canônica de evolução: `V2` até `V25`
-- estado atual do sistema: `Qualidade percebida e performance em revisão`
+- estado atual do sistema: `Qualidade percebida estabilizada e bundle em revisão`
 
 ## Linha do tempo resumida
 
@@ -206,8 +206,9 @@ Documento principal:
   percebida
 - consolidação de baseline mobile em produção para home, lista de
   igrejas e dashboard
-- priorização do trabalho em `CLS`, `LCP`, bundle inicial, contraste e
-  higiene de publicação
+- estabilização do shell autenticado com ganho real de `CLS`
+- fechamento do ciclo apontando `LCP` e bundle inicial como próximo
+  gargalo dominante
 
 Documento principal:
 

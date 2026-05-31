@@ -12,6 +12,8 @@
 | 1.5    | 31 de maio de 2026 | Danilo Melin | Validação intermediária da home em preview     |
 | 1.6    | 31 de maio de 2026 | Danilo Melin | Quick wins de score e estabilidade no V23      |
 | 1.7    | 31 de maio de 2026 | Danilo Melin | Consolidação da fase 2 do V23                  |
+| 1.8    | 31 de maio de 2026 | Danilo Melin | Consolidação de impacto e cobertura do V23     |
+| 1.9    | 31 de maio de 2026 | Danilo Melin | Encerramento formal do V23                     |
 
 ## Objetivo
 
@@ -21,8 +23,9 @@ acessibilidade residual e higiene técnica de publicação.
 
 ## Status do Ciclo
 
-- Status geral: `EM ANDAMENTO`
+- Status geral: `CONCLUÍDO`
 - Data de início: `30 de maio de 2026`
+- Data de encerramento: `31 de maio de 2026`
 - Contexto: primeiro ciclo pós-produção consolidada, voltado a qualidade
   percebida em uso real mobile
 
@@ -184,6 +187,22 @@ Saídas esperadas:
 - documento de impacto do `V23`
 - documento de cobertura do `V23`
 
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- impacto consolidado em
+  `docs/reviews/artifacts/v23/PERFORMANCE_IMPACT_V23.md`
+- cobertura consolidada em
+  `docs/reviews/artifacts/v23/PERFORMANCE_COVERAGE_V23.md`
+- o ganho real do ciclo ficou formalizado como:
+  - estabilização do shell autenticado
+  - redução estrutural de `CLS`
+  - deslocamento do gargalo dominante para `LCP` e carga inicial
+- o ciclo também passou a registrar explicitamente que:
+  - contraste e `robots.txt` deixaram de ser pendências abertas
+  - o gerador continua como a rota mais sensível entre as telas
+    autenticadas
+
 ### Fase 4 - Fechamento
 
 Objetivo:
@@ -195,6 +214,15 @@ Saídas esperadas:
 
 - `CODE_REVIEW_V23.md` marcado como concluído
 - recomendação objetiva sobre próximos refinamentos de performance
+
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- ciclo encerrado com baseline e impacto comparáveis para a trilha de
+  Lighthouse
+- recomendação final do `V23`: seguir para o `V24` sem reabrir
+  microajustes no shell, já que o próximo ganho real depende de bundle
+  inicial e `lazy loading`
 
 ## Critérios de Saída Propostos
 
@@ -208,8 +236,8 @@ Saídas esperadas:
 - [x] Estrutura inicial do V23 criada
 - [x] Fase 1 concluída
 - [x] Fase 2 concluída
-- [ ] Fase 3 concluída
-- [ ] Fase 4 concluída
+- [x] Fase 3 concluída
+- [x] Fase 4 concluída
 
 ## Próximos Passos do V23
 
@@ -225,3 +253,8 @@ Saídas esperadas:
 ## Artefatos da Fase 1
 
 - `docs/reviews/artifacts/v23/PERFORMANCE_BASELINE_REVIEW_V23.md`
+
+## Artefatos da Fase 3
+
+- `docs/reviews/artifacts/v23/PERFORMANCE_IMPACT_V23.md`
+- `docs/reviews/artifacts/v23/PERFORMANCE_COVERAGE_V23.md`
