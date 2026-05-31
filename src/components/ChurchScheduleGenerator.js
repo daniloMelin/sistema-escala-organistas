@@ -15,6 +15,7 @@ const ChurchScheduleGenerator = ({ user }) => {
   const { selectedChurch } = useChurch();
 
   const {
+    church,
     startDate,
     endDate,
     organists,
@@ -35,9 +36,11 @@ const ChurchScheduleGenerator = ({ user }) => {
     handleAssignmentChange,
     handleSaveChanges,
   } = useChurchScheduleGenerator(user, selectedChurch);
+  const churchDetails = selectedChurch?.id === id ? selectedChurch : church;
+  const rehearsal = churchDetails?.rehearsal || null;
 
   return (
-    <div className="page-container page-container--xl">
+    <div className="page-container page-container--xl schedule-generator-page">
       <Button
         onClick={() => navigate(`/igreja/${id}`)}
         variant="secondary"
@@ -46,11 +49,21 @@ const ChurchScheduleGenerator = ({ user }) => {
       >
         &larr; Voltar para Painel
       </Button>
-      {isLoading && <div className="alert alert--warning">Carregando dados da igreja...</div>}
+      <div className="schedule-generator__status">
+        {isLoading && <div className="alert alert--warning">Carregando dados da igreja...</div>}
+      </div>
       <h2 className="section-title">
         Gerador de Escala:{' '}
-        <span className="section-title__highlight">{selectedChurch?.name || 'Igreja'}</span>
+        <span className="section-title__highlight">{churchDetails?.name || 'Igreja'}</span>
       </h2>
+
+      {isLoading && !churchDetails && (
+        <div className="schedule-generator__placeholder" aria-hidden="true">
+          <div className="skeleton-line skeleton-line--title" />
+          <div className="skeleton-line skeleton-line--md" />
+          <div className="skeleton-line skeleton-line--sm" />
+        </div>
+      )}
 
       {!isEditing && (
         <ScheduleControls
@@ -72,7 +85,7 @@ const ChurchScheduleGenerator = ({ user }) => {
           isEditing={isEditing}
           isGenerating={isGenerating}
           organists={organists}
-          rehearsal={selectedChurch?.rehearsal}
+          rehearsal={rehearsal}
           onToggleEditing={setIsEditing}
           onSaveChanges={handleSaveChanges}
           onExportClick={handleExportClick}
@@ -82,6 +95,7 @@ const ChurchScheduleGenerator = ({ user }) => {
 
       <ScheduleHistoryList
         isEditing={isEditing}
+        isLoading={isLoading}
         savedSchedules={savedSchedules}
         onViewSaved={handleViewSaved}
       />

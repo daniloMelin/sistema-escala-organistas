@@ -22,7 +22,32 @@ const ChurchList = ({
           A lista prioriza as igrejas que precisam de atenção.
         </p>
       )}
-      {!isLoading && !hasLoadError && churches.length === 0 ? (
+      {isLoading && churches.length === 0 ? (
+        <ul className="list-reset church-list__skeleton-list" aria-hidden="true">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <li
+              key={`church-skeleton-${index}`}
+              className="church-list__item church-list__item--skeleton"
+            >
+              <div className="church-list__content">
+                <div className="church-list__header">
+                  <div className="skeleton-line skeleton-line--title" />
+                  <div className="skeleton-chip" />
+                </div>
+                <div className="church-list__summary">
+                  <span className="skeleton-line skeleton-line--md" />
+                  <span className="skeleton-line skeleton-line--sm" />
+                  <span className="skeleton-line skeleton-line--md" />
+                </div>
+              </div>
+              <div className="actions-row church-list__actions church-list__actions--skeleton">
+                <span className="skeleton-button" />
+                <span className="skeleton-button" />
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : !isLoading && !hasLoadError && churches.length === 0 ? (
         <p>Nenhuma igreja cadastrada.</p>
       ) : (
         <ul className="list-reset">

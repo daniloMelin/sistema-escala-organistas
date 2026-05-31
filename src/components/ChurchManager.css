@@ -4,6 +4,7 @@
   border: 1px solid #cccccc;
   border-radius: 8px;
   background: #ffffff;
+  min-height: 520px;
 }
 
 .church-form--editing {
@@ -252,9 +253,29 @@
   align-items: flex-start;
 }
 
+.church-list__skeleton-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.church-list__item--skeleton {
+  cursor: default;
+}
+
+.church-list__item--skeleton .church-list__summary {
+  flex-direction: column;
+  gap: 10px;
+}
+
+.church-list__actions--skeleton {
+  pointer-events: none;
+}
+
 @media (max-width: 640px) {
   .church-form {
     padding: 14px;
+    min-height: 560px;
   }
 
   .church-form__days {

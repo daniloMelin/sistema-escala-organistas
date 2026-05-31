@@ -4,6 +4,7 @@
   border-radius: 8px;
   margin-bottom: 30px;
   border: 1px solid #dddddd;
+  min-height: 290px;
 }
 
 .organist-form--editing {
@@ -95,6 +96,20 @@
   flex: 0 0 auto;
 }
 
+.organist-list__skeleton-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.organist-list__item--skeleton .organist-list__availability {
+  margin-bottom: 0;
+}
+
+.church-dashboard-page {
+  min-height: 520px;
+}
+
 .church-dashboard__rehearsal {
   margin-bottom: 24px;
   padding: 14px 16px;
@@ -121,6 +136,12 @@
   font-size: 0.95rem;
 }
 
+.church-dashboard__rehearsal--placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .dashboard-toolbar .btn {
   min-width: 0;
 }
@@ -136,6 +157,7 @@
 
   .organist-form {
     padding: 14px;
+    min-height: 320px;
   }
 
   .church-dashboard__rehearsal {

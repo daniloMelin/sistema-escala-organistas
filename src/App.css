@@ -1,8 +1,8 @@
 :root {
-  --app-primary: #007bff;
-  --app-primary-dark: #0056b3;
+  --app-primary: #005fcc;
+  --app-primary-dark: #0f3d91;
   --app-text: #333333;
-  --app-muted: #666666;
+  --app-muted: #595959;
   --app-soft-bg: #f8f9fa;
   --app-border: #eeeeee;
   --danger: #dc3545;
@@ -48,7 +48,7 @@
 }
 
 .app-nav-greeting {
-  color: #555555;
+  color: #4b5563;
 }
 
 .app-main {
@@ -60,7 +60,7 @@
   padding: 20px;
   margin-top: 40px;
   font-size: 0.9em;
-  color: #777777;
+  color: #595959;
   border-top: 1px solid var(--app-border);
 }
 
@@ -74,9 +74,45 @@
   margin-top: 50px;
 }
 
+.app-route-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 520px;
+}
+
+.app-route-loading__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #ffffff;
+  min-height: 120px;
+}
+
+.auth-shell--loading {
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.auth-card--loading {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  min-height: 280px;
+  justify-content: center;
+}
+
+.auth-card__skeleton-button {
+  width: min(280px, 100%);
+}
+
 .page-container {
   padding: 20px;
   margin: auto;
+  min-height: 320px;
 }
 
 .page-container--md {
@@ -90,6 +126,56 @@
 }
 .page-loading {
   padding: 20px;
+}
+
+.skeleton-line,
+.skeleton-chip,
+.skeleton-button {
+  display: inline-block;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #edf2f7 25%, #f8fafc 50%, #edf2f7 75%);
+  background-size: 200% 100%;
+  animation: app-skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.skeleton-line {
+  height: 14px;
+  width: 100%;
+  border-radius: 6px;
+}
+
+.skeleton-line--title {
+  width: min(220px, 70%);
+  height: 20px;
+}
+
+.skeleton-line--md {
+  width: min(280px, 82%);
+}
+
+.skeleton-line--sm {
+  width: min(180px, 56%);
+}
+
+.skeleton-chip {
+  width: 76px;
+  height: 28px;
+}
+
+.skeleton-button {
+  width: 88px;
+  height: 38px;
+  border-radius: 8px;
+}
+
+@keyframes app-skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 .dashboard-toolbar {
@@ -210,6 +296,16 @@
 
   .page-container {
     padding: 14px;
+  }
+
+  .app-route-loading {
+    min-height: 460px;
+    gap: 16px;
+  }
+
+  .app-route-loading__panel {
+    padding: 14px;
+    min-height: 104px;
   }
 
   .dashboard-toolbar {

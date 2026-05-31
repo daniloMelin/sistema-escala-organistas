@@ -15,6 +15,7 @@ const ChurchDashboard = ({ user }) => {
   const { selectedChurch } = useChurch();
   const {
     id,
+    church,
     organists,
     loading,
     visibleDays,
@@ -40,10 +41,11 @@ const ChurchDashboard = ({ user }) => {
 
   if (!user) return <div className="page-loading">Carregando...</div>;
 
-  const rehearsalSummary = selectedChurch ? formatRehearsalSummary(selectedChurch.rehearsal) : '';
+  const churchDetails = selectedChurch?.id === id ? selectedChurch : church;
+  const rehearsalSummary = churchDetails ? formatRehearsalSummary(churchDetails.rehearsal) : '';
 
   return (
-    <div className="page-container page-container--lg">
+    <div className="page-container page-container--lg church-dashboard-page">
       <div className="dashboard-toolbar">
         <Button onClick={() => navigate('/')} variant="secondary" size="sm">
           &larr; Voltar para Igrejas
@@ -61,16 +63,24 @@ const ChurchDashboard = ({ user }) => {
       <div className="section-header">
         <h2>Gerenciamento de Organistas</h2>
         <h3 className="section-header__subtitle">
-          {selectedChurch ? selectedChurch.name : `Igreja (ID: ${id})`}
+          {churchDetails ? churchDetails.name : `Igreja (ID: ${id})`}
         </h3>
       </div>
 
-      {selectedChurch && rehearsalSummary && (
+      {loading && !churchDetails ? (
+        <div className="church-dashboard__rehearsal church-dashboard__rehearsal--placeholder">
+          <div className="skeleton-line skeleton-line--title" />
+          <div className="skeleton-line skeleton-line--md" />
+          <div className="skeleton-line skeleton-line--sm" />
+        </div>
+      ) : null}
+
+      {churchDetails && rehearsalSummary && (
         <div className="church-dashboard__rehearsal">
           <strong className="church-dashboard__rehearsal-title">Ensaio local</strong>
           <p className="church-dashboard__rehearsal-summary">{rehearsalSummary}</p>
-          {selectedChurch.rehearsal?.notes && (
-            <p className="church-dashboard__rehearsal-note">{selectedChurch.rehearsal.notes}</p>
+          {churchDetails.rehearsal?.notes && (
+            <p className="church-dashboard__rehearsal-note">{churchDetails.rehearsal.notes}</p>
           )}
         </div>
       )}

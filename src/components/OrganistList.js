@@ -12,7 +12,27 @@ const OrganistList = ({
   return (
     <>
       <h3>Organistas Cadastradas</h3>
-      {loading ? (
+      {loading && organists.length === 0 ? (
+        <ul className="list-reset organist-list__skeleton-list" aria-hidden="true">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <li
+              key={`organist-skeleton-${index}`}
+              className="organist-list__item organist-list__item--skeleton"
+            >
+              <div className="organist-list__content">
+                <div className="organist-list__header">
+                  <div className="skeleton-line skeleton-line--title" />
+                </div>
+                <div className="skeleton-line skeleton-line--md" />
+              </div>
+              <div className="actions-row organist-list__actions">
+                <span className="skeleton-button" />
+                <span className="skeleton-button" />
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : loading ? (
         <p>Carregando dados...</p>
       ) : organists.length === 0 ? (
         <p>Nenhuma organista cadastrada.</p>

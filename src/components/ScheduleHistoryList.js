@@ -40,7 +40,7 @@ const isScheduleWithinPeriod = (schedule, startDateFilter, endDateFilter) => {
   return true;
 };
 
-const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
+const ScheduleHistoryList = ({ isEditing, isLoading = false, savedSchedules, onViewSaved }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [startDateFilter, setStartDateFilter] = useState('');
   const [endDateFilter, setEndDateFilter] = useState('');
@@ -98,7 +98,25 @@ const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
   return (
     <>
       <h3 className="history-title">Histórico de Escalas</h3>
-      {savedSchedules.length === 0 && <p className="muted-text">Nenhuma escala salva ainda.</p>}
+      {isLoading && savedSchedules.length === 0 && (
+        <ul className="list-reset history-skeleton-list" aria-hidden="true">
+          {Array.from({ length: 2 }).map((_, index) => (
+            <li key={`history-skeleton-${index}`} className="history-item history-item--skeleton">
+              <div className="history-item__content">
+                <div className="history-item__header">
+                  <div className="skeleton-line skeleton-line--title" />
+                </div>
+                <div className="skeleton-line skeleton-line--sm" />
+                <div className="skeleton-line skeleton-line--md" />
+              </div>
+              <span className="skeleton-button history-item__skeleton-action" />
+            </li>
+          ))}
+        </ul>
+      )}
+      {!isLoading && savedSchedules.length === 0 && (
+        <p className="muted-text">Nenhuma escala salva ainda.</p>
+      )}
       {savedSchedules.length > 0 && (
         <div className="history-filters">
           <div className="history-filters__period">
@@ -199,6 +217,7 @@ const ScheduleHistoryList = ({ isEditing, savedSchedules, onViewSaved }) => {
 
 ScheduleHistoryList.propTypes = {
   isEditing: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool,
   savedSchedules: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,

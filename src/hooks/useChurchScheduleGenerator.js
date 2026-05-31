@@ -14,7 +14,9 @@ import logger from '../utils/logger';
 
 export const useChurchScheduleGenerator = (user, selectedChurch) => {
   const { id } = useParams();
+  const matchingSelectedChurch = selectedChurch?.id === id ? selectedChurch : null;
 
+  const [church, setChurch] = useState(matchingSelectedChurch);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [organists, setOrganists] = useState([]);
@@ -40,18 +42,20 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
     if (!user || !id) return;
     if (isMountedRef.current) setIsLoading(true);
     try {
-      const orgsData = await getOrganistsByChurch(user.uid, id);
+      const [orgsData, churchData, schedulesData] = await Promise.all([
+        getOrganistsByChurch(user.uid, id),
+        getChurch(user.uid, id),
+        getChurchSchedules(user.uid, id),
+      ]);
       if (!isMountedRef.current) return;
       setOrganists(orgsData);
+      setChurch(churchData || null);
 
-      const churchData = await getChurch(user.uid, id);
-      if (!isMountedRef.current) return;
       if (churchData && churchData.config) {
         setChurchConfig(churchData.config);
+      } else {
+        setChurchConfig(null);
       }
-
-      const schedulesData = await getChurchSchedules(user.uid, id);
-      if (!isMountedRef.current) return;
       setSavedSchedules(schedulesData);
     } catch (err) {
       if (!isMountedRef.current) return;
@@ -78,8 +82,9 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
   }, [loadData]);
 
   const handleExportClick = () => {
-    const churchName = selectedChurch?.name || 'Igreja';
-    const rehearsal = selectedChurch?.rehearsal || null;
+    const churchDetails = matchingSelectedChurch || church;
+    const churchName = churchDetails?.name || 'Igreja';
+    const rehearsal = churchDetails?.rehearsal || null;
     try {
       exportScheduleToPDF(generatedSchedule, startDate, endDate, churchName, rehearsal);
     } catch (err) {
@@ -214,6 +219,7 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
 
   return {
     id,
+    church,
     startDate,
     endDate,
     organists,
