@@ -11,6 +11,7 @@
 | 1.4    | 30 de maio de 2026 | Danilo Melin | Ampliação da fase 2 no fluxo de escala         |
 | 1.5    | 31 de maio de 2026 | Danilo Melin | Validação intermediária da home em preview     |
 | 1.6    | 31 de maio de 2026 | Danilo Melin | Quick wins de score e estabilidade no V23      |
+| 1.7    | 31 de maio de 2026 | Danilo Melin | Consolidação da fase 2 do V23                  |
 
 ## Objetivo
 
@@ -152,6 +153,24 @@ Execução inicial:
   - reserva de espaço para o estado de carregamento do gerador, reduzindo
     salto visual no topo da rota
 
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- o `V23` entregou ganho estrutural de estabilidade visual no shell
+  autenticado, com redução consistente de `CLS` nas principais telas
+- ganhos confirmados na leitura comparativa:
+  - home com `CLS` estabilizado em `0`
+  - lista de igrejas com `CLS` reduzido de `0.106` para `0.045`
+  - dashboard com `CLS` reduzido de `0.751` para `0.145`
+- contraste residual e `robots.txt` deixaram de ser pendências abertas
+  do bloco rápido de `Accessibility` e `SEO`
+- a meta de `> 80` não foi alcançada nas telas autenticadas porque o
+  gargalo dominante passou a ser `LCP` alto e carga inicial da rota,
+  principalmente no dashboard e no gerador
+- conclusão operacional: o `V23` cumpriu o papel de estabilizar o shell
+  e preparar o terreno correto para o `V24`, que passa a concentrar o
+  próximo ganho real de performance
+
 ### Fase 3 - Cobertura e impacto
 
 Objetivo:
@@ -188,28 +207,20 @@ Saídas esperadas:
 
 - [x] Estrutura inicial do V23 criada
 - [x] Fase 1 concluída
-- [ ] Fase 2 concluída
+- [x] Fase 2 concluída
 - [ ] Fase 3 concluída
 - [ ] Fase 4 concluída
 
 ## Próximos Passos do V23
 
-1. revisar a origem do `CLS` no shell autenticado, com foco em
-   `src/App.js`, `src/App.css`, `src/components/ChurchManager.js`,
-   `src/components/ChurchManager.css`, `src/components/ChurchDashboard.js`
-   e `src/components/ChurchDashboard.css`
-2. revisar oportunidades de reduzir `LCP` e JS inicial no fluxo de
-   autenticação e dashboard, incluindo `src/components/Auth.js`,
-   `src/components/ChurchScheduleGenerator.js`,
-   `src/components/ScheduleHistoryList.js` e `src/utils/pdfGenerator.js`
-3. planejar correções rápidas de contraste e publicação em
-   `src/App.css`, `src/index.css`, `src/components/Auth.css` e
-   `firebase.json`
-4. confirmar a situação de `public/robots.txt` como frente rápida de
-   SEO/higiene técnica
-5. repetir a coleta do preview/publicado para igrejas, dashboard e
-   gerador, separando o que já é ganho do `V23` do que depende mais do
-   corte de bundle do `V24`
+1. abrir a fase 1 do `V24` como continuação direta do diagnóstico do
+   `V23`, com foco explícito em bundle inicial e `lazy loading`
+2. revisar o que ainda entra cedo demais em `src/App.js`,
+   `src/components/Auth.js`, `src/components/ChurchScheduleGenerator.js`
+   e `src/utils/pdfGenerator.js`
+3. usar o baseline comparativo do `V23` como referência de `CLS`
+   estabilizado para medir se o `V24` consegue deslocar o gargalo de
+   `LCP`
 
 ## Artefatos da Fase 1
 

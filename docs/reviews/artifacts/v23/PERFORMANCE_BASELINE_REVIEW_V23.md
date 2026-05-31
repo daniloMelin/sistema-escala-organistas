@@ -340,6 +340,38 @@ Leitura:
 - o gerador continua sendo a tela autenticada que mais pede nova medição
   após deploy, por ainda concentrar o pior `CLS` residual da rodada local
 
+## Consolidação da fase 2
+
+Após as passadas de shell, fallback, carregamento paralelo e quick wins
+de contraste/publicação, o `V23` já consegue responder com clareza ao
+objetivo da fase 2.
+
+Resumo comparativo do ganho mais relevante:
+
+| Tela      | CLS baseline | CLS após fase 2 | Leitura                               |
+| --------- | -----------: | --------------: | ------------------------------------- |
+| Home      |        0.061 |               0 | shell de entrada estabilizado         |
+| Igrejas   |        0.106 |           0.045 | lista ficou visivelmente mais estável |
+| Dashboard |        0.751 |           0.145 | maior ganho estrutural do ciclo       |
+
+Leitura consolidada:
+
+- o `V23` melhorou o que era mais crítico no começo do ciclo:
+  estabilidade visual e previsibilidade do shell autenticado
+- a pontuação de `Performance` não subiu para `> 80` nas telas
+  autenticadas porque o gargalo dominante mudou de `CLS` para `LCP`
+- o gerador ainda permanece como ponto mais frágil do bloco autenticado,
+  especialmente por manter `CLS` superior ao restante e `LCP` alto
+- `robots.txt` válido e contraste reforçado reduziram pendências fáceis
+  de `SEO` e `Accessibility`, mas não são suficientes para deslocar a
+  nota de `Performance`
+
+Conclusão:
+
+- a fase 2 do `V23` deve ser considerada **concluída**
+- o próximo avanço relevante para score depende do `V24`, focado em
+  carga inicial, `lazy loading` e redução de trabalho no bundle
+
 ## Execução inicial da fase 2
 
 O primeiro bloco implementado no `V23` atacou o shell autenticado, onde
