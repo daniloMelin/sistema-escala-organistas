@@ -347,3 +347,36 @@ Leitura:
 - o próximo passo natural continua sendo medir se a queda de `CLS` e
   melhoria de `LCP` justificam uma segunda passada ainda no shell antes
   de entrar no trabalho de bundle do `V24`
+
+## Validação intermediária da home em preview
+
+Após as três passadas iniciais do `V23`, a home foi reavaliada em um
+preview channel do Firebase Hosting:
+
+- `https://escala-organistas--v23-lighthouse-s8of0say.web.app/`
+
+Leituras observadas:
+
+| Execução | Performance |  LCP | CLS |   TBT |
+| -------- | ----------: | ---: | --: | ----: |
+| 1        |          91 | 3.0s |   0 | 199ms |
+| 2        |          76 | 4.3s |   0 |   0ms |
+| 3        |          76 | 4.3s |   0 |   0ms |
+
+Leitura:
+
+- a home confirmou o ganho mais nítido do `V23` até aqui: o `CLS` caiu
+  para `0` nas três execuções
+- o score geral ainda oscila por causa de `LCP` e bundle inicial, então
+  a entrada não pode ser considerada consolidada como `>= 90`
+- `Accessibility`, `Best Practices` e `SEO` permaneceram estáveis em:
+  - contraste residual
+  - fluxo de cookies do Firebase Auth
+  - `robots.txt` inválido
+
+Conclusão parcial:
+
+- a home já responde melhor ao foco central do `V23`, que era reduzir
+  salto visual do shell
+- o fechamento final da fase 2 ainda depende das coletas de igrejas,
+  dashboard e gerador, além dos quick wins de contraste e publicação

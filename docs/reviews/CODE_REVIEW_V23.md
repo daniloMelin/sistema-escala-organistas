@@ -9,6 +9,7 @@
 | 1.2    | 30 de maio de 2026 | Danilo Melin | Consolidação da fase 1 do V23                  |
 | 1.3    | 30 de maio de 2026 | Danilo Melin | Execução inicial da fase 2 do V23              |
 | 1.4    | 30 de maio de 2026 | Danilo Melin | Ampliação da fase 2 no fluxo de escala         |
+| 1.5    | 31 de maio de 2026 | Danilo Melin | Validação intermediária da home em preview     |
 
 ## Objetivo
 
@@ -136,6 +137,12 @@ Execução inicial:
 - rotas lazy principais passaram a ser pré-carregadas após autenticação
 - gerador de escala passou a carregar igreja, organistas e histórico em
   paralelo, com fallback visual mais estável no histórico e no cabeçalho
+- validação intermediária em preview channel confirmou ganho claro de
+  `CLS` na home, com `0` nas três execuções e `Performance` variando
+  entre `76` e `91`
+- a leitura parcial reforçou que a estabilidade visual da entrada já
+  melhorou, enquanto `LCP`, contraste, `robots.txt` e bundle residual
+  permanecem como frente aberta para fechamento completo do ciclo
 
 ### Fase 3 - Cobertura e impacto
 
@@ -192,6 +199,9 @@ Saídas esperadas:
    `firebase.json`
 4. confirmar a situação de `public/robots.txt` como frente rápida de
    SEO/higiene técnica
+5. repetir a coleta do preview/publicado para igrejas, dashboard e
+   gerador, separando o que já é ganho do `V23` do que depende mais do
+   corte de bundle do `V24`
 
 ## Artefatos da Fase 1
 
