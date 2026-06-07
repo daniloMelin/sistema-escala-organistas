@@ -17,6 +17,20 @@ custos recorrentes da experiência inicial.
 - reduzir impacto de exportação, histórico e caminhos secundários no
   carregamento inicial
 
+## Resultado consolidado da fase 1
+
+O `V24` foi aberto oficialmente após o fechamento do `V23`, usando o
+novo baseline do shell autenticado já estabilizado.
+
+Leitura operacional desta fase:
+
+- o problema principal agora não é mais "tela saltando", e sim quanto
+  JavaScript ainda chega cedo demais
+- o corte mais promissor não está na home isolada, e sim na fronteira
+  entre shell autenticado, fluxo de escala e exportação
+- a fase 2 deve buscar ganho real de bundle sem desmontar o trabalho de
+  estabilidade visual já entregue
+
 ## Hipóteses iniciais de trabalho
 
 ### 1. O shell principal carrega mais do que a rota precisa
@@ -31,6 +45,13 @@ Diretriz:
 - medir o que participa diretamente da primeira renderização
 - separar o que pode esperar por interação do usuário
 
+Evidências locais atuais:
+
+- o arquivo `build/static/js/main.3557ff9d.js` está em torno de `696 KB`
+  não comprimidos no build local de referência
+- o diretório `build/static/js` soma cerca de `8.3 MB` com sourcemaps e
+  chunks, mostrando uma base ainda relevante de código entregue ao app
+
 ### 2. Fluxos secundários podem sair do caminho crítico
 
 Áreas prováveis:
@@ -43,6 +64,14 @@ Diretriz:
 
 - avaliar imports dinâmicos e divisão mais explícita por rota ou ação
 
+Mapeamento atual no código:
+
+- `src/hooks/useChurchScheduleGenerator.js` ainda importa
+  `exportScheduleToPDF` diretamente de `src/utils/pdfGenerator.js`
+- `src/utils/pdfGenerator.js` importa `jspdf` logo no topo do módulo
+- isso sugere que o custo de PDF continua entrando cedo demais no fluxo
+  do gerador, mesmo quando o usuário ainda não pediu exportação
+
 ### 3. A otimização precisa preservar previsibilidade visual
 
 Diretriz:
@@ -51,6 +80,52 @@ Diretriz:
   telas principais
 - otimização de carga não deve reabrir problemas de `CLS`
 
+Mapeamento atual no código:
+
+- `src/App.js` já usa `React.lazy` para dashboard e gerador
+- após login, o app faz preload dessas duas rotas
+- isso preserva percepção de uso, mas também impõe um trade-off:
+  continuamos aquecendo cedo duas rotas grandes, então a fase 2 precisa
+  revisar o quanto desse preload ainda vale o custo
+
+## Pontos concretos priorizados para a fase 2
+
+### 1. PDF sob demanda
+
+Arquivos-alvo:
+
+- `src/hooks/useChurchScheduleGenerator.js`
+- `src/utils/pdfGenerator.js`
+
+Hipótese:
+
+- trocar o caminho atual por import dinâmico no clique de exportação
+  deve aliviar a carga do fluxo do gerador sem mexer na rota inicial
+
+### 2. Revisão do preload pós-login
+
+Arquivos-alvo:
+
+- `src/App.js`
+
+Hipótese:
+
+- vale reavaliar se dashboard e gerador precisam do mesmo tratamento de
+  preload, ou se o gerador pode ficar mais tardio
+
+### 3. Fronteira do fluxo autenticado
+
+Arquivos-alvo:
+
+- `src/App.js`
+- `src/components/Auth.js`
+- `src/firebaseConfig.js`
+
+Hipótese:
+
+- a home e a transição para o shell autenticado ainda podem estar
+  carregando mais dependências do que a rota crítica realmente precisa
+
 ## Checklist inicial da fase 1
 
 - mapear dependências do `main.js`
@@ -58,6 +133,13 @@ Diretriz:
 - identificar imports caros em fluxos de baixa frequência
 - separar corte provável de corte arriscado
 - definir ordem de execução da fase 2
+
+Status:
+
+- [x] dependências e pontos de preload revisados
+- [x] fluxo de PDF identificado como primeiro corte provável
+- [x] trade-off do preload pós-login documentado
+- [x] ordem de execução da fase 2 definida
 
 ## Resultado esperado do ciclo
 

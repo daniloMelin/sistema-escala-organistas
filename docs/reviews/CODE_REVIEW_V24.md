@@ -6,6 +6,7 @@
 | ------ | ------------------ | ------------ | ---------------------------------------------- |
 | 1.0    | 30 de maio de 2026 | Danilo Melin | Criação do ciclo V24                           |
 | 1.1    | 30 de maio de 2026 | Danilo Melin | Estruturação do ciclo de bundle e lazy loading |
+| 1.2    | 7 de junho de 2026 | Danilo Melin | Consolidação da fase 1 do V24                  |
 
 ## Objetivo
 
@@ -15,9 +16,10 @@ fora da rota crítica e melhoria da experiência inicial em produção.
 
 ## Status do Ciclo
 
-- Status geral: `PLANEJADO`
-- Contexto: ciclo derivado do baseline do `V23`, a ser executado após os
-  ajustes mais urgentes de estabilidade visual e `LCP`
+- Status geral: `EM ANDAMENTO`
+- Data de início: `7 de junho de 2026`
+- Contexto: ciclo derivado do baseline do `V23`, agora aberto após o
+  fechamento completo do bloco de estabilidade visual
 
 ## Diretriz de Prioridade
 
@@ -74,6 +76,19 @@ Saídas esperadas:
 - artefato base com oportunidades de divisão de bundle
 - checklist inicial de lazy loading por fluxo
 
+Resultado consolidado:
+
+- Status: `CONCLUÍDO`
+- artefato base consolidado em
+  `docs/reviews/artifacts/v24/BUNDLE_LOADING_REVIEW_V24.md`
+- mapeamento inicial confirmou três frentes principais de corte:
+  - `main.3557ff9d.js` ainda grande para a rota crítica
+  - `pdfGenerator` importado cedo demais no fluxo do gerador
+  - shell autenticado e autenticação ainda puxando dependências cedo no
+    ciclo de carregamento
+- o ciclo passa a priorizar o que pode sair da carga inicial sem reabrir
+  problemas de `CLS`
+
 ### Fase 2 - Ajustes de bundle e lazy loading
 
 Objetivo:
@@ -122,21 +137,20 @@ Saídas esperadas:
 ## Registro de Progresso
 
 - [x] Estrutura inicial do V24 criada
-- [ ] Fase 1 concluída
+- [x] Fase 1 concluída
 - [ ] Fase 2 concluída
 - [ ] Fase 3 concluída
 - [ ] Fase 4 concluída
 
 ## Próximos Passos do V24
 
-1. usar o `V23` como baseline de decisão para o que sai do bundle
-   inicial
-2. revisar especialmente `src/App.js`,
-   `src/components/ChurchScheduleGenerator.js`,
-   `src/components/ScheduleHistoryList.js` e
-   `src/utils/pdfGenerator.js`
-3. definir se o exportador de PDF entra como lazy loading direto ou como
-   refino de fluxo secundário
+1. tratar `src/hooks/useChurchScheduleGenerator.js` e
+   `src/utils/pdfGenerator.js` como primeira frente de lazy loading por
+   ação do usuário
+2. revisar o peso do shell inicial em `src/App.js`, `src/components/Auth.js`
+   e dependências do fluxo autenticado
+3. validar se o `main.js` pode encolher sem reabrir regressão de
+   fallback ou previsibilidade visual
 
 ## Artefatos Planejados
 
