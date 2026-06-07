@@ -24,6 +24,7 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
   const [currentScheduleId, setCurrentScheduleId] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isHistoryLoading, setIsHistoryLoading] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -37,14 +38,34 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
     };
   }, []);
 
+  const loadSchedules = useCallback(async () => {
+    if (!user || !id) return;
+
+    if (isMountedRef.current) {
+      setIsHistoryLoading(true);
+    }
+
+    try {
+      const schedulesData = await getChurchSchedules(user.uid, id);
+      if (!isMountedRef.current) return;
+      setSavedSchedules(schedulesData);
+    } catch (err) {
+      if (!isMountedRef.current) return;
+      logger.error('Erro ao carregar histórico de escalas:', err);
+    } finally {
+      if (isMountedRef.current) {
+        setIsHistoryLoading(false);
+      }
+    }
+  }, [id, user]);
+
   const loadData = useCallback(async () => {
     if (!user || !id) return;
     if (isMountedRef.current) setIsLoading(true);
     try {
-      const [orgsData, churchData, schedulesData] = await Promise.all([
+      const [orgsData, churchData] = await Promise.all([
         getOrganistsByChurch(user.uid, id),
         getChurch(user.uid, id),
-        getChurchSchedules(user.uid, id),
       ]);
       if (!isMountedRef.current) return;
       setOrganists(orgsData);
@@ -55,7 +76,8 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
       } else {
         setChurchConfig(null);
       }
-      setSavedSchedules(schedulesData);
+      setError('');
+      void loadSchedules();
     } catch (err) {
       if (!isMountedRef.current) return;
       logger.error('Erro ao carregar dados da igreja:', err);
@@ -63,7 +85,7 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
     } finally {
       if (isMountedRef.current) setIsLoading(false);
     }
-  }, [id, user]);
+  }, [id, loadSchedules, user]);
 
   const formatPeriodLabel = useCallback((periodStart, periodEnd) => {
     const startLabel = periodStart
@@ -142,9 +164,7 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
       setSuccessMessage(
         `Escala de ${formatPeriodLabel(startDate, endDate)} gerada e salva com sucesso.`
       );
-      const updatedSchedules = await getChurchSchedules(user.uid, id);
-      if (!isMountedRef.current) return;
-      setSavedSchedules(updatedSchedules);
+      await loadSchedules();
     } catch (err) {
       if (!isMountedRef.current) return;
       logger.error('Erro ao gerar/salvar escala:', err);
@@ -195,9 +215,7 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
         `Alterações da escala de ${formatPeriodLabel(startDate, endDate)} salvas com sucesso.`
       );
       setIsEditing(false);
-      const updatedSchedules = await getChurchSchedules(user.uid, id);
-      if (!isMountedRef.current) return;
-      setSavedSchedules(updatedSchedules);
+      await loadSchedules();
     } catch (err) {
       if (!isMountedRef.current) return;
       logger.error('Erro ao salvar alterações da escala:', err);
@@ -227,6 +245,7 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
     savedSchedules,
     isEditing,
     isLoading,
+    isHistoryLoading,
     isGenerating,
     error,
     successMessage,

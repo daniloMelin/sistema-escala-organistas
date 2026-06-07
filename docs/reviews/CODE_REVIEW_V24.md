@@ -10,6 +10,7 @@
 | 1.3    | 7 de junho de 2026 | Danilo Melin | Execução inicial da fase 2 do V24              |
 | 1.4    | 7 de junho de 2026 | Danilo Melin | Segunda passada de preload no V24              |
 | 1.5    | 7 de junho de 2026 | Danilo Melin | Terceira passada no fluxo de autenticação      |
+| 1.6    | 7 de junho de 2026 | Danilo Melin | Quarta passada no gerador e histórico          |
 
 ## Objetivo
 
@@ -129,6 +130,12 @@ Execução inicial:
 - com isso, o caminho da home e do bootstrap deixa de carregar tão cedo
   parte das APIs de autenticação que só entram em uso após interação ou
   confirmação de sessão
+- na quarta passada, o histórico de escalas saiu do caminho crítico do
+  gerador:
+  - igreja e organistas passam a liberar a rota principal primeiro
+  - o histórico hidrata em paralelo, sem bloquear a disponibilidade do
+    shell do gerador
+  - a rota agora expõe `isHistoryLoading` separado de `isLoading`
 
 ### Fase 3 - Cobertura e impacto
 
@@ -174,7 +181,8 @@ Saídas esperadas:
 
 1. validar o ganho prático do corte de PDF sob demanda em nova build do
    `V24`
-2. medir o efeito da terceira passada no bootstrap autenticado e na home
+2. medir o efeito combinado da terceira e da quarta passada nas rotas
+   autenticadas, especialmente no gerador
 3. decidir, após nova medição, se o preload ocioso do gerador já é
    suficiente ou se vale removê-lo por completo
 

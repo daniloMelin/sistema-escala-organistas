@@ -23,6 +23,7 @@ const ChurchScheduleGenerator = ({ user }) => {
     savedSchedules,
     isEditing,
     isLoading,
+    isHistoryLoading,
     isGenerating,
     error,
     successMessage,
@@ -95,7 +96,7 @@ const ChurchScheduleGenerator = ({ user }) => {
 
       <ScheduleHistoryList
         isEditing={isEditing}
-        isLoading={isLoading}
+        isLoading={isHistoryLoading}
         savedSchedules={savedSchedules}
         onViewSaved={handleViewSaved}
       />

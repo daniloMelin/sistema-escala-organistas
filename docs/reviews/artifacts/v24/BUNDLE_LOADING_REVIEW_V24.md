@@ -169,6 +169,24 @@ Leitura:
 - o objetivo é aliviar a home e o bootstrap sem alterar o contrato da
   autenticação
 
+## Atualização da fase 2 no gerador
+
+Execução inicial:
+
+- `src/hooks/useChurchScheduleGenerator.js` deixou de bloquear a carga
+  principal da rota esperando o histórico de escalas
+- igreja e organistas continuam na primeira frente do carregamento
+- o histórico passa a hidratar em paralelo, com estado dedicado
+  `isHistoryLoading`
+
+Leitura:
+
+- essa passada reduz o trabalho crítico da rota `/igreja/:id/escala`
+- o shell do gerador fica disponível antes, deixando o histórico como
+  parte progressiva do fluxo
+- o objetivo direto é melhorar `LCP` percebido do gerador sem reabrir
+  regressão visual do shell
+
 ## Checklist inicial da fase 1
 
 - mapear dependências do `main.js`

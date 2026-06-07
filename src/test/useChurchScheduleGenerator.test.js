@@ -55,6 +55,7 @@ describe('useChurchScheduleGenerator', () => {
     { id: 'org-1', name: 'Ana', availability: { tuesday: true } },
     { id: 'org-2', name: 'Bia', availability: { tuesday: true } },
   ];
+  let resolveSchedules;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -71,13 +72,22 @@ describe('useChurchScheduleGenerator', () => {
       },
       config: churchConfig,
     });
-    mockGetChurchSchedules.mockResolvedValue([]);
+    resolveSchedules = null;
+    mockGetChurchSchedules.mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolveSchedules = resolve;
+        })
+    );
   });
 
   test('bloqueia geração quando o período entra no quarto mês', async () => {
     const { result } = renderHook(() => useChurchScheduleGenerator(user, selectedChurch));
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
+    await act(async () => {
+      resolveSchedules?.([]);
+    });
     expect(result.current.church).toEqual(expect.objectContaining({ config: churchConfig }));
 
     act(() => {
@@ -104,11 +114,21 @@ describe('useChurchScheduleGenerator', () => {
       data: [{ date: '03/03/2026', assignments: { MeiaHoraCulto: 'Ana', Culto: 'Bia' } }],
       organistCount: 2,
     };
-    mockGetChurchSchedules.mockResolvedValueOnce([]).mockResolvedValueOnce([savedSchedule]);
+    mockGetChurchSchedules
+      .mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            resolveSchedules = resolve;
+          })
+      )
+      .mockResolvedValueOnce([savedSchedule]);
 
     const { result } = renderHook(() => useChurchScheduleGenerator(user, selectedChurch));
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
+    await act(async () => {
+      resolveSchedules?.([]);
+    });
 
     act(() => {
       result.current.setStartDate('2026-03-03');
@@ -147,6 +167,9 @@ describe('useChurchScheduleGenerator', () => {
     const { result } = renderHook(() => useChurchScheduleGenerator(user, selectedChurch));
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
+    await act(async () => {
+      resolveSchedules?.([]);
+    });
 
     act(() => {
       result.current.handleViewSaved(savedSchedule);
@@ -175,6 +198,9 @@ describe('useChurchScheduleGenerator', () => {
     const { result } = renderHook(() => useChurchScheduleGenerator(user, staleSelectedChurch));
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
+    await act(async () => {
+      resolveSchedules?.([]);
+    });
 
     act(() => {
       result.current.handleViewSaved({
@@ -200,5 +226,29 @@ describe('useChurchScheduleGenerator', () => {
         notes: 'Usar igreja da rota.',
       })
     );
+  });
+
+  test('libera a rota principal antes do histórico terminar de carregar', async () => {
+    const savedSchedule = {
+      id: 'saved-1',
+      period: { start: '2026-03-03', end: '2026-03-31' },
+      generatedAt: '2026-03-01T10:00:00.000Z',
+      data: [{ date: '03/03/2026', assignments: { MeiaHoraCulto: 'Ana', Culto: 'Bia' } }],
+      organistCount: 2,
+    };
+
+    const { result } = renderHook(() => useChurchScheduleGenerator(user, selectedChurch));
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    expect(result.current.isHistoryLoading).toBe(true);
+    expect(result.current.savedSchedules).toEqual([]);
+
+    await act(async () => {
+      resolveSchedules?.([savedSchedule]);
+    });
+
+    await waitFor(() => expect(result.current.isHistoryLoading).toBe(false));
+    expect(result.current.savedSchedules).toEqual([savedSchedule]);
   });
 });
