@@ -9,6 +9,7 @@
 | 1.2    | 7 de junho de 2026 | Danilo Melin | Consolidação da fase 1 do V24                  |
 | 1.3    | 7 de junho de 2026 | Danilo Melin | Execução inicial da fase 2 do V24              |
 | 1.4    | 7 de junho de 2026 | Danilo Melin | Segunda passada de preload no V24              |
+| 1.5    | 7 de junho de 2026 | Danilo Melin | Terceira passada no fluxo de autenticação      |
 
 ## Objetivo
 
@@ -120,6 +121,14 @@ Execução inicial:
     do navegador, com fallback por `setTimeout`
 - isso reduz concorrência logo na entrada da sessão sem remover por
   completo a melhoria de percepção no fluxo secundário de escala
+- na terceira passada, partes do fluxo de autenticação foram movidas
+  para import dinâmico:
+  - APIs de login Google e sincronização do perfil no Firestore
+  - listener de sessão do Firebase Auth
+  - operação de logout
+- com isso, o caminho da home e do bootstrap deixa de carregar tão cedo
+  parte das APIs de autenticação que só entram em uso após interação ou
+  confirmação de sessão
 
 ### Fase 3 - Cobertura e impacto
 
@@ -165,8 +174,7 @@ Saídas esperadas:
 
 1. validar o ganho prático do corte de PDF sob demanda em nova build do
    `V24`
-2. revisar o peso do shell inicial em `src/components/Auth.js` e nas
-   dependências do fluxo autenticado
+2. medir o efeito da terceira passada no bootstrap autenticado e na home
 3. decidir, após nova medição, se o preload ocioso do gerador já é
    suficiente ou se vale removê-lo por completo
 

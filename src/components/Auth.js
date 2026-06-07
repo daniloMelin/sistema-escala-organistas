@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { auth, db, firebaseConfigError, isFirebaseReady } from '../firebaseConfig';
-import { doc, setDoc, Timestamp } from 'firebase/firestore';
-
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import logger from '../utils/logger';
 import Button from './ui/Button';
 import './Auth.css';
@@ -23,9 +20,12 @@ const Auth = ({ onAuthSuccess, onE2ELogin }) => {
     }
 
     setIsLoading(true);
-    const provider = new GoogleAuthProvider();
 
     try {
+      const [{ signInWithPopup, GoogleAuthProvider }, { doc, setDoc, Timestamp }] =
+        await Promise.all([import('firebase/auth'), import('firebase/firestore')]);
+      const provider = new GoogleAuthProvider();
+
       // 1. O usuário faz o login via pop-up do Google
       const result = await signInWithPopup(auth, provider);
       const user = result.user; // Pegamos os dados do usuário do resultado

@@ -155,6 +155,20 @@ Hipótese:
 - a home e a transição para o shell autenticado ainda podem estar
   carregando mais dependências do que a rota crítica realmente precisa
 
+Execução inicial:
+
+- `src/components/Auth.js` passou a carregar via `import()` as APIs de
+  login Google e sincronização de perfil somente no clique de login
+- `src/App.js` passou a carregar o listener de sessão e o `signOut`
+  dinamicamente no momento de uso
+
+Leitura:
+
+- essa passada empurra parte do custo do Firebase Auth e do Firestore
+  para mais perto do uso real
+- o objetivo é aliviar a home e o bootstrap sem alterar o contrato da
+  autenticação
+
 ## Checklist inicial da fase 1
 
 - mapear dependências do `main.js`

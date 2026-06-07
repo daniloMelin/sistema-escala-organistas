@@ -21,7 +21,6 @@ import {
 // Contexto e Autenticação
 import { ChurchProvider } from './contexts/ChurchContext';
 import { auth, firebaseConfigError, isFirebaseReady } from './firebaseConfig';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 // Lazy loading para componentes grandes
 const loadChurchDashboard = () => import('./components/ChurchDashboard');
@@ -163,11 +162,29 @@ function App() {
       return undefined;
     }
 
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setIsLoading(false);
-    });
-    return () => unsubscribe();
+    let unsubscribe = null;
+    let isSubscribed = true;
+
+    import('firebase/auth')
+      .then(({ onAuthStateChanged }) => {
+        if (!isSubscribed) return;
+
+        unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+          setUser(currentUser);
+          setIsLoading(false);
+        });
+      })
+      .catch((error) => {
+        logger.error('Erro ao inicializar listener de autenticação:', error);
+        if (isSubscribed) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => {
+      isSubscribed = false;
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
@@ -227,6 +244,7 @@ function App() {
     }
 
     if (auth) {
+      const { signOut } = await import('firebase/auth');
       await signOut(auth);
     }
   };
