@@ -127,6 +127,21 @@ Hipótese:
 - vale reavaliar se dashboard e gerador precisam do mesmo tratamento de
   preload, ou se o gerador pode ficar mais tardio
 
+Execução inicial:
+
+- `src/App.js` manteve o preload imediato do dashboard
+- o gerador deixou de ser aquecido logo no início da sessão
+- agora o preload do gerador acontece apenas em momento ocioso do
+  navegador, com fallback temporizado para ambientes sem
+  `requestIdleCallback`
+
+Leitura:
+
+- essa passada reduz disputa por carga logo após o login
+- o shell principal preserva o caminho mais provável de navegação
+- a próxima medição deve mostrar se esse adiamento já é suficiente ou se
+  o preload do gerador ainda pode ser removido
+
 ### 3. Fronteira do fluxo autenticado
 
 Arquivos-alvo:

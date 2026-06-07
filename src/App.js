@@ -174,7 +174,33 @@ function App() {
     if (!user) return;
 
     loadChurchDashboard();
-    loadChurchScheduleGenerator();
+
+    let timeoutId = null;
+    let idleCallbackId = null;
+
+    const preloadScheduleGenerator = () => {
+      loadChurchScheduleGenerator();
+    };
+
+    if (typeof window !== 'undefined' && typeof window.requestIdleCallback === 'function') {
+      idleCallbackId = window.requestIdleCallback(preloadScheduleGenerator, { timeout: 2000 });
+    } else {
+      timeoutId = window.setTimeout(preloadScheduleGenerator, 1200);
+    }
+
+    return () => {
+      if (
+        idleCallbackId !== null &&
+        typeof window !== 'undefined' &&
+        typeof window.cancelIdleCallback === 'function'
+      ) {
+        window.cancelIdleCallback(idleCallbackId);
+      }
+
+      if (timeoutId !== null) {
+        window.clearTimeout(timeoutId);
+      }
+    };
   }, [user]);
 
   if (isLoading) {

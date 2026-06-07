@@ -8,6 +8,7 @@
 | 1.1    | 30 de maio de 2026 | Danilo Melin | Estruturação do ciclo de bundle e lazy loading |
 | 1.2    | 7 de junho de 2026 | Danilo Melin | Consolidação da fase 1 do V24                  |
 | 1.3    | 7 de junho de 2026 | Danilo Melin | Execução inicial da fase 2 do V24              |
+| 1.4    | 7 de junho de 2026 | Danilo Melin | Segunda passada de preload no V24              |
 
 ## Objetivo
 
@@ -113,6 +114,12 @@ Execução inicial:
   rota de escala quando o usuário ainda não pediu o PDF
 - a mudança preserva o contrato funcional do fluxo e mantém o shell da
   rota inalterado
+- na segunda passada, o preload pós-login foi refinado:
+  - dashboard continua aquecido imediatamente após autenticação
+  - gerador de escala passa a ser pré-carregado apenas em momento ocioso
+    do navegador, com fallback por `setTimeout`
+- isso reduz concorrência logo na entrada da sessão sem remover por
+  completo a melhoria de percepção no fluxo secundário de escala
 
 ### Fase 3 - Cobertura e impacto
 
@@ -158,9 +165,10 @@ Saídas esperadas:
 
 1. validar o ganho prático do corte de PDF sob demanda em nova build do
    `V24`
-2. revisar o peso do shell inicial em `src/App.js`, `src/components/Auth.js`
-   e dependências do fluxo autenticado
-3. decidir se o preload do gerador continua valendo o custo no pós-login
+2. revisar o peso do shell inicial em `src/components/Auth.js` e nas
+   dependências do fluxo autenticado
+3. decidir, após nova medição, se o preload ocioso do gerador já é
+   suficiente ou se vale removê-lo por completo
 
 ## Artefatos Planejados
 
