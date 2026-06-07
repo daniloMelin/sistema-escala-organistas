@@ -102,6 +102,20 @@ Hipótese:
 - trocar o caminho atual por import dinâmico no clique de exportação
   deve aliviar a carga do fluxo do gerador sem mexer na rota inicial
 
+Execução inicial:
+
+- `src/hooks/useChurchScheduleGenerator.js` deixou de importar
+  `exportScheduleToPDF` de forma estática
+- o exportador passou a ser carregado com `import()` apenas quando o
+  usuário aciona a exportação
+
+Leitura:
+
+- esse corte é o primeiro ajuste de melhor relação risco/benefício do
+  `V24`
+- ele reduz carga antecipada no gerador sem reabrir problemas de
+  previsibilidade visual
+
 ### 2. Revisão do preload pós-login
 
 Arquivos-alvo:

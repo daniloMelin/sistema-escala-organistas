@@ -7,7 +7,6 @@ import {
   getChurch,
 } from '../services/firebaseService';
 import { generateSchedule as generateScheduleLogic } from '../utils/scheduleLogic';
-import { exportScheduleToPDF } from '../utils/pdfGenerator';
 import { getMonthYearLabel } from '../utils/dateUtils';
 import { validateDateRange } from '../utils/validation';
 import logger from '../utils/logger';
@@ -81,11 +80,12 @@ export const useChurchScheduleGenerator = (user, selectedChurch) => {
     loadData();
   }, [loadData]);
 
-  const handleExportClick = () => {
+  const handleExportClick = async () => {
     const churchDetails = matchingSelectedChurch || church;
     const churchName = churchDetails?.name || 'Igreja';
     const rehearsal = churchDetails?.rehearsal || null;
     try {
+      const { exportScheduleToPDF } = await import('../utils/pdfGenerator');
       exportScheduleToPDF(generatedSchedule, startDate, endDate, churchName, rehearsal);
     } catch (err) {
       logger.error('Erro ao exportar PDF:', err);

@@ -184,8 +184,8 @@ describe('useChurchScheduleGenerator', () => {
       });
     });
 
-    act(() => {
-      result.current.handleExportClick();
+    await act(async () => {
+      await result.current.handleExportClick();
     });
 
     expect(exportScheduleToPDF).toHaveBeenCalledWith(

@@ -7,6 +7,7 @@
 | 1.0    | 30 de maio de 2026 | Danilo Melin | Criação do ciclo V24                           |
 | 1.1    | 30 de maio de 2026 | Danilo Melin | Estruturação do ciclo de bundle e lazy loading |
 | 1.2    | 7 de junho de 2026 | Danilo Melin | Consolidação da fase 1 do V24                  |
+| 1.3    | 7 de junho de 2026 | Danilo Melin | Execução inicial da fase 2 do V24              |
 
 ## Objetivo
 
@@ -102,6 +103,17 @@ Saídas esperadas:
 - ajustes rastreáveis no bundle principal e nos imports por rota
 - validação focal do carregamento após login e nos fluxos mais usados
 
+Execução inicial:
+
+- o primeiro corte do `V24` removeu o exportador de PDF do carregamento
+  estático do hook do gerador
+- `src/hooks/useChurchScheduleGenerator.js` passou a carregar
+  `src/utils/pdfGenerator.js` apenas no clique de exportação
+- com isso, o custo de `jspdf` deixa de participar da carga inicial da
+  rota de escala quando o usuário ainda não pediu o PDF
+- a mudança preserva o contrato funcional do fluxo e mantém o shell da
+  rota inalterado
+
 ### Fase 3 - Cobertura e impacto
 
 Objetivo:
@@ -144,13 +156,11 @@ Saídas esperadas:
 
 ## Próximos Passos do V24
 
-1. tratar `src/hooks/useChurchScheduleGenerator.js` e
-   `src/utils/pdfGenerator.js` como primeira frente de lazy loading por
-   ação do usuário
+1. validar o ganho prático do corte de PDF sob demanda em nova build do
+   `V24`
 2. revisar o peso do shell inicial em `src/App.js`, `src/components/Auth.js`
    e dependências do fluxo autenticado
-3. validar se o `main.js` pode encolher sem reabrir regressão de
-   fallback ou previsibilidade visual
+3. decidir se o preload do gerador continua valendo o custo no pós-login
 
 ## Artefatos Planejados
 
